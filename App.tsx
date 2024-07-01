@@ -13,6 +13,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import Main from './src/pages/main';
+import MyCalendar from './src/pages/calendar';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="홈" component={Main} />
+          <Stack.Screen name="캘린더" component={MyCalendar} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
