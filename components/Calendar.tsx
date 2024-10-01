@@ -1,21 +1,39 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, Button } from 'react-native';
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay } from 'date-fns';
-import { Picker } from '@react-native-picker/picker';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  Button,
+} from "react-native";
+import {
+  format,
+  addMonths,
+  subMonths,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  isSameMonth,
+  isSameDay,
+} from "date-fns";
+import { Picker } from "@react-native-picker/picker";
+import { Ionicons } from "@expo/vector-icons";
 
 const moodColors = {
-  happy: 'green',
-  sad: 'blue',
-  neutral: 'orange',
-  angry: 'red',
+  happy: "green",
+  sad: "blue",
+  neutral: "orange",
+  angry: "red",
 };
 
 const moodIcons = {
-  happy: '😊',
-  sad: '😢',
-  neutral: '😐',
-  angry: '😡',
+  happy: "😊",
+  sad: "😢",
+  neutral: "😐",
+  angry: "😡",
 };
 
 const Calendar = () => {
@@ -28,8 +46,13 @@ const Calendar = () => {
   const renderHeader = () => {
     return (
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerTextContainer} onPress={() => setIsModalVisible(true)}>
-          <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
+        <TouchableOpacity
+          style={styles.headerTextContainer}
+          onPress={() => setIsModalVisible(true)}
+        >
+          <Text style={styles.headerText}>
+            {format(currentDate, "yyyy.MM")}
+          </Text>
           <Ionicons name="chevron-down" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -37,11 +60,13 @@ const Calendar = () => {
   };
 
   const renderDaysOfWeek = () => {
-    const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+    const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
     return (
       <View style={styles.daysOfWeekContainer}>
         {daysOfWeek.map((day, index) => (
-          <Text key={index} style={styles.dayOfWeekText}>{day}</Text>
+          <Text key={index} style={styles.dayOfWeekText}>
+            {day}
+          </Text>
         ))}
       </View>
     );
@@ -72,12 +97,14 @@ const Calendar = () => {
               ]}
               onPress={() => setSelectedDate(day)}
             >
-                <Text style={styles.dayText}>{format(day, 'd')}</Text>
-                {day.getDate() === 10 && <View style={styles.dot} />}
-              <View style={[
-                styles.moodContainer,
-                mood && { backgroundColor: moodColors[mood] },
-              ]}>
+              <Text style={styles.dayText}>{format(day, "d")}</Text>
+              {day.getDate() === 10 && <View style={styles.dot} />}
+              <View
+                style={[
+                  styles.moodContainer,
+                  mood && { backgroundColor: moodColors[mood] },
+                ]}
+              >
                 {/* <Text style={styles.moodIcon}>{mood && moodIcons[mood]}</Text> */}
               </View>
             </TouchableOpacity>
@@ -90,10 +117,10 @@ const Calendar = () => {
   const getMoodForDate = (date: Date) => {
     // Replace this with your logic to get the mood for the date
     const day = date.getDate();
-    if (day % 5 === 0) return 'angry';
-    if (day % 3 === 0) return 'neutral';
-    if (day % 2 === 0) return 'sad';
-    return 'happy';
+    if (day % 5 === 0) return "angry";
+    if (day % 3 === 0) return "neutral";
+    if (day % 2 === 0) return "sad";
+    return "happy";
   };
 
   const handleMonthYearChange = () => {
@@ -117,7 +144,11 @@ const Calendar = () => {
               onValueChange={(itemValue) => setSelectedMonth(itemValue)}
             >
               {Array.from({ length: 12 }, (_, i) => (
-                <Picker.Item key={i} label={format(new Date(0, i), 'MMMM')} value={i} />
+                <Picker.Item
+                  key={i}
+                  label={format(new Date(0, i), "MMMM")}
+                  value={i}
+                />
               ))}
             </Picker>
             <Picker
@@ -142,44 +173,44 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'center', // Center the content horizontally
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center", // Center the content horizontally
+    alignItems: "center",
     marginBottom: 16,
   },
   headerTextContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center', // Center the text and icon
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center", // Center the text and icon
   },
   headerText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginRight: 8, // Add some space between the text and the icon
   },
   navButton: {
     fontSize: 24,
-    color: 'black',
+    color: "black",
   },
   daysOfWeekContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginBottom: 8,
   },
   dayOfWeekText: {
-    width: '14.28%',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    width: "14.28%",
+    textAlign: "center",
+    fontWeight: "bold",
   },
   daysContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   day: {
-    width: '14.28%',
+    width: "14.28%",
     padding: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   dayText: {
     fontSize: 16,
@@ -187,9 +218,9 @@ const styles = StyleSheet.create({
   inactiveDay: {
     opacity: 0.5,
   },
-  
+
   selectedDay: {
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 2,
     borderRadius: 10,
     padding: 4,
@@ -197,8 +228,8 @@ const styles = StyleSheet.create({
   moodContainer: {
     width: 40,
     height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 20,
     marginBottom: 4,
   },
@@ -209,26 +240,26 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: 'red',
-    position: 'absolute',
+    backgroundColor: "red",
+    position: "absolute",
     top: 4,
     right: 4,
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
     width: 300,
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
 });
