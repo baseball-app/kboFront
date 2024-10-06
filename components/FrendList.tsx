@@ -7,6 +7,7 @@ interface Friend {
   imageUrl: string;
 }
 
+/** 테스트 */
 const friendsData: Friend[] = [
   { id: "1", name: "김철수", imageUrl: "https://via.placeholder.com/50" },
   { id: "2", name: "이영희", imageUrl: "https://via.placeholder.com/50" },
