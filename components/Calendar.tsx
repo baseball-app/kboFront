@@ -9,8 +9,6 @@ import {
 } from "react-native";
 import {
   format,
-  addMonths,
-  subMonths,
   startOfMonth,
   endOfMonth,
   startOfWeek,
@@ -21,6 +19,7 @@ import {
 } from "date-fns";
 import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
+import { ko } from "date-fns/locale";
 
 const moodColors = {
   happy: "green",
@@ -138,29 +137,51 @@ const Calendar = () => {
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select Month and Year</Text>
-            <Picker
-              selectedValue={selectedMonth}
-              onValueChange={(itemValue) => setSelectedMonth(itemValue)}
-            >
-              {Array.from({ length: 12 }, (_, i) => (
-                <Picker.Item
-                  key={i}
-                  label={format(new Date(0, i), "MMMM")}
-                  value={i}
-                />
-              ))}
-            </Picker>
-            <Picker
-              selectedValue={selectedYear}
-              onValueChange={(itemValue) => setSelectedYear(itemValue)}
-            >
-              {Array.from({ length: 10 }, (_, i) => (
-                <Picker.Item key={i} label={`${2020 + i}`} value={2020 + i} />
-              ))}
-            </Picker>
-            <Button title="Confirm" onPress={handleMonthYearChange} />
-            <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
+            <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
+            <View style={styles.datePickerContainer}>
+              <Picker
+                selectedValue={selectedYear}
+                onValueChange={(itemValue) => setSelectedYear(itemValue)}
+                style={styles.picker}
+                itemStyle={styles.pickerItem}
+              >
+                {Array.from({ length: 10 }, (_, i) => (
+                  <Picker.Item
+                    key={i}
+                    label={`${2020 + i}년`}
+                    value={2020 + i}
+                  />
+                ))}
+              </Picker>
+              <Picker
+                selectedValue={selectedMonth}
+                onValueChange={(itemValue) => setSelectedMonth(itemValue)}
+                style={styles.picker}
+                itemStyle={styles.pickerItem}
+              >
+                {Array.from({ length: 12 }, (_, i) => (
+                  <Picker.Item
+                    key={i}
+                    label={format(new Date(0, i), "LLLL", { locale: ko })}
+                    value={i}
+                  />
+                ))}
+              </Picker>
+            </View>
+            <View style={styles.buttonBox}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setIsModalVisible(false)}
+              >
+                <Text style={styles.cancelText}>취소</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={handleMonthYearChange}
+              >
+                <Text style={styles.confirmText}>완료</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -220,7 +241,6 @@ const styles = StyleSheet.create({
   },
 
   selectedDay: {
-    borderColor: "gray",
     borderWidth: 2,
     borderRadius: 10,
     padding: 4,
@@ -232,6 +252,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
     marginBottom: 4,
+  },
+  datePickerContainer: {
+    flexDirection: "row",
+    height: 134,
+    overflow: "hidden",
+  },
+  picker: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  pickerItem: {
+    fontSize: 24,
+    backgroundColor: "#fff",
   },
   moodIcon: {
     fontSize: 24,
@@ -247,20 +281,60 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: 300,
-    padding: 20,
+    width: "100%",
+    padding: 24,
     backgroundColor: "white",
-    borderRadius: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
+    fontSize: 16,
+    fontWeight: 700,
+    marginBottom: 28,
+  },
+  buttonBox: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 13,
+    marginTop: 40,
+    marginBottom: 16,
+  },
+  confirmButton: {
+    flex: 1,
+    height: 46,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "#1E5EF4",
+  },
+  confirmText: {
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 22.4,
+    color: "#fff",
+  },
+  cancelButton: {
+    flex: 1,
+    height: 46,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "#D0CEC7",
+  },
+  cancelText: {
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 22.4,
+    color: "#000",
   },
 });
 

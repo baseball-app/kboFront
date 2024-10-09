@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Platform,
   ScrollView,
   Image,
   Text,
@@ -11,18 +10,10 @@ import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FriendList from "@/components/FrendList";
 import GameInfoCard from "@/components/GameInfoCard";
-import { useStore } from "@/store/useStore";
-import { useEffect } from "react";
 
-export default function HomeScreen() {
-  const count = useStore((state) => state.count);
-  const increase = useStore((state) => state.increase);
-
-  useEffect(() => {
-    console.log("count", count);
-  }, [count]);
+const CalendarScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <FriendList />
       <ScrollView style={styles.scollContainer}>
         <View style={styles.tabMenu}>
@@ -51,10 +42,7 @@ export default function HomeScreen() {
         <GameInfoCard matchSchedule="7월 16일(목) 15:00 ・ 수원" />
         <Calendar />
         <View style={styles.writeButtonBox}>
-          <TouchableOpacity
-            style={styles.writeScheduleButton}
-            onPress={increase}
-          >
+          <TouchableOpacity style={styles.writeScheduleButton}>
             <Image
               source={require("@/assets/icons/write.png")}
               resizeMode="contain"
@@ -62,10 +50,11 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      {/* <Footer /> */}
     </SafeAreaView>
   );
-}
+};
+
+export default CalendarScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -89,8 +78,8 @@ const styles = StyleSheet.create({
   },
   todayText: {
     fontSize: 16,
-    color: "#171716",
-    fontWeight: 600,
+    color: "black",
+    fontWeight: "bold",
     lineHeight: 22.4,
   },
   dayText: {
