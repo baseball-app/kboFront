@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, Button } from 'react-native';
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay } from 'date-fns';
-import { Picker } from '@react-native-picker/picker';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  Button,
+} from "react-native";
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  isSameMonth,
+  isSameDay,
+} from "date-fns";
+import { Picker } from "@react-native-picker/picker";
+import { Ionicons } from "@expo/vector-icons";
+import { ko } from "date-fns/locale";
 
 const moodColors = {
-  happy: 'green',
-  sad: 'blue',
-  neutral: 'orange',
-  angry: 'red',
+  happy: "green",
+  sad: "blue",
+  neutral: "orange",
+  angry: "red",
 };
 
 const moodIcons = {
-  happy: '😊',
-  sad: '😢',
-  neutral: '😐',
-  angry: '😡',
+  happy: "😊",
+  sad: "😢",
+  neutral: "😐",
+  angry: "😡",
 };
 
 const Calendar = () => {
@@ -28,8 +45,13 @@ const Calendar = () => {
   const renderHeader = () => {
     return (
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerTextContainer} onPress={() => setIsModalVisible(true)}>
-          <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
+        <TouchableOpacity
+          style={styles.headerTextContainer}
+          onPress={() => setIsModalVisible(true)}
+        >
+          <Text style={styles.headerText}>
+            {format(currentDate, "yyyy.MM")}
+          </Text>
           <Ionicons name="chevron-down" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -37,11 +59,13 @@ const Calendar = () => {
   };
 
   const renderDaysOfWeek = () => {
-    const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+    const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
     return (
       <View style={styles.daysOfWeekContainer}>
         {daysOfWeek.map((day, index) => (
-          <Text key={index} style={styles.dayOfWeekText}>{day}</Text>
+          <Text key={index} style={styles.dayOfWeekText}>
+            {day}
+          </Text>
         ))}
       </View>
     );
@@ -72,12 +96,14 @@ const Calendar = () => {
               ]}
               onPress={() => setSelectedDate(day)}
             >
-                <Text style={styles.dayText}>{format(day, 'd')}</Text>
-                {day.getDate() === 10 && <View style={styles.dot} />}
-              <View style={[
-                styles.moodContainer,
-                mood && { backgroundColor: moodColors[mood] },
-              ]}>
+              <Text style={styles.dayText}>{format(day, "d")}</Text>
+              {day.getDate() === 10 && <View style={styles.dot} />}
+              <View
+                style={[
+                  styles.moodContainer,
+                  mood && { backgroundColor: moodColors[mood] },
+                ]}
+              >
                 {/* <Text style={styles.moodIcon}>{mood && moodIcons[mood]}</Text> */}
               </View>
             </TouchableOpacity>
@@ -90,10 +116,10 @@ const Calendar = () => {
   const getMoodForDate = (date: Date) => {
     // Replace this with your logic to get the mood for the date
     const day = date.getDate();
-    if (day % 5 === 0) return 'angry';
-    if (day % 3 === 0) return 'neutral';
-    if (day % 2 === 0) return 'sad';
-    return 'happy';
+    if (day % 5 === 0) return "angry";
+    if (day % 3 === 0) return "neutral";
+    if (day % 2 === 0) return "sad";
+    return "happy";
   };
 
   const handleMonthYearChange = () => {
@@ -111,25 +137,51 @@ const Calendar = () => {
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select Month and Year</Text>
-            <Picker
-              selectedValue={selectedMonth}
-              onValueChange={(itemValue) => setSelectedMonth(itemValue)}
-            >
-              {Array.from({ length: 12 }, (_, i) => (
-                <Picker.Item key={i} label={format(new Date(0, i), 'MMMM')} value={i} />
-              ))}
-            </Picker>
-            <Picker
-              selectedValue={selectedYear}
-              onValueChange={(itemValue) => setSelectedYear(itemValue)}
-            >
-              {Array.from({ length: 10 }, (_, i) => (
-                <Picker.Item key={i} label={`${2020 + i}`} value={2020 + i} />
-              ))}
-            </Picker>
-            <Button title="Confirm" onPress={handleMonthYearChange} />
-            <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
+            <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
+            <View style={styles.datePickerContainer}>
+              <Picker
+                selectedValue={selectedYear}
+                onValueChange={(itemValue) => setSelectedYear(itemValue)}
+                style={styles.picker}
+                itemStyle={styles.pickerItem}
+              >
+                {Array.from({ length: 10 }, (_, i) => (
+                  <Picker.Item
+                    key={i}
+                    label={`${2020 + i}년`}
+                    value={2020 + i}
+                  />
+                ))}
+              </Picker>
+              <Picker
+                selectedValue={selectedMonth}
+                onValueChange={(itemValue) => setSelectedMonth(itemValue)}
+                style={styles.picker}
+                itemStyle={styles.pickerItem}
+              >
+                {Array.from({ length: 12 }, (_, i) => (
+                  <Picker.Item
+                    key={i}
+                    label={format(new Date(0, i), "LLLL", { locale: ko })}
+                    value={i}
+                  />
+                ))}
+              </Picker>
+            </View>
+            <View style={styles.buttonBox}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setIsModalVisible(false)}
+              >
+                <Text style={styles.cancelText}>취소</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={handleMonthYearChange}
+              >
+                <Text style={styles.confirmText}>완료</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -142,44 +194,44 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'center', // Center the content horizontally
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center", // Center the content horizontally
+    alignItems: "center",
     marginBottom: 16,
   },
   headerTextContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center', // Center the text and icon
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center", // Center the text and icon
   },
   headerText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginRight: 8, // Add some space between the text and the icon
   },
   navButton: {
     fontSize: 24,
-    color: 'black',
+    color: "black",
   },
   daysOfWeekContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginBottom: 8,
   },
   dayOfWeekText: {
-    width: '14.28%',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    width: "14.28%",
+    textAlign: "center",
+    fontWeight: "bold",
   },
   daysContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   day: {
-    width: '14.28%',
+    width: "14.28%",
     padding: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   dayText: {
     fontSize: 16,
@@ -187,9 +239,8 @@ const styles = StyleSheet.create({
   inactiveDay: {
     opacity: 0.5,
   },
-  
+
   selectedDay: {
-    borderColor: 'gray',
     borderWidth: 2,
     borderRadius: 10,
     padding: 4,
@@ -197,10 +248,24 @@ const styles = StyleSheet.create({
   moodContainer: {
     width: 40,
     height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 20,
     marginBottom: 4,
+  },
+  datePickerContainer: {
+    flexDirection: "row",
+    height: 134,
+    overflow: "hidden",
+  },
+  picker: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  pickerItem: {
+    fontSize: 24,
+    backgroundColor: "#fff",
   },
   moodIcon: {
     fontSize: 24,
@@ -209,27 +274,67 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: 'red',
-    position: 'absolute',
+    backgroundColor: "red",
+    position: "absolute",
     top: 4,
     right: 4,
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "flex-end",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: 300,
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
+    width: "100%",
+    padding: 24,
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 16,
+    fontWeight: 700,
+    marginBottom: 28,
+  },
+  buttonBox: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 13,
+    marginTop: 40,
+    marginBottom: 16,
+  },
+  confirmButton: {
+    flex: 1,
+    height: 46,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "#1E5EF4",
+  },
+  confirmText: {
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 22.4,
+    color: "#fff",
+  },
+  cancelButton: {
+    flex: 1,
+    height: 46,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "#D0CEC7",
+  },
+  cancelText: {
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 22.4,
+    color: "#000",
   },
 });
 
