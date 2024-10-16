@@ -21,21 +21,25 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Image 
-          source={require('../../assets/images/landing-logo.png')} 
-          style={[styles.icon, { width: maxImageWidth }]}
-          resizeMode="contain"
-        />
-        <Text style={styles.title}>오늘의 야구</Text>
-        <Text style={styles.subtitle}>반가워요! 오늘의 야구와 함께{'\n'}내가 응원하는 구단을 기록해보세요</Text>
-        <TouchableOpacity style={styles.kakaoButton} onPress={handleKakaoLogin}>
-          <Ionicons name="chatbubble" size={24} color="black" style={styles.kakaoIcon} />
-          <Text style={styles.kakaoButtonText}>카카오톡으로 1초 시작하기</Text>
-        </TouchableOpacity>
+      <View style={styles.contentContainer}>
+        <View style={styles.topContent}>
+          <Image 
+            source={require('../../assets/images/landing-logo.png')} 
+            style={[styles.icon, { width: maxImageWidth }]}
+            resizeMode="contain"
+          />
+          <Text style={styles.title}>오늘의 야구</Text>
+          <Text style={styles.subtitle}>반가워요! 오늘의 야구와 함께{'\n'}내가 응원하는 구단을 기록해보세요</Text>
+        </View>
+        
+        <View style={styles.bottomContent}>
+          <TouchableOpacity style={styles.kakaoButton} onPress={handleKakaoLogin}>
+            <Ionicons name="chatbubble" size={24} color="black" style={styles.kakaoIcon} />
+            <Text style={styles.kakaoButtonText}>카카오톡으로 1초 시작하기</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    
-      {/* {!showWebView && ( */}
+
       <Modal
         visible={showWebView}
         onRequestClose={() => !isKakaoLoginPage && setShowWebView(false)}
@@ -75,9 +79,8 @@ export default function LoginScreen() {
           )}
           </SafeAreaView>
         </Modal>
-      {/* )} */}
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -85,42 +88,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  content: {
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  topContent: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
+  bottomContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
   icon: {
-    // marginBottom: 20,
-    height: undefined, // Allow height to adjust based on the image's aspect ratio
-    aspectRatio: 1, // This should be adjusted to match your image's actual aspect ratio
-  },
-  calendarIcon: {
-    width: 60,
-    height: 60,
-    borderWidth: 2,
-    borderColor: '#000',
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  calendarTop: {
-    height: 15,
-    backgroundColor: '#4A90E2',
-  },
-  calendarBody: {
-    flex: 1,
-    backgroundColor: '#E6E6E6',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  baseball: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 2,
-    borderColor: '#FF0000',
+    height: undefined,
+    aspectRatio: 1,
   },
   title: {
     fontSize: 24,
@@ -133,28 +117,24 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     color: '#666',
   },
-  button: {
-    backgroundColor: '#4A90E2',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
+  kakaoButton: {
+    backgroundColor: '#FEE500',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     borderRadius: 8,
-    marginBottom: 20,
+    width: '100%',
   },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
+  kakaoButtonText: {
+    color: '#000000',
+    fontSize: 16,
     fontWeight: 'bold',
+    marginLeft: 10,
   },
-  loginLink: {
-    marginTop: 10,
-  },
-  loginText: {
-    fontSize: 14,
-    color: '#666',
-  },
-  loginBold: {
-    fontWeight: 'bold',
-    color: '#000',
+  kakaoIcon: {
+    marginRight: 5,
   },
   webViewContainer: {
     flex: 1,
@@ -166,25 +146,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 10,
     borderRadius: 5,
-  },
-  kakaoButton: {
-    backgroundColor: '#FEE500',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginBottom: 20,
-    width: '100%',
-  },
-  kakaoButtonText: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 10,
-  },
-  kakaoIcon: {
-    marginRight: 5,
   },
 });
