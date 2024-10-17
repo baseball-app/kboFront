@@ -8,8 +8,9 @@
     return (
         <Stack>
           <Stack.Screen name="login" options={{ headerShown: false }} />
-          {/* <Stack.Screen name="+not-found" /> */}
           <Stack.Screen name="nickname" options={{ headerShown: false }} />
+          <Stack.Screen name="my-team" options={{ headerShown: false }} />
+          <Stack.Screen name="profile-image" options={{ headerShown: false }} />
         </Stack>
     );
   }
