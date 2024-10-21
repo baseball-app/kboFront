@@ -1,11 +1,30 @@
 import React from "react";
-import { View, Image, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  ImageSourcePropType,
+} from "react-native";
 
-const MatchTeamBox = () => {
+//TODO 목업 인터페이스 추후 실제 데이터 수정
+interface IMatchTeamBox {
+  time: string;
+  homeTeamImg: ImageSourcePropType;
+  awayTeamImg: ImageSourcePropType;
+  homeTeamNm: string;
+  awayTeamNm: string;
+  isSelected?: boolean;
+}
+
+/** 매치 팀 경기 카드 컴포넌트 */
+const MatchTeamBox = (props: IMatchTeamBox) => {
+  const { time, homeTeamImg, awayTeamImg, homeTeamNm, awayTeamNm, isSelected } =
+    props;
   return (
-    <View style={styles.gameInfoBox}>
+    <View style={isSelected ? styles.gameSelectedInfoBox : styles.gameInfoBox}>
       <View style={styles.matchDayBox}>
-        <Text style={styles.matchDayTitle}>15:00</Text>
+        <Text style={styles.matchDayTitle}>{time}</Text>
         <Image
           source={require("@/assets/icons/ellipse.png")}
           resizeMode="contain"
@@ -14,10 +33,7 @@ const MatchTeamBox = () => {
       </View>
       <View style={styles.matchTeamBox}>
         <View style={styles.matchTeamInfo}>
-          <Image
-            source={require("@/assets/team_logo/ssg.png")}
-            resizeMode="contain"
-          />
+          <Image source={awayTeamImg} resizeMode="contain" />
           <View style={styles.ellipseBox}>
             <Image
               source={require("@/assets/icons/ellipse.png")}
@@ -28,14 +44,11 @@ const MatchTeamBox = () => {
               resizeMode="contain"
             />
           </View>
-          <Image
-            source={require("@/assets/team_logo/kt.png")}
-            resizeMode="contain"
-          />
+          <Image source={homeTeamImg} resizeMode="contain" />
         </View>
         <View style={styles.teamNameBox}>
-          <Text style={styles.teamText}>SSG</Text>
-          <Text style={styles.teamText}>KT</Text>
+          <Text style={styles.teamText}>{homeTeamNm}</Text>
+          <Text style={styles.teamText}>{awayTeamNm}</Text>
         </View>
       </View>
     </View>
@@ -46,11 +59,22 @@ export default MatchTeamBox;
 
 const styles = StyleSheet.create({
   gameInfoBox: {
-    backgroundColor: "#fff",
+    backgroundColor: "#F3F2EE",
     borderRadius: 10,
     width: "100%",
     borderWidth: 1,
     borderColor: "#E4E2DC",
+    height: 113,
+    padding: 12,
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  gameSelectedInfoBox: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    width: "100%",
+    borderWidth: 2,
+    borderColor: "#353430",
     height: 113,
     padding: 12,
     flexDirection: "column",
@@ -72,7 +96,7 @@ const styles = StyleSheet.create({
   },
   matchDayTitle: {
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: "500",
     lineHeight: 19.6,
     color: "#000000",
   },
@@ -95,7 +119,7 @@ const styles = StyleSheet.create({
   },
   teamText: {
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: "500",
     lineHeight: 19.6,
     textAlign: "center",
     width: 35,

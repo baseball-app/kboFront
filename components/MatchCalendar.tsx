@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   dayOfWeekText: {
     fontSize: 13,
-    fontWeight: 400,
+    fontWeight: "400",
     lineHeight: 18.2,
     textAlign: "center",
     width: "100%",
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   dayText: {
     fontSize: 18,
     lineHeight: 25.2,
-    fontWeight: 500,
+    fontWeight: "500",
     textAlign: "center",
   },
   inactiveDay: {
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 16,
-    fontWeight: 700,
+    fontWeight: "700",
     marginBottom: 28,
   },
   buttonBox: {
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   },
   confirmText: {
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: "600",
     lineHeight: 22.4,
     color: "#fff",
   },
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: "600",
     lineHeight: 22.4,
     color: "#000",
   },
