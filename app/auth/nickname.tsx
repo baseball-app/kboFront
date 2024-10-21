@@ -10,7 +10,7 @@ export default function NicknameScreen() {
     // Here you would typically send the nickname to your backend
     console.log('Submitted nickname:', nickname);
     // Navigate to the next screen or main app
-    router.replace('/(tabs)');
+    router.replace('/auth/my-team');
   };
 
   return (
@@ -57,7 +57,7 @@ export default function NicknameScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFCF3',
   },
   content: {
     flex: 1,

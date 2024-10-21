@@ -72,7 +72,7 @@ export default function ProfileImageScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFCF3',
   },
   backButton: {
     position: 'absolute',

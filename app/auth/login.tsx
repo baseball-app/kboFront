@@ -1,22 +1,38 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image, useWindowDimensions, Alert, Modal } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image, useWindowDimensions} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import WebView from 'react-native-webview';
-
+import KaKaoLoginModal from './component/KaKaoLoginModal';
+import NaverLoginModal from './component/NaverLoginModal';
+import { router } from 'expo-router';
 const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_LOGIN_CLIENT_ID;
 const KAKAO_REDIRECT_URI = process.env.EXPO_PUBLIC_KAKAO_LOGIN_REDIRECT_URI;
 const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 
-export default function LoginScreen() {
-  const [showWebView, setShowWebView] = useState(false);
-  const [isKakaoLoginPage, setIsKakaoLoginPage] = useState(false);
-  const webViewRef = useRef(null);
-  
-  const { width: windowWidth } = useWindowDimensions();
-  const maxImageWidth = windowWidth * 0.40;
+// console.log("check", Math.random().toString(36).slice(2, 11))
 
-  const handleKakaoLogin = () => {
-    setShowWebView(true);
+const NAVER_CLIENT_ID = process.env.EXPO_PUBLIC_NAVER_LOGIN_CLIENT_ID;
+const NAVER_REDIRECT_URI = process.env.EXPO_PUBLIC_NAVER_LOGIN_REDIRECT_URI;
+const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=${Math.random().toString(36).slice(2, 11)}`;
+
+export default function LoginScreen() {
+
+  console.log("checking loginscreen")
+  
+  const [showKakaoWebView, setShowKakaoWebView] = useState(false);
+  const [showNaverWebView, setShowNaverWebView] = useState(false);
+  const [isKakaoLoginPage, setIsKakaoLoginPage] = useState(false);
+
+  const handleKakaoLoginSuccess = (code: string) => {
+    // Handle Kakao login success
+    console.log('Kakao login successful, code:', code);
+    // Implement your login logic here
+  };
+
+  const handleNaverLoginSuccess = (code: string) => {
+    // Handle Naver login success
+    console.log('Naver login successful, code:', code);
+    // Implement your login logic here
   };
 
   return (
@@ -25,7 +41,7 @@ export default function LoginScreen() {
         <View style={styles.topContent}>
           <Image 
             source={require('../../assets/images/landing-logo.png')} 
-            style={[styles.icon, { width: maxImageWidth }]}
+            style={styles.icon}
             resizeMode="contain"
           />
           <Text style={styles.title}>오늘의 야구</Text>
@@ -33,78 +49,71 @@ export default function LoginScreen() {
         </View>
         
         <View style={styles.bottomContent}>
-          <TouchableOpacity style={styles.kakaoButton} onPress={handleKakaoLogin}>
-            <Ionicons name="chatbubble" size={24} color="black" style={styles.kakaoIcon} />
-            <Text style={styles.kakaoButtonText}>카카오톡으로 1초 시작하기</Text>
+          <TouchableOpacity style={styles.kakaoButton} onPress={() => {
+            router.navigate('/auth/kakao-login')
+            // setShowKakaoWebView(true)
+          }}>
+            <Image source={require('../../assets/icons/kakao.png')} style={styles.loginIcon} />
+            {/* <Ionicons name="chatbubble" size={24} color="black" style={styles.kakaoIcon} /> */}
+            <Text style={styles.kakaoButtonText}>카카오로 시작하기</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.naverButton} onPress={() => 
+            router.navigate('/auth/naver-login')
+          } >
+            <Image source={require('../../assets/icons/naver.png')} style={styles.loginIcon} />
+            <Text style={styles.naverButtonText}>네이버로 시작하기</Text>
           </TouchableOpacity>
         </View>
       </View>
+    
+      {/* <KaKaoLoginModal
+        showWebView={showKakaoWebView}
+        setShowWebView={setShowKakaoWebView}
+        isKakaoLoginPage={isKakaoLoginPage}
+        setIsKakaoLoginPage={setIsKakaoLoginPage}
+        // KAKAO_AUTH_URL={KAKAO_AUTH_URL}
+        onLoginSuccess={handleKakaoLoginSuccess}
+      />
 
-      <Modal
-        visible={showWebView}
-        onRequestClose={() => !isKakaoLoginPage && setShowWebView(false)}
-        animationType="slide"
-      >
-        <SafeAreaView style={styles.webViewContainer}>
-          <WebView
-            ref={webViewRef}
-            source={{ uri: KAKAO_AUTH_URL }}
-            onNavigationStateChange={(navState) => {
-          
-              if (navState.url.startsWith(KAKAO_REDIRECT_URI ?? '')) {
-                const code = navState.url?.split('code=')[1]?.split('&')[0];
-                if (code) {
-                  console.log('code:', code);
-                  setShowWebView(false);
-                  // Navigate to the index tab
-                  // router.navigate('/(tabs)');
-                }
-              }
+      <NaverLoginModal
+        showWebView={showNaverWebView}
+        setShowWebView={setShowNaverWebView}
 
-              // if (navState.title === 'Login with Kakao Account') {
-              
-              //   setIsKakaoLoginPage(true);
-              // } else {
-              //   setIsKakaoLoginPage(false);
-              // }
-            }}
-          />
-          {!isKakaoLoginPage && (
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowWebView(false)}
-            >
-              <Text>Close</Text>
-            </TouchableOpacity>
-          )}
-          </SafeAreaView>
-        </Modal>
-      </SafeAreaView>
-    );
+        NAVER_AUTH_URL={NAVER_AUTH_URL}
+        onLoginSuccess={handleNaverLoginSuccess}
+      /> */}
+
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFCF3',
   },
   contentContainer: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'space-between',
   },
   topContent: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    
+    marginTop: '40%',
+    marginHorizontal: '10%',
+    marginBottom: '20%',
   },
   bottomContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    // marginHorizontal: 20,
+    marginHorizontal: '10%',
+    // paddingBottom: "3",
   },
   icon: {
     height: undefined,
     aspectRatio: 1,
+    width: '50%',
   },
   title: {
     fontSize: 24,
@@ -126,25 +135,38 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
     width: '100%',
+    aspectRatio: 327 / 50, // This maintains the 327:50 ratio
+    marginBottom: 20,
   },
   kakaoButtonText: {
     color: '#000000',
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 10,
+    
+    // marginBottom: 10,
   },
-  kakaoIcon: {
+  loginIcon: {
     marginRight: 5,
+    width: "5%",
+    aspectRatio: 1,
+    // aspectRatio: 12 / 12, // This maintains the 327:50 ratio
   },
-  webViewContainer: {
-    flex: 1,
+  naverButton: {
+    backgroundColor: '#03C75A',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: '100%',
+    aspectRatio: 327 / 50, // This maintains the 327:50 ratio
   },
-  closeButton: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 5,
+  naverButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10,
   },
 });
