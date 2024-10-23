@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image, useWindowDimensions} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import WebView from 'react-native-webview';
-import KaKaoLoginModal from './component/KaKaoLoginModal';
-import NaverLoginModal from './component/NaverLoginModal';
+import KaKaoLoginModal from '../component/KaKaoLoginModal';
+import NaverLoginModal from '../component/NaverLoginModal';
 import { router } from 'expo-router';
 const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_LOGIN_CLIENT_ID;
 const KAKAO_REDIRECT_URI = process.env.EXPO_PUBLIC_KAKAO_LOGIN_REDIRECT_URI;
@@ -40,7 +40,7 @@ export default function LoginScreen() {
       <View style={styles.contentContainer}>
         <View style={styles.topContent}>
           <Image 
-            source={require('../../assets/images/landing-logo.png')} 
+            source={require('../../../assets/images/landing-logo.png')} 
             style={styles.icon}
             resizeMode="contain"
           />
@@ -50,17 +50,17 @@ export default function LoginScreen() {
         
         <View style={styles.bottomContent}>
           <TouchableOpacity style={styles.kakaoButton} onPress={() => {
-            router.navigate('/auth/kakao-login')
+            router.navigate('/auth/login/kakao-login')
             // setShowKakaoWebView(true)
           }}>
-            <Image source={require('../../assets/icons/kakao.png')} style={styles.loginIcon} />
+            <Image source={require('../../../assets/icons/kakao.png')} style={styles.loginIcon} />
             {/* <Ionicons name="chatbubble" size={24} color="black" style={styles.kakaoIcon} /> */}
             <Text style={styles.kakaoButtonText}>카카오로 시작하기</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.naverButton} onPress={() => 
-            router.navigate('/auth/naver-login')
+            router.navigate('/auth/login/naver-login')
           } >
-            <Image source={require('../../assets/icons/naver.png')} style={styles.loginIcon} />
+            <Image source={require('../../../assets/icons/naver.png')} style={styles.loginIcon} />
             <Text style={styles.naverButtonText}>네이버로 시작하기</Text>
           </TouchableOpacity>
         </View>

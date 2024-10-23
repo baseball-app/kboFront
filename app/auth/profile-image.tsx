@@ -20,15 +20,19 @@ export default function ProfileImageScreen() {
 
   const handleNext = () => {
     if (selectedImage) {
-      router.replace('/(tabs)');
+      router.navigate('/(tabs)');
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Ionicons name="chevron-back" size={24} color="black" />
-      </TouchableOpacity>
+
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <Ionicons name="chevron-back" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>프로필 이미지를{'\n'}선택해주세요</Text>
         <Text style={styles.subtitle}>내가 응원하는 선수의 포지션에 맞는{'\n'}이미지를 선택해도 좋아요.</Text>
@@ -74,15 +78,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFCF3',
   },
+  header: {
+    paddingHorizontal: 16,
+  },
   backButton: {
-    position: 'absolute',
-    top: 50,
-    left: 20,
-    zIndex: 1,
+    marginBottom: 30,
   },
   content: {
-    padding: 20,
-    paddingTop: 80,
+    paddingHorizontal: 16,
+    flex: 1,
   },
   title: {
     fontSize: 24,

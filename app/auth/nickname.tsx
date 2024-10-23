@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function NicknameScreen() {
   const [nickname, setNickname] = useState('');
@@ -10,21 +11,25 @@ export default function NicknameScreen() {
     // Here you would typically send the nickname to your backend
     console.log('Submitted nickname:', nickname);
     // Navigate to the next screen or main app
-    router.replace('/auth/my-team');
+    router.push('/auth/my-team');
   };
 
   return (
     <SafeAreaView style={styles.container}>
+
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <Ionicons name="chevron-back" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
+        <Text style={styles.subtitle}>한글/영어/숫자/특수문자를{'\n'}사용할 수 있습니다.</Text>
+      </View>
+      
       <KeyboardAvoidingView 
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.content}
       >
         <View style={styles.inputSection}>
-          <View style={styles.header}>
-            <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
-            <Text style={styles.subtitle}>한글/영어/숫자/특수문자를{'\n'}사용할 수 있습니다.</Text>
-          </View>
-          
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -68,6 +73,10 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 20,
+    paddingHorizontal: 16,
+  },
+  backButton: {
+    marginBottom: 30,
   },
   title: {
     fontSize: 24,

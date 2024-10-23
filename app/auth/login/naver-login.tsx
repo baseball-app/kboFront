@@ -60,7 +60,7 @@ const NaverLoginScreen: React.FC<NaverLoginModalProps> = ({
                 // onLoginSuccess(code);
                 // setShowWebView(false);
                 cleanupWebView();
-                router.navigate('/auth/nickname');
+                router.navigate('/auth/term-of-service');
               }
 
               const auth_type = navState.url.split('auth_type=')[1]

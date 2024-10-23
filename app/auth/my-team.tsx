@@ -27,20 +27,20 @@ export default function MyTeamScreen() {
   const handleNext = () => {
     if (selectedTeam) {
       // Navigate to the next screen or main app
-      router.replace('/(tabs)');
+      router.push('/auth/profile-image');
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
-      </View>
-      <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>마이팀을{'\n'}선택해주세요</Text>
         <Text style={styles.subtitle}>마이팀은 나가 응원하고 싶은{'\n'}최애 야구 구단을 뜻해요.</Text>
+      </View>
+      <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.teamsGrid}>
           {teams.map((team) => (
             <TouchableOpacity
@@ -73,7 +73,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFCF3',
   },
   header: {
-    padding: 16,
+    paddingHorizontal: 16,
+  },
+  backButton: {
+    marginBottom: 30,
   },
   content: {
     padding: 20,

@@ -1,7 +1,7 @@
 import { InteractionManager, Modal } from "react-native";
 import WebView from "react-native-webview";
 import { SafeAreaView, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { router } from "expo-router";
+import { router, useNavigationContainerRef } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 
 interface KaKaoLoginModalProps {
@@ -29,6 +29,7 @@ const KaKaoLoginScreen  = ({
 
   const [closeBtnVisable, setCloseBtnVisable] = useState<boolean>(false);
   const webViewRef = useRef<WebView>(null);
+  // const navigationRef = useNavigationContainerRef();  
 
   // console.log("btnVisable", btnVisable)
 
@@ -89,7 +90,10 @@ const KaKaoLoginScreen  = ({
                 console.log("code:", code);
 
                  cleanupWebView()
-                router.navigate('/(tabs)');
+
+                // if (navigationRef.isReady()) {
+                  router.navigate('/auth/term-of-service');
+                // }
               }
 
             console.log('navState.title', navState);
