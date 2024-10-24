@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,20 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 
 const PrivacyPolicyScreen = () => {
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const scrollViewRef = useRef(null);
+
+  const handleScroll = (event: any) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    const paddingToBottom = 20; // Adjust this value as needed
+    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= 
+      contentSize.height - paddingToBottom;
+    
+    if (isCloseToBottom) {
+      setIsScrolledToBottom(true);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -18,8 +32,12 @@ const PrivacyPolicyScreen = () => {
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.content}>
-
+      <ScrollView 
+        ref={scrollViewRef}
+        style={styles.content}
+        onScroll={handleScroll}
+        scrollEventThrottle={400}
+      >
         <View>
           <Text style={styles.headerTitle}>개인정보 처리방침</Text>
           <Text style={styles.paragraph}>
@@ -116,7 +134,14 @@ const PrivacyPolicyScreen = () => {
           </Text>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.agreeButton}>
+      <TouchableOpacity 
+        style={[
+          styles.agreeButton, 
+          !isScrolledToBottom && styles.disabledButton
+        ]}
+        disabled={!isScrolledToBottom}
+        onPress={() => {/* Your onPress handler */}}
+      >
         <Text style={styles.agreeButtonText}>동의하기</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -181,6 +206,9 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     lineHeight: 20,
+  },
+  disabledButton: {
+    backgroundColor: '#CCCCCC', // or any color you prefer for disabled state
   },
 });
 
