@@ -14,8 +14,7 @@ import { useNavigationContainerRef } from "@react-navigation/native";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const navigationRef = useNavigationContainerRef();
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -31,26 +30,13 @@ export default function RootLayout() {
   }
 
   return (
-    
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack 
-        // screenListeners={{
-        //   state: (e) => {
-        //     // Log the entire navigation state
-        //     console.log('Navigation State:', JSON.stringify(e.data.state, null, 2));
-            
-        //     // Log the current route name
-        //     const currentRouteName = navigationRef.getCurrentRoute()?.name;
-        //     console.log('Current Route:', currentRouteName);
-        //   },
-        // }}
-        >
+    // <ThemeProvider value={DefaultTheme}>
+      <Stack>
         <Stack.Screen name="auth" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="index" />
       </Stack>
-    </ThemeProvider>
-  
+    // </ThemeProvider>
   );
 }

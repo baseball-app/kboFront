@@ -12,8 +12,8 @@ import {
   moderateScale,
   horizontalScale,
   verticalScale,
-  scaleFontSize,
   } from "../../utils/metrics";
+import { theme } from "@/constants/Colors";
 
 const ProfileScreen = () => {
   return (
@@ -30,8 +30,19 @@ const ProfileScreen = () => {
 
         <View style={styles.profileInfoBox}>
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>최강야구님</Text>
-            <Ionicons name="checkmark-circle" size={24} color="blue" />
+            <Text style={styles.profileName}>최강야구 님</Text>
+            <TouchableOpacity
+              onPress={() => {
+                // router.push("/profile/edit");
+              }}
+              style={styles.profileEditIconBox}
+            >
+              <Image 
+                source={require("../../assets/icons/edit.png")}
+                style={styles.profileEditIcon}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.winRateContainer}>
             <Text style={styles.winRateLabel}>승요력</Text>
@@ -42,24 +53,40 @@ const ProfileScreen = () => {
 
       <View style={styles.teamCard}>
         <View style={styles.teamInfo}>
-          <Text style={styles.teamLogo}>SL</Text>
+          <Image 
+            source={require("../../assets/team_logo/samsung.png")}
+            style={styles.teamLogo}
+          />
           <Text style={styles.teamName}>삼성 라이온즈</Text>
         </View>
-        <Ionicons name="settings-outline" size={24} color="black" />
+
+        <TouchableOpacity style={styles.teamSettingsIconBox}>
+          <Image 
+            source={require("../../assets/icons/gear.png")}
+            style={styles.teamSettingsIcon}
+          />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.statsContainer}>
         <View style={[styles.statItem, styles.statBox]}>
-          <Text style={styles.statValue}>15</Text>
           <Text style={styles.statLabel}>팔로워</Text>
-        </View>
-        <View style={[styles.statItem, styles.statBox]}>
           <Text style={styles.statValue}>15</Text>
-          <Text style={styles.statLabel}>팔로잉</Text>
         </View>
         <View style={[styles.statItem, styles.statBox]}>
-          <Ionicons name="card-outline" size={24} color="black" />
+          <Text style={styles.statLabel}>팔로잉</Text>
+          <Text style={styles.statValue}>15</Text>
+        </View>
+        <View style={[styles.statItem, styles.statBox]}>
           <Text style={styles.statLabel}>초대코드</Text>
+          <TouchableOpacity onPress={() => {
+            alert("초대코드 복사")
+          }}> 
+            <Image 
+              source={require("../../assets/icons/invitation.png")}
+              style={styles.inviteCodeIcon}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -81,13 +108,12 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: theme.colors.backgroundPrimary,
   },
   profileHeader: {
     flexDirection: "row",
     alignItems: "center",
     padding: 20,
-    // paddingVertical: 10,
   },
   profileImageBox: {
     backgroundColor: "#F3F2EE",
@@ -122,71 +148,106 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   profileName: {
-    fontSize: scaleFontSize(20),
+    fontSize: moderateScale(20),
     fontWeight: "bold",
+    marginRight: horizontalScale(4),
+  },
+  profileEditIconBox: {
+    backgroundColor: "#00184F",
+    borderRadius: moderateScale(50),
+    width: horizontalScale(18),
+    height: verticalScale(18),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  profileEditIcon: {
+
+    width: horizontalScale(8.18),
+    height: verticalScale(8.18),
   },
   winRateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   winRateLabel: {
-    fontSize: scaleFontSize(16),
+    fontSize: moderateScale(16),
     marginRight: verticalScale(3),
     color: "gray",
   },
   winRateValue: {
-    fontSize: scaleFontSize(16),
+    fontSize: moderateScale(16),
     color: "#2D68FF", // Blue color for the percentage
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
   teamCard: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "white",
+    borderWidth: moderateScale(1),
+    borderColor: theme.colors.borderColor,
     margin: 20,
     padding: 15,
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
+    width: verticalScale(327),
+    height: verticalScale(68),
   },
   teamInfo: {
     flexDirection: "row",
     alignItems: "center",
   },
   teamLogo: {
-    fontSize: 18,
-    fontWeight: "bold",
+    width: horizontalScale(32),
+    height: verticalScale(32),
     marginRight: 10,
   },
   teamName: {
-    fontSize: scaleFontSize(16),
+    fontWeight: "600",
+    fontSize: moderateScale(16),
+  },
+  teamSettingsIconBox: {
+    backgroundColor: "#00184F",
+    borderRadius: moderateScale(50),
+    width: horizontalScale(26),
+    height: verticalScale(26),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  teamSettingsIcon: {
+    width: horizontalScale(16),
+    height: verticalScale(16),
   },
   statsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#F5F5F5",
     margin: 20,
     gap: horizontalScale(12),
   },
   statItem: {
-    alignItems: "center",
     flex: 1,
   },
   statBox: {
     backgroundColor: "white",
     padding: moderateScale(15),
     borderRadius: moderateScale(10),
+    gap: verticalScale(10),
     width: "100%",
     borderWidth: 1,
-    borderColor: "#EAEAEA",
+    borderColor: theme.colors.borderColor,
   },
   statValue: {
-    fontSize: scaleFontSize(18),
+    fontSize: moderateScale(18),
     fontWeight: "bold",
     marginBottom: verticalScale(4),
   },
   statLabel: {
-    fontSize: scaleFontSize(14),
-    color: "gray",
+    fontSize: moderateScale(16),
+    fontWeight: "400",
+    color: "#171716",
+  },
+  inviteCodeIcon: {
+    width: horizontalScale(16),
+    height: verticalScale(16),
   },
   menuContainer: {
     flex: 1,
@@ -205,7 +266,8 @@ const styles = StyleSheet.create({
     marginVertical: 1,
   },
   menuText: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
+    fontWeight: "500",
   },
   tabBar: {
     flexDirection: "row",
