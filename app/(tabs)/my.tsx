@@ -14,6 +14,7 @@ import {
   verticalScale,
   } from "../../utils/metrics";
 import { theme } from "@/constants/Colors";
+import { router } from "expo-router";
 
 const ProfileScreen = () => {
   return (
@@ -71,7 +72,11 @@ const ProfileScreen = () => {
       <View style={styles.statsContainer}>
         <View style={[styles.statItem, styles.statBox]}>
           <Text style={styles.statLabel}>팔로워</Text>
-          <Text style={styles.statValue}>15</Text>
+          <TouchableOpacity onPress={() => {
+            router.push("/my/follower")
+          }}>
+            <Text style={styles.statValue}>15</Text>
+          </TouchableOpacity>
         </View>
         <View style={[styles.statItem, styles.statBox]}>
           <Text style={styles.statLabel}>팔로잉</Text>
@@ -117,9 +122,9 @@ const styles = StyleSheet.create({
   },
   profileImageBox: {
     backgroundColor: "#F3F2EE",
-    width: horizontalScale(80),
-    height: verticalScale(80),
-    borderRadius: moderateScale(50),
+    width: moderateScale(80),
+    height: moderateScale(80),
+    borderRadius: 50,
     marginRight: horizontalScale(18),
     justifyContent: "center",
     alignItems: "center",
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: horizontalScale(46.44),
-    height: verticalScale(50.57),
+    height: verticalScale(50.58),
     backgroundColor: "#F5F5F5", // Light background color
   },
   profileInfo: {
@@ -154,16 +159,16 @@ const styles = StyleSheet.create({
   },
   profileEditIconBox: {
     backgroundColor: "#00184F",
-    borderRadius: moderateScale(50),
-    width: horizontalScale(18),
-    height: verticalScale(18),
+    borderRadius: 50,
+    width: moderateScale(18),
+    height: moderateScale(18),
     justifyContent: "center",
     alignItems: "center",
   },
   profileEditIcon: {
 
-    width: horizontalScale(8.18),
-    height: verticalScale(8.18),
+    width: moderateScale(8.18),
+    height: moderateScale(8.18),
   },
   winRateContainer: {
     flexDirection: 'row',
@@ -186,10 +191,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: moderateScale(1),
     borderColor: theme.colors.borderColor,
-    margin: 20,
-    padding: 15,
+    margin: moderateScale(20),
+    padding: moderateScale(15),
     borderRadius: moderateScale(10),
-    width: verticalScale(327),
+    // width: verticalScale(327),
     height: verticalScale(68),
   },
   teamInfo: {
@@ -208,14 +213,14 @@ const styles = StyleSheet.create({
   teamSettingsIconBox: {
     backgroundColor: "#00184F",
     borderRadius: moderateScale(50),
-    width: horizontalScale(26),
-    height: verticalScale(26),
+    width: moderateScale(26),
+    height: moderateScale(26),
     justifyContent: "center",
     alignItems: "center",
   },
   teamSettingsIcon: {
-    width: horizontalScale(16),
-    height: verticalScale(16),
+    width: moderateScale(16),
+    height: moderateScale(16),
   },
   statsContainer: {
     flexDirection: "row",

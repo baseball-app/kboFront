@@ -28,6 +28,7 @@ export default function TabLayout() {
       <Tabs.Screen name="alarm" />
       {/* 마이 페이지 탭 화면 */}
       <Tabs.Screen name="my" />
+
     </Tabs>
   );
 }
