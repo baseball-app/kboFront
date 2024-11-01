@@ -6,21 +6,27 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Modal,
+  Clipboard,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Assuming you're using Expo
 import {
   moderateScale,
   horizontalScale,
   verticalScale,
-  } from "../../utils/metrics";
+} from "../../utils/metrics";
 import { theme } from "@/constants/Colors";
 import { router } from "expo-router";
+import PopUpModal from "@/components/PopUpModal";
 
 const ProfileScreen = () => {
+  const [isInviteModalVisible, setIsInviteModalVisible] = React.useState(false);
+  const [isWithdrawalModalVisible, setIsWithdrawalModalVisible] = React.useState(false);
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileHeader}>
-
         <View style={styles.profileImageBox}>
           <Image
             source={require("../../assets/profile_images/glove.png")}
@@ -38,7 +44,7 @@ const ProfileScreen = () => {
               }}
               style={styles.profileEditIconBox}
             >
-              <Image 
+              <Image
                 source={require("../../assets/icons/edit.png")}
                 style={styles.profileEditIcon}
                 resizeMode="contain"
@@ -54,7 +60,7 @@ const ProfileScreen = () => {
 
       <View style={styles.teamCard}>
         <View style={styles.teamInfo}>
-          <Image 
+          <Image
             source={require("../../assets/team_logo/samsung.png")}
             style={styles.teamLogo}
           />
@@ -62,7 +68,7 @@ const ProfileScreen = () => {
         </View>
 
         <TouchableOpacity style={styles.teamSettingsIconBox}>
-          <Image 
+          <Image
             source={require("../../assets/icons/gear.png")}
             style={styles.teamSettingsIcon}
           />
@@ -72,9 +78,11 @@ const ProfileScreen = () => {
       <View style={styles.statsContainer}>
         <View style={[styles.statItem, styles.statBox]}>
           <Text style={styles.statLabel}>팔로워</Text>
-          <TouchableOpacity onPress={() => {
-            router.push("/my/follower")
-          }}>
+          <TouchableOpacity
+            onPress={() => {
+              router.push("/my/follower");
+            }}
+          >
             <Text style={styles.statValue}>15</Text>
           </TouchableOpacity>
         </View>
@@ -84,10 +92,8 @@ const ProfileScreen = () => {
         </View>
         <View style={[styles.statItem, styles.statBox]}>
           <Text style={styles.statLabel}>초대코드</Text>
-          <TouchableOpacity onPress={() => {
-            alert("초대코드 복사")
-          }}> 
-            <Image 
+          <TouchableOpacity onPress={() => setIsInviteModalVisible(true)}>
+            <Image
               source={require("../../assets/icons/invitation.png")}
               style={styles.inviteCodeIcon}
             />
@@ -101,11 +107,18 @@ const ProfileScreen = () => {
           <Ionicons name="chevron-forward" size={24} color="gray" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => setIsWithdrawalModalVisible(true)}>
           <Text style={styles.menuText}>회원탈퇴</Text>
           <Ionicons name="chevron-forward" size={24} color="gray" />
         </TouchableOpacity>
       </View>
+
+      <PopUpModal 
+        isInviteModalVisible={isInviteModalVisible}
+        setIsInviteModalVisible={setIsInviteModalVisible}
+        isWithdrawalModalVisible={isWithdrawalModalVisible}
+        setIsWithdrawalModalVisible={setIsWithdrawalModalVisible}
+      />
     </SafeAreaView>
   );
 };
@@ -128,7 +141,7 @@ const styles = StyleSheet.create({
     marginRight: horizontalScale(18),
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: moderateScale(0.8), 
+    borderWidth: moderateScale(0.8),
     borderColor: "#D0CEC7",
   },
   profileImage: {
@@ -145,11 +158,11 @@ const styles = StyleSheet.create({
   profileInfoBox: {
     // paddingTop: verticalScale(6),
     // paddingBottom: verticalScale(7),
-    
+
     gap: verticalScale(10),
     // flex:1,
-    justifyContent: 'center',
-    
+    justifyContent: "center",
+
     flexDirection: "column",
   },
   profileName: {
@@ -166,13 +179,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   profileEditIcon: {
-
     width: moderateScale(8.18),
     height: moderateScale(8.18),
   },
   winRateContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   winRateLabel: {
     fontSize: moderateScale(16),
@@ -284,6 +296,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+ 
 });
 
 export default ProfileScreen;
