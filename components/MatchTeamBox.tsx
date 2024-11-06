@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
   },
   teamNameBox: {
     width: "100%",
+    marginTop: 4,
     flexDirection: "row",
     gap: 45,
     justifyContent: "center",
@@ -123,5 +124,10 @@ const styles = StyleSheet.create({
     lineHeight: 19.6,
     textAlign: "center",
     width: 35,
+  },
+  teamImg: {
+    width: 35,
+    height: 35,
+    resizeMode: "contain",
   },
 });

@@ -60,7 +60,7 @@ const Calendar = () => {
   };
   const dayClick = (pDay) => {
     setSelectedDate(pDay);
-    router.navigate("/write/write");
+    router.navigate("/write");
   };
 
   const renderDaysOfWeek = () => {
