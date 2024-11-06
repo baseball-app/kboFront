@@ -67,7 +67,12 @@ const ProfileScreen = () => {
           <Text style={styles.teamName}>삼성 라이온즈</Text>
         </View>
 
-        <TouchableOpacity style={styles.teamSettingsIconBox}>
+        <TouchableOpacity 
+          style={styles.teamSettingsIconBox}
+          onPress={() => {
+            router.push("/my/change");
+          }}
+        >
           <Image
             source={require("../../assets/icons/gear.png")}
             style={styles.teamSettingsIcon}
@@ -80,7 +85,7 @@ const ProfileScreen = () => {
           <Text style={styles.statLabel}>팔로워</Text>
           <TouchableOpacity
             onPress={() => {
-              router.push("/my/follower");
+              router.push("/my/followers");
             }}
           >
             <Text style={styles.statValue}>15</Text>
@@ -88,7 +93,13 @@ const ProfileScreen = () => {
         </View>
         <View style={[styles.statItem, styles.statBox]}>
           <Text style={styles.statLabel}>팔로잉</Text>
-          <Text style={styles.statValue}>15</Text>
+          <TouchableOpacity
+            onPress={() => {
+              router.push("/my/following");
+            }}
+          >
+            <Text style={styles.statValue}>15</Text>
+          </TouchableOpacity>
         </View>
         <View style={[styles.statItem, styles.statBox]}>
           <Text style={styles.statLabel}>초대코드</Text>
