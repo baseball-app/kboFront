@@ -1,125 +1,313 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { StyleSheet, Image, Platform } from "react-native";
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  Modal,
+  Clipboard,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons"; // Assuming you're using Expo
+import {
+  moderateScale,
+  horizontalScale,
+  verticalScale,
+} from "../../utils/metrics";
+import { theme } from "@/constants/Colors";
+import { router } from "expo-router";
+import PopUpModal from "@/components/PopUpModal";
 
-import { Collapsible } from "@/components/Collapsible";
-import { ExternalLink } from "@/components/ExternalLink";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+const ProfileScreen = () => {
+  const [isInviteModalVisible, setIsInviteModalVisible] = React.useState(false);
+  const [isWithdrawalModalVisible, setIsWithdrawalModalVisible] = React.useState(false);
 
-const MyPageScreen = () => {
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
-      headerImage={
-        <Ionicons size={310} name="code-slash" style={styles.headerImage} />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">마이페이지</ThemedText>
-      </ThemedView>
-      <ThemedText>
-        This app includes example code to help you get started.
-      </ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{" "}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText>{" "}
-          and{" "}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in{" "}
-          <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{" "}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the
-          web version, press <ThemedText type="defaultSemiBold">w</ThemedText>{" "}
-          in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the{" "}
-          <ThemedText type="defaultSemiBold">@2x</ThemedText> and{" "}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to
-          provide files for different screen densities
-        </ThemedText>
-        <Image
-          source={require("@/assets/images/react-logo.png")}
-          style={{ alignSelf: "center" }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText>{" "}
-          to see how to load{" "}
-          <ThemedText style={{ fontFamily: "SpaceMono" }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{" "}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook
-          lets you inspect what the user's current color scheme is, and so you
-          can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{" "}
-          <ThemedText type="defaultSemiBold">
-            components/HelloWave.tsx
-          </ThemedText>{" "}
-          component uses the powerful{" "}
-          <ThemedText type="defaultSemiBold">
-            react-native-reanimated
-          </ThemedText>{" "}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The{" "}
-              <ThemedText type="defaultSemiBold">
-                components/ParallaxScrollView.tsx
-              </ThemedText>{" "}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.profileHeader}>
+        <View style={styles.profileImageBox}>
+          <Image
+            source={require("../../assets/profile_images/glove.png")}
+            style={styles.profileImage}
+            resizeMode="contain"
+          />
+        </View>
+
+        <View style={styles.profileInfoBox}>
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileName}>최강야구 님</Text>
+            <TouchableOpacity
+              onPress={() => {
+                // router.push("/profile/edit");
+              }}
+              style={styles.profileEditIconBox}
+            >
+              <Image
+                source={require("../../assets/icons/edit.png")}
+                style={styles.profileEditIcon}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.winRateContainer}>
+            <Text style={styles.winRateLabel}>승요력</Text>
+            <Text style={styles.winRateValue}>76%</Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.teamCard}>
+        <View style={styles.teamInfo}>
+          <Image
+            source={require("../../assets/team_logo/samsung.png")}
+            style={styles.teamLogo}
+          />
+          <Text style={styles.teamName}>삼성 라이온즈</Text>
+        </View>
+
+        <TouchableOpacity 
+          style={styles.teamSettingsIconBox}
+          onPress={() => {
+            router.push("/my/change");
+          }}
+        >
+          <Image
+            source={require("../../assets/icons/gear.png")}
+            style={styles.teamSettingsIcon}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.statsContainer}>
+        <View style={[styles.statItem, styles.statBox]}>
+          <Text style={styles.statLabel}>팔로워</Text>
+          <TouchableOpacity
+            onPress={() => {
+              router.push("/my/followers");
+            }}
+          >
+            <Text style={styles.statValue}>15</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.statItem, styles.statBox]}>
+          <Text style={styles.statLabel}>팔로잉</Text>
+          <TouchableOpacity
+            onPress={() => {
+              router.push("/my/following");
+            }}
+          >
+            <Text style={styles.statValue}>15</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.statItem, styles.statBox]}>
+          <Text style={styles.statLabel}>초대코드</Text>
+          <TouchableOpacity onPress={() => setIsInviteModalVisible(true)}>
+            <Image
+              source={require("../../assets/icons/invitation.png")}
+              style={styles.inviteCodeIcon}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.menuContainer}>
+        <TouchableOpacity style={styles.menuItem}>
+          <Text style={styles.menuText}>로그아웃</Text>
+          <Ionicons name="chevron-forward" size={24} color="gray" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuItem} onPress={() => setIsWithdrawalModalVisible(true)}>
+          <Text style={styles.menuText}>회원탈퇴</Text>
+          <Ionicons name="chevron-forward" size={24} color="gray" />
+        </TouchableOpacity>
+      </View>
+
+      <PopUpModal 
+        isInviteModalVisible={isInviteModalVisible}
+        setIsInviteModalVisible={setIsInviteModalVisible}
+        isWithdrawalModalVisible={isWithdrawalModalVisible}
+        setIsWithdrawalModalVisible={setIsWithdrawalModalVisible}
+      />
+    </SafeAreaView>
   );
 };
-export default MyPageScreen;
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.backgroundPrimary,
   },
-  titleContainer: {
+  profileHeader: {
     flexDirection: "row",
-    gap: 8,
+    alignItems: "center",
+    padding: 20,
   },
+  profileImageBox: {
+    backgroundColor: "#F3F2EE",
+    width: moderateScale(80),
+    height: moderateScale(80),
+    borderRadius: 50,
+    marginRight: horizontalScale(18),
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: moderateScale(0.8),
+    borderColor: "#D0CEC7",
+  },
+  profileImage: {
+    width: horizontalScale(46.44),
+    height: verticalScale(50.58),
+    backgroundColor: "#F5F5F5", // Light background color
+  },
+  profileInfo: {
+    // flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  profileInfoBox: {
+    // paddingTop: verticalScale(6),
+    // paddingBottom: verticalScale(7),
+
+    gap: verticalScale(10),
+    // flex:1,
+    justifyContent: "center",
+
+    flexDirection: "column",
+  },
+  profileName: {
+    fontSize: moderateScale(20),
+    fontWeight: "bold",
+    marginRight: horizontalScale(4),
+  },
+  profileEditIconBox: {
+    backgroundColor: "#00184F",
+    borderRadius: 50,
+    width: moderateScale(18),
+    height: moderateScale(18),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  profileEditIcon: {
+    width: moderateScale(8.18),
+    height: moderateScale(8.18),
+  },
+  winRateContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  winRateLabel: {
+    fontSize: moderateScale(16),
+    marginRight: verticalScale(3),
+    color: "gray",
+  },
+  winRateValue: {
+    fontSize: moderateScale(16),
+    color: "#2D68FF", // Blue color for the percentage
+    // fontWeight: "bold",
+  },
+  teamCard: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderWidth: moderateScale(1),
+    borderColor: theme.colors.borderColor,
+    margin: moderateScale(20),
+    padding: moderateScale(15),
+    borderRadius: moderateScale(10),
+    // width: verticalScale(327),
+    height: verticalScale(68),
+  },
+  teamInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  teamLogo: {
+    width: horizontalScale(32),
+    height: verticalScale(32),
+    marginRight: 10,
+  },
+  teamName: {
+    fontWeight: "600",
+    fontSize: moderateScale(16),
+  },
+  teamSettingsIconBox: {
+    backgroundColor: "#00184F",
+    borderRadius: moderateScale(50),
+    width: moderateScale(26),
+    height: moderateScale(26),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  teamSettingsIcon: {
+    width: moderateScale(16),
+    height: moderateScale(16),
+  },
+  statsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 20,
+    gap: horizontalScale(12),
+  },
+  statItem: {
+    flex: 1,
+  },
+  statBox: {
+    backgroundColor: "white",
+    padding: moderateScale(15),
+    borderRadius: moderateScale(10),
+    gap: verticalScale(10),
+    width: "100%",
+    borderWidth: 1,
+    borderColor: theme.colors.borderColor,
+  },
+  statValue: {
+    fontSize: moderateScale(18),
+    fontWeight: "bold",
+    marginBottom: verticalScale(4),
+  },
+  statLabel: {
+    fontSize: moderateScale(16),
+    fontWeight: "400",
+    color: "#171716",
+  },
+  inviteCodeIcon: {
+    width: horizontalScale(16),
+    height: verticalScale(16),
+  },
+  menuContainer: {
+    flex: 1,
+    flexDirection: "column",
+    // justifyContent: 'space-between',
+    backgroundColor: "white",
+    padding: 15,
+    marginVertical: 1,
+  },
+  menuItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "white",
+    padding: 15,
+    marginVertical: 1,
+  },
+  menuText: {
+    fontSize: moderateScale(16),
+    fontWeight: "500",
+  },
+  tabBar: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
+    backgroundColor: "white",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+ 
 });
+
+export default ProfileScreen;
