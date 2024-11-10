@@ -5,11 +5,11 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import Calendar from "@/components/Calendar";
+import Calendar from "@/components/home/Calendar";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import FriendList from "@/components/FrendList";
-import GameInfoCard from "@/components/GameInfoCard";
+import FriendList from "@/components/home/FrendList";
+import GameInfoCard from "@/components/home/GameInfoCard";
 
 const CalendarScreen = () => {
   return (
@@ -39,7 +39,7 @@ const CalendarScreen = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <GameInfoCard matchSchedule="7월 16일(목) 15:00 ・ 수원" />
+        <GameInfoCard />
         <Calendar />
         <View style={styles.writeButtonBox}>
           <TouchableOpacity style={styles.writeScheduleButton}>
@@ -79,13 +79,13 @@ const styles = StyleSheet.create({
   todayText: {
     fontSize: 16,
     color: "black",
-    fontWeight: "bold",
+    fontWeight: "600",
     lineHeight: 22.4,
   },
   dayText: {
     fontSize: 12,
     color: "#95938B",
-    fontWeight: 600,
+    fontWeight: "600",
     textAlignVertical: "center",
   },
   arrowImgBox: {

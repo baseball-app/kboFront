@@ -2,42 +2,49 @@ import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 
 interface IGameInfoCard {
-  matchSchedule: string;
+  matchSchedule?: string;
 }
 
 const GameInfoCard = (props: IGameInfoCard) => {
   const { matchSchedule } = props;
   return (
     <View style={styles.container}>
-      <View style={styles.gameInfoBox}>
-        <Text>{matchSchedule}</Text>
-        <View style={styles.matchTeamBox}>
-          <View style={styles.matchTeamInfo}>
-            <Image
-              source={require("@/assets/team_logo/ssg.png")}
-              resizeMode="contain"
-            />
-            <View style={styles.ellipseBox}>
+      {matchSchedule ? (
+        <View style={styles.gameInfoBox}>
+          <Text>{matchSchedule}</Text>
+          <View style={styles.matchTeamBox}>
+            <View style={styles.matchTeamInfo}>
               <Image
-                source={require("@/assets/icons/ellipse.png")}
+                source={require("@/assets/team_logo/SSG.png")}
                 resizeMode="contain"
               />
+              <View style={styles.ellipseBox}>
+                <Image
+                  source={require("@/assets/icons/ellipse.png")}
+                  resizeMode="contain"
+                />
+                <Image
+                  source={require("@/assets/icons/ellipse.png")}
+                  resizeMode="contain"
+                />
+              </View>
               <Image
-                source={require("@/assets/icons/ellipse.png")}
+                source={require("@/assets/team_logo/KT.png")}
                 resizeMode="contain"
               />
             </View>
-            <Image
-              source={require("@/assets/team_logo/kt.png")}
-              resizeMode="contain"
-            />
-          </View>
-          <View style={styles.teamNameBox}>
-            <Text style={styles.teamText}>SSG</Text>
-            <Text style={styles.teamText}>KT</Text>
+            <View style={styles.teamNameBox}>
+              <Text style={styles.teamText}>SSG</Text>
+              <Text style={styles.teamText}>KT</Text>
+            </View>
           </View>
         </View>
-      </View>
+      ) : (
+        <View style={styles.noGameInfoBox}>
+          <Text style={styles.noGameText}>경기 일정이 없어요.</Text>
+        </View>
+      )}
+
       <TouchableOpacity style={styles.seeMoreButton}>
         <View style={styles.imgBox}>
           <Image
@@ -74,6 +81,22 @@ const styles = StyleSheet.create({
     padding: 12,
     flexDirection: "column",
     alignItems: "center",
+  },
+  noGameInfoBox: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    width: "100%",
+    height: 113,
+    padding: 12,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  noGameText: {
+    fontWeight: "400",
+    fontSize: 16,
+    lineHeight: 22.4,
+    color: "#000",
   },
   matchTeamBox: {
     flexDirection: "column",
@@ -121,7 +144,7 @@ const styles = StyleSheet.create({
   },
   teamText: {
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: "500",
     lineHeight: 19.6,
     textAlign: "center",
     width: 35,

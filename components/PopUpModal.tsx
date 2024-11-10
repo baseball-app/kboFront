@@ -17,7 +17,6 @@ const PopUpModal = ({
   isWithdrawalModalVisible,
   setIsWithdrawalModalVisible,
 }: PopUpModalProps) => {
-
   const handleInviteModalClose = () => {
     setIsInviteModalVisible(false);
   };
@@ -47,12 +46,12 @@ const PopUpModal = ({
             </View>
 
             {/* <View style={styles.buttonInviteContainer}> */}
-              <TouchableOpacity
-                style={[styles.inviteButton]}
-                onPress={handleInviteModalClose}
-              >
-                <Text style={styles.modalButtonText}>확인</Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.inviteButton]}
+              onPress={handleInviteModalClose}
+            >
+              <Text style={styles.modalButtonText}>확인</Text>
+            </TouchableOpacity>
             {/* </View> */}
           </View>
         </View>
@@ -86,7 +85,7 @@ const PopUpModal = ({
               >
                 <Text style={[styles.cancelButtonText]}>취소</Text>
               </TouchableOpacity>
-              
+
               <TouchableOpacity
                 style={[styles.withdrawButton]}
                 onPress={handleWithdrawalModalClose}
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(12),
     borderRadius: 8,
     backgroundColor: "#1E5EF4",
-  },    
+  },
   modalHeaderContainer: {
     marginBottom: verticalScale(24),
   },
@@ -170,25 +169,25 @@ const styles = StyleSheet.create({
   },
 
   buttonWithdrawalContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: horizontalScale(8),
-    width: '100%',
+    width: "100%",
   },
   cancelButton: {
-    backgroundColor: '#EEEEEE',
+    backgroundColor: "#EEEEEE",
     flex: 1,
     paddingVertical: verticalScale(12),
     borderRadius: 8,
   },
   withdrawButton: {
-    backgroundColor: '#1E5EF4',
+    backgroundColor: "#1E5EF4",
     flex: 1,
     paddingVertical: verticalScale(12),
     borderRadius: 8,
   },
   cancelButtonText: {
-    color: '#000000',
-      fontSize: moderateScale(16),
+    color: "#000000",
+    fontSize: moderateScale(16),
     fontWeight: "600",
     textAlign: "center",
   },

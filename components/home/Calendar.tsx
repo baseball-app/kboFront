@@ -20,6 +20,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
 import { ko } from "date-fns/locale";
+import { useRouter } from "expo-router";
 
 const moodColors = {
   happy: "green",
@@ -41,7 +42,7 @@ const Calendar = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth());
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
-
+  const router = useRouter();
   const renderHeader = () => {
     return (
       <View style={styles.header}>
@@ -56,6 +57,10 @@ const Calendar = () => {
         </TouchableOpacity>
       </View>
     );
+  };
+  const dayClick = (pDay) => {
+    setSelectedDate(pDay);
+    router.navigate("/write");
   };
 
   const renderDaysOfWeek = () => {
@@ -94,7 +99,7 @@ const Calendar = () => {
                 !isSameMonth(day, currentDate) && styles.inactiveDay,
                 isSameDay(day, selectedDate) && styles.selectedDay,
               ]}
-              onPress={() => setSelectedDate(day)}
+              onPress={() => dayClick(day)}
             >
               <Text style={styles.dayText}>{format(day, "d")}</Text>
               {day.getDate() === 10 && <View style={styles.dot} />}
@@ -206,7 +211,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "600",
     marginRight: 8, // Add some space between the text and the icon
   },
   navButton: {
@@ -221,7 +226,7 @@ const styles = StyleSheet.create({
   dayOfWeekText: {
     width: "14.28%",
     textAlign: "center",
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   daysContainer: {
     flexDirection: "row",
@@ -296,7 +301,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 16,
-    fontWeight: 700,
+    fontWeight: "700",
     marginBottom: 28,
   },
   buttonBox: {
@@ -317,7 +322,7 @@ const styles = StyleSheet.create({
   },
   confirmText: {
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: "600",
     lineHeight: 22.4,
     color: "#fff",
   },
@@ -332,7 +337,7 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: "600",
     lineHeight: 22.4,
     color: "#000",
   },

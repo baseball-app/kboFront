@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 12,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#171716",
   },
 });
