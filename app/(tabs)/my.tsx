@@ -21,8 +21,8 @@ import PopUpModal from "@/components/PopUpModal";
 
 const ProfileScreen = () => {
   const [isInviteModalVisible, setIsInviteModalVisible] = React.useState(false);
-  const [isWithdrawalModalVisible, setIsWithdrawalModalVisible] = React.useState(false);
-
+  const [isWithdrawalModalVisible, setIsWithdrawalModalVisible] =
+    React.useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -61,13 +61,14 @@ const ProfileScreen = () => {
       <View style={styles.teamCard}>
         <View style={styles.teamInfo}>
           <Image
-            source={require("../../assets/team_logo/samsung.png")}
+            source={require("../../assets/team_logo/SAMSUNG.png")}
             style={styles.teamLogo}
+            resizeMode="contain"
           />
           <Text style={styles.teamName}>삼성 라이온즈</Text>
         </View>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.teamSettingsIconBox}
           onPress={() => {
             router.push("/my/change");
@@ -118,13 +119,16 @@ const ProfileScreen = () => {
           <Ionicons name="chevron-forward" size={24} color="gray" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem} onPress={() => setIsWithdrawalModalVisible(true)}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setIsWithdrawalModalVisible(true)}
+        >
           <Text style={styles.menuText}>회원탈퇴</Text>
           <Ionicons name="chevron-forward" size={24} color="gray" />
         </TouchableOpacity>
       </View>
 
-      <PopUpModal 
+      <PopUpModal
         isInviteModalVisible={isInviteModalVisible}
         setIsInviteModalVisible={setIsInviteModalVisible}
         isWithdrawalModalVisible={isWithdrawalModalVisible}
@@ -307,7 +311,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
- 
 });
 
 export default ProfileScreen;

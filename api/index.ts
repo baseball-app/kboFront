@@ -18,6 +18,7 @@ axiosInstance.interceptors.request.use(
   ): Promise<InternalAxiosRequestConfig> => {
     try {
       /** 토큰 처리 로직 */
+
       return req;
     } catch (error) {
       return Promise.reject(error);
@@ -119,7 +120,6 @@ const ApiClient = {
    * @template T - 응답 데이터의 타입입니다.
    * @param {string} url - 요청을 보낼 엔드포인트 URL입니다.
    * @returns {Promise<T>} - 응답 데이터의 Promise 객체로, 타입 T를 반환합니다.
-   
    */
   delete: async <T>(url: string): Promise<T> => {
     try {

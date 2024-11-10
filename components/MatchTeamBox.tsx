@@ -33,7 +33,11 @@ const MatchTeamBox = (props: IMatchTeamBox) => {
       </View>
       <View style={styles.matchTeamBox}>
         <View style={styles.matchTeamInfo}>
-          <Image source={awayTeamImg} resizeMode="contain" />
+          <Image
+            source={awayTeamImg}
+            resizeMode="contain"
+            style={{ width: 35, height: 35 }}
+          />
           <View style={styles.ellipseBox}>
             <Image
               source={require("@/assets/icons/ellipse.png")}
@@ -44,7 +48,11 @@ const MatchTeamBox = (props: IMatchTeamBox) => {
               resizeMode="contain"
             />
           </View>
-          <Image source={homeTeamImg} resizeMode="contain" />
+          <Image
+            source={homeTeamImg}
+            resizeMode="contain"
+            style={{ width: 35, height: 35 }}
+          />
         </View>
         <View style={styles.teamNameBox}>
           <Text style={styles.teamText}>{homeTeamNm}</Text>

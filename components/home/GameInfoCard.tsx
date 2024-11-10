@@ -15,7 +15,7 @@ const GameInfoCard = (props: IGameInfoCard) => {
           <View style={styles.matchTeamBox}>
             <View style={styles.matchTeamInfo}>
               <Image
-                source={require("@/assets/team_logo/ssg.png")}
+                source={require("@/assets/team_logo/SSG.png")}
                 resizeMode="contain"
               />
               <View style={styles.ellipseBox}>
@@ -29,7 +29,7 @@ const GameInfoCard = (props: IGameInfoCard) => {
                 />
               </View>
               <Image
-                source={require("@/assets/team_logo/kt.png")}
+                source={require("@/assets/team_logo/KT.png")}
                 resizeMode="contain"
               />
             </View>

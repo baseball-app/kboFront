@@ -57,22 +57,22 @@ const weatherResult = [
 const matchTeam = [
   {
     time: "14:00",
-    homeTeamImg: require("@/assets/team_logo/ssg.png"),
-    awayTeamImg: require("@/assets/team_logo/kt.png"),
+    homeTeamImg: require("@/assets/team_logo/SSG.png"),
+    awayTeamImg: require("@/assets/team_logo/KT.png"),
     homeTeamNm: "SSG",
     awayTeamNm: "KT",
   },
   {
     time: "15:00",
-    homeTeamImg: require("@/assets/team_logo/ssg.png"),
-    awayTeamImg: require("@/assets/team_logo/kt.png"),
+    homeTeamImg: require("@/assets/team_logo/SSG.png"),
+    awayTeamImg: require("@/assets/team_logo/KT.png"),
     homeTeamNm: "SSG",
     awayTeamNm: "KT",
   },
   {
     time: "16:00",
-    homeTeamImg: require("@/assets/team_logo/ssg.png"),
-    awayTeamImg: require("@/assets/team_logo/kt.png"),
+    homeTeamImg: require("@/assets/team_logo/SSG.png"),
+    awayTeamImg: require("@/assets/team_logo/KT.png"),
     homeTeamNm: "SSG",
     awayTeamNm: "KT",
   },
