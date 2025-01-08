@@ -1,7 +1,7 @@
 import GameInfoCard from "@/components/home/GameInfoCard";
 import QuestionBox from "@/components/home/QuestionBox";
 import MatchTeamBox from "@/components/MatchTeamBox";
-import { useStore } from "@/store/useStore";
+import { useDailyWriteStore } from "@/slice/dailyWriteSlice";
 import { useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -89,7 +89,7 @@ const DailyLogWriteScreen = () => {
     selectedPlace,
     setSelectedPlace,
     clearState,
-  } = useStore();
+  } = useDailyWriteStore();
 
   console.log("selectedMatch", selectedMatch);
   const router = useRouter();

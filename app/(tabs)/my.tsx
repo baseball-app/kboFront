@@ -114,7 +114,7 @@ const ProfileScreen = () => {
       </View>
 
       <View style={styles.menuContainer}>
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate('/auth')}>
           <Text style={styles.menuText}>로그아웃</Text>
           <Ionicons name="chevron-forward" size={24} color="gray" />
         </TouchableOpacity>

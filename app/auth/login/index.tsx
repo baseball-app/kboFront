@@ -13,6 +13,9 @@ import WebView from "react-native-webview";
 import KaKaoLoginModal from "../component/KaKaoLoginModal";
 import NaverLoginModal from "../component/NaverLoginModal";
 import { router } from "expo-router";
+import CommonModal from "@/components/common/CommonModal";
+import { useCommonSlice } from "@/slice/commonSlice";
+import CommonButton from "@/components/common/CommonButton";
 const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_LOGIN_CLIENT_ID;
 const KAKAO_REDIRECT_URI = process.env.EXPO_PUBLIC_KAKAO_LOGIN_REDIRECT_URI;
 const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
@@ -26,12 +29,10 @@ const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=c
   .slice(2, 11)}`;
 
 export default function LoginScreen() {
-  console.log("checking loginscreen");
-
   const [showKakaoWebView, setShowKakaoWebView] = useState(false);
   const [showNaverWebView, setShowNaverWebView] = useState(false);
   const [isKakaoLoginPage, setIsKakaoLoginPage] = useState(false);
-
+  const { modal } = useCommonSlice();
   const handleKakaoLoginSuccess = (code: string) => {
     // Handle Kakao login success
     console.log("Kakao login successful, code:", code);
@@ -45,50 +46,115 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.topContent}>
-          <Image
-            source={require("../../../assets/images/landing-logo.png")}
-            style={styles.icon}
-            resizeMode="contain"
-          />
-          <Text style={styles.title}>오늘의 야구</Text>
-          <Text style={styles.subtitle}>
-            반가워요! 오늘의 야구와 함께{"\n"}내가 응원하는 구단을 기록해보세요
-          </Text>
+    <>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.contentContainer}>
+          <View style={styles.topContent}>
+            <Image
+              source={require("../../../assets/images/landing-logo.png")}
+              style={styles.icon}
+              resizeMode="contain"
+            />
+            <Text style={styles.title}>오늘의 야구</Text>
+            <Text style={styles.subtitle}>
+              반가워요! 오늘의 야구와 함께{"\n"}내가 응원하는 구단을
+              기록해보세요
+            </Text>
+          </View>
+
+          <View style={styles.bottomContent}>
+            <CommonButton
+              title={"안녕"}
+              onPress={() => {
+                modal.open({
+                  header: "안내",
+                  content:
+                      "마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n 변경하시겠습니까?",
+                  button: [
+                    {
+                      text: "취소",
+                      onPress: modal.hide,
+                      buttonStyle: {
+                        backgroundColor: "#D0CEC7",
+                      },
+                      buttonTextStyle: {
+                        color: "#171716",
+                      },
+                    },
+                    {
+                      text: "확인",
+                      onPress: modal.hide,
+                      buttonStyle: {
+                        backgroundColor: "#1E5EF4",
+                      },
+                      buttonTextStyle: {
+                        color: "#fff",
+                      },
+                    },
+                  ],
+                });
+                // router.navigate('/auth/login/kakao-login')
+                // setShowKakaoWebView(true)
+              }}
+              buttonStyleProps={{
+                width: 30,
+              }}
+            />
+            <TouchableOpacity
+              style={styles.kakaoButton}
+              onPress={() => {
+                modal.open({
+                  header: "안내",
+                  content:
+                    "마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n 변경하시겠습니까?",
+                  button: [
+                    {
+                      text: "취소",
+                      onPress: modal.hide,
+                      buttonStyle: {
+                        backgroundColor: "#D0CEC7",
+                      },
+                      buttonTextStyle: {
+                        color: "#171716",
+                      },
+                    },
+                    {
+                      text: "확인",
+                      onPress: modal.hide,
+                      buttonStyle: {
+                        backgroundColor: "#1E5EF4",
+                      },
+                      buttonTextStyle: {
+                        color: "#fff",
+                      },
+                    },
+                  ],
+                });
+                router.navigate('/ticket')
+
+              }}
+            >
+              <Image
+                source={require("../../../assets/icons/kakao.png")}
+                style={styles.loginIcon}
+              />
+              {/* <Ionicons name="chatbubble" size={24} color="black" style={styles.kakaoIcon} /> */}
+              <Text style={styles.kakaoButtonText}>카카오로 시작하기</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.naverButton}
+              onPress={() => router.navigate("/auth/login/naver-login")}
+            >
+              <Image
+                source={require("../../../assets/icons/naver.png")}
+                style={styles.loginIcon}
+              />
+              <Text style={styles.naverButtonText}>네이버로 시작하기</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <View style={styles.bottomContent}>
-          <TouchableOpacity
-            style={styles.kakaoButton}
-            onPress={() => {
-              // router.navigate('/auth/login/kakao-login')
-              router.navigate("/match");
-              // setShowKakaoWebView(true)
-            }}
-          >
-            <Image
-              source={require("../../../assets/icons/kakao.png")}
-              style={styles.loginIcon}
-            />
-            {/* <Ionicons name="chatbubble" size={24} color="black" style={styles.kakaoIcon} /> */}
-            <Text style={styles.kakaoButtonText}>카카오로 시작하기</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.naverButton}
-            onPress={() => router.navigate("/auth/login/naver-login")}
-          >
-            <Image
-              source={require("../../../assets/icons/naver.png")}
-              style={styles.loginIcon}
-            />
-            <Text style={styles.naverButtonText}>네이버로 시작하기</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* <KaKaoLoginModal
+        {/* <KaKaoLoginModal
         showWebView={showKakaoWebView}
         setShowWebView={setShowKakaoWebView}
         isKakaoLoginPage={isKakaoLoginPage}
@@ -104,7 +170,9 @@ export default function LoginScreen() {
         NAVER_AUTH_URL={NAVER_AUTH_URL}
         onLoginSuccess={handleNaverLoginSuccess}
       /> */}
-    </SafeAreaView>
+      </SafeAreaView>
+      <CommonModal />
+    </>
   );
 }
 

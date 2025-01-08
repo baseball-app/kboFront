@@ -1,4 +1,4 @@
-import { StateCreator } from "zustand";
+import { create, StateCreator } from "zustand";
 
 export interface ITestSlice {
   count: number;
@@ -11,3 +11,5 @@ export const testSlice: StateCreator<ITestSlice> = (set) => ({
   increase: () => set((state) => ({ count: state.count + 1 })),
   decrease: () => set((state) => ({ count: state.count - 1 })),
 });
+
+export const useTestStore = create<ITestSlice>(testSlice);

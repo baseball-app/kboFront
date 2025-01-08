@@ -1,4 +1,4 @@
-import { StateCreator } from "zustand";
+import { create, StateCreator } from "zustand";
 
 export interface IDailyLogWrite {
   selectedMatch: any;
@@ -29,3 +29,5 @@ export const dailyWriteSlice: StateCreator<IDailyLogWrite> = (set) => ({
       selectedPlace: "",
     }),
 });
+
+export const useDailyWriteStore = create<IDailyLogWrite>(dailyWriteSlice);
