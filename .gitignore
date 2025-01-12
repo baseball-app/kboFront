@@ -34,9 +34,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # Android
-/android/
 /android/app/build/
 /android/.gradle
+android/.idea
 /android/captures/
 /android/local.properties
 /android/**/GeneratedPluginRegistrant.java
@@ -45,15 +45,16 @@ yarn-error.log*
 *.hprof
 
 # iOS
-/ios/
 /ios/Pods/
 /ios/build/
+/ios/Podfile.lock
 /ios/*.xcworkspace
 /ios/*.xcodeproj/*
 !ios/*.xcodeproj/project.pbxproj
 !ios/*.xcodeproj/xcshareddata/
 !ios/*.xcworkspace/contents.xcworkspacedata
 /ios/.xcode.env.local
+xcuserdata/
 
 # CocoaPods
 /ios/Pods/
