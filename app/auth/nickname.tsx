@@ -1,31 +1,44 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { useRouter } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function NicknameScreen() {
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState("");
   const router = useRouter();
 
   const handleSubmit = () => {
     // Here you would typically send the nickname to your backend
-    console.log('Submitted nickname:', nickname);
+    console.log("Submitted nickname:", nickname);
     // Navigate to the next screen or main app
-    router.push('/auth/my-team');
+    router.push("/auth/my-team");
   };
 
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
-        <Text style={styles.subtitle}>한글/영어/숫자/특수문자를{'\n'}사용할 수 있습니다.</Text>
+        <Text style={styles.title}>닉네임을{"\n"}입력해주세요</Text>
+        <Text style={styles.subtitle}>
+          한글/영어/숫자/밑줄/띄어쓰기를{"\n"} 사용할 수 있습니다.
+        </Text>
       </View>
-      
-      <KeyboardAvoidingView 
+
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.content}
       >
@@ -38,15 +51,16 @@ export default function NicknameScreen() {
               placeholder="닉네임 입력"
               placeholderTextColor="#CCCCCC"
             />
-            <View style={[
-              styles.inputUnderline, 
-              nickname ? styles.inputUnderlineActive : null
-            ]} />
-            
+            <View
+              style={[
+                styles.inputUnderline,
+                nickname ? styles.inputUnderlineActive : null,
+              ]}
+            />
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.button, nickname ? styles.buttonActive : null]}
             onPress={handleSubmit}
             disabled={!nickname}
@@ -62,7 +76,7 @@ export default function NicknameScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: "#FFFCF3",
   },
   content: {
     flex: 1,
@@ -80,12 +94,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
   },
   inputContainer: {
     marginTop: 20,
@@ -93,32 +107,32 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     paddingVertical: 8,
-    color: '#333333',
+    color: "#333333",
   },
   inputUnderline: {
     height: 1,
-    backgroundColor: '#CCCCCC',
+    backgroundColor: "#CCCCCC",
     marginTop: 4,
   },
   inputUnderlineActive: {
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
   },
   buttonContainer: {
     padding: 20,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 40, // Extra padding for Android
+    paddingBottom: Platform.OS === "ios" ? 20 : 40, // Extra padding for Android
   },
   button: {
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     padding: 15,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonActive: {
-    backgroundColor: '#007AFF',
+    backgroundColor: "#007AFF",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
