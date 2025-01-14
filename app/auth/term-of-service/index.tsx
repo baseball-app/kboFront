@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -9,42 +9,17 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import useConsent from "@/hooks/auth/useConsent";
 
 const TermUseScreen = () => {
-  const [agreements, setAgreements] = useState([
-    { id: 1, text: "필수 약관 모두 동의", checked: false },
-    { id: 2, text: "(필수) 오늘의 야구 이용약관", checked: false },
-    {
-      id: 3,
-      text: "(필수) 오늘의 야구 개인정보 수집 및\n이용에 대한 동의",
-      checked: false,
-    },
-  ]);
-
-  const toggleAgreement = (id: number) => {
-    if (id === 1) {
-      // If the first agreement is clicked, toggle all agreements
-
-      console.log("checking aggreements.checked ", agreements[0].checked);
-      const newCheckedState = !agreements[0].checked;
-      setAgreements(
-        agreements.map((agreement) => ({
-          ...agreement,
-          checked: newCheckedState,
-        }))
-      );
-    } else if (id === 2) {
-      router.push("/auth/term-of-service/privacy-policy");
-      // For other agreements, toggle only the clicked one
-      //   setAgreements(agreements.map(agreement =>
-      //     agreement.id === id ? { ...agreement, checked: !agreement.checked } : agreement
-      //   ));
-    } else if (id === 3) {
-      router.push("/auth/term-of-service/terms-of-service");
-    }
-  };
-
-  const allChecked = agreements.every((agreement) => agreement.checked);
+  const {
+    isAllChecked,
+    isChecked,
+    toggleAllConsent,
+    toggleConsent,
+    moveToConsentDetail,
+    consentList,
+  } = useConsent();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -61,45 +36,58 @@ const TermUseScreen = () => {
       </View>
 
       <View style={styles.content}>
-        {agreements.map((agreement) => (
+        <TouchableOpacity
+          style={styles.agreementAllItem}
+          onPress={toggleAllConsent}
+        >
+          <View style={[styles.circle, isAllChecked && styles.checkedCircle]}>
+            <Image
+              source={require("../../../assets/icons/check.png")}
+              style={styles.checkIcon}
+            />
+          </View>
+          <Text style={styles.agreementText}>필수 약관 모두 동의</Text>
+        </TouchableOpacity>
+
+        {consentList.map((consent) => (
           <TouchableOpacity
-            key={agreement.id}
+            key={consent.value}
             style={styles.agreementItem}
-            onPress={() => toggleAgreement(agreement.id)}
+            onPress={() => toggleConsent(consent.value)}
           >
-            {/* <Ionicons 
-            name={agreement.checked ? "checkmark-circle" : "ellipse-outline"} 
-            size={24} 
-            color={agreement.checked ? "#1E5EF4" : "#D1D1D6"} 
-          /> */}
             <View
-              style={[styles.circle, agreement.checked && styles.checkedCircle]}
+              style={[
+                styles.circle,
+                isChecked(consent.value) && styles.checkedCircle,
+              ]}
             >
               <Image
                 source={require("../../../assets/icons/check.png")}
                 style={styles.checkIcon}
               />
             </View>
-            <Text style={styles.agreementText}>{agreement.text}</Text>
-            {agreement.id !== 1 && (
+            <Text style={styles.agreementText}>{consent.title}</Text>
+            <TouchableOpacity
+              onPress={() => moveToConsentDetail(consent.value)}
+            >
               <Ionicons
                 name="chevron-forward"
                 size={24}
                 color="#D1D1D6"
                 style={styles.chevron}
               />
-            )}
+            </TouchableOpacity>
           </TouchableOpacity>
         ))}
         <TouchableOpacity
-          style={[styles.agreeButton, allChecked && styles.agreeButtonActive]}
-          onPress={() => allChecked && router.push("/auth/nickname")}
-          disabled={!allChecked}
+          style={[styles.agreeButton, isAllChecked && styles.agreeButtonActive]}
+          onPress={() => isAllChecked && router.push("/auth/nickname")}
+          disabled={!isAllChecked}
         >
           <Text
             style={[
               styles.agreeButtonText,
-              allChecked && styles.agreeButtonTextActive,
+              isAllChecked && styles.agreeButtonTextActive,
             ]}
           >
             동의하기
@@ -148,11 +136,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 30,
   },
+  agreementAllItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 12,
+    backgroundColor: "#F3F2EE",
+    padding: 16,
+    borderRadius: 10,
+  },
   agreementItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 20,
+    marginBottom: 4,
+    padding: 16,
+    borderRadius: 10,
   },
   agreementText: {
     marginLeft: 10,
