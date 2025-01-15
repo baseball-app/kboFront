@@ -1,8 +1,13 @@
-import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useRef } from "react";
+import 'react-native-gesture-handler'
 import "react-native-reanimated";
+import { useEffect, useRef } from "react";
+import { Stack } from "expo-router";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+
+import {enableFreeze, enableScreens} from 'react-native-screens'
+
+enableScreens(false)
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 
 SplashScreen.preventAutoHideAsync();
@@ -33,3 +38,4 @@ export default function RootLayout() {
     </Stack>
   );
 }
+
