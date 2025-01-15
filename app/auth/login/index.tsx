@@ -69,7 +69,7 @@ export default function LoginScreen() {
                 modal.open({
                   header: "안내",
                   content:
-                      "마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n 변경하시겠습니까?",
+                    "마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n 변경하시겠습니까?",
                   button: [
                     {
                       text: "취소",
@@ -103,35 +103,35 @@ export default function LoginScreen() {
             <TouchableOpacity
               style={styles.kakaoButton}
               onPress={() => {
-                modal.open({
-                  header: "안내",
-                  content:
-                    "마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n 변경하시겠습니까?",
-                  button: [
-                    {
-                      text: "취소",
-                      onPress: modal.hide,
-                      buttonStyle: {
-                        backgroundColor: "#D0CEC7",
-                      },
-                      buttonTextStyle: {
-                        color: "#171716",
-                      },
-                    },
-                    {
-                      text: "확인",
-                      onPress: modal.hide,
-                      buttonStyle: {
-                        backgroundColor: "#1E5EF4",
-                      },
-                      buttonTextStyle: {
-                        color: "#fff",
-                      },
-                    },
-                  ],
-                });
-                router.navigate('/ticket')
-
+                setShowKakaoWebView(true);
+                // modal.open({
+                //   header: "안내",
+                //   content:
+                //     "마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n 변경하시겠습니까?",
+                //   button: [
+                //     {
+                //       text: "취소",
+                //       onPress: modal.hide,
+                //       buttonStyle: {
+                //         backgroundColor: "#D0CEC7",
+                //       },
+                //       buttonTextStyle: {
+                //         color: "#171716",
+                //       },
+                //     },
+                //     {
+                //       text: "확인",
+                //       onPress: modal.hide,
+                //       buttonStyle: {
+                //         backgroundColor: "#1E5EF4",
+                //       },
+                //       buttonTextStyle: {
+                //         color: "#fff",
+                //       },
+                //     },
+                //   ],
+                // });
+                // router.navigate("/ticket");
               }}
             >
               <Image
@@ -154,22 +154,21 @@ export default function LoginScreen() {
           </View>
         </View>
 
-        {/* <KaKaoLoginModal
-        showWebView={showKakaoWebView}
-        setShowWebView={setShowKakaoWebView}
-        isKakaoLoginPage={isKakaoLoginPage}
-        setIsKakaoLoginPage={setIsKakaoLoginPage}
-        // KAKAO_AUTH_URL={KAKAO_AUTH_URL}
-        onLoginSuccess={handleKakaoLoginSuccess}
-      />
+        <KaKaoLoginModal
+          showWebView={showKakaoWebView}
+          setShowWebView={setShowKakaoWebView}
+          isKakaoLoginPage={isKakaoLoginPage}
+          setIsKakaoLoginPage={setIsKakaoLoginPage}
+          // KAKAO_AUTH_URL={KAKAO_AUTH_URL}
+          onLoginSuccess={handleKakaoLoginSuccess}
+        />
 
-      <NaverLoginModal
-        showWebView={showNaverWebView}
-        setShowWebView={setShowNaverWebView}
-
-        NAVER_AUTH_URL={NAVER_AUTH_URL}
-        onLoginSuccess={handleNaverLoginSuccess}
-      /> */}
+        <NaverLoginModal
+          showWebView={showNaverWebView}
+          setShowWebView={setShowNaverWebView}
+          NAVER_AUTH_URL={NAVER_AUTH_URL}
+          onLoginSuccess={handleNaverLoginSuccess}
+        />
       </SafeAreaView>
       <CommonModal />
     </>
