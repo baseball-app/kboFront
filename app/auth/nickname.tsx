@@ -1,124 +1,116 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import React, {useState} from 'react'
+import {
+    StyleSheet,
+    View,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    SafeAreaView,
+    KeyboardAvoidingView,
+    Platform,
+} from 'react-native'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import useUserJoin from '@/hooks/auth/useUserJoin'
 
 export default function NicknameScreen() {
-  const [nickname, setNickname] = useState('');
-  const router = useRouter();
+    const {nickname, setNickname, moveToNextStep, moveToPrevStep} = useUserJoin()
 
-  const handleSubmit = () => {
-    // Here you would typically send the nickname to your backend
-    console.log('Submitted nickname:', nickname);
-    // Navigate to the next screen or main app
-    router.push('/auth/my-team');
-  };
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <TouchableOpacity style={styles.backButton} onPress={moveToPrevStep}>
+                    <Ionicons name="chevron-back" size={24} color="black" />
+                </TouchableOpacity>
+                <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
+                <Text style={styles.subtitle}>한글/영어/숫자/밑줄/띄어쓰기를{'\n'} 사용할 수 있습니다.</Text>
+            </View>
 
-  return (
-    <SafeAreaView style={styles.container}>
-
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
-        <Text style={styles.subtitle}>한글/영어/숫자/특수문자를{'\n'}사용할 수 있습니다.</Text>
-      </View>
-      
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.content}
-      >
-        <View style={styles.inputSection}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={nickname}
-              onChangeText={setNickname}
-              placeholder="닉네임 입력"
-              placeholderTextColor="#CCCCCC"
-            />
-            <View style={[
-              styles.inputUnderline, 
-              nickname ? styles.inputUnderlineActive : null
-            ]} />
-            
-          </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={[styles.button, nickname ? styles.buttonActive : null]}
-            onPress={handleSubmit}
-            disabled={!nickname}
-          >
-            <Text style={styles.buttonText}>다음</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
+                <View style={styles.inputSection}>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            value={nickname}
+                            onChangeText={setNickname}
+                            placeholder="닉네임 입력"
+                            placeholderTextColor="#CCCCCC"
+                        />
+                        <View style={[styles.inputUnderline, nickname ? styles.inputUnderlineActive : null]} />
+                    </View>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={[styles.button, nickname ? styles.buttonActive : null]}
+                        onPress={moveToNextStep}
+                        disabled={!nickname}>
+                        <Text style={styles.buttonText}>다음</Text>
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
+    )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFCF3',
-  },
-  content: {
-    flex: 1,
-  },
-  inputSection: {
-    flex: 1,
-    padding: 20,
-  },
-  header: {
-    marginBottom: 20,
-    paddingHorizontal: 16,
-  },
-  backButton: {
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-  },
-  inputContainer: {
-    marginTop: 20,
-  },
-  input: {
-    fontSize: 16,
-    paddingVertical: 8,
-    color: '#333333',
-  },
-  inputUnderline: {
-    height: 1,
-    backgroundColor: '#CCCCCC',
-    marginTop: 4,
-  },
-  inputUnderlineActive: {
-    backgroundColor: '#000000',
-  },
-  buttonContainer: {
-    padding: 20,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 40, // Extra padding for Android
-  },
-  button: {
-    backgroundColor: '#ccc',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonActive: {
-    backgroundColor: '#007AFF',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
+    container: {
+        flex: 1,
+        backgroundColor: '#FFFCF3',
+    },
+    content: {
+        flex: 1,
+    },
+    inputSection: {
+        flex: 1,
+        padding: 20,
+    },
+    header: {
+        marginBottom: 20,
+        paddingHorizontal: 16,
+    },
+    backButton: {
+        marginBottom: 30,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    subtitle: {
+        fontSize: 16,
+        color: '#666',
+    },
+    inputContainer: {
+        marginTop: 20,
+    },
+    input: {
+        fontSize: 16,
+        paddingVertical: 8,
+        color: '#333333',
+    },
+    inputUnderline: {
+        height: 1,
+        backgroundColor: '#CCCCCC',
+        marginTop: 4,
+    },
+    inputUnderlineActive: {
+        backgroundColor: '#000000',
+    },
+    buttonContainer: {
+        padding: 20,
+        paddingBottom: Platform.OS === 'ios' ? 20 : 40, // Extra padding for Android
+    },
+    button: {
+        backgroundColor: '#ccc',
+        padding: 15,
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+    buttonActive: {
+        backgroundColor: '#007AFF',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+})
