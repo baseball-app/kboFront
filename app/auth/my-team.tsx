@@ -1,32 +1,21 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image} from 'react-native'
-import {useRouter} from 'expo-router'
 import {Ionicons} from '@expo/vector-icons'
-import {TEAMS} from '@/constants/teams'
+import {TEAMS} from '@/constants/join'
+import useUserJoin from '@/hooks/auth/useUserJoin'
 
 export default function MyTeamScreen() {
-    const [selectedTeam, setSelectedTeam] = useState({
-        id: 0,
-        name: '',
-        logo: '',
-    })
-    const router = useRouter()
-
-    const handleTeamSelect = (team: any) => {
-        setSelectedTeam(team)
-    }
-
-    const handleNext = () => {
-        if (selectedTeam) {
-            // Navigate to the next screen or main app
-            router.push('/auth/profile-image')
-        }
-    }
+    const {
+        setMyTeam,
+        myTeam,
+        moveToNextStep, //
+        moveToPrevStep,
+    } = useUserJoin()
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                <TouchableOpacity style={styles.backButton} onPress={moveToPrevStep}>
                     <Ionicons name="chevron-back" size={24} color="black" />
                 </TouchableOpacity>
                 <Text style={styles.title}>마이팀을{'\n'}선택해주세요</Text>
@@ -37,8 +26,8 @@ export default function MyTeamScreen() {
                     {TEAMS.map(team => (
                         <TouchableOpacity
                             key={team.id}
-                            style={[styles.teamButton, selectedTeam?.id === team.id && styles.selectedTeam]}
-                            onPress={() => handleTeamSelect(team)}>
+                            style={[styles.teamButton, myTeam?.id === team.id && styles.selectedTeam]}
+                            onPress={() => setMyTeam(team)}>
                             <Image source={team.logo} style={styles.teamLogo} resizeMode="contain" />
                             <Text style={styles.teamName}>{team.name}</Text>
                         </TouchableOpacity>
@@ -47,9 +36,9 @@ export default function MyTeamScreen() {
             </ScrollView>
             <View style={styles.footer}>
                 <TouchableOpacity
-                    style={[styles.nextButton, selectedTeam && styles.nextButtonActive]}
-                    onPress={handleNext}
-                    disabled={!selectedTeam}>
+                    style={[styles.nextButton, myTeam && styles.nextButtonActive]}
+                    onPress={moveToNextStep}
+                    disabled={!myTeam}>
                     <Text style={styles.nextButtonText}>다음</Text>
                 </TouchableOpacity>
             </View>
