@@ -1,16 +1,24 @@
 import React from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
-import {router} from 'expo-router'
-import useConsent from '@/hooks/auth/useConsent'
+import useUserJoin from '@/hooks/auth/useUserJoin'
 
 const TermUseScreen = () => {
-    const {isAllChecked, isChecked, toggleAllConsent, toggleConsent, moveToConsentDetail, consentList} = useConsent()
+    const {consent, moveToNextStep, moveToPrevStep} = useUserJoin()
+
+    const {
+        isAllChecked,
+        isChecked,
+        toggleAllConsent,
+        toggleConsent,
+        moveToConsentDetail,
+        consentList, //
+    } = consent
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => router.navigate('/auth/login')}>
+                <TouchableOpacity style={styles.backButton} onPress={moveToPrevStep}>
                     <Ionicons name="chevron-back" size={24} color="black" />
                 </TouchableOpacity>
                 <Text style={styles.title}>
@@ -42,7 +50,7 @@ const TermUseScreen = () => {
                 ))}
                 <TouchableOpacity
                     style={[styles.agreeButton, isAllChecked && styles.agreeButtonActive]}
-                    onPress={() => isAllChecked && router.push('/auth/nickname')}
+                    onPress={() => isAllChecked && moveToNextStep()}
                     disabled={!isAllChecked}>
                     <Text style={[styles.agreeButtonText, isAllChecked && styles.agreeButtonTextActive]}>동의하기</Text>
                 </TouchableOpacity>
