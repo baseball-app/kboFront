@@ -1,3 +1,4 @@
+import {userJoinSlice} from '@/slice/userJoinSlice'
 import {router} from 'expo-router'
 import React, {useState} from 'react'
 
@@ -15,7 +16,14 @@ const consentList = [
 // TODO: 나중에 선택 동의 항목 추가될 시, 회원가입 flow가 끝날 때까지 끌고가야 할 수 있음
 // 기획 물어보고 추가될 경우 store에 값 보관하는 방식으로 변경
 const useConsent = () => {
-    const [checkedConsent, setCheckedConsent] = useState<string[]>([])
+    // const {checkedConsent, setCheckedConsent} = userJoinSlice(({checkedConsent, setCheckedConsent}) => ({
+    //     checkedConsent,
+    //     setCheckedConsent,
+    // }))
+
+    // 각각의 상태를 개별적으로 구독
+    const checkedConsent = userJoinSlice(state => state.checkedConsent)
+    const setCheckedConsent = userJoinSlice(state => state.setCheckedConsent)
 
     // 단일 동의 체크
     const toggleConsent = (value: string) => {
