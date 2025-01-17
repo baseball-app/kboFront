@@ -6,11 +6,9 @@ import useUserJoin from '@/hooks/auth/useUserJoin'
 
 interface KaKaoLoginModalProps {
     showWebView: boolean
-    setShowWebView: (showWebView: boolean) => void
-    isKakaoLoginPage: boolean
-    setIsKakaoLoginPage: (isKakaoLoginPage: boolean) => void
+    onClose: () => void
     //   KAKAO_AUTH_URL: string;
-    onLoginSuccess: (code: string) => void
+    onLoginSuccess: (code: string, isUser: boolean) => void
 }
 
 const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_LOGIN_CLIENT_ID
@@ -36,9 +34,7 @@ type NavState = {
 
 const KaKaoLoginModal = ({
     showWebView,
-    setShowWebView,
-    isKakaoLoginPage,
-    setIsKakaoLoginPage,
+    onClose,
     //   KAKAO_AUTH_URL,
     onLoginSuccess,
 }: KaKaoLoginModalProps) => {
@@ -49,28 +45,31 @@ const KaKaoLoginModal = ({
     return (
         <Modal
             visible={showWebView}
-            onRequestClose={() => !isKakaoLoginPage && setShowWebView(false)}
-            animationType="slide">
+            onRequestClose={onClose}
+            animationType="slide" //
+        >
             <SafeAreaView style={styles.webViewContainer}>
                 <WebView
                     source={{uri: KAKAO_AUTH_URL}}
                     onNavigationStateChange={navState => {
                         const code = (navState as NavState).url?.split('code=')[1]?.split('&')[0]
 
+                        console.log(code, navState)
                         if (code) {
+                            // isUser: true -> 로그인, false -> 회원가입
+                            onLoginSuccess(code, true)
                             // TODO: 여기에서 code -> register api 호출
                             // 그럼 로그인 vs 회원가입은 어떻게 구분하지 ?
-                            setShowWebView(false)
+                            // onClose()
                             // 로그인 회원가입 구분해서 분기처리
-                            startSignUpProcessWithCode(code)
                         }
                     }}
                 />
-                {!isKakaoLoginPage && (
-                    <TouchableOpacity style={styles.closeButton} onPress={() => setShowWebView(false)}>
+                {/* {!isKakaoLoginPage && (
+                    <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                         <Text>Close</Text>
                     </TouchableOpacity>
-                )}
+                )} */}
             </SafeAreaView>
         </Modal>
     )

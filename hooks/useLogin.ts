@@ -20,6 +20,11 @@ export const useLogin = () => {
         router.navigate('/auth/login')
     }
 
+    const login = (code: string) => {
+        router.navigate('/(tabs)')
+        // login 구현
+    }
+
     // TODO: api 확정되면 구현 예정
     // const refreshAccessToken = async () => {
     //     if (!user?.refreshToken) return
@@ -58,6 +63,7 @@ export const useLogin = () => {
         isLogined,
         setUser,
         logout,
+        login,
     }
 }
 
