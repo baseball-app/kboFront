@@ -23,15 +23,14 @@ export default function LoginScreen() {
 
     // TODO: Naver 소셜로그인 성공 시, response보고 합칠 수 있으면 kakao, naver 두개 합치는게 좋을 것 같음
     // apple도 추가될 거니까, URL만 전달하여 처리할 수 있는지 확인 필요
-    const handleLoginSuccess = (code: string, isUser: boolean) => {
-        if (!isUser) {
-            startSignUpProcessWithCode(code)
+    const handleLoginSuccess = async (code: string, isUser: boolean) => {
+        try {
+            await startSignUpProcessWithCode(code)
             onCloseWebView()
-        } else {
-            login(code)
+        } catch (error) {
+            await login(code)
             onCloseWebView()
-            // Implement your login
-            // 토큰 발급, 로그인 처리, 메인 페이지로 이동
+            console.log(code)
         }
     }
 

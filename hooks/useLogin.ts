@@ -20,8 +20,20 @@ export const useLogin = () => {
         router.navigate('/auth/login')
     }
 
-    const login = (code: string) => {
-        router.navigate('/(tabs)')
+    const login = async (code: string) => {
+        try {
+            // /auths/kakao/token/
+
+            await ApiClient.post('/auths/kakao/token/', {
+                code,
+                state: 'string',
+            })
+
+            router.navigate('/(tabs)')
+        } catch (error) {
+            console.error('Error occurred during login:', error)
+        }
+
         // login 구현
     }
 

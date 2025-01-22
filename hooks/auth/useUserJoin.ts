@@ -1,6 +1,7 @@
 import {userJoinSlice} from '@/slice/userJoinSlice'
 import {useRouter, useSegments} from 'expo-router'
 import useConsent from './useConsent'
+import ApiClient from '@/api'
 
 // 유저의 회원가입 프로세스
 const userJoinProcess = ['/auth/term-of-service', '/auth/nickname', '/auth/my-team', '/auth/profile-image'] as const
@@ -41,7 +42,12 @@ const useUserJoin = () => {
     }
 
     // 회원가입 첫 페이지 진입하는 함수
-    const startSignUpProcessWithCode = (code: string) => {
+    const startSignUpProcessWithCode = async (code: string) => {
+        await ApiClient.post('/auths/kakao/register/', {
+            code,
+            state: 'string',
+        })
+
         joinSlice.setCode(code)
         router.navigate(userJoinProcess[0])
     }
