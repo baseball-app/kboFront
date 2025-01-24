@@ -25,7 +25,9 @@ export default function LoginScreen() {
     // apple도 추가될 거니까, URL만 전달하여 처리할 수 있는지 확인 필요
     const handleLoginSuccess = async (code: string, isUser: boolean) => {
         try {
-            await startSignUpProcessWithCode(code)
+            await login(code)
+
+            // await startSignUpProcessWithCode(code)
             onCloseWebView()
         } catch (error) {
             await login(code)
