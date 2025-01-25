@@ -1,13 +1,19 @@
-import { Href } from "expo-router";
+import {Href} from 'expo-router'
 
 interface ITabRoutes {
-  CALENDAR: Href<string>;
-  MATCH: Href<string>;
+    CALENDAR: Href
+    MATCH: Href
+    TICKET: Href
+    ALARM: Href
+    MY: Href
 }
 /** 라우터 경로 관련 상수 */
-export const router_address: { TAB: ITabRoutes } = {
-  TAB: {
-    CALENDAR: "/(tabs)/",
-    MATCH: "/(tabs)/match",
-  },
-};
+export const router_address: {TAB: ITabRoutes} = {
+    TAB: {
+        CALENDAR: '/(tabs)',
+        MATCH: '/(tabs)/match',
+        TICKET: '/(tabs)/ticket',
+        ALARM: '/(tabs)/alarm',
+        MY: '/(tabs)/my',
+    },
+}
