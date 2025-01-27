@@ -9,34 +9,29 @@ const AlarmScreen = () => {
     const {notificationList, onClickNotification, fetchNextPage} = useNotification()
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.headerTitleBox}>
-                <Text style={styles.headerTitle}>알림</Text>
-            </View>
-            <ScrollView style={styles.wrapper}>
-                <FlatList
-                    data={notificationList} //  || notificationList
-                    keyExtractor={_ => String(_.id)}
-                    ListEmptyComponent={<EmptyNotificationView />}
-                    ListHeaderComponent={<View style={{height: 24}} />}
-                    ListFooterComponent={<View style={{height: 24}} />}
-                    onEndReached={fetchNextPage}
-                    onEndReachedThreshold={0.6}
-                    ItemSeparatorComponent={() => <View style={{height: 12}} />}
-                    renderItem={({item}) => (
-                        <View style={{marginInline: 24}}>
-                            <NotificationCard
-                                type={item.type}
-                                userName={item.user_info.nickname}
-                                isRead={item.is_read}
-                                date={format(item.created_at, 'YY.MM.DD')}
-                                onClick={() => onClickNotification(item)}
-                            />
-                        </View>
-                    )}
-                />
-            </ScrollView>
-        </SafeAreaView>
+        <ScrollView style={styles.wrapper}>
+            <FlatList
+                data={notificationList} //  || notificationList
+                keyExtractor={_ => String(_.id)}
+                ListEmptyComponent={<EmptyNotificationView />}
+                ListHeaderComponent={<View style={{height: 24}} />}
+                ListFooterComponent={<View style={{height: 24}} />}
+                onEndReached={fetchNextPage}
+                onEndReachedThreshold={0.6}
+                ItemSeparatorComponent={() => <View style={{height: 12}} />}
+                renderItem={({item}) => (
+                    <View style={{marginInline: 24}}>
+                        <NotificationCard
+                            type={item.type}
+                            userName={item.user_info.nickname}
+                            isRead={item.is_read}
+                            date={format(item.created_at, 'YY.MM.DD')}
+                            onClick={() => onClickNotification(item)}
+                        />
+                    </View>
+                )}
+            />
+        </ScrollView>
     )
 }
 export default AlarmScreen
