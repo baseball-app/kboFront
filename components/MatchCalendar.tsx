@@ -122,13 +122,11 @@ const MatchCalendar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 32,
   },
   header: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 16,
     paddingVertical: 10,
   },
   headerTextContainer: {
@@ -278,11 +276,11 @@ const styles = StyleSheet.create({
   weekRow: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginBottom: 8,
   },
   dayContainer: {
     alignItems: "center",
     justifyContent: "center",
+    marginVertical: 12,
     paddingVertical: 4,
     paddingHorizontal: 12,
     flexDirection: "column",

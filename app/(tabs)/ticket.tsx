@@ -12,8 +12,7 @@ const MyTicketBoxScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>나의 티켓박스</Text>
-      
+
       <View style={styles.profileCard}>
         <Image
           // source={require('./path-to-your-image.png')}
@@ -24,13 +23,13 @@ const MyTicketBoxScreen = () => {
           <Text style={styles.team}>삼성 라이온즈 팬 · 승률력 76%</Text>
         </View>
       </View>
-      
+
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>나의 승률력 보러가기</Text>
       </TouchableOpacity>
-      
+
       <Text style={styles.sectionTitle}>발행한 티켓</Text>
-      
+
       <ScrollView>
         {teams.map((team, index) => (
           <TouchableOpacity key={index} style={styles.teamRow}>
