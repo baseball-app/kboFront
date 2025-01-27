@@ -5,7 +5,7 @@ import axios, {AxiosError, AxiosInstance, AxiosRequestHeaders, AxiosResponse, In
 
 const axiosInstance: AxiosInstance = axios.create({
     /** Api Server url 적용  */
-    baseURL: '',
+    baseURL: process.env.EXPO_PUBLIC_API_URL,
 })
 
 /** 모든 Api 요청에 자동으로 헤더에 토큰을 추가하는 요청 인터셉터 */

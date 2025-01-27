@@ -1,6 +1,10 @@
 import {userJoinSlice} from '@/slice/userJoinSlice'
 import {useRouter, useSegments} from 'expo-router'
 import useConsent from './useConsent'
+import ApiClient from '@/api'
+import {LoginServerResponse, TUser} from '../useLogin'
+import {useMMKVObject} from 'react-native-mmkv'
+import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 
 // 유저의 회원가입 프로세스
 const userJoinProcess = ['/auth/term-of-service', '/auth/nickname', '/auth/my-team', '/auth/profile-image'] as const
@@ -10,6 +14,7 @@ type JoinProcess = (typeof userJoinProcess)[number]
  * 회원가입 화면에서 사용하는 hook
  */
 const useUserJoin = () => {
+    const [user, setUser] = useMMKVObject<TUser>(MmkvStoreKeys.USER_LOGIN)
     const router = useRouter()
     const segments = useSegments()
     // 현재 step 경로
@@ -41,7 +46,17 @@ const useUserJoin = () => {
     }
 
     // 회원가입 첫 페이지 진입하는 함수
-    const startSignUpProcessWithCode = (code: string) => {
+    const startSignUpProcessWithCode = async (code: string) => {
+        const {access_token, refresh_token} = await ApiClient.post<LoginServerResponse>('/auths/kakao/register/', {
+            code,
+            state: 'string',
+        })
+
+        setUser({
+            accessToken: access_token,
+            refreshToken: refresh_token,
+        })
+
         joinSlice.setCode(code)
         router.navigate(userJoinProcess[0])
     }

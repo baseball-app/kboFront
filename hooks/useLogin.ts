@@ -9,6 +9,14 @@ export type TUser = {
     refreshToken: string
 }
 
+export type LoginServerResponse = {
+    access_token: string // 'MId4pT7NNu9vSdETnWmBHQxZtdqeMZ'
+    expires_in: number // 3600
+    refresh_token: string // 'lmgEzKKLpljXDxP8feUV2aDzom2cig'
+    scope: string // 'read write'
+    token_type: string // 'Bearer'
+}
+
 export const useLogin = () => {
     const [user, setUser] = useMMKVObject<TUser>(MmkvStoreKeys.USER_LOGIN)
     const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
@@ -20,9 +28,22 @@ export const useLogin = () => {
         router.navigate('/auth/login')
     }
 
-    const login = (code: string) => {
-        router.navigate('/(tabs)')
-        // login 구현
+    const login = async (code: string) => {
+        try {
+            const {access_token, refresh_token} = await ApiClient.post<LoginServerResponse>('/auths/kakao/token/', {
+                code,
+                state: 'string',
+            })
+
+            setUser({
+                accessToken: access_token,
+                refreshToken: refresh_token,
+            })
+
+            router.navigate('/(tabs)')
+        } catch (error) {
+            console.error('Error occurred during login:', error)
+        }
     }
 
     // TODO: api 확정되면 구현 예정
