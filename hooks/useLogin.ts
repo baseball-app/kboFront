@@ -9,12 +9,15 @@ export type TUser = {
     refreshToken: string
 }
 
+export type Channel = 'kakao' | 'naver' | 'apple'
+
 export type LoginServerResponse = {
     access_token: string // 'MId4pT7NNu9vSdETnWmBHQxZtdqeMZ'
     expires_in: number // 3600
     refresh_token: string // 'lmgEzKKLpljXDxP8feUV2aDzom2cig'
     scope: string // 'read write'
     token_type: string // 'Bearer'
+    is_new_user: boolean // true
 }
 
 export const useLogin = () => {
@@ -28,19 +31,19 @@ export const useLogin = () => {
         router.navigate('/auth/login')
     }
 
-    const login = async (code: string) => {
+    const login = async (channel: Channel, code: string) => {
         try {
-            const {access_token, refresh_token} = await ApiClient.post<LoginServerResponse>('/auths/kakao/token/', {
+            const data = await ApiClient.post<LoginServerResponse>(`/auths/${channel}/`, {
                 code,
                 state: 'string',
             })
 
             setUser({
-                accessToken: access_token,
-                refreshToken: refresh_token,
+                accessToken: data.access_token,
+                refreshToken: data.refresh_token,
             })
 
-            router.navigate('/(tabs)')
+            return data
         } catch (error) {
             console.error('Error occurred during login:', error)
         }

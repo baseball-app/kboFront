@@ -6,7 +6,7 @@ import {router} from 'expo-router'
 import CommonModal from '@/components/common/CommonModal'
 import {useCommonSlice} from '@/slice/commonSlice'
 import useUserJoin from '@/hooks/auth/useUserJoin'
-import {useLogin} from '@/hooks/useLogin'
+import {Channel, useLogin} from '@/hooks/useLogin'
 
 export default function LoginScreen() {
     const [showKakaoWebView, setShowKakaoWebView] = useState(false)
@@ -23,14 +23,23 @@ export default function LoginScreen() {
 
     // TODO: Naver 소셜로그인 성공 시, response보고 합칠 수 있으면 kakao, naver 두개 합치는게 좋을 것 같음
     // apple도 추가될 거니까, URL만 전달하여 처리할 수 있는지 확인 필요
-    const handleLoginSuccess = async (code: string, isUser: boolean) => {
+    const handleLoginSuccess = async (channel: Channel, code: string) => {
         try {
-            await login(code)
+            const data = await login(channel, code)
 
-            // await startSignUpProcessWithCode(code)
+            console.log('data :: ', data)
+
+            // TODO:(2025-02-04) 현재 is_new_user == false로만 반화됨
+
+            if (data?.is_new_user) {
+                router.navigate('/(tabs)')
+            } else {
+                startSignUpProcessWithCode(code)
+            }
+
             onCloseWebView()
         } catch (error) {
-            await login(code)
+            // await login(code)
             onCloseWebView()
             console.log(code)
         }
@@ -109,13 +118,13 @@ export default function LoginScreen() {
                 <KaKaoLoginModal
                     showWebView={showKakaoWebView}
                     onClose={onCloseWebView}
-                    onLoginSuccess={handleLoginSuccess}
+                    onLoginSuccess={code => handleLoginSuccess('kakao', code)}
                 />
 
                 <NaverLoginModal
                     showWebView={showNaverWebView}
                     onClose={onCloseWebView}
-                    onLoginSuccess={handleLoginSuccess}
+                    onLoginSuccess={code => handleLoginSuccess('naver', code)}
                 />
             </SafeAreaView>
             <CommonModal />
