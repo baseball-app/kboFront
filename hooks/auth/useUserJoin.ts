@@ -27,9 +27,22 @@ const useUserJoin = () => {
      * 회원가입
      */
     const signUp = async () => {
-        // 회원가입 로직
-        // api.post('/auths/kakao/register', {nickname, profile, team, code})
-        router.navigate('/(tabs)')
+        try {
+            // 회원가입 로직
+            await ApiClient.post('/users/modify/', {
+                nickname: joinSlice.nickname,
+                profile_image: String(joinSlice.profile?.id),
+                my_team: joinSlice.myTeam?.id,
+            })
+            router.navigate('/(tabs)')
+        } catch (error) {
+            console.error('회원가입 정보 수정 오류 :: ', error)
+            console.error('data :: ', {
+                nickname: joinSlice.nickname,
+                profile_image: joinSlice.profile,
+                my_team: joinSlice.myTeam,
+            })
+        }
     }
 
     /**
@@ -47,17 +60,6 @@ const useUserJoin = () => {
 
     // 회원가입 첫 페이지 진입하는 함수
     const startSignUpProcessWithCode = async (code: string) => {
-        const {access_token, refresh_token} = await ApiClient.post<LoginServerResponse>('/auths/kakao/register/', {
-            code,
-            state: 'string',
-        })
-
-        setUser({
-            accessToken: access_token,
-            refreshToken: refresh_token,
-        })
-
-        joinSlice.setCode(code)
         router.navigate(userJoinProcess[0])
     }
 

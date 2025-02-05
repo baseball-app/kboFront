@@ -8,6 +8,7 @@ import * as SplashScreen from 'expo-splash-screen'
 
 import {enableFreeze, enableScreens} from 'react-native-screens'
 import QueryProvider from '@/components/provider/QueryProvider'
+import CommonModal from '@/components/common/CommonModal'
 
 enableScreens(false)
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -39,6 +40,7 @@ export default function RootLayout() {
                 <Stack.Screen name="+not-found" />
                 <Stack.Screen name="index" />
             </Stack>
+            <CommonModal />
         </QueryProvider>
     )
 }

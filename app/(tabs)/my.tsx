@@ -4,14 +4,12 @@ import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
 import {moderateScale, horizontalScale, verticalScale} from '../../utils/metrics'
 import {theme} from '@/constants/Colors'
 import {router} from 'expo-router'
-import PopUpModal from '@/components/PopUpModal'
 import {useLogin} from '@/hooks/useLogin'
+import useMyProfile from '@/hooks/my/useMyProfile'
 
 const ProfileScreen = () => {
     const {logout} = useLogin()
-
-    const [isInviteModalVisible, setIsInviteModalVisible] = React.useState(false)
-    const [isWithdrawalModalVisible, setIsWithdrawalModalVisible] = React.useState(false)
+    const {profile, onPasteInviteCode, withdrawUser} = useMyProfile()
 
     return (
         <SafeAreaView style={styles.container}>
@@ -26,7 +24,7 @@ const ProfileScreen = () => {
 
                 <View style={styles.profileInfoBox}>
                     <View style={styles.profileInfo}>
-                        <Text style={styles.profileName}>최강야구 님</Text>
+                        <Text style={styles.profileName}>{profile.nickname} 님</Text>
                         <TouchableOpacity
                             onPress={() => {
                                 // router.push("/profile/edit");
@@ -41,7 +39,7 @@ const ProfileScreen = () => {
                     </View>
                     <View style={styles.winRateContainer}>
                         <Text style={styles.winRateLabel}>승요력</Text>
-                        <Text style={styles.winRateValue}>76%</Text>
+                        <Text style={styles.winRateValue}>{profile.predict_ratio}%</Text>
                     </View>
                 </View>
             </View>
@@ -49,11 +47,13 @@ const ProfileScreen = () => {
             <View style={styles.teamCard}>
                 <View style={styles.teamInfo}>
                     <Image
+                        // image 연결해줘야 함 어떻게 ?
+                        // 로고 url을 넣을 것인가?
                         source={require('../../assets/team_logo/SAMSUNG.png')}
                         style={styles.teamLogo}
                         resizeMode="contain"
                     />
-                    <Text style={styles.teamName}>삼성 라이온즈</Text>
+                    <Text style={styles.teamName}>{profile.my_team.name}</Text>
                 </View>
 
                 <TouchableOpacity
@@ -72,7 +72,7 @@ const ProfileScreen = () => {
                         onPress={() => {
                             router.push('/my/followers')
                         }}>
-                        <Text style={styles.statValue}>15</Text>
+                        <Text style={styles.statValue}>{profile.followers}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.statItem, styles.statBox]}>
@@ -81,12 +81,12 @@ const ProfileScreen = () => {
                         onPress={() => {
                             router.push('/my/following')
                         }}>
-                        <Text style={styles.statValue}>15</Text>
+                        <Text style={styles.statValue}>{profile.followings}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.statItem, styles.statBox]}>
                     <Text style={styles.statLabel}>초대코드</Text>
-                    <TouchableOpacity onPress={() => setIsInviteModalVisible(true)}>
+                    <TouchableOpacity onPress={onPasteInviteCode}>
                         <Image source={require('../../assets/icons/invitation.png')} style={styles.inviteCodeIcon} />
                     </TouchableOpacity>
                 </View>
@@ -98,18 +98,18 @@ const ProfileScreen = () => {
                     <Ionicons name="chevron-forward" size={24} color="gray" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.menuItem} onPress={() => setIsWithdrawalModalVisible(true)}>
+                <TouchableOpacity style={styles.menuItem} onPress={withdrawUser}>
                     <Text style={styles.menuText}>회원탈퇴</Text>
                     <Ionicons name="chevron-forward" size={24} color="gray" />
                 </TouchableOpacity>
             </View>
 
-            <PopUpModal
+            {/* <PopUpModal
                 isInviteModalVisible={isInviteModalVisible}
                 setIsInviteModalVisible={setIsInviteModalVisible}
                 isWithdrawalModalVisible={isWithdrawalModalVisible}
                 setIsWithdrawalModalVisible={setIsWithdrawalModalVisible}
-            />
+            /> */}
         </SafeAreaView>
     )
 }
