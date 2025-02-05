@@ -32,9 +32,9 @@ export default function LoginScreen() {
             // TODO:(2025-02-04) 현재 is_new_user == false로만 반화됨
 
             if (data?.is_new_user) {
-                router.navigate('/(tabs)')
-            } else {
                 startSignUpProcessWithCode(code)
+            } else {
+                router.navigate('/(tabs)')
             }
 
             onCloseWebView()
@@ -127,7 +127,6 @@ export default function LoginScreen() {
                     onLoginSuccess={code => handleLoginSuccess('naver', code)}
                 />
             </SafeAreaView>
-            <CommonModal />
         </>
     )
 }
