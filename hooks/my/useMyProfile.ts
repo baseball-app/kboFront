@@ -1,8 +1,7 @@
 import ApiClient from '@/api'
 import {useCommonSlice} from '@/slice/commonSlice'
 import {moderateScale, verticalScale} from '@/utils/metrics'
-import {useMutation, useQuery} from '@tanstack/react-query'
-import React from 'react'
+import {useQuery} from '@tanstack/react-query'
 import {useLogin} from '../useLogin'
 import Clipboard from '@react-native-clipboard/clipboard'
 import useFriends from './useFriends'
@@ -24,37 +23,24 @@ type InvitationCode = {
 }
 
 const useMyProfile = () => {
-    const {user} = useLogin()
+    const {user, isLogined} = useLogin()
     const {modal} = useCommonSlice()
 
     const {followers, followings} = useFriends()
 
-    // TODO: 유저당 고정인지 확인해야 함
+    const {data: profile} = useQuery({
+        queryKey: ['profile', user],
+        queryFn: () => ApiClient.get<Profile>('/users/me/'),
+        staleTime: 1000 * 60,
+        enabled: Boolean(isLogined),
+    })
+
     const {data: invitation} = useQuery({
         queryKey: ['invitation-code', user],
         queryFn: () => ApiClient.get<InvitationCode>('/users/invitation-code/'),
         staleTime: 1000 * 60,
+        enabled: Boolean(isLogined),
     })
-
-    const {mutate: onPaste} = useMutation({
-        mutationFn: () => pasteInviteCode(),
-        onSuccess(data, variables, context) {},
-        onError: error => {
-            console.error('초대 코드 복사 오류 ::', error)
-        },
-    })
-
-    const mockData: Profile = {
-        nickname: 'nickname',
-        predict_ratio: 76,
-        my_team: {
-            id: 3,
-            name: 'LG 트윈스',
-            logo_url: 'https://image.com/',
-        },
-        followers: 20,
-        followings: 32,
-    }
 
     const pasteInviteCode = async () => {
         if (!invitation) throw new Error('초대코드가 없습니다.')
@@ -135,10 +121,52 @@ const useMyProfile = () => {
         })
     }
 
+    const updateMyTeam = async (teamId: number) => {
+        modal.open({
+            header: '안내',
+            content: `마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n변경하시겠습니까?`,
+            button: [
+                {
+                    text: '취소',
+                    onPress: modal.hide,
+                    buttonStyle: {
+                        paddingVertical: verticalScale(12),
+                        borderRadius: 8,
+                        backgroundColor: '#EEEEEE',
+                        flex: 1,
+                    },
+                    buttonTextStyle: {
+                        color: '#000000',
+                        fontSize: moderateScale(16),
+                        fontWeight: '600',
+                        textAlign: 'center',
+                    },
+                },
+                {
+                    text: '팀 변경',
+                    onPress: modal.hide,
+                    buttonStyle: {
+                        backgroundColor: '#1E5EF4',
+                        flex: 1,
+                        paddingVertical: verticalScale(12),
+                        borderRadius: 8,
+                    },
+                    buttonTextStyle: {
+                        color: 'white',
+                        fontSize: moderateScale(16),
+                        fontWeight: '600',
+                        textAlign: 'center',
+                    },
+                },
+            ],
+        })
+    }
+
     return {
-        profile: mockData,
+        profile,
         onPasteInviteCode,
         withdrawUser,
+        updateMyTeam,
     }
 }
 
