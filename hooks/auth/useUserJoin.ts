@@ -33,6 +33,7 @@ const useUserJoin = () => {
                 nickname: joinSlice.nickname,
                 profile_image: String(joinSlice.profile?.id),
                 my_team: joinSlice.myTeam?.id,
+                profile_type: Number(joinSlice.profile?.id),
             })
             router.navigate('/(tabs)')
         } catch (error) {
