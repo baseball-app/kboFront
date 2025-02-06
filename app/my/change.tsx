@@ -4,30 +4,23 @@ import {useRouter} from 'expo-router'
 import {Ionicons} from '@expo/vector-icons'
 import {moderateScale, verticalScale} from '@/utils/metrics'
 import {TEAMS} from '@/constants/join'
+import useMyProfile from '@/hooks/my/useMyProfile'
 
 export default function ChangeScreen() {
+    const {updateMyTeam} = useMyProfile()
+
     const [selectedTeam, setSelectedTeam] = useState({
         id: 0,
         name: '',
         logo: '',
     })
+
     const router = useRouter()
-
-    const handleTeamSelect = (team: any) => {
-        setSelectedTeam(team)
-    }
-
-    const handleNext = () => {
-        if (selectedTeam) {
-            // Navigate to the next screen or main app
-            router.push('/auth/profile-image')
-        }
-    }
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                <TouchableOpacity style={styles.backButton} onPress={router.back}>
                     <Ionicons name="chevron-back" size={24} color="black" />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>마이팀 변경</Text>
@@ -45,7 +38,7 @@ export default function ChangeScreen() {
                         <TouchableOpacity
                             key={team.id}
                             style={[styles.teamButton, selectedTeam?.id === team.id && styles.selectedTeam]}
-                            onPress={() => handleTeamSelect(team)}>
+                            onPress={() => setSelectedTeam(team)}>
                             <Image source={team.logo} style={styles.teamLogo} />
                             <Text style={styles.teamName}>{team.name}</Text>
                         </TouchableOpacity>
@@ -54,8 +47,8 @@ export default function ChangeScreen() {
             </ScrollView>
             <View style={styles.footer}>
                 <TouchableOpacity
-                    style={[styles.nextButton, selectedTeam && styles.nextButtonActive]}
-                    onPress={handleNext}
+                    style={[styles.nextButton, Boolean(selectedTeam.id) && styles.nextButtonActive]}
+                    onPress={() => updateMyTeam(selectedTeam.id)}
                     disabled={!selectedTeam}>
                     <Text style={styles.nextButtonText}>변경하기</Text>
                 </TouchableOpacity>
