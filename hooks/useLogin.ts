@@ -25,10 +25,16 @@ export const useLogin = () => {
     const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
     const router = useRouter()
 
-    const logout = () => {
-        setUser(undefined)
-        // api 호출 /auths/token/revoke/
-        router.navigate('/auth/login')
+    const logout = async () => {
+        try {
+            await ApiClient.post('/auths/token/revoke/', {})
+        } catch (error) {
+            console.error('토큰 무효화 실패', error)
+        } finally {
+            setUser(undefined)
+            // api 호출 /auths/token/revoke/
+            router.navigate('/auth/login')
+        }
     }
 
     const resetToken = (info: Pick<LoginServerResponse, 'access_token' | 'refresh_token'>) => {
