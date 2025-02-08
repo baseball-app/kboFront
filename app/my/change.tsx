@@ -4,16 +4,14 @@ import {useRouter} from 'expo-router'
 import {Ionicons} from '@expo/vector-icons'
 import {moderateScale, verticalScale} from '@/utils/metrics'
 import {TEAMS} from '@/constants/join'
-import useMyInfo from '@/hooks/my/useMyInfo'
+import useProfile from '@/hooks/my/useProfile'
 
 export default function ChangeScreen() {
-    const {updateMyTeam} = useMyInfo()
+    const {updateMyTeam, profile} = useProfile()
 
-    const [selectedTeam, setSelectedTeam] = useState({
-        id: 0,
-        name: '',
-        logo: '',
-    })
+    const [selectedTeamId, setSelectedTeamId] = useState(profile.my_team?.id)
+
+    const isChanged = selectedTeamId !== profile.my_team?.id
 
     const router = useRouter()
 
@@ -37,8 +35,8 @@ export default function ChangeScreen() {
                     {TEAMS.map(team => (
                         <TouchableOpacity
                             key={team.id}
-                            style={[styles.teamButton, selectedTeam?.id === team.id && styles.selectedTeam]}
-                            onPress={() => setSelectedTeam(team)}>
+                            style={[styles.teamButton, selectedTeamId === team.id && styles.selectedTeam]}
+                            onPress={() => setSelectedTeamId(team.id)}>
                             <Image source={team.logo} style={styles.teamLogo} />
                             <Text style={styles.teamName}>{team.name}</Text>
                         </TouchableOpacity>
@@ -47,9 +45,9 @@ export default function ChangeScreen() {
             </ScrollView>
             <View style={styles.footer}>
                 <TouchableOpacity
-                    style={[styles.nextButton, Boolean(selectedTeam.id) && styles.nextButtonActive]}
-                    onPress={() => updateMyTeam(selectedTeam.id)}
-                    disabled={!selectedTeam}>
+                    style={[styles.nextButton, isChanged && styles.nextButtonActive]}
+                    onPress={() => updateMyTeam(selectedTeamId)}
+                    disabled={!isChanged}>
                     <Text style={styles.nextButtonText}>변경하기</Text>
                 </TouchableOpacity>
             </View>
