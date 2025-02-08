@@ -14,16 +14,18 @@ export type Friends = Record<
 >
 
 const useFriends = () => {
-    const {user} = useLogin()
+    const {user, isLogined} = useLogin()
 
     const {data: followers} = useQuery({
         queryKey: ['followers', user],
         queryFn: () => ApiClient.get<Friends>('/users/followers/'),
+        enabled: Boolean(isLogined),
     })
 
     const {data: followings} = useQuery({
         queryKey: ['followings', user],
         queryFn: () => ApiClient.get<Friends>('/users/followings/'),
+        enabled: Boolean(isLogined),
     })
 
     return {
