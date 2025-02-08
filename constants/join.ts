@@ -43,6 +43,8 @@ export const TEAMS = [
     },
 ] as const
 
+export const findTeamById = (id?: number) => TEAMS.find(team => team.id === id)
+
 export type Team = (typeof TEAMS)[number]
 
 export const PROFILE_IMAGES = [
