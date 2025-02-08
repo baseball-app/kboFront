@@ -5,6 +5,7 @@ import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {PROFILE_IMAGES, TEAMS} from '@/constants/join'
 import {useEffect} from 'react'
+import {IUserJoinSlice} from '@/slice/userJoinSlice'
 
 export type Profile = {
     nickname: string
@@ -21,7 +22,7 @@ export type Profile = {
 
 const useProfile = () => {
     const {user, isLogined} = useLogin()
-    const [profile, updateProfile] = useMMKVObject<Profile>(MmkvStoreKeys.USER_PROFILE)
+    const [profile, updateProfileCacheData] = useMMKVObject<Profile>(MmkvStoreKeys.USER_PROFILE)
 
     const {data} = useQuery({
         queryKey: ['profile', user],
@@ -31,8 +32,35 @@ const useProfile = () => {
         placeholderData: profile ?? undefined,
     })
 
+    // 회원가입 시, 초기 데이터 업데이트 하는 함수
+    const updateInitialProfile = (joinSlice: IUserJoinSlice) => {
+        updateProfileCacheData({
+            nickname: joinSlice.nickname,
+            predict_ratio: 0,
+            my_team: {
+                id: joinSlice.myTeam?.id ?? 0,
+                name: joinSlice.myTeam?.name ?? '',
+                logo_url: joinSlice.myTeam?.logo ?? '',
+            },
+            followers: 0,
+            followings: 0,
+            profile_type: Number(joinSlice.profile?.id),
+        })
+    }
+
+    const modifyProfile = async (joinSlice: IUserJoinSlice) => {
+        await ApiClient.post('/users/modify/', {
+            nickname: joinSlice.nickname,
+            profile_image: String(joinSlice.profile?.id),
+            my_team: joinSlice.myTeam?.id,
+            profile_type: Number(joinSlice.profile?.id),
+        })
+
+        updateInitialProfile(joinSlice)
+    }
+
     useEffect(() => {
-        if (data) updateProfile(data)
+        if (data) updateProfileCacheData(data)
     }, [data])
 
     const myTeam = TEAMS.find(team => team.id === data?.my_team.id)
@@ -44,7 +72,7 @@ const useProfile = () => {
             my_team: myTeam,
             profile_image: myProfileImage,
         },
-        updateProfile,
+        modifyProfile,
     }
 }
 

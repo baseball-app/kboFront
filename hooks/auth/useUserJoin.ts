@@ -1,4 +1,4 @@
-import {userJoinSlice} from '@/slice/userJoinSlice'
+import {IUserJoinSlice, userJoinSlice} from '@/slice/userJoinSlice'
 import {useRouter, useSegments} from 'expo-router'
 import useConsent from './useConsent'
 import ApiClient from '@/api'
@@ -20,32 +20,7 @@ const useUserJoin = () => {
     const joinSlice = userJoinSlice()
     const consent = useConsent()
 
-    const {updateProfile} = useProfile()
-
-    const modifyProfile = async () => {
-        await ApiClient.post('/users/modify/', {
-            nickname: joinSlice.nickname,
-            profile_image: String(joinSlice.profile?.id),
-            my_team: joinSlice.myTeam?.id,
-            profile_type: Number(joinSlice.profile?.id),
-        })
-    }
-
-    // 회원가입 시, 초기 데이터 업데이트 하는 함수
-    const updateInitialProfile = () => {
-        updateProfile({
-            nickname: joinSlice.nickname,
-            predict_ratio: 0,
-            my_team: {
-                id: joinSlice.myTeam?.id ?? 0,
-                name: joinSlice.myTeam?.name ?? '',
-                logo_url: joinSlice.myTeam?.logo ?? '',
-            },
-            followers: 0,
-            followings: 0,
-            profile_type: Number(joinSlice.profile?.id),
-        })
-    }
+    const {modifyProfile} = useProfile()
 
     /**
      * 회원가입
@@ -53,8 +28,7 @@ const useUserJoin = () => {
     const signUp = async () => {
         try {
             // 회원가입 로직
-            await modifyProfile()
-            updateInitialProfile()
+            await modifyProfile(joinSlice)
 
             router.navigate('/(tabs)')
         } catch (error) {

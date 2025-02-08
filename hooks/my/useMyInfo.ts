@@ -17,7 +17,7 @@ const useMyInfo = () => {
 
     const {followers, followings} = useFriends()
 
-    const {profile, updateProfile} = useProfile()
+    const {profile} = useProfile()
 
     const {data: invitation} = useQuery({
         queryKey: ['invitation-code', user],
