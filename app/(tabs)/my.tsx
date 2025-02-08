@@ -5,29 +5,25 @@ import {moderateScale, horizontalScale, verticalScale} from '../../utils/metrics
 import {theme} from '@/constants/Colors'
 import {router} from 'expo-router'
 import {useLogin} from '@/hooks/useLogin'
-import useMyProfile from '@/hooks/my/useMyProfile'
+import useMyInfo from '@/hooks/my/useMyInfo'
 
 const ProfileScreen = () => {
     const {logout} = useLogin()
-    const {profile, onPasteInviteCode, withdrawUser} = useMyProfile()
+    const {profile, onPasteInviteCode, withdrawUser} = useMyInfo()
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.profileHeader}>
                 <View style={styles.profileImageBox}>
-                    <Image
-                        source={require('../../assets/profile_images/glove.png')}
-                        style={styles.profileImage}
-                        resizeMode="contain"
-                    />
+                    <Image source={profile.profile_image} style={styles.profileImage} resizeMode="contain" />
                 </View>
 
                 <View style={styles.profileInfoBox}>
                     <View style={styles.profileInfo}>
-                        <Text style={styles.profileName}>{profile.nickname} 님</Text>
+                        <Text style={styles.profileName}>{profile?.nickname} 님</Text>
                         <TouchableOpacity
                             onPress={() => {
-                                // router.push("/profile/edit");
+                                // router.push('/profile/edit')
                             }}
                             style={styles.profileEditIconBox}>
                             <Image
@@ -39,7 +35,7 @@ const ProfileScreen = () => {
                     </View>
                     <View style={styles.winRateContainer}>
                         <Text style={styles.winRateLabel}>승요력</Text>
-                        <Text style={styles.winRateValue}>{profile.predict_ratio}%</Text>
+                        <Text style={styles.winRateValue}>{profile?.predict_ratio}%</Text>
                     </View>
                 </View>
             </View>
@@ -49,18 +45,14 @@ const ProfileScreen = () => {
                     <Image
                         // image 연결해줘야 함 어떻게 ?
                         // 로고 url을 넣을 것인가?
-                        source={require('../../assets/team_logo/SAMSUNG.png')}
+                        source={profile.my_team?.logo}
                         style={styles.teamLogo}
                         resizeMode="contain"
                     />
-                    <Text style={styles.teamName}>{profile.my_team.name}</Text>
+                    <Text style={styles.teamName}>{profile.my_team?.name}</Text>
                 </View>
 
-                <TouchableOpacity
-                    style={styles.teamSettingsIconBox}
-                    onPress={() => {
-                        router.push('/my/change')
-                    }}>
+                <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push('/my/change')}>
                     <Image source={require('../../assets/icons/gear.png')} style={styles.teamSettingsIcon} />
                 </TouchableOpacity>
             </View>
@@ -72,7 +64,7 @@ const ProfileScreen = () => {
                         onPress={() => {
                             router.push('/my/followers')
                         }}>
-                        <Text style={styles.statValue}>{profile.followers}</Text>
+                        <Text style={styles.statValue}>{profile?.followers}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.statItem, styles.statBox]}>
@@ -81,7 +73,7 @@ const ProfileScreen = () => {
                         onPress={() => {
                             router.push('/my/following')
                         }}>
-                        <Text style={styles.statValue}>{profile.followings}</Text>
+                        <Text style={styles.statValue}>{profile?.followings}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.statItem, styles.statBox]}>

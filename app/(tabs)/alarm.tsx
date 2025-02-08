@@ -1,4 +1,4 @@
-import {StyleSheet, View, Text, FlatList, SafeAreaView, ScrollView} from 'react-native'
+import {StyleSheet, View, FlatList} from 'react-native'
 
 import useNotification from '@/hooks/notification/useNotification'
 import NotificationCard from '@/components/alarm/NotificationCard'
@@ -9,7 +9,7 @@ const AlarmScreen = () => {
     const {notificationList, onClickNotification, fetchNextPage} = useNotification()
 
     return (
-        <ScrollView style={styles.wrapper}>
+        <View style={styles.wrapper}>
             <FlatList
                 data={notificationList} //  || notificationList
                 keyExtractor={_ => String(_.id)}
@@ -31,7 +31,7 @@ const AlarmScreen = () => {
                     </View>
                 )}
             />
-        </ScrollView>
+        </View>
     )
 }
 export default AlarmScreen

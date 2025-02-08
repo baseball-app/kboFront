@@ -1,6 +1,6 @@
-import {TUser} from '@/hooks/useLogin'
+import {LoginServerResponse, TUser} from '@/hooks/useLogin'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
-import {getItem} from '@/store/mmkv-store/mmkvStore'
+import {getItem, setItem} from '@/store/mmkv-store/mmkvStore'
 import axios, {AxiosError, AxiosInstance, AxiosRequestHeaders, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
 
 const axiosInstance: AxiosInstance = axios.create({
@@ -14,8 +14,7 @@ axiosInstance.interceptors.request.use(
         try {
             /** 토큰 처리 로직 */
             const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
-            if (token?.accessToken) req.headers['X-KBOAPP-TOKEN'] = token.accessToken
-
+            if (token?.accessToken) req.headers['X-KBOAPP-TOKEN'] = `${token.accessToken}`
             return req
         } catch (error) {
             return Promise.reject(error)
@@ -26,13 +25,32 @@ axiosInstance.interceptors.request.use(
     },
 )
 
+let lock = false
+
 /** Api 요청 결과값에 대한 응답 인터셉터 */
 axiosInstance.interceptors.response.use(
     async (res: AxiosResponse): Promise<AxiosResponse> => {
         /** 토큰 처리 로직 */
         return res
     },
-    (err: AxiosError) => {
+    async (err: AxiosError) => {
+        const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
+        if (err.status == 403 && token?.accessToken && token?.refreshToken && !lock) {
+            lock = true
+            await ApiClient.post<LoginServerResponse>('/auths/token/refresh/', {
+                refresh_token: token.refreshToken,
+            })
+                .then(data =>
+                    setItem(MmkvStoreKeys.USER_LOGIN, {
+                        accessToken: data.access_token,
+                        refreshToken: data.refresh_token,
+                    }),
+                )
+                .catch(() => setItem(MmkvStoreKeys.USER_LOGIN, undefined))
+                .finally(() => (lock = false))
+            // 토큰 만료시 처리 로직
+        }
+
         return Promise.reject(err)
     },
 )

@@ -1,4 +1,4 @@
-import {useEffect, useMemo} from 'react'
+import {useMemo} from 'react'
 import {useMMKVObject} from 'react-native-mmkv'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import ApiClient from '@/api'
@@ -25,10 +25,23 @@ export const useLogin = () => {
     const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
     const router = useRouter()
 
-    const logout = () => {
-        setUser(undefined)
-        // api 호출 /auths/token/revoke/
-        router.navigate('/auth/login')
+    const logout = async () => {
+        try {
+            await ApiClient.post('/auths/token/revoke/', {})
+        } catch (error) {
+            console.error('토큰 무효화 실패', error)
+        } finally {
+            setUser(undefined)
+            // api 호출 /auths/token/revoke/
+            router.navigate('/auth/login')
+        }
+    }
+
+    const resetToken = (info: Pick<LoginServerResponse, 'access_token' | 'refresh_token'>) => {
+        setUser({
+            accessToken: info.access_token,
+            refreshToken: info.refresh_token,
+        })
     }
 
     const login = async (channel: Channel, code: string) => {
@@ -38,10 +51,7 @@ export const useLogin = () => {
                 state: 'string',
             })
 
-            setUser({
-                accessToken: data.access_token,
-                refreshToken: data.refresh_token,
-            })
+            resetToken(data)
 
             return data
         } catch (error) {
@@ -50,37 +60,15 @@ export const useLogin = () => {
     }
 
     // TODO: api 확정되면 구현 예정
-    // const refreshAccessToken = async () => {
-    //     if (!user?.refreshToken) return
+    const refreshAccessToken = async () => {
+        if (!user?.refreshToken) throw new Error('refreshToken이 없습니다.')
 
-    //     // const response = await ApiClient.post('/auths/kakao/token', {
-    //     //     refreshToken: user.refreshToken,
-    //     // })
+        const data = await ApiClient.post<LoginServerResponse>('/auths/token/refresh/', {
+            refresh_token: user.refreshToken,
+        })
 
-    //     //
-    //     // user?.refreshToken
-
-    //     // setUser(prev => {
-    //     //     return {
-    //     //         accessToken: 'new access',
-    //     //         refreshToken: user.refreshToken,
-    //     //     }
-    //     // })
-    // }
-
-    // const {data} = useQuery({
-    //     queryKey: ['user'],
-    //     queryFn: () => {},
-    //     staleTime: 1000 * 60 * 10,
-    //     enable: Boolean(user?.refreshToken),
-    // })
-
-    // useEffect(() => {
-
-    //     refreshAccessToken()
-
-    //     // refresh 토큰으로 발급
-    // }, [data])
+        resetToken(data)
+    }
 
     return {
         user,
@@ -88,13 +76,6 @@ export const useLogin = () => {
         setUser,
         logout,
         login,
+        refreshAccessToken,
     }
 }
-
-/*
-    ex)
-    setUser({
-        accessToken: data.access_token,
-        refreshToken: data.refresh_token,
-    })
-*/
