@@ -2,9 +2,7 @@ import {userJoinSlice} from '@/slice/userJoinSlice'
 import {useRouter, useSegments} from 'expo-router'
 import useConsent from './useConsent'
 import ApiClient from '@/api'
-import {LoginServerResponse, TUser} from '../useLogin'
-import {useMMKVObject} from 'react-native-mmkv'
-import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
+import useProfile from '../my/useProfile'
 
 // 유저의 회원가입 프로세스
 const userJoinProcess = ['/auth/term-of-service', '/auth/nickname', '/auth/my-team', '/auth/profile-image'] as const
@@ -14,7 +12,6 @@ type JoinProcess = (typeof userJoinProcess)[number]
  * 회원가입 화면에서 사용하는 hook
  */
 const useUserJoin = () => {
-    const [user, setUser] = useMMKVObject<TUser>(MmkvStoreKeys.USER_LOGIN)
     const router = useRouter()
     const segments = useSegments()
     // 현재 step 경로
@@ -23,18 +20,42 @@ const useUserJoin = () => {
     const joinSlice = userJoinSlice()
     const consent = useConsent()
 
+    const {updateProfile} = useProfile()
+
+    const modifyProfile = async () => {
+        await ApiClient.post('/users/modify/', {
+            nickname: joinSlice.nickname,
+            profile_image: String(joinSlice.profile?.id),
+            my_team: joinSlice.myTeam?.id,
+            profile_type: Number(joinSlice.profile?.id),
+        })
+    }
+
+    // 회원가입 시, 초기 데이터 업데이트 하는 함수
+    const updateInitialProfile = () => {
+        updateProfile({
+            nickname: joinSlice.nickname,
+            predict_ratio: 0,
+            my_team: {
+                id: joinSlice.myTeam?.id ?? 0,
+                name: joinSlice.myTeam?.name ?? '',
+                logo_url: joinSlice.myTeam?.logo ?? '',
+            },
+            followers: 0,
+            followings: 0,
+            profile_type: Number(joinSlice.profile?.id),
+        })
+    }
+
     /**
      * 회원가입
      */
     const signUp = async () => {
         try {
             // 회원가입 로직
-            await ApiClient.post('/users/modify/', {
-                nickname: joinSlice.nickname,
-                profile_image: String(joinSlice.profile?.id),
-                my_team: joinSlice.myTeam?.id,
-                profile_type: Number(joinSlice.profile?.id),
-            })
+            await modifyProfile()
+            updateInitialProfile()
+
             router.navigate('/(tabs)')
         } catch (error) {
             console.error('회원가입 정보 수정 오류 :: ', error)

@@ -4,10 +4,10 @@ import {useRouter} from 'expo-router'
 import {Ionicons} from '@expo/vector-icons'
 import {moderateScale, verticalScale} from '@/utils/metrics'
 import {TEAMS} from '@/constants/join'
-import useMyProfile from '@/hooks/my/useMyProfile'
+import useMyInfo from '@/hooks/my/useMyInfo'
 
 export default function ChangeScreen() {
-    const {updateMyTeam} = useMyProfile()
+    const {updateMyTeam} = useMyInfo()
 
     const [selectedTeam, setSelectedTeam] = useState({
         id: 0,
