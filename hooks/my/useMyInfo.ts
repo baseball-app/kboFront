@@ -5,35 +5,19 @@ import {useQuery} from '@tanstack/react-query'
 import {useLogin} from '../useLogin'
 import Clipboard from '@react-native-clipboard/clipboard'
 import useFriends from './useFriends'
-
-type Profile = {
-    nickname: string
-    predict_ratio: number
-    my_team: {
-        id: number // 3
-        name: string // 'LG 트윈스'
-        logo_url: string // 'https://image.com/'
-    }
-    followers: number // 20
-    followings: number // 32
-}
+import useProfile from './useProfile'
 
 type InvitationCode = {
     code: string
 }
 
-const useMyProfile = () => {
+const useMyInfo = () => {
     const {user, isLogined} = useLogin()
     const {modal} = useCommonSlice()
 
     const {followers, followings} = useFriends()
 
-    const {data: profile} = useQuery({
-        queryKey: ['profile', user],
-        queryFn: () => ApiClient.get<Profile>('/users/me/'),
-        staleTime: 1000 * 60,
-        enabled: Boolean(isLogined),
-    })
+    const {profile, updateProfile} = useProfile()
 
     const {data: invitation} = useQuery({
         queryKey: ['invitation-code', user],
@@ -170,4 +154,4 @@ const useMyProfile = () => {
     }
 }
 
-export default useMyProfile
+export default useMyInfo
