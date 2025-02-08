@@ -6,16 +6,19 @@ import {useLogin} from '../useLogin'
 import Clipboard from '@react-native-clipboard/clipboard'
 import useFriends from './useFriends'
 import useProfile from './useProfile'
+import {useRouter} from 'expo-router'
 
 type InvitationCode = {
     code: string
 }
 
 const useMyInfo = () => {
-    const {user, isLogined} = useLogin()
+    const {user, isLogined, logout} = useLogin()
     const {modal} = useCommonSlice()
 
     const {followers, followings} = useFriends()
+
+    const router = useRouter()
 
     const {profile} = useProfile()
 
@@ -64,6 +67,16 @@ const useMyInfo = () => {
         }
     }
 
+    const withdraw = async () => {
+        try {
+            await ApiClient.post<InvitationCode>('/users/leave/', {})
+            logout()
+            router.dismissTo('/auth/login')
+        } catch (error) {
+            console.error('회원 탈퇴 오류 :: ', error)
+        }
+    }
+
     const withdrawUser = () => {
         modal.open({
             header: '안내',
@@ -87,7 +100,10 @@ const useMyInfo = () => {
                 },
                 {
                     text: '회원탈퇴',
-                    onPress: modal.hide,
+                    onPress: () => {
+                        withdraw()
+                        modal.hide()
+                    },
                     buttonStyle: {
                         backgroundColor: '#1E5EF4',
                         flex: 1,
