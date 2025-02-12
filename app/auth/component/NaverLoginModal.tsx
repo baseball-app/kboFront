@@ -2,18 +2,27 @@ import useUserJoin from '@/hooks/auth/useUserJoin'
 import React from 'react'
 import {Modal, SafeAreaView, TouchableOpacity, Text, StyleSheet} from 'react-native'
 import WebView from 'react-native-webview'
+import {NavState} from './KaKaoLoginModal'
 
 interface NaverLoginModalProps {
     showWebView: boolean
     onClose: () => void
-    onLoginSuccess: (code: string, isUser: boolean) => void
+    onLoginSuccess: (code: string) => void
 }
 
 const NAVER_CLIENT_ID = process.env.EXPO_PUBLIC_NAVER_LOGIN_CLIENT_ID
 const NAVER_REDIRECT_URI = process.env.EXPO_PUBLIC_NAVER_LOGIN_REDIRECT_URI
-const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=${Math.random()
-    .toString(36)
-    .slice(2, 11)}`
+// const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=${Math.random()
+//     .toString(36)
+//     .slice(2, 11)}`
+
+const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}`
+
+/**
+ *
+ * @param param0
+ * @returns
+ */
 
 const NaverLoginModal: React.FC<NaverLoginModalProps> = ({
     showWebView, //
@@ -26,18 +35,25 @@ const NaverLoginModal: React.FC<NaverLoginModalProps> = ({
                 <WebView
                     source={{uri: NAVER_AUTH_URL}}
                     onNavigationStateChange={navState => {
-                        console.log('navState', navState)
-                        try {
-                            if (navState.url.startsWith(NAVER_AUTH_URL)) {
-                                const code = navState.url.split('code=')[1]?.split('&')[0]
-                                if (code) {
-                                    console.log('Naver auth code:', code)
-                                    onLoginSuccess(code, true)
-                                }
-                            }
-                        } catch (error) {
-                            console.log(error)
-                        }
+                        // onNavigationStateChange 함수가 loading 중일 때와 아닐 때 두번 호출되어 에러 발생하는 현상 방지
+                        if (navState.loading) return
+
+                        const code = (navState as NavState).url?.split('code=')[1]?.split('&')[0]
+
+                        if (code) onLoginSuccess(code)
+
+                        // console.log('navState', navState)
+                        // try {
+                        //     if (navState.url.startsWith(NAVER_AUTH_URL)) {
+                        //         const code = navState.url.split('code=')[1]?.split('&')[0]
+                        //         if (code) {
+                        //             console.log('Naver auth code:', code)
+                        //             onLoginSuccess(code, true)
+                        //         }
+                        //     }
+                        // } catch (error) {
+                        //     console.log(error)
+                        // }
                     }}
                     injectedJavaScript={`
             (function() {

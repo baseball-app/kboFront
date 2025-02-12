@@ -106,9 +106,7 @@ export default function LoginScreen() {
                             <Image source={require('../../../assets/icons/kakao.png')} style={styles.loginIcon} />
                             <Text style={styles.kakaoButtonText}>카카오로 시작하기</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.naverButton}
-                            onPress={() => router.navigate('/auth/login/naver-login')}>
+                        <TouchableOpacity style={styles.naverButton} onPress={() => setShowNaverWebView(true)}>
                             <Image source={require('../../../assets/icons/naver.png')} style={styles.loginIcon} />
                             <Text style={styles.naverButtonText}>네이버로 시작하기</Text>
                         </TouchableOpacity>

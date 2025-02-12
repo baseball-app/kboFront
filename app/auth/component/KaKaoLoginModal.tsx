@@ -18,7 +18,7 @@ const KAKAO_AUTH_URL = [
     'response_type=code',
 ].join('&')
 
-type NavState = {
+export type NavState = {
     canGoBack: boolean // false
     canGoForward: boolean // false
     loading: boolean // true
