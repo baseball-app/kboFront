@@ -10,8 +10,6 @@ type LoginButtonType = {
     name: string
     type: Channel
     url: string
-    style: any
-    image: any
 }
 
 export default function LoginScreen() {
@@ -41,22 +39,22 @@ export default function LoginScreen() {
         }
     }
 
-    const loginButtonList: LoginButtonType[] = [
+    const loginButtonList = [
         {
             name: '카카오로 시작하기',
             type: 'kakao',
             url: AUTH_URL.KAKAO,
-            style: styles.kakaoButton,
+            style: {button: styles.kakaoButton, text: styles.kakaoButtonText},
             image: require('../../../assets/icons/kakao.png'),
         },
         {
             name: '네이버로 시작하기',
             type: 'naver',
             url: AUTH_URL.NAVER,
-            style: styles.naverButton,
+            style: {button: styles.naverButton, text: styles.naverButtonText},
             image: require('../../../assets/icons/naver.png'),
         },
-    ]
+    ] as const
 
     return (
         <>
@@ -78,10 +76,10 @@ export default function LoginScreen() {
                         {loginButtonList.map(loginButton => (
                             <TouchableOpacity
                                 key={loginButton.name}
-                                style={loginButton.style}
+                                style={loginButton.style.button}
                                 onPress={() => setLoginWebViewInfo(loginButton)}>
                                 <Image source={loginButton.image} style={styles.loginIcon} />
-                                <Text style={loginButton.style}>{loginButton.name}</Text>
+                                <Text style={loginButton.style.text}>{loginButton.name}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>
