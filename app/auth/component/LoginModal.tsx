@@ -2,21 +2,12 @@ import {Modal} from 'react-native'
 import WebView from 'react-native-webview'
 import {SafeAreaView, StyleSheet} from 'react-native'
 
-interface KaKaoLoginModalProps {
+interface LoginModalProps {
     showWebView: boolean
     onClose: () => void
-    //   KAKAO_AUTH_URL: string;
+    url: string
     onLoginSuccess: (code: string) => void
 }
-
-const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_LOGIN_CLIENT_ID
-const KAKAO_REDIRECT_URI = process.env.EXPO_PUBLIC_KAKAO_LOGIN_REDIRECT_URI
-const KAKAO_AUTH_URL = [
-    'https://kauth.kakao.com/oauth/authorize?',
-    `client_id=${KAKAO_CLIENT_ID}`,
-    `redirect_uri=${KAKAO_REDIRECT_URI}`,
-    'response_type=code',
-].join('&')
 
 export type NavState = {
     canGoBack: boolean // false
@@ -30,12 +21,12 @@ export type NavState = {
     url: string // 'http://localhost:8000/auths/kakao/callback?code=ltY5k0uhqPzqy5sQ4NyCDFMyTCrs03HLsICn9pTkResnHMfUjasmWgAAAAQKPXKYAAABlHLXYHgq3eF1vjqPRg'
 }
 
-const KaKaoLoginModal = ({
+const LoginModal = ({
     showWebView,
     onClose,
-    //   KAKAO_AUTH_URL,
     onLoginSuccess,
-}: KaKaoLoginModalProps) => {
+    url, //
+}: LoginModalProps) => {
     return (
         <Modal
             visible={showWebView}
@@ -44,7 +35,7 @@ const KaKaoLoginModal = ({
         >
             <SafeAreaView style={styles.webViewContainer}>
                 <WebView
-                    source={{uri: KAKAO_AUTH_URL}}
+                    source={{uri: url}}
                     onNavigationStateChange={navState => {
                         // onNavigationStateChange 함수가 loading 중일 때와 아닐 때 두번 호출되어 에러 발생하는 현상 방지
                         if (navState.loading) return
@@ -73,4 +64,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default KaKaoLoginModal
+export default LoginModal

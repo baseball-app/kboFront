@@ -1,35 +1,32 @@
 import React, {useState} from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image} from 'react-native'
-import KaKaoLoginModal from '../component/KaKaoLoginModal'
-import NaverLoginModal from '../component/NaverLoginModal'
 import {router} from 'expo-router'
-import CommonModal from '@/components/common/CommonModal'
-import {useCommonSlice} from '@/slice/commonSlice'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {Channel, useLogin} from '@/hooks/useLogin'
+import LoginModal from '../component/LoginModal'
+import {AUTH_URL} from '@/constants/auth'
+
+type LoginButtonType = {
+    name: string
+    type: Channel
+    url: string
+    style: any
+    image: any
+}
 
 export default function LoginScreen() {
-    const [showKakaoWebView, setShowKakaoWebView] = useState(false)
-    const [showNaverWebView, setShowNaverWebView] = useState(false)
-    // const {modal} = useCommonSlice()
+    const [loginWebViewInfo, setLoginWebViewInfo] = useState<LoginButtonType | null>(null)
 
     const {startSignUpProcessWithCode} = useUserJoin()
     const {login} = useLogin()
 
     const onCloseWebView = () => {
-        setShowKakaoWebView(false)
-        setShowNaverWebView(false)
+        setLoginWebViewInfo(null)
     }
 
-    // TODO: Naver 소셜로그인 성공 시, response보고 합칠 수 있으면 kakao, naver 두개 합치는게 좋을 것 같음
-    // apple도 추가될 거니까, URL만 전달하여 처리할 수 있는지 확인 필요
     const handleLoginSuccess = async (channel: Channel, code: string) => {
         try {
             const data = await login(channel, code)
-
-            console.log('data :: ', data)
-
-            // TODO:(2025-02-04) 현재 is_new_user == false로만 반화됨
 
             if (data?.is_new_user) {
                 startSignUpProcessWithCode(code)
@@ -39,11 +36,27 @@ export default function LoginScreen() {
 
             onCloseWebView()
         } catch (error) {
-            // await login(code)
             onCloseWebView()
             console.log(code)
         }
     }
+
+    const loginButtonList: LoginButtonType[] = [
+        {
+            name: '카카오로 시작하기',
+            type: 'kakao',
+            url: AUTH_URL.KAKAO,
+            style: styles.kakaoButton,
+            image: require('../../../assets/icons/kakao.png'),
+        },
+        {
+            name: '네이버로 시작하기',
+            type: 'naver',
+            url: AUTH_URL.NAVER,
+            style: styles.naverButton,
+            image: require('../../../assets/icons/naver.png'),
+        },
+    ]
 
     return (
         <>
@@ -62,67 +75,23 @@ export default function LoginScreen() {
                     </View>
 
                     <View style={styles.bottomContent}>
-                        {/* <CommonButton
-                            title={'안녕'}
-                            onPress={() => {
-                                modal.open({
-                                    header: '안내',
-                                    content: '마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n 변경하시겠습니까?',
-                                    button: [
-                                        {
-                                            text: '취소',
-                                            onPress: modal.hide,
-                                            buttonStyle: {
-                                                backgroundColor: '#D0CEC7',
-                                            },
-                                            buttonTextStyle: {
-                                                color: '#171716',
-                                            },
-                                        },
-                                        {
-                                            text: '확인',
-                                            onPress: modal.hide,
-                                            buttonStyle: {
-                                                backgroundColor: '#1E5EF4',
-                                            },
-                                            buttonTextStyle: {
-                                                color: '#fff',
-                                            },
-                                        },
-                                    ],
-                                })
-                                // router.navigate('/auth/login/kakao-login')
-                                // setShowKakaoWebView(true)
-                            }}
-                            buttonStyleProps={{
-                                width: 30,
-                            }}
-                        /> */}
-                        <TouchableOpacity
-                            style={styles.kakaoButton}
-                            onPress={() => {
-                                setShowKakaoWebView(true)
-                            }}>
-                            <Image source={require('../../../assets/icons/kakao.png')} style={styles.loginIcon} />
-                            <Text style={styles.kakaoButtonText}>카카오로 시작하기</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.naverButton} onPress={() => setShowNaverWebView(true)}>
-                            <Image source={require('../../../assets/icons/naver.png')} style={styles.loginIcon} />
-                            <Text style={styles.naverButtonText}>네이버로 시작하기</Text>
-                        </TouchableOpacity>
+                        {loginButtonList.map(loginButton => (
+                            <TouchableOpacity
+                                key={loginButton.name}
+                                style={loginButton.style}
+                                onPress={() => setLoginWebViewInfo(loginButton)}>
+                                <Image source={loginButton.image} style={styles.loginIcon} />
+                                <Text style={loginButton.style}>{loginButton.name}</Text>
+                            </TouchableOpacity>
+                        ))}
                     </View>
                 </View>
 
-                <KaKaoLoginModal
-                    showWebView={showKakaoWebView}
+                <LoginModal
+                    showWebView={Boolean(loginWebViewInfo)}
                     onClose={onCloseWebView}
-                    onLoginSuccess={code => handleLoginSuccess('kakao', code)}
-                />
-
-                <NaverLoginModal
-                    showWebView={showNaverWebView}
-                    onClose={onCloseWebView}
-                    onLoginSuccess={code => handleLoginSuccess('naver', code)}
+                    url={loginWebViewInfo?.url || ''}
+                    onLoginSuccess={code => handleLoginSuccess(loginWebViewInfo?.type!, code)}
                 />
             </SafeAreaView>
         </>
