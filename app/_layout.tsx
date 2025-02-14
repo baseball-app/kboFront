@@ -38,6 +38,7 @@ export default function RootLayout() {
                 <Stack.Screen name="my" options={{headerShown: false}} />
                 <Stack.Screen name="+not-found" />
                 <Stack.Screen name="index" options={{headerShown: false}} />
+                <Stack.Screen name="write" options={{headerShown: false}} />
             </Stack>
             <CommonModal />
         </QueryProvider>
