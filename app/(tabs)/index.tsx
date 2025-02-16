@@ -6,7 +6,10 @@ import FriendList from '@/components/home/FrendList'
 import GameInfoCard from '@/components/home/GameInfoCard'
 import {GameProvider} from '@/hooks/game/useGame'
 import GameCardController from '@/components/home/GameCardController'
+import {useRouter} from 'expo-router'
 const CalendarScreen = () => {
+  const router = useRouter()
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FriendList />
@@ -19,10 +22,10 @@ const CalendarScreen = () => {
       </ScrollView>
 
       {/* Floating Button */}
-      <TouchableOpacity
+      <TouchableOpacity //
         activeOpacity={0.95}
         style={styles.floatingButton}
-        onPress={() => console.log('Floating Button Pressed')}>
+        onPress={() => router.push('/write')}>
         <Image source={require('@/assets/icons/write.png')} resizeMode="contain" />
       </TouchableOpacity>
     </SafeAreaView>

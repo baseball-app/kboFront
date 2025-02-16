@@ -129,7 +129,7 @@ const DailyLogWriteScreen = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
     } else {
-      router.navigate('/')
+      router.back()
     }
   }
 
