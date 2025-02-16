@@ -3,9 +3,79 @@ import {View, Text, TouchableOpacity, StyleSheet, Modal, Button} from 'react-nat
 import {format, startOfWeek, addDays, isSameDay, addMonths, isToday} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
 
-const MatchCalendar = () => {
+type Props = {
+  onChange: (date: Date) => void
+  value: Date
+}
+
+type MatchCalendarHeaderProps = {
+  prevMonth: () => void
+  nextMonth: () => void
+  currentDate: Date
+}
+
+const MatchCalendarHeader = ({prevMonth, nextMonth, currentDate}: MatchCalendarHeaderProps) => {
+  return (
+    <View style={styles.header}>
+      <TouchableOpacity onPress={prevMonth} style={styles.headerTextContainer}>
+        <Ionicons name="chevron-back" size={24} color="black" />
+      </TouchableOpacity>
+      <View style={styles.headerTextContainer}>
+        <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
+      </View>
+      <TouchableOpacity onPress={nextMonth} style={styles.headerTextContainer}>
+        <Ionicons name="chevron-forward" size={24} color="black" />
+      </TouchableOpacity>
+    </View>
+  )
+}
+
+type MatchCalendarBodyProps = {
+  currentDate: Date
+  selectedDate: Date
+  onChange: (date: Date) => void
+}
+
+const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarBodyProps) => {
+  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토']
+  const days = []
+  const startDate = startOfWeek(currentDate) // 주의 첫 번째 날을 가져옴
+
+  // 7일 동안의 날짜를 요일과 함께 표시
+  for (let i = 0; i < 7; i++) {
+    const day = addDays(startDate, i)
+    const isSelected = isSameDay(day, selectedDate) // 선택된 날짜 여부
+    const isTodaySelected = isToday(selectedDate) // 선택된 날짜가 오늘인지 여부
+    const isTodayAndNotSelected = isToday(day) && !isSelected // 오늘이지만 선택되지 않은 경우
+
+    days.push(
+      <TouchableOpacity
+        key={i}
+        style={[styles.dayContainer, isSelected && styles.selectedDay, isTodayAndNotSelected && styles.todayDay]}
+        onPress={() => onChange(day)}>
+        <Text
+          style={[
+            styles.dayOfWeekText,
+            isSelected ? styles.selectedText : isToday(day) ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
+          ]}>
+          {daysOfWeek[i]}
+        </Text>
+        <Text
+          style={[
+            styles.dayText,
+            isSelected ? styles.selectedText : isToday(day) ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
+          ]}>
+          {format(day, 'd')} {/* 날짜 */}
+        </Text>
+      </TouchableOpacity>,
+    )
+  }
+
+  return <View style={styles.weekRow}>{days}</View>
+}
+
+const MatchCalendar = ({onChange, value}: Props) => {
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState<any>(null)
 
   const prevMonth = () => {
     setCurrentDate(addMonths(currentDate, -1))
@@ -14,64 +84,11 @@ const MatchCalendar = () => {
   const nextMonth = () => {
     setCurrentDate(addMonths(currentDate, 1))
   }
-  const renderHeader = () => {
-    return (
-      <View style={styles.header}>
-        <TouchableOpacity onPress={prevMonth} style={styles.headerTextContainer}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <View style={styles.headerTextContainer}>
-          <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
-        </View>
-        <TouchableOpacity onPress={nextMonth} style={styles.headerTextContainer}>
-          <Ionicons name="chevron-forward" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  const renderWeekDays = () => {
-    const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토']
-    const days = []
-    const startDate = startOfWeek(currentDate) // 주의 첫 번째 날을 가져옴
-
-    // 7일 동안의 날짜를 요일과 함께 표시
-    for (let i = 0; i < 7; i++) {
-      const day = addDays(startDate, i)
-      const isSelected = isSameDay(day, selectedDate) // 선택된 날짜 여부
-      const isTodaySelected = isToday(selectedDate) // 선택된 날짜가 오늘인지 여부
-      const isTodayAndNotSelected = isToday(day) && !isSelected // 오늘이지만 선택되지 않은 경우
-
-      days.push(
-        <TouchableOpacity
-          key={i}
-          style={[styles.dayContainer, isSelected && styles.selectedDay, isTodayAndNotSelected && styles.todayDay]}
-          onPress={() => setSelectedDate(day)}>
-          <Text
-            style={[
-              styles.dayOfWeekText,
-              isSelected ? styles.selectedText : isToday(day) ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
-            ]}>
-            {daysOfWeek[i]}
-          </Text>
-          <Text
-            style={[
-              styles.dayText,
-              isSelected ? styles.selectedText : isToday(day) ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
-            ]}>
-            {format(day, 'd')} {/* 날짜 */}
-          </Text>
-        </TouchableOpacity>,
-      )
-    }
-
-    return <View style={styles.weekRow}>{days}</View>
-  }
 
   return (
     <View style={styles.container}>
-      {renderHeader()}
-      {renderWeekDays()}
+      <MatchCalendarHeader prevMonth={prevMonth} nextMonth={nextMonth} currentDate={currentDate} />
+      <MatchCalendarBody currentDate={currentDate} selectedDate={value} onChange={onChange} />
     </View>
   )
 }

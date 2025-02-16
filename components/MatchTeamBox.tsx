@@ -1,38 +1,33 @@
+import {Match} from '@/app/(tabs)/match'
+import {findTeamById} from '@/constants/join'
+import {format} from 'date-fns'
 import React from 'react'
 import {View, Image, Text, StyleSheet, ImageSourcePropType} from 'react-native'
 
-//TODO 목업 인터페이스 추후 실제 데이터 수정
-interface IMatchTeamBox {
-  time: string
-  homeTeamImg: ImageSourcePropType
-  awayTeamImg: ImageSourcePropType
-  homeTeamNm: string
-  awayTeamNm: string
-  isSelected?: boolean
-}
-
 /** 매치 팀 경기 카드 컴포넌트 */
-const MatchTeamBox = (props: IMatchTeamBox) => {
-  const {time, homeTeamImg, awayTeamImg, homeTeamNm, awayTeamNm, isSelected} = props
+const MatchTeamBox = ({game_date, team_away_info, team_home_info, ballpark_info}: Match) => {
+  const time = format(game_date, 'HH:mm')
+
   return (
-    <View style={isSelected ? styles.gameSelectedInfoBox : styles.gameInfoBox}>
+    <View style={styles.gameInfoBox}>
+      {/* <View style={isSelected ? styles.gameSelectedInfoBox : styles.gameInfoBox}> */}
       <View style={styles.matchDayBox}>
         <Text style={styles.matchDayTitle}>{time}</Text>
         <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
-        <Text style={[styles.matchDayTitle, {marginLeft: 3}]}>수원</Text>
+        <Text style={[styles.matchDayTitle, {marginLeft: 3}]}>{ballpark_info.name}</Text>
       </View>
       <View style={styles.matchTeamBox}>
         <View style={styles.matchTeamInfo}>
-          <Image source={awayTeamImg} resizeMode="contain" style={{width: 35, height: 35}} />
+          <Image source={findTeamById(team_home_info.id)?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
           <View style={styles.ellipseBox}>
             <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
             <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
           </View>
-          <Image source={homeTeamImg} resizeMode="contain" style={{width: 35, height: 35}} />
+          <Image source={findTeamById(team_away_info.id)?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
         </View>
         <View style={styles.teamNameBox}>
-          <Text style={styles.teamText}>{homeTeamNm}</Text>
-          <Text style={styles.teamText}>{awayTeamNm}</Text>
+          <Text style={styles.teamText}>{team_home_info.name}</Text>
+          <Text style={styles.teamText}>{team_away_info.name}</Text>
         </View>
       </View>
     </View>
@@ -43,11 +38,11 @@ export default MatchTeamBox
 
 const styles = StyleSheet.create({
   gameInfoBox: {
-    backgroundColor: '#F3F2EE',
+    backgroundColor: 'white',
     borderRadius: 10,
     width: '100%',
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: '#D0CEC7',
     height: 113,
     padding: 12,
     flexDirection: 'column',

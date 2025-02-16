@@ -3,6 +3,12 @@ import {View} from 'react-native'
 import MatchTeamBox from '@/components/MatchTeamBox'
 import MatchCalendar from '@/components/MatchCalendar'
 import MatchTopNotificationComponent from '@/app/match/components/MatchTopNotificationComponent'
+import {useQuery} from '@tanstack/react-query'
+import {useState} from 'react'
+import ApiClient from '@/api'
+import {format} from 'date-fns'
+import {Pagination} from '@/types/generic'
+import EmptyMatchView from '@/components/match/EmptyMatchView'
 
 const matchTeam = [
   {
@@ -30,23 +36,64 @@ const matchTeam = [
     awayTeamNm: 'KT',
   },
 ]
-const MatchScreen = () => {
-  const renderListHeaderComponent = () => {
-    return <MatchCalendar />
-  }
 
-  const renderItem = ({item, index}: {item: any; index: number}) => {
-    return (
-      <MatchTeamBox
-        time={item.time}
-        homeTeamImg={item.homeTeamImg}
-        awayTeamImg={item.awayTeamImg}
-        homeTeamNm={item.homeTeamNm}
-        awayTeamNm={item.awayTeamNm}
-        isSelected={item.id === index}
-      />
-    )
+type TeamInfo = {
+  id: number
+  name: string
+  logo_url: string
+}
+
+export type Match = {
+  id: number
+  team_home_info: TeamInfo
+  team_away_info: TeamInfo
+  ballpark_info: {
+    id: number
+    name: string
+    team_info: TeamInfo
   }
+  game_date: string //'2025-02-16T08:27:20.308Z'
+}
+
+const MatchScreen = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date())
+
+  const {data} = useQuery({
+    queryKey: ['matchTeam', format(selectedDate, 'yyyy-MM-dd')],
+    queryFn: async () => {
+      return {
+        results: [
+          {
+            id: 0,
+            team_home_info: {
+              id: 1,
+              name: 'LG',
+              logo_url: '',
+            },
+            team_away_info: {
+              id: 2,
+              name: 'KT',
+              logo_url: '',
+            },
+            ballpark_info: {
+              id: 1,
+              name: '잠실',
+              team_info: {
+                id: 1,
+                name: 'LG',
+                logo_url: '',
+              },
+            },
+            game_date: '2025-02-16T08:27:20.308Z',
+          },
+        ],
+      }
+      // return ApiClient.get<Pagination<Match>>('/games/', {
+      //   end_date: format(selectedDate, 'yyyy-MM-dd'),
+      //   start_date: format(selectedDate, 'yyyy-MM-dd'),
+      // })
+    },
+  })
 
   return (
     <View style={styles.container}>
@@ -54,9 +101,10 @@ const MatchScreen = () => {
 
       <FlatList
         contentContainerStyle={styles.flatList}
-        data={matchTeam}
-        renderItem={renderItem}
-        ListHeaderComponent={renderListHeaderComponent}
+        data={data?.results || []}
+        ListEmptyComponent={() => <EmptyMatchView />}
+        renderItem={({item: match}) => <MatchTeamBox {...match} />}
+        ListHeaderComponent={() => <MatchCalendar value={selectedDate} onChange={date => setSelectedDate(date)} />}
         keyExtractor={item => `${item.id}`}
       />
     </View>
