@@ -241,6 +241,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 6,
     borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'transparent',
+    padding: 4,
+    marginHorizontal: 4,
   },
   selectedText: {
     color: '#fff',
