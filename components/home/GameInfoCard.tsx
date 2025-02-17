@@ -2,12 +2,14 @@ import {DAYS_OF_WEEK} from '@/constants/day'
 import {findTeamById} from '@/constants/join'
 import {useGameContext} from '@/hooks/game/useGame'
 import dayjs from 'dayjs'
+import {useRouter} from 'expo-router'
 import React from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native'
 
 const GameInfoCard = () => {
   const gameContext = useGameContext()
 
+  const router = useRouter()
   const hasMatch = Boolean(gameContext?.matchingList.length)
 
   return (
@@ -58,7 +60,7 @@ const GameInfoCard = () => {
         </View>
       )}
 
-      <TouchableOpacity style={styles.seeMoreButton}>
+      <TouchableOpacity style={styles.seeMoreButton} onPress={() => router.navigate('/(tabs)/match')}>
         <View style={styles.imgBox}>
           <Image source={require('@/assets/icons/see-more-calendar.png')} resizeMode="contain" />
         </View>
