@@ -5,6 +5,7 @@ import {Picker} from '@react-native-picker/picker'
 import {Ionicons} from '@expo/vector-icons'
 import {ko} from 'date-fns/locale'
 import {useRouter} from 'expo-router'
+import {DAYS_OF_WEEK} from '@/constants/day'
 
 const moodColors = {
   happy: 'green',
@@ -43,10 +44,9 @@ const Calendar = () => {
   }
 
   const renderDaysOfWeek = () => {
-    const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토']
     return (
       <View style={styles.daysOfWeekContainer}>
-        {daysOfWeek.map((day, index) => (
+        {DAYS_OF_WEEK.map((day, index) => (
           <Text key={index} style={styles.dayOfWeekText}>
             {day}
           </Text>

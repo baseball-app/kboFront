@@ -1,36 +1,52 @@
-import {Match} from '@/app/(tabs)/match'
 import {findTeamById} from '@/constants/join'
+import {Match} from '@/hooks/match/useMatch'
 import {format} from 'date-fns'
 import React from 'react'
-import {View, Image, Text, StyleSheet, ImageSourcePropType} from 'react-native'
+import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native'
+
+type Props = {
+  match: Match
+  onClick: () => void
+  isSelected?: boolean
+}
 
 /** 매치 팀 경기 카드 컴포넌트 */
-const MatchTeamBox = ({game_date, team_away_info, team_home_info, ballpark_info}: Match) => {
-  const time = format(game_date, 'HH:mm')
+const MatchTeamBox = ({match, onClick, isSelected}: Props) => {
+  const time = format(match.game_date, 'HH:mm')
 
   return (
-    <View style={styles.gameInfoBox}>
-      {/* <View style={isSelected ? styles.gameSelectedInfoBox : styles.gameInfoBox}> */}
-      <View style={styles.matchDayBox}>
-        <Text style={styles.matchDayTitle}>{time}</Text>
-        <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
-        <Text style={[styles.matchDayTitle, {marginLeft: 3}]}>{ballpark_info.name}</Text>
-      </View>
-      <View style={styles.matchTeamBox}>
-        <View style={styles.matchTeamInfo}>
-          <Image source={findTeamById(team_home_info.id)?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
-          <View style={styles.ellipseBox}>
-            <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
-            <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
+    <TouchableOpacity activeOpacity={0.8} onPress={onClick}>
+      <View style={isSelected ? styles.gameSelectedInfoBox : styles.gameInfoBox}>
+        {/* <View  */}
+        <View style={styles.matchDayBox}>
+          <Text style={styles.matchDayTitle}>{time}</Text>
+          <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
+          <Text style={[styles.matchDayTitle, {marginLeft: 3}]}>{match.ballpark_info.name}</Text>
+        </View>
+        <View style={styles.matchTeamBox}>
+          <View style={styles.matchTeamInfo}>
+            <Image
+              source={findTeamById(match.team_home_info.id)?.logo}
+              resizeMode="contain"
+              style={{width: 35, height: 35}}
+            />
+            <View style={styles.ellipseBox}>
+              <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
+              <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
+            </View>
+            <Image
+              source={findTeamById(match.team_away_info.id)?.logo}
+              resizeMode="contain"
+              style={{width: 35, height: 35}}
+            />
           </View>
-          <Image source={findTeamById(team_away_info.id)?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
-        </View>
-        <View style={styles.teamNameBox}>
-          <Text style={styles.teamText}>{team_home_info.name}</Text>
-          <Text style={styles.teamText}>{team_away_info.name}</Text>
+          <View style={styles.teamNameBox}>
+            <Text style={styles.teamText}>{match.team_home_info.name}</Text>
+            <Text style={styles.teamText}>{match.team_away_info.name}</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -38,7 +54,7 @@ export default MatchTeamBox
 
 const styles = StyleSheet.create({
   gameInfoBox: {
-    backgroundColor: 'white',
+    backgroundColor: '#F3F2EE',
     borderRadius: 10,
     width: '100%',
     borderWidth: 1,
@@ -52,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     width: '100%',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#353430',
     height: 113,
     padding: 12,

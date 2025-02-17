@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, Modal, Button} from 'react-native'
 import {format, startOfWeek, addDays, isSameDay, addMonths, isToday} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
+import {DAYS_OF_WEEK} from '@/constants/day'
 
 type Props = {
   onChange: (date: Date) => void
@@ -37,7 +38,6 @@ type MatchCalendarBodyProps = {
 }
 
 const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarBodyProps) => {
-  const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토']
   const days = []
   const startDate = startOfWeek(currentDate) // 주의 첫 번째 날을 가져옴
 
@@ -58,7 +58,7 @@ const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarB
             styles.dayOfWeekText,
             isSelected ? styles.selectedText : isToday(day) ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
           ]}>
-          {daysOfWeek[i]}
+          {DAYS_OF_WEEK[i]}
         </Text>
         <Text
           style={[

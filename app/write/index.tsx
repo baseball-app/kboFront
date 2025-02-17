@@ -1,6 +1,7 @@
 import QuestionBox from '@/components/home/QuestionBox'
 import MatchTeamBox from '@/components/MatchTeamBox'
-import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
+import useMatch from '@/hooks/match/useMatch'
+import useTicket from '@/hooks/match/useTicket'
 import {useRouter} from 'expo-router'
 import {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity} from 'react-native'
@@ -46,35 +47,12 @@ const weatherResult = [
   },
 ]
 
-/** 경기 매치 팀 목업 데이터 */
-const matchTeam = [
-  {
-    time: '14:00',
-    homeTeamImg: require('@/assets/team_logo/SSG.png'),
-    awayTeamImg: require('@/assets/team_logo/KT.png'),
-    homeTeamNm: 'SSG',
-    awayTeamNm: 'KT',
-  },
-  {
-    time: '15:00',
-    homeTeamImg: require('@/assets/team_logo/SSG.png'),
-    awayTeamImg: require('@/assets/team_logo/KT.png'),
-    homeTeamNm: 'SSG',
-    awayTeamNm: 'KT',
-  },
-  {
-    time: '16:00',
-    homeTeamImg: require('@/assets/team_logo/SSG.png'),
-    awayTeamImg: require('@/assets/team_logo/KT.png'),
-    homeTeamNm: 'SSG',
-    awayTeamNm: 'KT',
-  },
-]
 const DailyLogWriteScreen = () => {
   /** 스토어에서 가져온 상태와 set 함수 */
   const {
     selectedMatch,
     setSelectedMatch,
+    selectedDate,
     selectedMatchResult,
     setSelectedMatchResult,
     selectedWeather,
@@ -82,9 +60,8 @@ const DailyLogWriteScreen = () => {
     selectedPlace,
     setSelectedPlace,
     clearState,
-  } = useDailyWriteStore()
+  } = useTicket()
 
-  console.log('selectedMatch', selectedMatch)
   const router = useRouter()
   /** 현재 단계를 나타내는 상태 */
   const [currentStep, setCurrentStep] = useState(1)
@@ -133,11 +110,8 @@ const DailyLogWriteScreen = () => {
     }
   }
 
-  useEffect(() => {
-    return () => {
-      clearState()
-    }
-  }, [])
+  const {matchingList} = useMatch({selectedDate})
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right', 'bottom']}>
       <View style={styles.stepHeaderBox}>
@@ -152,17 +126,8 @@ const DailyLogWriteScreen = () => {
         <ScrollView style={styles.scrollContainer}>
           <Text style={styles.title}>오늘의 경기 일정을{'\n'}선택해주세요</Text>
           <View style={styles.matchListBox}>
-            {matchTeam.map((ev, index) => (
-              <TouchableOpacity key={index} onPress={() => setSelectedMatch(ev)} activeOpacity={1}>
-                <MatchTeamBox
-                  homeTeamImg={ev.homeTeamImg}
-                  awayTeamImg={ev.awayTeamImg}
-                  time={ev.time}
-                  homeTeamNm={ev.homeTeamNm}
-                  awayTeamNm={ev.awayTeamNm}
-                  isSelected={selectedMatch?.time === ev.time}
-                />
-              </TouchableOpacity>
+            {matchingList.map((match, index) => (
+              <MatchTeamBox key={index} isSelected={selectedMatch?.id === match.id} match={match} onClick={() => {}} />
             ))}
           </View>
           <View style={styles.linkBox}>
@@ -331,8 +296,9 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 10,
     paddingHorizontal: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#353430',
+    backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
