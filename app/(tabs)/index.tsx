@@ -17,8 +17,8 @@ const CalendarScreen = () => {
         <GameProvider>
           <GameCardController />
           <GameInfoCard />
-          <Calendar />
         </GameProvider>
+        <Calendar />
       </ScrollView>
 
       {/* Floating Button */}

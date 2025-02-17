@@ -1,32 +1,57 @@
+import {DAYS_OF_WEEK} from '@/constants/day'
+import {findTeamById} from '@/constants/join'
+import {useGameContext} from '@/hooks/game/useGame'
+import dayjs from 'dayjs'
 import React from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native'
 
-interface IGameInfoCard {
-  matchSchedule?: string
-}
+const GameInfoCard = () => {
+  const gameContext = useGameContext()
 
-const GameInfoCard = (props: IGameInfoCard) => {
-  const {matchSchedule} = props
+  const hasMatch = Boolean(gameContext?.matchingList.length)
+
   return (
     <View style={styles.container}>
-      {matchSchedule ? (
-        <View style={styles.gameInfoBox}>
-          <Text>{matchSchedule}</Text>
-          <View style={styles.matchTeamBox}>
-            <View style={styles.matchTeamInfo}>
-              <Image source={require('@/assets/team_logo/SSG.png')} resizeMode="contain" />
-              <View style={styles.ellipseBox}>
-                <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
-                <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
+      {hasMatch ? (
+        gameContext?.matchingList.map(match => {
+          const home_info = findTeamById(match.team_home_info.id)
+          const away_info = findTeamById(match.team_away_info.id)
+
+          const game_date = dayjs(match.game_date)
+          const weekDay = DAYS_OF_WEEK[game_date.day()]
+          const title = `${game_date.format(`M월D일(${weekDay}) HH:mm`)}`
+
+          return (
+            <View style={styles.gameInfoBox} key={match.id}>
+              <View style={styles.titleSection}>
+                <Text style={styles.date}>{title}</Text>
+                <Text style={styles.location}>{` ・ ${match.ballpark_info.name}`}</Text>
               </View>
-              <Image source={require('@/assets/team_logo/KT.png')} resizeMode="contain" />
+              <View style={styles.matchTeamBox}>
+                <View style={styles.matchTeamInfo}>
+                  <Image source={home_info?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
+                  <View style={styles.ellipseBox}>
+                    <Image
+                      source={require('@/assets/icons/ellipse.png')}
+                      resizeMode="contain"
+                      style={{width: 5, height: 5}}
+                    />
+                    <Image
+                      source={require('@/assets/icons/ellipse.png')}
+                      resizeMode="contain"
+                      style={{width: 5, height: 5}}
+                    />
+                  </View>
+                  <Image source={away_info?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
+                </View>
+                <View style={styles.teamNameBox}>
+                  <Text style={styles.teamText}>{match.team_home_info.name}</Text>
+                  <Text style={styles.teamText}>{match.team_away_info.name}</Text>
+                </View>
+              </View>
             </View>
-            <View style={styles.teamNameBox}>
-              <Text style={styles.teamText}>SSG</Text>
-              <Text style={styles.teamText}>KT</Text>
-            </View>
-          </View>
-        </View>
+          )
+        })
       ) : (
         <View style={styles.noGameInfoBox}>
           <Text style={styles.noGameText}>경기 일정이 없어요.</Text>
@@ -49,7 +74,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#00184F',
     borderRadius: 10,
     width: '100%',
-    height: 175,
     marginTop: 12,
     marginBottom: 12,
     paddingHorizontal: 10,
@@ -62,10 +86,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     width: '100%',
-    height: 113,
     padding: 12,
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  titleSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    fontSize: 14,
+  },
+  location: {
+    color: '#77756C',
+    fontWeight: '400',
+  },
+  date: {
+    color: '#171716',
   },
   noGameInfoBox: {
     backgroundColor: '#fff',
@@ -105,6 +140,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 45,
     justifyContent: 'center',
+    marginTop: 4,
   },
   seeMoreButton: {
     width: 133,

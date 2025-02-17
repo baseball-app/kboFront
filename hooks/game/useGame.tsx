@@ -1,5 +1,7 @@
 import {createContext, useContext, useState} from 'react'
 import dayjs, {Dayjs} from 'dayjs'
+import useTicket from '../match/useTicket'
+import useMatch, {Match} from '../match/useMatch'
 
 const today = dayjs()
 
@@ -25,12 +27,14 @@ interface IGameContext {
   moveToYesterday: () => void
   moveToTomorrow: () => void
   selectedDate: Dayjs
+  matchingList: Match[]
 }
 
 const GameContext = createContext<IGameContext | null>(null)
 
 export const GameProvider = ({children}: {children: React.ReactNode}) => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(today)
+  const {matchingList} = useMatch({selectedDate: selectedDate.toDate()})
 
   const moveToYesterday = () => {
     setSelectedDate(selectedDate.subtract(1, 'day'))
@@ -46,6 +50,7 @@ export const GameProvider = ({children}: {children: React.ReactNode}) => {
         moveToYesterday,
         moveToTomorrow,
         selectedDate,
+        matchingList,
       }}>
       {children}
     </GameContext.Provider>
