@@ -1,12 +1,9 @@
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity} from 'react-native'
 import Calendar from '@/components/home/Calendar'
-import {View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
-import GameInfoCard from '@/components/home/GameInfoCard'
-import {GameProvider} from '@/hooks/game/useGame'
-import GameCardController from '@/components/home/GameCardController'
 import {useRouter} from 'expo-router'
+import GameContainer from '@/components/game/GameContainer'
 const CalendarScreen = () => {
   const router = useRouter()
 
@@ -14,10 +11,7 @@ const CalendarScreen = () => {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FriendList />
       <ScrollView style={styles.scollContainer}>
-        <GameProvider>
-          <GameCardController />
-          <GameInfoCard />
-        </GameProvider>
+        <GameContainer />
         <Calendar />
       </ScrollView>
 

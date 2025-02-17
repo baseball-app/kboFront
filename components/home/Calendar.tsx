@@ -14,13 +14,6 @@ const moodColors = {
   angry: 'red',
 }
 
-const moodIcons = {
-  happy: '😊',
-  sad: '😢',
-  neutral: '😐',
-  angry: '😡',
-}
-
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -38,7 +31,7 @@ const Calendar = () => {
       </View>
     )
   }
-  const dayClick = pDay => {
+  const dayClick = (pDay: Date) => {
     setSelectedDate(pDay)
     router.navigate('/write')
   }
@@ -59,6 +52,7 @@ const Calendar = () => {
     const days = []
     const startDate = startOfWeek(startOfMonth(currentDate))
     const endDate = endOfWeek(endOfMonth(currentDate))
+    const today = new Date()
 
     let day = startDate
     while (day <= endDate) {
@@ -76,11 +70,11 @@ const Calendar = () => {
               style={[
                 styles.day,
                 !isSameMonth(day, currentDate) && styles.inactiveDay,
-                isSameDay(day, selectedDate) && styles.selectedDay,
+                Boolean(selectedDate) && isSameDay(day, selectedDate!) && styles.selectedDay,
               ]}
               onPress={() => dayClick(day)}>
-              <Text style={styles.dayText}>{format(day, 'd')}</Text>
-              {day.getDate() === 10 && <View style={styles.dot} />}
+              <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text>
+              {day.getDate() === 17 && <View style={styles.dot} />}
               <View style={[styles.moodContainer, mood && {backgroundColor: moodColors[mood]}]}>
                 {/* <Text style={styles.moodIcon}>{mood && moodIcons[mood]}</Text> */}
               </View>
@@ -196,12 +190,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dayText: {
-    fontSize: 16,
+    fontSize: 12,
+    lineHeight: 16.8,
+    marginBottom: 2,
   },
   inactiveDay: {
     opacity: 0.5,
   },
-
+  today: {
+    borderRadius: 10,
+    backgroundColor: '#000000',
+    color: 'white',
+    width: '100%',
+    textAlign: 'center',
+  },
   selectedDay: {
     borderWidth: 2,
     borderRadius: 10,
@@ -233,13 +235,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   dot: {
-    width: 6,
-    height: 6,
+    width: 4,
+    height: 4,
     borderRadius: 3,
     backgroundColor: 'red',
     position: 'absolute',
-    top: 4,
-    right: 4,
+    top: 10,
+    right: 12,
   },
   modalContainer: {
     flex: 1,
