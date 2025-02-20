@@ -12,9 +12,12 @@ const FriendList = () => {
         data={friend_status?.friends || []}
         renderItem={({item}) => (
           <View style={styles.friendItem}>
-            <FriendStatusProfile friendStatus={item} isMyProfile />
+            <FriendStatusProfile friendStatus={item} />
           </View>
         )}
+        // ListHeaderComponent={
+        //   <View style={styles.friendItem}>{/* <FriendStatusProfile friendStatus={item} isMyProfile /> */}</View>
+        // }
         keyExtractor={item => item.id.toString()}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -27,9 +30,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     paddingVertical: 10,
+    borderBottomColor: '#E4E2DC',
+    borderBottomWidth: 1,
   },
   friendItem: {
-    marginHorizontal: 10,
+    marginHorizontal: 20,
   },
 })
 

@@ -49,6 +49,8 @@ const useFriends = () => {
     enabled: Boolean(isLogined),
   })
 
+  console.log(friend_status)
+
   return {
     // followers: [
     //   {

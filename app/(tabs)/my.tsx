@@ -70,7 +70,7 @@ const ProfileScreen = () => {
           <Text style={styles.statLabel}>팔로잉</Text>
           <TouchableOpacity
             onPress={() => {
-              router.push('/my/following')
+              router.push('/my/followings')
             }}>
             <Text style={styles.statValue}>{profile?.followings}</Text>
           </TouchableOpacity>
