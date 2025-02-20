@@ -49,16 +49,7 @@ const useFriends = () => {
     enabled: Boolean(isLogined),
   })
 
-  console.log(friend_status)
-
   return {
-    // followers: [
-    //   {
-    //     user_id: 1,
-    //     nickname: 'nickname',
-    //     profile_image: 'https://image.com/',
-    //   },
-    // ],
     followers: followers?.followers,
     followings: followings?.followings,
     friend_status: {

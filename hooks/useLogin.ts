@@ -25,8 +25,6 @@ export const useLogin = () => {
   const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
   const router = useRouter()
 
-  console.log(user)
-
   const logout = async () => {
     try {
       await ApiClient.post('/auths/token/revoke/', {})
