@@ -1,36 +1,39 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import ProfileImageBox from '@/components/common/ProfileImageBox'
+import {theme} from '@/constants/Colors'
+import useMyInfo from '@/hooks/my/useMyInfo'
+import React from 'react'
+import {View, Text, Image, TouchableOpacity, ScrollView, StyleSheet} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 const MyTicketBoxScreen = () => {
   const teams = [
-    { name: '취예 경기', score: '+60', icon: '❤️' },
-    { name: '삼성 라이온즈', score: '+52', icon: 'SL' },
-    { name: 'LG 트윈스', score: '+8', icon: 'LG' },
+    {name: '취예 경기', score: '+60', icon: '❤️'},
+    {name: '삼성 라이온즈', score: '+52', icon: 'SL'},
+    {name: 'LG 트윈스', score: '+8', icon: 'LG'},
     // ... add other teams
-  ];
+  ]
+
+  const {profile} = useMyInfo()
 
   return (
-    <SafeAreaView style={styles.container}>
-
+    <View style={styles.container}>
       <View style={styles.profileCard}>
-        <Image
-          // source={require('./path-to-your-image.png')}
-          style={styles.profileImage}
-        />
+        <ProfileImageBox source={profile.profile_image} />
         <View>
-          <Text style={styles.name}>최강야구 님</Text>
-          <Text style={styles.team}>삼성 라이온즈 팬 · 승률력 76%</Text>
+          <Text style={styles.name}>{profile.nickname} 님</Text>
+          <Text style={styles.team}>
+            {profile.my_team?.name} 팬 · 승요력 {profile.predict_ratio}%
+          </Text>
         </View>
       </View>
 
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>나의 승률력 보러가기</Text>
+        <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
       </TouchableOpacity>
 
       <Text style={styles.sectionTitle}>발행한 티켓</Text>
 
-      <ScrollView>
+      <ScrollView style={styles.likeBoxContainer}>
         {teams.map((team, index) => (
           <TouchableOpacity key={index} style={styles.teamRow}>
             <View style={styles.teamInfo}>
@@ -41,9 +44,9 @@ const MyTicketBoxScreen = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-    </SafeAreaView>
-  );
-};
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -70,20 +73,23 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 4,
   },
   team: {
     color: '#666',
   },
   button: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#081B46',
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   buttonText: {
     color: '#FFFFFF',
     fontWeight: 'bold',
+    fontSize: 16,
+    lineHeight: 22.4,
   },
   sectionTitle: {
     fontSize: 18,
@@ -113,6 +119,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#3498db',
   },
-});
+  likeBoxContainer: {
+    backgroundColor: theme.colors.backgroundPrimary,
+  },
+})
 
-export default MyTicketBoxScreen;
+export default MyTicketBoxScreen

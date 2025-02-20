@@ -1,25 +1,10 @@
-import {useGameContext} from '@/hooks/game/useGame'
 import React from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {StyleSheet, Text, View} from 'react-native'
 
 const GameCardController = () => {
-  const gameContext = useGameContext()
-
   return (
     <View style={styles.tabMenu}>
-      <TouchableOpacity style={styles.tabMenuButton} onPress={gameContext?.moveToYesterday}>
-        <View style={styles.arrowImgBox}>
-          <Image source={require('@/assets/icons/left-arrow.png')} resizeMode="contain" />
-        </View>
-        <Text style={styles.dayText}>어제의 야구</Text>
-      </TouchableOpacity>
       <Text style={styles.todayText}>오늘의 야구</Text>
-      <TouchableOpacity style={styles.tabMenuButton} onPress={gameContext?.moveToYesterday}>
-        <Text style={styles.dayText}>내일의 야구</Text>
-        <View style={styles.arrowImgBox}>
-          <Image source={require('@/assets/icons/right-arrow.png')} resizeMode="contain" />
-        </View>
-      </TouchableOpacity>
     </View>
   )
 }
@@ -27,7 +12,7 @@ const GameCardController = () => {
 const styles = StyleSheet.create({
   tabMenu: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   tabMenuButton: {

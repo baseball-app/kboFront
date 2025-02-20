@@ -137,6 +137,7 @@ const useProfile = () => {
       ...data,
       my_team: myTeam,
       profile_image: myProfileImage,
+      predict_ratio: Math.floor((data?.predict_ratio ?? 0) * 100),
     },
     modifyProfile,
     updateMyTeam,

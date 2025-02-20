@@ -74,7 +74,6 @@ const Calendar = () => {
               ]}
               onPress={() => dayClick(day)}>
               <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text>
-              {day.getDate() === 17 && <View style={styles.dot} />}
               <View style={[styles.moodContainer, mood && {backgroundColor: moodColors[mood]}]}>
                 {/* <Text style={styles.moodIcon}>{mood && moodIcons[mood]}</Text> */}
               </View>
@@ -233,15 +232,6 @@ const styles = StyleSheet.create({
   },
   moodIcon: {
     fontSize: 24,
-  },
-  dot: {
-    width: 4,
-    height: 4,
-    borderRadius: 3,
-    backgroundColor: 'red',
-    position: 'absolute',
-    top: 10,
-    right: 12,
   },
   modalContainer: {
     flex: 1,

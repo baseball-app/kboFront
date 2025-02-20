@@ -1,0 +1,31 @@
+import {horizontalScale, moderateScale, verticalScale} from '@/utils/metrics'
+import {Image, StyleSheet, View} from 'react-native'
+
+const ProfileImageBox = ({source}: {source: any}) => {
+  return (
+    <View style={styles.profileImageBox}>
+      <Image source={source} style={styles.profileImage} resizeMode="contain" />
+    </View>
+  )
+}
+
+export default ProfileImageBox
+
+const styles = StyleSheet.create({
+  profileImageBox: {
+    backgroundColor: '#F3F2EE',
+    width: moderateScale(80),
+    height: moderateScale(80),
+    borderRadius: 50,
+    marginRight: horizontalScale(18),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: moderateScale(0.8),
+    borderColor: '#D0CEC7',
+  },
+  profileImage: {
+    width: horizontalScale(46.44),
+    height: verticalScale(50.58),
+    backgroundColor: '#F5F5F5', // Light background color
+  },
+})
