@@ -69,7 +69,9 @@ const useProfile = () => {
   // 마이팀 변경 페이지에서 사용하는 함수
   const updateTeam = async (teamId: number) => {
     if (!profile) return
-    await ApiClient.post('/teams/change/', {})
+    await ApiClient.post('/users/modify/', {
+      my_team: teamId,
+    })
     refetch()
   }
 
