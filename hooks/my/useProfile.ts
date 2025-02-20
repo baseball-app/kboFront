@@ -55,7 +55,7 @@ const useProfile = () => {
     })
   }
 
-  const modifyProfile = async (joinSlice: IUserJoinSlice) => {
+  const updateProfileWithSignUp = async (joinSlice: IUserJoinSlice) => {
     await ApiClient.post('/users/modify/', {
       nickname: joinSlice.nickname,
       profile_image: String(joinSlice.profile?.id),
@@ -67,11 +67,9 @@ const useProfile = () => {
   }
 
   // 마이팀 변경 페이지에서 사용하는 함수
-  const updateTeam = async (teamId: number) => {
+  const updateProfile = async (info: Partial<{my_team: number; nickname: string}>) => {
     if (!profile) return
-    await ApiClient.post('/users/modify/', {
-      my_team: teamId,
-    })
+    await ApiClient.post('/users/modify/', info)
     refetch()
   }
 
@@ -102,7 +100,7 @@ const useProfile = () => {
           text: '팀 변경',
           onPress: async () => {
             try {
-              await updateTeam(teamId)
+              await updateProfile({my_team: teamId})
               router.back()
             } catch (error) {
               console.error('updateMyTeam error :: ', error)
@@ -141,8 +139,9 @@ const useProfile = () => {
       profile_image: myProfileImage,
       predict_ratio: Math.floor((data?.predict_ratio ?? 0) * 100),
     },
-    modifyProfile,
+    updateProfileWithSignUp,
     updateMyTeam,
+    updateProfile,
   }
 }
 

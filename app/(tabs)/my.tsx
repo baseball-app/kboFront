@@ -20,11 +20,7 @@ const ProfileScreen = () => {
         <View style={styles.profileInfoBox}>
           <View style={styles.profileInfo}>
             <Text style={styles.profileName}>{profile?.nickname} 님</Text>
-            <TouchableOpacity
-              onPress={() => {
-                // router.push('/profile/edit')
-              }}
-              style={styles.profileEditIconBox}>
+            <TouchableOpacity onPress={() => router.push('/my/change-nickname')} style={styles.profileEditIconBox}>
               <Image
                 source={require('../../assets/icons/edit.png')}
                 style={styles.profileEditIcon}
@@ -51,7 +47,7 @@ const ProfileScreen = () => {
           <Text style={styles.teamName}>{profile.my_team?.name}</Text>
         </View>
 
-        <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push('/my/change')}>
+        <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push('/my/change-team')}>
           <Image source={require('../../assets/icons/gear.png')} style={styles.teamSettingsIcon} />
         </TouchableOpacity>
       </View>

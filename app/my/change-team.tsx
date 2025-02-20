@@ -21,7 +21,7 @@ export default function ChangeScreen() {
         <TouchableOpacity style={styles.backButton} onPress={router.back}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>마이팀 변경</Text>
+        <Text style={styles.headerTitle}>마이팀 변경하기</Text>
       </View>
 
       <View style={styles.headerDescription}>

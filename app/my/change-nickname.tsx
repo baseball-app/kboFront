@@ -1,30 +1,33 @@
+import useUserJoin from '@/hooks/auth/useUserJoin'
+import useProfile from '@/hooks/my/useProfile'
+import {moderateScale, verticalScale} from '@/utils/metrics'
+import {Ionicons} from '@expo/vector-icons'
+import {useRouter} from 'expo-router'
 import React, {useState} from 'react'
 import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
   StyleSheet,
-  View,
   Text,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
+  View,
 } from 'react-native'
-import Ionicons from '@expo/vector-icons/Ionicons'
-import useUserJoin from '@/hooks/auth/useUserJoin'
 
-export default function NicknameScreen() {
-  const {nickname, setNickname, moveToNextStep, moveToPrevStep} = useUserJoin()
+const ChangeNicknameScreen = () => {
+  const {updateProfile, profile} = useProfile()
+  const [nickname, setNickname] = useState(profile.nickname)
+  const router = useRouter()
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={moveToPrevStep}>
+        <TouchableOpacity style={styles.backButton} onPress={router.back}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
-        <Text style={styles.subtitle}>한글/영어/숫자/밑줄/띄어쓰기를{'\n'} 사용할 수 있습니다.</Text>
+        <Text style={styles.headerTitle}>닉네임 변경하기</Text>
       </View>
-
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
         <View style={styles.inputSection}>
           <View style={styles.inputContainer}>
@@ -36,20 +39,21 @@ export default function NicknameScreen() {
               placeholderTextColor="#CCCCCC"
             />
             <View style={[styles.inputUnderline, nickname ? styles.inputUnderlineActive : null]} />
+            <Text style={styles.subtitle}>* 한글/영어/숫자/밑줄/띄어쓰기를 사용할 수 있습니다.</Text>
+            <TouchableOpacity
+              style={[styles.button, nickname ? styles.buttonActive : null]}
+              onPress={() => updateProfile({nickname}).then(router.back)}
+              disabled={!nickname}>
+              <Text style={styles.buttonText}>변경하기</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.button, nickname ? styles.buttonActive : null]}
-            onPress={moveToNextStep}
-            disabled={!nickname}>
-            <Text style={styles.buttonText}>다음</Text>
-          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }
+
+export default ChangeNicknameScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -64,8 +68,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    marginBottom: 20,
-    paddingHorizontal: 16,
+    paddingHorizontal: verticalScale(24),
+    flexDirection: 'row',
   },
   backButton: {
     marginBottom: 30,
@@ -76,24 +80,27 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: 14,
+    color: '#77756C',
+    marginTop: 16,
   },
   inputContainer: {
     marginTop: 20,
   },
   input: {
-    fontSize: 16,
+    fontSize: 18,
     paddingVertical: 8,
-    color: '#333333',
+    lineHeight: 24,
+    color: '#171716',
+    textAlign: 'center',
   },
   inputUnderline: {
-    height: 1,
+    height: 2,
     backgroundColor: '#CCCCCC',
     marginTop: 4,
   },
   inputUnderlineActive: {
-    backgroundColor: '#000000',
+    backgroundColor: '#171716',
   },
   buttonContainer: {
     padding: 20,
@@ -102,15 +109,23 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#ccc',
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 10,
     alignItems: 'center',
+    marginTop: 32,
   },
   buttonActive: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#1E5EF4',
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  headerTitle: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: moderateScale(20),
+    fontWeight: 'bold',
+    marginRight: verticalScale(16),
   },
 })
