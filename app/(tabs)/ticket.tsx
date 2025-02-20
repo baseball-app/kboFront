@@ -1,39 +1,46 @@
 import ProfileImageBox from '@/components/common/ProfileImageBox'
+import Tag from '@/components/Tag'
 import {theme} from '@/constants/Colors'
+import {CLUB_LIST} from '@/constants/ticket'
 import useMyInfo from '@/hooks/my/useMyInfo'
-import React from 'react'
+import React, {useState} from 'react'
 import {View, Text, Image, TouchableOpacity, ScrollView, StyleSheet} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
 
 const MyTicketBoxScreen = () => {
-  const teams = [
-    {name: '취예 경기', score: '+60', icon: '❤️'},
-    {name: '삼성 라이온즈', score: '+52', icon: 'SL'},
-    {name: 'LG 트윈스', score: '+8', icon: 'LG'},
-    // ... add other teams
-  ]
-
+  const [selectedClub, setSelectedClub] = useState(CLUB_LIST[0].value)
   const {profile} = useMyInfo()
 
   return (
     <View style={styles.container}>
-      <View style={styles.profileCard}>
-        <ProfileImageBox source={profile.profile_image} />
-        <View>
-          <Text style={styles.name}>{profile.nickname} 님</Text>
-          <Text style={styles.team}>
-            {profile.my_team?.name} 팬 · 승요력 {profile.predict_ratio}%
-          </Text>
+      <View style={styles.infoBox}>
+        <View style={styles.profileCard}>
+          <ProfileImageBox source={profile.profile_image} />
+          <View>
+            <Text style={styles.name}>{profile.nickname} 님</Text>
+            <Text style={styles.team}>
+              {profile.my_team?.name} 팬 · 승요력 {profile.predict_ratio}%
+            </Text>
+          </View>
+        </View>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.ticketBox}>
+        <Text style={styles.ticketTitle}>상대 구단별 경기티켓</Text>
+        <View style={styles.tabContainer}>
+          {CLUB_LIST.map(club => (
+            <Tag
+              name={club.name} //
+              isActive={club.value === selectedClub}
+              onClick={() => setSelectedClub(club.value)}
+            />
+          ))}
         </View>
       </View>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.sectionTitle}>발행한 티켓</Text>
-
-      <ScrollView style={styles.likeBoxContainer}>
+      {/* <ScrollView style={styles.likeBoxContainer}>
         {teams.map((team, index) => (
           <TouchableOpacity key={index} style={styles.teamRow}>
             <View style={styles.teamInfo}>
@@ -43,7 +50,7 @@ const MyTicketBoxScreen = () => {
             <Text style={styles.teamScore}>{team.score}</Text>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </ScrollView> */}
     </View>
   )
 }
@@ -51,13 +58,29 @@ const MyTicketBoxScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    padding: 20,
+    backgroundColor: '#FFFCF3',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  infoBox: {
+    padding: 20,
+    backgroundColor: 'white',
+    shadowColor: '#000000', // 그림자 색상
+    shadowOffset: {width: 0, height: 3}, // X, Y 방향 그림자 거리
+    shadowOpacity: 0.08, // 그림자 투명도 (14% = 0.14보다 살짝 줄여야 자연스러움)
+    shadowRadius: 15, // 그림자 흐림 정도
+    elevation: 5, // 안드로이드용 그림자 (iOS는 위 속성만으로 충분)
+  },
+  ticketBox: {
+    paddingInline: 20,
+    paddingBlock: 40,
+  },
+  ticketTitle: {
+    fontSize: 18,
+    fontWeight: 600,
   },
   profileCard: {
     flexDirection: 'row',
@@ -121,6 +144,14 @@ const styles = StyleSheet.create({
   },
   likeBoxContainer: {
     backgroundColor: theme.colors.backgroundPrimary,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    paddingTop: 15,
+    gap: 8,
+    rowGap: 12,
   },
 })
 
