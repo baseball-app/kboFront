@@ -2,9 +2,11 @@ import useFriends from '@/hooks/my/useFriends'
 import React from 'react'
 import {View, Text, StyleSheet, FlatList, Image} from 'react-native'
 import FriendStatusProfile from './FriendStatusProfile'
+import useProfile from '@/hooks/my/useProfile'
 
 const FriendList = () => {
   const {friend_status} = useFriends()
+  const {profile} = useProfile()
 
   return (
     <View style={styles.container}>
@@ -15,9 +17,20 @@ const FriendList = () => {
             <FriendStatusProfile friendStatus={item} />
           </View>
         )}
-        // ListHeaderComponent={
-        //   <View style={styles.friendItem}>{/* <FriendStatusProfile friendStatus={item} isMyProfile /> */}</View>
-        // }
+        ListHeaderComponent={
+          <View style={styles.friendItem}>
+            <FriendStatusProfile
+              friendStatus={{
+                id: profile.id!,
+                nickname: '내 캘린더',
+                profile_type: profile.profile_type!,
+                profile_image: '',
+                ticket_info: {},
+              }}
+              isMyProfile
+            />
+          </View>
+        }
         keyExtractor={item => item.id.toString()}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -32,9 +45,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomColor: '#E4E2DC',
     borderBottomWidth: 1,
+    paddingRight: 20,
   },
   friendItem: {
-    marginHorizontal: 20,
+    marginLeft: 20,
   },
 })
 

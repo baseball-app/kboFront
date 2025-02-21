@@ -11,7 +11,11 @@ type Props = {
 const FriendStatusProfile = ({friendStatus, isMyProfile}: Props) => {
   return (
     <View style={styles.friendItem}>
-      <View style={styles.profileImageBox}>
+      <View
+        style={[
+          styles.profileImageBox, //
+          friendStatus.ticket_info?.writer_id ? styles.activeProfileImage : {},
+        ]}>
         <Image
           source={findProfileImageById(friendStatus.profile_type)}
           style={styles.profileImage}
@@ -38,8 +42,11 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D0CEC7',
+  },
+  activeProfileImage: {
     borderWidth: 2,
-    // borderColor: '#D0CEC7',
     borderColor: '#21376C',
   },
   profileImage: {

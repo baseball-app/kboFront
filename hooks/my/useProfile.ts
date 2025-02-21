@@ -23,6 +23,7 @@ export type Profile = {
   followers: number // 20
   followings: number // 32
   profile_type: number // 1
+  id: number
 }
 
 const useProfile = () => {
@@ -42,6 +43,7 @@ const useProfile = () => {
   // 회원가입 시, 초기 데이터 업데이트 하는 함수
   const updateInitialProfile = (joinSlice: IUserJoinSlice) => {
     updateProfileCacheData({
+      id: joinSlice.id,
       nickname: joinSlice.nickname,
       predict_ratio: 0,
       my_team: {
