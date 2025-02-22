@@ -23,10 +23,18 @@ const MatchScreen = () => {
         contentContainerStyle={styles.flatList}
         data={matchingList}
         ListEmptyComponent={() => <EmptyMatchView />}
-        renderItem={({item: match}) => (
-          <MatchTeamBox match={match} onClick={() => moveToWriteTicket(selectedDate, match)} />
+        ListHeaderComponent={() => (
+          <MatchCalendar //
+            value={selectedDate}
+            onChange={date => setSelectedDate(date)}
+          />
         )}
-        ListHeaderComponent={() => <MatchCalendar value={selectedDate} onChange={date => setSelectedDate(date)} />}
+        renderItem={({item: match}) => (
+          <MatchTeamBox
+            match={match} //
+            onClick={() => moveToWriteTicket(selectedDate, match)}
+          />
+        )}
         keyExtractor={item => `${item.id}`}
       />
     </View>

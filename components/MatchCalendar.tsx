@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet, Modal, Button} from 'react-native'
-import {format, startOfWeek, addDays, isSameDay, addMonths, isToday} from 'date-fns'
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import {format, startOfWeek, addDays, isSameDay, isToday, addWeeks} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
 import {DAYS_OF_WEEK} from '@/constants/day'
 
@@ -78,11 +78,11 @@ const MatchCalendar = ({onChange, value}: Props) => {
   const [currentDate, setCurrentDate] = useState(new Date())
 
   const prevMonth = () => {
-    setCurrentDate(addMonths(currentDate, -1))
+    setCurrentDate(addWeeks(currentDate, -1))
   }
 
   const nextMonth = () => {
-    setCurrentDate(addMonths(currentDate, 1))
+    setCurrentDate(addWeeks(currentDate, 1))
   }
 
   return (
@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
+    gap: 10,
   },
   dayContainer: {
     alignItems: 'center',
@@ -260,7 +261,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'transparent',
     padding: 4,
-    marginHorizontal: 2,
     flex: 1,
   },
   selectedText: {
