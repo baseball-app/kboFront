@@ -3,18 +3,26 @@ import React from 'react'
 import {View, Text, StyleSheet, FlatList, Image} from 'react-native'
 import FriendStatusProfile from './FriendStatusProfile'
 import useProfile from '@/hooks/my/useProfile'
+import {useRouter} from 'expo-router'
 
 const FriendList = () => {
   const {friend_status} = useFriends()
   const {profile} = useProfile()
-
+  const router = useRouter()
+  // todayTicketCard
   return (
     <View style={styles.container}>
       <FlatList
         data={friend_status?.friends || []}
         renderItem={({item}) => (
           <View style={styles.friendItem}>
-            <FriendStatusProfile friendStatus={item} />
+            <FriendStatusProfile
+              friendStatus={item}
+              onClick={() => {
+                router.push('/write/todayTicketCard')
+                //
+              }}
+            />
           </View>
         )}
         ListHeaderComponent={

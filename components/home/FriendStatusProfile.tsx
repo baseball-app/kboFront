@@ -1,16 +1,20 @@
 import {findProfileImageById} from '@/constants/join'
 import {FriendStatus} from '@/hooks/my/useFriends'
 import {horizontalScale, verticalScale} from '@/utils/metrics'
-import {Image, StyleSheet, Text, View} from 'react-native'
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 
 type Props = {
   friendStatus: FriendStatus
   isMyProfile?: boolean
+  onClick?: () => void
 }
 
-const FriendStatusProfile = ({friendStatus, isMyProfile}: Props) => {
+const FriendStatusProfile = ({friendStatus, isMyProfile, onClick}: Props) => {
   return (
-    <View style={styles.friendItem}>
+    <TouchableOpacity
+      onPress={onClick}
+      activeOpacity={0.9} //
+      style={styles.friendItem}>
       <View
         style={[
           styles.profileImageBox, //
@@ -28,7 +32,7 @@ const FriendStatusProfile = ({friendStatus, isMyProfile}: Props) => {
       <Text style={styles.friendName} numberOfLines={1}>
         {friendStatus.nickname}
       </Text>
-    </View>
+    </TouchableOpacity>
   )
 }
 

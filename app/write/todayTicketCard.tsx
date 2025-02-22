@@ -1,4 +1,5 @@
 import useTicket from '@/hooks/match/useTicket'
+import {useRouter} from 'expo-router'
 import React from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, ImageBackground} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -15,13 +16,12 @@ const emojis = [
   {emoji: '😐', count: 0},
 ]
 export default function GameCard() {
-  const ticket = useTicket()
-  console.log(ticket)
+  const router = useRouter()
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerBox}>
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity style={styles.backButton} onPress={router.back}>
           <Image source={require('@/assets/icons/back.png')} />
         </TouchableOpacity>
         <Text style={styles.headerText}>오늘의 티켓</Text>

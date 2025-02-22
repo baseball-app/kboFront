@@ -32,6 +32,7 @@ const MyTicketBoxScreen = () => {
         <View style={styles.tabContainer}>
           {CLUB_LIST.map(club => (
             <Tag
+              key={club.value}
               name={club.name} //
               isActive={club.value === selectedClub}
               onClick={() => setSelectedClub(club.value)}
