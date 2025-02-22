@@ -7,7 +7,7 @@ export interface IDailyLogWrite {
   selectedWeather: string
   selectedPlace: string
   selectedDate: Date | null
-  setSelectedMatch: (pM: any) => void
+  setSelectedMatch: (pM: Match | null) => void
   setSelectedMatchResult: (pR: string) => void
   setSelectedWeather: (pW: string) => void
   setSelectedPlace: (pP: string) => void

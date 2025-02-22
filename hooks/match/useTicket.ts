@@ -1,12 +1,14 @@
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Match} from './useMatch'
-import {useRouter} from 'expo-router'
+import {usePathname, useRouter} from 'expo-router'
 
 const useTicket = () => {
   const router = useRouter()
 
   const writeStore = useDailyWriteStore()
+
+  const pathname = usePathname()
   const {setSelectedDate, setSelectedMatch} = writeStore
 
   /**

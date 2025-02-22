@@ -1,5 +1,4 @@
 import ApiClient from '@/api'
-import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
 import {Pagination} from '@/types/generic'
 import {useQuery} from '@tanstack/react-query'
 import {format} from 'date-fns'

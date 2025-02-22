@@ -59,7 +59,6 @@ const DailyLogWriteScreen = () => {
     setSelectedWeather,
     selectedPlace,
     setSelectedPlace,
-    clearState,
   } = useTicket()
 
   const router = useRouter()
@@ -124,16 +123,21 @@ const DailyLogWriteScreen = () => {
       </View>
       {currentStep === 1 && (
         <ScrollView style={styles.scrollContainer}>
-          <Text style={styles.title}>오늘의 경기 일정을{'\n'}선택해주세요</Text>
+          <Text style={styles.title}>기록할 경기 일정을{'\n'}선택해주세요</Text>
           <View style={styles.matchListBox}>
             {matchingList.map((match, index) => (
-              <MatchTeamBox key={index} isSelected={selectedMatch?.id === match.id} match={match} onClick={() => {}} />
+              <MatchTeamBox
+                key={index} //
+                isSelected={selectedMatch?.id === match.id}
+                match={match}
+                onClick={() => setSelectedMatch(match)}
+              />
             ))}
           </View>
           <View style={styles.linkBox}>
-            <Text>기록할 경기가 없다면?</Text>
+            <Text>더블헤더 작성 시</Text>
             <TouchableOpacity onPress={() => router.navigate('/')} style={styles.linkTextButton}>
-              <Text style={styles.linkText}>직접 추가하기</Text>
+              <Text style={styles.linkText}> 직접 추가하기</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
