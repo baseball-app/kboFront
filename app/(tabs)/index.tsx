@@ -1,4 +1,4 @@
-import {StyleSheet, ScrollView, Image, Text, TouchableOpacity} from 'react-native'
+import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react-native'
 import Calendar from '@/components/home/Calendar'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
@@ -12,7 +12,9 @@ const CalendarScreen = () => {
       <FriendList />
       <ScrollView style={styles.scollContainer}>
         <GameContainer />
-        <Calendar />
+        <View style={{marginBottom: 70}}>
+          <Calendar />
+        </View>
       </ScrollView>
 
       {/* Floating Button */}

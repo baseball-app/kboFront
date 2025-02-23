@@ -1,7 +1,8 @@
 import ApiClient from '@/api'
 import {Pagination} from '@/types/generic'
 import {useQuery} from '@tanstack/react-query'
-import {format} from 'date-fns'
+import {addDays, format} from 'date-fns'
+import dayjs from 'dayjs'
 import React from 'react'
 
 type TeamInfo = {
@@ -49,20 +50,24 @@ const mock = [
 ]
 
 const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
+  const startDate = dayjs(selectedDate).startOf('date').format('YYYY-MM-DD')
+  const endDate = dayjs(selectedDate).add(10, 'day').startOf('date').format('YYYY-MM-DD')
+  console.log(startDate, endDate)
+
   const {data: matchingList} = useQuery({
-    queryKey: ['matchTeam', format(selectedDate!, 'yyyy-MM-dd')],
+    queryKey: ['matchTeam', startDate],
     queryFn: async () =>
       ApiClient.get<Pagination<Match>>('/games/', {
-        end_date: format(selectedDate!, 'yyyy-MM-dd'),
-        start_date: format(selectedDate!, 'yyyy-MM-dd'),
+        end_date: endDate,
+        start_date: startDate,
       }),
     enabled: Boolean(selectedDate),
   })
 
-  // const moveToW
+  console.log(matchingList)
 
   return {
-    matchingList: mock,
+    matchingList: matchingList?.results || [],
     // matchingList: matchingList?.results || mock,
   }
 }

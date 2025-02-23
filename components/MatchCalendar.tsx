@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 import {format, startOfWeek, addDays, isSameDay, isToday, addWeeks} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
@@ -88,7 +88,15 @@ const MatchCalendar = ({onChange, value}: Props) => {
   return (
     <View style={styles.container}>
       <MatchCalendarHeader prevMonth={prevMonth} nextMonth={nextMonth} currentDate={currentDate} />
-      <MatchCalendarBody currentDate={currentDate} selectedDate={value} onChange={onChange} />
+      <MatchCalendarBody
+        currentDate={currentDate}
+        selectedDate={value}
+        onChange={date => {
+          console.log('onchange', date)
+          setCurrentDate(date)
+          onChange(date)
+        }}
+      />
     </View>
   )
 }

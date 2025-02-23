@@ -125,7 +125,11 @@ const Calendar = () => {
                 style={styles.picker}
                 itemStyle={styles.pickerItem}>
                 {Array.from({length: 12}, (_, i) => (
-                  <Picker.Item key={i} label={format(new Date(0, i), 'LLLL', {locale: ko})} value={i} />
+                  <Picker.Item //
+                    key={i}
+                    label={format(new Date(0, i), 'LLLL', {locale: ko})}
+                    value={i}
+                  />
                 ))}
               </Picker>
             </View>
@@ -184,7 +188,7 @@ const styles = StyleSheet.create({
   },
   day: {
     width: '14.28%',
-    padding: 8,
+    padding: 6,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -192,6 +196,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16.8,
     marginBottom: 2,
+    fontWeight: 500,
+    color: '#77756C',
   },
   inactiveDay: {
     opacity: 0.5,
@@ -209,8 +215,8 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   moodContainer: {
-    width: 40,
-    height: 40,
+    width: 28,
+    height: 28,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,

@@ -10,50 +10,46 @@ const GameInfoCard = () => {
   const gameContext = useGameContext()
 
   const router = useRouter()
-  const hasMatch = Boolean(gameContext?.matchingList.length)
+  const hasMatch = Boolean(gameContext?.todayMyTeamMatch)
+
+  const home_info = findTeamById(gameContext?.todayMyTeamMatch?.team_home_info.id)
+  const away_info = findTeamById(gameContext?.todayMyTeamMatch?.team_away_info.id)
+
+  const game_date = dayjs(gameContext?.todayMyTeamMatch?.game_date)
+  const weekDay = DAYS_OF_WEEK[game_date.day()]
+  const title = `${game_date.format(`M월D일(${weekDay}) HH:mm`)}`
 
   return (
     <View style={styles.container}>
       {hasMatch ? (
-        gameContext?.matchingList.map(match => {
-          const home_info = findTeamById(match.team_home_info.id)
-          const away_info = findTeamById(match.team_away_info.id)
-
-          const game_date = dayjs(match.game_date)
-          const weekDay = DAYS_OF_WEEK[game_date.day()]
-          const title = `${game_date.format(`M월D일(${weekDay}) HH:mm`)}`
-
-          return (
-            <View style={styles.gameInfoBox} key={match.id}>
-              <View style={styles.titleSection}>
-                <Text style={styles.date}>{title}</Text>
-                <Text style={styles.location}>{` ・ ${match.ballpark_info.name}`}</Text>
+        <View style={styles.gameInfoBox}>
+          <View style={styles.titleSection}>
+            <Text style={styles.date}>{title}</Text>
+            <Text style={styles.location}>{` ・ ${gameContext?.todayMyTeamMatch?.ballpark_info.name}`}</Text>
+          </View>
+          <View style={styles.matchTeamBox}>
+            <View style={styles.matchTeamInfo}>
+              <Image source={home_info?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
+              <View style={styles.ellipseBox}>
+                <Image
+                  source={require('@/assets/icons/ellipse.png')}
+                  resizeMode="contain"
+                  style={{width: 5, height: 5}}
+                />
+                <Image
+                  source={require('@/assets/icons/ellipse.png')}
+                  resizeMode="contain"
+                  style={{width: 5, height: 5}}
+                />
               </View>
-              <View style={styles.matchTeamBox}>
-                <View style={styles.matchTeamInfo}>
-                  <Image source={home_info?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
-                  <View style={styles.ellipseBox}>
-                    <Image
-                      source={require('@/assets/icons/ellipse.png')}
-                      resizeMode="contain"
-                      style={{width: 5, height: 5}}
-                    />
-                    <Image
-                      source={require('@/assets/icons/ellipse.png')}
-                      resizeMode="contain"
-                      style={{width: 5, height: 5}}
-                    />
-                  </View>
-                  <Image source={away_info?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
-                </View>
-                <View style={styles.teamNameBox}>
-                  <Text style={styles.teamText}>{match.team_home_info.name}</Text>
-                  <Text style={styles.teamText}>{match.team_away_info.name}</Text>
-                </View>
-              </View>
+              <Image source={away_info?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
             </View>
-          )
-        })
+            <View style={styles.teamNameBox}>
+              <Text style={styles.teamText}>{gameContext?.todayMyTeamMatch?.team_home_info.name}</Text>
+              <Text style={styles.teamText}>{gameContext?.todayMyTeamMatch?.team_away_info.name}</Text>
+            </View>
+          </View>
+        </View>
       ) : (
         <View style={styles.noGameInfoBox}>
           <Text style={styles.noGameText}>경기 일정이 없어요.</Text>

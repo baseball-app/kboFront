@@ -22,13 +22,13 @@ const MatchScreen = () => {
       <FlatList
         contentContainerStyle={styles.flatList}
         data={matchingList}
-        ListEmptyComponent={() => <EmptyMatchView />}
-        ListHeaderComponent={() => (
+        ListEmptyComponent={<EmptyMatchView />}
+        ListHeaderComponent={
           <MatchCalendar //
             value={selectedDate}
             onChange={date => setSelectedDate(date)}
           />
-        )}
+        }
         renderItem={({item: match}) => (
           <MatchTeamBox
             match={match} //
