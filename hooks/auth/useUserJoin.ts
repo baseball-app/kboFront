@@ -1,7 +1,6 @@
-import {IUserJoinSlice, userJoinSlice} from '@/slice/userJoinSlice'
+import {userJoinSlice} from '@/slice/userJoinSlice'
 import {useRouter, useSegments} from 'expo-router'
 import useConsent from './useConsent'
-import ApiClient from '@/api'
 import useProfile from '../my/useProfile'
 
 // 유저의 회원가입 프로세스

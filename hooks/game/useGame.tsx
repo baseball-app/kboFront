@@ -1,33 +1,11 @@
-import {createContext, useContext, useState} from 'react'
-import dayjs, {Dayjs} from 'dayjs'
-import useTicket from '../match/useTicket'
+import {createContext, useContext} from 'react'
+import dayjs from 'dayjs'
 import useMatch, {Match} from '../match/useMatch'
 import useProfile from '../my/useProfile'
 
 const today = dayjs()
 
-const useGame = () => {
-  const [selectedDate, setSelectedDate] = useState<Dayjs>(today)
-
-  const moveToYesterday = () => {
-    setSelectedDate(selectedDate.subtract(1, 'day'))
-  }
-
-  const moveToTomorrow = () => {
-    setSelectedDate(selectedDate.add(1, 'day'))
-  }
-
-  return {
-    moveToYesterday,
-    moveToTomorrow,
-    selectedDate,
-  }
-}
-
 interface IGameContext {
-  moveToYesterday: () => void
-  moveToTomorrow: () => void
-  selectedDate: Dayjs
   matchingList: Match[]
   todayMyTeamMatch: Match | undefined
 }
@@ -35,8 +13,7 @@ interface IGameContext {
 const GameContext = createContext<IGameContext | null>(null)
 
 export const GameProvider = ({children}: {children: React.ReactNode}) => {
-  const [selectedDate, setSelectedDate] = useState<Dayjs>(today)
-  const {matchingList} = useMatch({selectedDate: selectedDate.toDate()})
+  const {matchingList} = useMatch({selectedDate: today.toDate()})
   const {profile} = useProfile()
 
   const todayMyTeamMatch = matchingList //
@@ -44,20 +21,9 @@ export const GameProvider = ({children}: {children: React.ReactNode}) => {
       return team_away_info.id === profile.my_team?.id || team_home_info.id === profile.my_team?.id
     })
 
-  const moveToYesterday = () => {
-    setSelectedDate(selectedDate.subtract(1, 'day'))
-  }
-
-  const moveToTomorrow = () => {
-    setSelectedDate(selectedDate.add(1, 'day'))
-  }
-
   return (
     <GameContext.Provider
       value={{
-        moveToYesterday,
-        moveToTomorrow,
-        selectedDate,
         matchingList,
         todayMyTeamMatch,
       }}>

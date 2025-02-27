@@ -25,8 +25,6 @@ export const useLogin = () => {
   const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
   const router = useRouter()
 
-  console.log(user)
-
   const logout = async () => {
     try {
       await ApiClient.post('/auths/token/revoke/', {})
@@ -57,7 +55,7 @@ export const useLogin = () => {
 
       return data
     } catch (error) {
-      console.error('Error occurred during login:', error)
+      console.error('로그인 에러 :: ', error)
     }
   }
 

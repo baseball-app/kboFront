@@ -1,4 +1,4 @@
-package com.kbo
+package xyz.kboapp
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

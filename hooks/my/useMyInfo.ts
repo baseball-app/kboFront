@@ -68,6 +68,7 @@ const useMyInfo = () => {
   const withdraw = async () => {
     try {
       await ApiClient.post<InvitationCode>('/users/leave/', {})
+      console.log('성공')
       logout()
       router.dismissTo('/auth/login')
     } catch (error) {

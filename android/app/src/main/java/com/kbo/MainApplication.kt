@@ -1,4 +1,4 @@
-package com.kbo
+package xyz.kboapp
 
 import android.app.Application
 import android.content.res.Configuration

@@ -10,6 +10,7 @@ const GameInfoCard = () => {
   const gameContext = useGameContext()
 
   const router = useRouter()
+
   const hasMatch = Boolean(gameContext?.todayMyTeamMatch)
 
   const home_info = findTeamById(gameContext?.todayMyTeamMatch?.team_home_info.id)

@@ -4,6 +4,26 @@ import {Text, TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, 
 import {SafeAreaView} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import useTicket from '@/hooks/match/useTicket'
+import {useMutation} from '@tanstack/react-query'
+import ApiClient from '@/api'
+
+type TicketInfo = {
+  date: string // '2025-04-09'
+  result: string // '승리'
+  weather: string // '흐림'
+  is_ballpark: boolean // true
+  score_our: number // 9
+  score_opponent: number // 6
+  starting_pitchers: string // '고우석'
+  gip_place: string // ''
+  food: string // '닭강정'
+  memo: string // '재미있었다'
+  is_homeballpark: boolean // true
+  writer: number // 1
+  only_me: boolean // true
+  ballpark: number // 1
+  opponent: number // 1
+}
 
 interface IWriteDataInterface {
   todayImg: string
@@ -128,7 +148,12 @@ const placeOption = [
 
 const TicketPage = () => {
   const ticket = useTicket()
-  console.log(ticket)
+
+  const {mutate: addTicket} = useMutation({
+    mutationFn: (data: TicketInfo) => ApiClient.post('/tickets/ticket_add/', data),
+    onSuccess: () => {},
+    onError: () => {},
+  })
 
   const [writeData, setWriteData] = useState<IWriteDataInterface>({
     todayScore: {SSG: '', 한화: ''},
@@ -187,13 +212,34 @@ const TicketPage = () => {
     setTabMenuModalVisible(false)
   }
 
+  const onSubmit = () => {
+    addTicket({})
+    //     {
+    //   "date": "2025-04-09",
+    //   "result": "승리",
+    //   "weather": "흐림",
+    //   "is_ballpark": true,
+    //   "score_our": 9,
+    //   "score_opponent": 6,
+    //   "starting_pitchers": "고우석",
+    //   "gip_place": "",
+    //   "food": "닭강정",
+    //   "memo": "재미있었다",
+    //   "is_homeballpark": true,
+    //   "writer": 1,
+    //   "only_me": true,
+    //   "ballpark": 1,
+    //   "opponent": 1
+    // }
+  }
+
   const uploadPhoto = async () => {
     /** 갤러리 접근 권한 요청 */
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
 
-    if (permissionResult.status !== 'granted') {
-      return
-    }
+    // if (permissionResult.status !== 'granted') {
+    //   return
+    // }
 
     /** 갤러리에서 이미지 선택 */
     const result = await ImagePicker.launchImageLibraryAsync({
