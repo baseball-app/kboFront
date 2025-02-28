@@ -49,23 +49,15 @@ const useFriends = () => {
     enabled: Boolean(isLogined),
   })
 
+  const checkIsFriend = (id: number) => {
+    return friend_status?.friends.find(friend => friend.id === id)
+  }
+
   return {
     followers: followers?.followers,
     followings: followings?.followings,
-    friend_status: {
-      friends: [
-        {
-          id: 1,
-          nickname: '박종현123213',
-          profile_type: 1,
-          profile_image: '',
-          ticket_info: {
-            writer_id: 1,
-            game_id: 1,
-          },
-        },
-      ],
-    },
+    friend_status: friend_status,
+    checkIsFriend,
   }
 }
 
