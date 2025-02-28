@@ -1,5 +1,6 @@
 export const MmkvStoreKeys = {
-    USER_LOGIN: 'user_login',
-    NETWORK_LOGGING: 'NetworkLogging',
-    USER_PROFILE: 'user_profile',
+  USER_LOGIN: 'user_login',
+  NETWORK_LOGGING: 'NetworkLogging',
+  USER_PROFILE: 'user_profile',
+  FRIEND_INVITATION_CODE: 'friend_invitation_code',
 }
