@@ -1,10 +1,9 @@
 import ApiClient from '@/api'
-import {useCommonSlice} from '@/slice/commonSlice'
+import {usePopup} from '@/slice/commonSlice'
 import {moderateScale, verticalScale} from '@/utils/metrics'
 import {useQuery} from '@tanstack/react-query'
 import {useLogin} from '../useLogin'
 import Clipboard from '@react-native-clipboard/clipboard'
-import useFriends from './useFriends'
 import useProfile from './useProfile'
 import {useRouter} from 'expo-router'
 
@@ -14,7 +13,7 @@ type InvitationCode = {
 
 const useMyInfo = () => {
   const {user, isLogined, logout} = useLogin()
-  const {modal} = useCommonSlice()
+  const {openCommonPopup, modal} = usePopup()
 
   const router = useRouter()
 
@@ -34,25 +33,7 @@ const useMyInfo = () => {
   }
 
   const openSuccessPasteInvitationCodeModal = () => {
-    modal.open({
-      header: '안내',
-      content: `초대코드가 복사되었어요! \n 초대코드를 공유해주세요.`,
-      button: [
-        {
-          text: '확인',
-          onPress: modal.hide,
-          buttonStyle: {
-            width: '100%',
-            paddingVertical: verticalScale(12),
-            borderRadius: 8,
-            backgroundColor: '#1E5EF4',
-          },
-          buttonTextStyle: {
-            color: 'white',
-          },
-        },
-      ],
-    })
+    openCommonPopup(`초대코드가 복사되었어요! \n 초대코드를 공유해주세요.`)
   }
 
   // 초대코드 복사

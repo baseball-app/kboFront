@@ -6,10 +6,33 @@ import {useRouter} from 'expo-router'
 import GameContainer from '@/components/game/GameContainer'
 import useMakeFriend from '@/hooks/my/useMakeFriend'
 import {useEffect} from 'react'
+import useMatch from '@/hooks/match/useMatch'
+import dayjs from 'dayjs'
+import {usePopup} from '@/slice/commonSlice'
 
 const CalendarScreen = () => {
   const router = useRouter()
+  const {openCommonPopup} = usePopup()
+
   const {addFriendList, friendInvitationCodeList} = useMakeFriend()
+  const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()})
+
+  // 오늘 경기가 두 개 이상일 경우 클릭했을 때 안내문구 출력
+  const overTwoMatch: boolean = true
+
+  const onClickFloatingButton = () => {
+    if (overTwoMatch) {
+      openCommonPopup(`오늘의 야구 티켓은 최대 2번까지만\n작성하실 수 있어요!`)
+      return
+    }
+
+    if (!todayMatchingList?.length) {
+      openCommonPopup('오늘은 진행 중인 경기가 없어요!')
+      return
+    }
+
+    router.push('/write')
+  }
 
   useEffect(() => {
     if (friendInvitationCodeList) addFriendList()
@@ -29,7 +52,7 @@ const CalendarScreen = () => {
       <TouchableOpacity //
         activeOpacity={0.95}
         style={styles.floatingButton}
-        onPress={() => router.push('/write')}>
+        onPress={onClickFloatingButton}>
         <Image source={require('@/assets/icons/write.png')} resizeMode="contain" />
       </TouchableOpacity>
     </SafeAreaView>
