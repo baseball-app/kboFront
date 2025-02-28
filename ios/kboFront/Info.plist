@@ -25,10 +25,11 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>myapp</string>
-				<string>xyz.kboapp</string>
+				<string>kboapp</string>
 			</array>
 		</dict>
 	</array>

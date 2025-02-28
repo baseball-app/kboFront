@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "kboFront",
+    "name": "오늘의야구",
     "slug": "kboFront",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "kboapp",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
