@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 import 'react-native-reanimated'
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import {Stack, usePathname} from 'expo-router'
 import {useFonts} from 'expo-font'
 
@@ -10,9 +10,6 @@ import {enableScreens} from 'react-native-screens'
 import QueryProvider from '@/components/provider/QueryProvider'
 import CommonModal from '@/components/common/CommonModal'
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
-import useMakeFriend from '@/hooks/my/useMakeFriend'
-import useDeepLink from '@/hooks/deepLink/useDeepLink'
-import {findQueryValueByName} from '@/hooks/deepLink/findQueryValueByName'
 
 enableScreens(false)
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -26,15 +23,6 @@ export default function RootLayout() {
 
   const pathname = usePathname()
   const dailyWriteStore = useDailyWriteStore()
-
-  //
-  const {temporarySaveFriendInvitationCode} = useMakeFriend()
-
-  // 딥링크 감지하여 invitationCode가 있을 경우 임시 저장
-  useDeepLink(url => {
-    const invitationCode = findQueryValueByName(url, 'code')
-    if (invitationCode) temporarySaveFriendInvitationCode(invitationCode)
-  })
 
   useEffect(() => {
     // pathname이 write가 아닌 다른 페이지의 경우 전역상태 값을 초기화 시킴

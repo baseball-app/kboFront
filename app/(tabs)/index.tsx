@@ -4,8 +4,16 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
 import {useRouter} from 'expo-router'
 import GameContainer from '@/components/game/GameContainer'
+import useMakeFriend from '@/hooks/my/useMakeFriend'
+import {useEffect} from 'react'
+
 const CalendarScreen = () => {
   const router = useRouter()
+  const {addFriendList, friendInvitationCodeList} = useMakeFriend()
+
+  useEffect(() => {
+    if (friendInvitationCodeList) addFriendList()
+  }, [friendInvitationCodeList])
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>

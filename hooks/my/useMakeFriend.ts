@@ -22,6 +22,8 @@ const useMakeFriend = () => {
     // 이미 친구 추가 플로우 완료한 사용자일 경우 저장하지 않음
     if (friendInvitationCodeList?.includes(code)) return
     // 처음 친구 추가 플로우 시작한 사용자일 경우 저장
+    if (!friendInvitationCodeList) return setFriendInvitationCodeList([code])
+
     setFriendInvitationCodeList([...(friendInvitationCodeList || []), code])
   }
 
