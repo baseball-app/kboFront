@@ -6,10 +6,13 @@ import {useFonts} from 'expo-font'
 
 import * as SplashScreen from 'expo-splash-screen'
 
-import {enableFreeze, enableScreens} from 'react-native-screens'
+import {enableScreens} from 'react-native-screens'
 import QueryProvider from '@/components/provider/QueryProvider'
 import CommonModal from '@/components/common/CommonModal'
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
+import useMakeFriend from '@/hooks/my/useMakeFriend'
+import useDeepLink from '@/hooks/deepLink/useDeepLink'
+import {findQueryValueByName} from '@/hooks/deepLink/findQueryValueByName'
 
 enableScreens(false)
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -23,21 +26,27 @@ export default function RootLayout() {
 
   const pathname = usePathname()
   const dailyWriteStore = useDailyWriteStore()
+
+  //
+  const {temporarySaveFriendInvitationCode} = useMakeFriend()
+
+  // 딥링크 감지하여 invitationCode가 있을 경우 임시 저장
+  useDeepLink(url => {
+    const invitationCode = findQueryValueByName(url, 'code')
+    if (invitationCode) temporarySaveFriendInvitationCode(invitationCode)
+  })
+
   useEffect(() => {
     // pathname이 write가 아닌 다른 페이지의 경우 전역상태 값을 초기화 시킴
-    // TODO: 전역상태로 굳이 관리할 필요 없을 것 같음 -> 직관일기 작성 페이지 리팩터링 후 수정 예정
+    // TODO: 전역상태kbo로 굳이 관리할 필요 없을 것 같음 -> 직관일기 작성 페이지 리팩터링 후 수정 예정
     if (!pathname.includes('/write')) dailyWriteStore.clearState()
   }, [pathname])
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync()
-    }
+    if (loaded) SplashScreen.hideAsync()
   }, [loaded])
 
-  if (!loaded) {
-    return null
-  }
+  if (!loaded) return null
 
   return (
     <QueryProvider>
