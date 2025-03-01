@@ -36,18 +36,29 @@ axiosInstance.interceptors.response.use(
   async (err: AxiosError) => {
     const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
     if (err.status == 403 && token?.accessToken && token?.refreshToken && !lock) {
+      console.log('durl??', err.status, token, lock)
+
       lock = true
-      await ApiClient.post<LoginServerResponse>('/auths/token/refresh/', {
-        refresh_token: token.refreshToken,
-      })
-        .then(data =>
-          setItem(MmkvStoreKeys.USER_LOGIN, {
-            accessToken: data.access_token,
-            refreshToken: data.refresh_token,
-          }),
-        )
-        .catch(() => setItem(MmkvStoreKeys.USER_LOGIN, undefined))
-        .finally(() => (lock = false))
+      try {
+        const data = await ApiClient.post<LoginServerResponse>('/auths/token/refresh/', {
+          refresh_token: token.refreshToken,
+        })
+
+        setItem(MmkvStoreKeys.USER_LOGIN, {
+          accessToken: data.access_token,
+          refreshToken: data.refresh_token,
+        })
+
+        if (err.config) {
+          return axiosInstance(err.config)
+        }
+      } catch (error) {
+        console.log('토큰 업데이트 실패 !! interceptor > /auths/token/refresh/')
+        setItem(MmkvStoreKeys.USER_LOGIN, undefined)
+      } finally {
+        lock = false
+      }
+
       // 토큰 만료시 처리 로직
     }
 

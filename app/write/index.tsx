@@ -2,7 +2,7 @@ import QuestionBox from '@/components/home/QuestionBox'
 import MatchTeamBox from '@/components/MatchTeamBox'
 import useMatch from '@/hooks/match/useMatch'
 import useTicket from '@/hooks/match/useTicket'
-import {useRouter} from 'expo-router'
+import {useLocalSearchParams, useRouter} from 'expo-router'
 import {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity} from 'react-native'
 import {View} from 'react-native'
@@ -53,6 +53,7 @@ const DailyLogWriteScreen = () => {
     selectedMatch,
     setSelectedMatch,
     selectedDate,
+    setSelectedDate,
     selectedMatchResult,
     setSelectedMatchResult,
     selectedWeather,
@@ -62,6 +63,13 @@ const DailyLogWriteScreen = () => {
   } = useTicket()
 
   const router = useRouter()
+  const params = useLocalSearchParams()
+  const date = params?.date
+
+  useEffect(() => {
+    if (date) setSelectedDate(new Date(date as string))
+  }, [date])
+
   /** 현재 단계를 나타내는 상태 */
   const [currentStep, setCurrentStep] = useState(1)
   /** 경기 결과 이미지를 클릭하는 함수 */

@@ -10,6 +10,7 @@ import {enableScreens} from 'react-native-screens'
 import QueryProvider from '@/components/provider/QueryProvider'
 import CommonModal from '@/components/common/CommonModal'
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
 
 enableScreens(false)
 // Prevent the splash screen from auto-hiding before asset loading is complete.

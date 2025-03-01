@@ -6,6 +6,9 @@ import {Ionicons} from '@expo/vector-icons'
 import {ko} from 'date-fns/locale'
 import {useRouter} from 'expo-router'
 import {DAYS_OF_WEEK} from '@/constants/day'
+import {SwiperFlatList} from 'react-native-swiper-flatlist'
+import Swiper from '../Swiper'
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
 
 const moodColors = {
   happy: 'green',
@@ -33,7 +36,7 @@ const Calendar = () => {
   }
   const dayClick = (pDay: Date) => {
     setSelectedDate(pDay)
-    router.navigate('/write')
+    // router.push({pathname: '/write', params: {date: format(pDay, 'yyyy-MM-dd')}})
   }
 
   const renderDaysOfWeek = () => {
@@ -65,19 +68,19 @@ const Calendar = () => {
         {days.map((day, index) => {
           const mood = getMoodForDate(day) // Replace with your logic to get the mood for the date
           return (
-            <TouchableOpacity
+            <View
               key={index}
               style={[
                 styles.day,
                 !isSameMonth(day, currentDate) && styles.inactiveDay,
                 Boolean(selectedDate) && isSameDay(day, selectedDate!) && styles.selectedDay,
               ]}
-              onPress={() => dayClick(day)}>
+              // onPress={() => dayClick(day)}
+            >
               <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text>
-              <View style={[styles.moodContainer, mood && {backgroundColor: moodColors[mood]}]}>
-                {/* <Text style={styles.moodIcon}>{mood && moodIcons[mood]}</Text> */}
-              </View>
-            </TouchableOpacity>
+
+              <Swiper data={['happy', 'sad']}></Swiper>
+            </View>
           )
         })}
       </View>
@@ -149,9 +152,7 @@ const Calendar = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
+  container: {},
   header: {
     flexDirection: 'row',
     justifyContent: 'center', // Center the content horizontally

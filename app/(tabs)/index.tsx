@@ -31,7 +31,13 @@ const CalendarScreen = () => {
       return
     }
 
-    router.push('/write')
+    // 오늘 날짜로 이동
+    router.push({
+      pathname: '/write',
+      params: {
+        date: dayjs().format('YYYY-MM-DD'),
+      },
+    })
   }
 
   useEffect(() => {
