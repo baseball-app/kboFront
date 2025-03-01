@@ -5,13 +5,10 @@ import MatchCalendar from '@/components/MatchCalendar'
 import MatchTopNotificationComponent from '@/app/match/components/MatchTopNotificationComponent'
 import {useState} from 'react'
 import EmptyMatchView from '@/components/match/EmptyMatchView'
-import {useRouter} from 'expo-router'
 import useMatch from '@/hooks/match/useMatch'
 import useTicket from '@/hooks/match/useTicket'
 
 const MatchScreen = () => {
-  const router = useRouter()
-
   const [selectedDate, setSelectedDate] = useState(new Date())
   const {matchingList} = useMatch({selectedDate})
   const {moveToWriteTicket} = useTicket()

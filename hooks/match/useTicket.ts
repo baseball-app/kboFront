@@ -1,15 +1,12 @@
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
-import React, {useEffect} from 'react'
 import {Match} from './useMatch'
-import {usePathname, useRouter} from 'expo-router'
+import {useRouter} from 'expo-router'
+import {format} from 'date-fns'
 
 const useTicket = () => {
   const router = useRouter()
 
   const writeStore = useDailyWriteStore()
-
-  const pathname = usePathname()
-  const {setSelectedDate, setSelectedMatch} = writeStore
 
   /**
    * 경기일정에서 티켓 작성 페이지로 이동
@@ -17,9 +14,13 @@ const useTicket = () => {
    * @param date 날짜
    */
   const moveToWriteTicket = (date: Date, match: Match | null) => {
-    setSelectedMatch(match)
-    setSelectedDate(date)
-    router.push('/write')
+    router.push({
+      pathname: '/write',
+      params: {
+        matchId: match?.id,
+        date: format(date, 'yyyy-MM-dd'),
+      },
+    })
   }
 
   return {

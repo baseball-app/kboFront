@@ -31,6 +31,15 @@
     "plugins": ["expo-router", "expo-font"],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f7bd71cb-4a11-4879-a49c-75746f448a1f"
+      }
+    },
+    "owner": "jonghyunpark123"
   }
 }
