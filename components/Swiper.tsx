@@ -12,6 +12,8 @@ const moodColors: any = {
 const Swiper = ({data}: {data: any[]}) => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
+  const hasSwipeAction = data.length > 1
+
   const pan = useRef(new Animated.ValueXY()).current
 
   const MIN_LEFT = -32
@@ -62,11 +64,13 @@ const Swiper = ({data}: {data: any[]}) => {
         style={{
           position: 'absolute',
           top: 0,
-          left: pan.x.interpolate({
-            inputRange: [MIN_LEFT, MAX_LEFT],
-            outputRange: [MIN_LEFT, MAX_LEFT],
-            extrapolate: 'clamp', // 범위 밖으로 못 나가게
-          }),
+          left: hasSwipeAction
+            ? pan.x.interpolate({
+                inputRange: [MIN_LEFT, MAX_LEFT],
+                outputRange: [MIN_LEFT, MAX_LEFT],
+                extrapolate: 'clamp', // 범위 밖으로 못 나가게
+              })
+            : 0,
           flexDirection: 'row',
           gap: 4,
         }}>
@@ -85,10 +89,13 @@ const Swiper = ({data}: {data: any[]}) => {
           }}
         />
       </Animated.View>
-      <View style={{flexDirection: 'row', gap: 3, justifyContent: 'center'}}>
-        <View style={[styles.swiperDot, currentIndex === 0 && styles.swiperDotActive]} />
-        <View style={[styles.swiperDot, currentIndex === 1 && styles.swiperDotActive]} />
-      </View>
+
+      {hasSwipeAction && (
+        <View style={{flexDirection: 'row', gap: 3, justifyContent: 'center'}}>
+          <View style={[styles.swiperDot, currentIndex === 0 && styles.swiperDotActive]} />
+          <View style={[styles.swiperDot, currentIndex === 1 && styles.swiperDotActive]} />
+        </View>
+      )}
     </View>
   )
 }

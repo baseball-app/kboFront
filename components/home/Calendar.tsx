@@ -78,8 +78,7 @@ const Calendar = () => {
               // onPress={() => dayClick(day)}
             >
               <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text>
-
-              <Swiper data={['happy', 'sad']}></Swiper>
+              <Swiper data={index % 2 === 0 ? ['happy', 'sad'] : ['sad']}></Swiper>
             </View>
           )
         })}
@@ -186,6 +185,7 @@ const styles = StyleSheet.create({
   daysContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
   day: {
     width: '14.28%',
