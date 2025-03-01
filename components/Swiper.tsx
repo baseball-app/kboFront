@@ -8,6 +8,7 @@ const moodColors: any = {
   angry: 'red',
 }
 
+//TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
 const Swiper = ({data}: {data: any[]}) => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -18,11 +19,19 @@ const Swiper = ({data}: {data: any[]}) => {
 
   const panResponder = useRef(
     PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponder: () => false, // 터치 시작시에는 PanResponder를 활성화하지 않음
+      onStartShouldSetPanResponderCapture: () => false,
       onPanResponderMove: (e, gesture) => {
         const currentX = (pan.x as any)?.__getValue() || 0 // 강제 위치 가져오기
 
         pan.x.setValue(currentX / 2 + gesture.dx)
+      },
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        // 수평 이동이 발생했을 때만 PanResponder 활성화
+        return Math.abs(gestureState.dx) > 2
+      },
+      onMoveShouldSetPanResponderCapture: (_, gestureState) => {
+        return Math.abs(gestureState.dx) > 2
       },
       onPanResponderRelease: () => {
         const currentX = (pan.x as any)?.__getValue() || 0 // 강제 위치 가져오기
@@ -49,6 +58,7 @@ const Swiper = ({data}: {data: any[]}) => {
       }}>
       <View style={[styles.moodContainer]} />
       <Animated.View
+        {...panResponder.panHandlers}
         style={{
           position: 'absolute',
           top: 0,
@@ -59,12 +69,21 @@ const Swiper = ({data}: {data: any[]}) => {
           }),
           flexDirection: 'row',
           gap: 4,
-        }}
-        {...panResponder.panHandlers}>
-        <View style={[styles.moodContainer, data[0] && {backgroundColor: moodColors[data[0]]}]}>
-          <TouchableOpacity onPress={() => console.log('hi')} />
-        </View>
-        <View style={[styles.moodContainer, data[1] && {backgroundColor: moodColors[data[1]]}]} />
+        }}>
+        <TouchableOpacity
+          style={[styles.moodContainer, data[0] && {backgroundColor: moodColors[data[0]]}]}
+          onPress={e => {
+            e.stopPropagation()
+            console.log('hi')
+          }}
+        />
+        <TouchableOpacity
+          style={[styles.moodContainer, data[1] && {backgroundColor: moodColors[data[1]]}]}
+          onPress={e => {
+            e.stopPropagation()
+            console.log('hi')
+          }}
+        />
       </Animated.View>
       <View style={{flexDirection: 'row', gap: 3, justifyContent: 'center'}}>
         <View style={[styles.swiperDot, currentIndex === 0 && styles.swiperDotActive]} />
