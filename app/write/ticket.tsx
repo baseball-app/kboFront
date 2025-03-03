@@ -3,9 +3,10 @@ import {useState} from 'react'
 import {Text, TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Modal, Keyboard} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
-import useTicket from '@/hooks/match/useTicket'
+import useWriteTicket from '@/hooks/match/useWriteTicket'
 import {useMutation} from '@tanstack/react-query'
 import ApiClient from '@/api'
+import React from 'react'
 
 type TicketInfo = {
   date: string // '2025-04-09'
@@ -147,7 +148,7 @@ const placeOption = [
 ]
 
 const TicketPage = () => {
-  const ticket = useTicket()
+  const {moveToWriteTicket} = useWriteTicket()
 
   const {mutate: addTicket} = useMutation({
     mutationFn: (data: TicketInfo) => ApiClient.post('/tickets/ticket_add/', data),
@@ -213,7 +214,7 @@ const TicketPage = () => {
   }
 
   const onSubmit = () => {
-    addTicket({})
+    // addTicket({})
     //     {
     //   "date": "2025-04-09",
     //   "result": "승리",

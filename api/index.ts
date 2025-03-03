@@ -158,4 +158,18 @@ const ApiClient = {
   },
 }
 
+export const uploadFile = async <T>(url: string, data: FormData): Promise<T> => {
+  try {
+    const response = await axiosInstance.post<T>(url, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error occurred during upload file:', error)
+    return Promise.reject(error)
+  }
+}
+
 export default ApiClient

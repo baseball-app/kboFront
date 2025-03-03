@@ -6,12 +6,12 @@ import MatchTopNotificationComponent from '@/app/match/components/MatchTopNotifi
 import {useState} from 'react'
 import EmptyMatchView from '@/components/match/EmptyMatchView'
 import useMatch from '@/hooks/match/useMatch'
-import useTicket from '@/hooks/match/useTicket'
+import useWriteTicket from '@/hooks/match/useWriteTicket'
 
 const MatchScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const {matchingList} = useMatch({selectedDate})
-  const {moveToWriteTicket} = useTicket()
+  const {moveToWriteTicket} = useWriteTicket()
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,4 @@
-import useTicket from '@/hooks/match/useTicket'
+import useWriteTicket from '@/hooks/match/useWriteTicket'
 import {useRouter} from 'expo-router'
 import React from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, ImageBackground} from 'react-native'

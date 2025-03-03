@@ -9,6 +9,8 @@ import {DAYS_OF_WEEK} from '@/constants/day'
 import {SwiperFlatList} from 'react-native-swiper-flatlist'
 import Swiper from '../Swiper'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
+import {useQuery} from '@tanstack/react-query'
+import ApiClient from '@/api'
 
 const moodColors = {
   happy: 'green',
@@ -24,6 +26,16 @@ const Calendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth())
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
   const router = useRouter()
+
+  // /tickets/ticket_list/
+  const {data: ticketList} = useQuery({
+    queryKey: ['ticket'],
+    queryFn: () =>
+      ApiClient.get('/tickets/ticket_list/', {
+        favorite: false,
+      }),
+  })
+
   const renderHeader = () => {
     return (
       <View style={styles.header}>

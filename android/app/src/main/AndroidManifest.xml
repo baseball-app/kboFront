@@ -26,7 +26,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
 
-        <data android:scheme="xyz.kboapp" android:host="*"/>
+        <data android:scheme="https://" android:host="deeplink-black-two.vercel.app" android:pathPrefix="/invitation"/>
       </intent-filter>
     </activity>
   </application>

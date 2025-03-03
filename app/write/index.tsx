@@ -1,7 +1,7 @@
 import QuestionBox from '@/components/home/QuestionBox'
 import MatchTeamBox from '@/components/MatchTeamBox'
 import useMatch from '@/hooks/match/useMatch'
-import useTicket from '@/hooks/match/useTicket'
+import useWriteTicket from '@/hooks/match/useWriteTicket'
 import {useLocalSearchParams, useRouter} from 'expo-router'
 import {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity} from 'react-native'
@@ -60,7 +60,7 @@ const DailyLogWriteScreen = () => {
     setSelectedWeather,
     selectedPlace,
     setSelectedPlace,
-  } = useTicket()
+  } = useWriteTicket()
 
   const router = useRouter()
   const params = useLocalSearchParams()
