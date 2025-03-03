@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image} from 'react-native'
 import {router} from 'expo-router'
 import useUserJoin from '@/hooks/auth/useUserJoin'
-import {Channel, useLogin} from '@/hooks/useLogin'
+import {Channel, useLogin} from '@/hooks/auth/useLogin'
 import LoginModal from '../component/LoginModal'
 import {AUTH_URL} from '@/constants/auth'
 

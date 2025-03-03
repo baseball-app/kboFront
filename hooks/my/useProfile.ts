@@ -1,6 +1,6 @@
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import {useMMKVObject} from 'react-native-mmkv'
-import {useLogin} from '../useLogin'
+import {useLogin} from '@/hooks/auth/useLogin'
 import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {findTeamById, PROFILE_IMAGES} from '@/constants/join'

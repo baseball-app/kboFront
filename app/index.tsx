@@ -1,7 +1,7 @@
 import {findQueryValueByName} from '@/hooks/deepLink/findQueryValueByName'
 import useDeepLink from '@/hooks/deepLink/useDeepLink'
 import useMakeFriend from '@/hooks/my/useMakeFriend'
-import {useLogin} from '@/hooks/useLogin'
+import {useLogin} from '@/hooks/auth/useLogin'
 import {useRouter} from 'expo-router'
 import {useEffect} from 'react'
 

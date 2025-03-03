@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query'
-import {useLogin} from '../useLogin'
+import {useLogin} from '@/hooks/auth/useLogin'
 import ApiClient from '@/api'
 
 export type FriendType = 'followers' | 'followings'

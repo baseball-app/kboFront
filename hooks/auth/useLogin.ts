@@ -22,6 +22,7 @@ export type LoginServerResponse = {
 
 export const useLogin = () => {
   const [user, setUser] = useMMKVObject<TUser>(MmkvStoreKeys.USER_LOGIN)
+  console.log('user', user)
   const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
   const router = useRouter()
 

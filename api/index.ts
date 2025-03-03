@@ -1,4 +1,4 @@
-import {LoginServerResponse, TUser} from '@/hooks/useLogin'
+import {LoginServerResponse, TUser} from '@/hooks/auth/useLogin'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import {getItem, setItem} from '@/store/mmkv-store/mmkvStore'
 import axios, {AxiosError, AxiosInstance, AxiosRequestHeaders, AxiosResponse, InternalAxiosRequestConfig} from 'axios'

@@ -4,7 +4,7 @@ import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
 import {moderateScale, horizontalScale, verticalScale} from '../../utils/metrics'
 import {theme} from '@/constants/Colors'
 import {router} from 'expo-router'
-import {useLogin} from '@/hooks/useLogin'
+import {useLogin} from '@/hooks/auth/useLogin'
 import useMyInfo from '@/hooks/my/useMyInfo'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
 
