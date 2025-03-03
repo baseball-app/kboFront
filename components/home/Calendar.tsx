@@ -6,17 +6,26 @@ import {Ionicons} from '@expo/vector-icons'
 import {ko} from 'date-fns/locale'
 import {useRouter} from 'expo-router'
 import {DAYS_OF_WEEK} from '@/constants/day'
-import {SwiperFlatList} from 'react-native-swiper-flatlist'
-import Swiper from '../Swiper'
-import {GestureHandlerRootView} from 'react-native-gesture-handler'
+import MatchResultCell from '../MatchResultCell'
 import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
+import {groupBy} from '@/utils/groupBy'
 
-const moodColors = {
-  happy: 'green',
-  sad: 'blue',
-  neutral: 'orange',
-  angry: 'red',
+export type TicketCalendarLog = {
+  id: number // 5
+  date: string // '2025-03-22'
+  result: string // '승리'
+  writer_id: number // 5
+  game_id: number // 1
+  opponent: {
+    id: number // 7
+    name: string // '롯데 자이언츠'
+  }
+  ballpark: {
+    id: number // 1
+    name: string // '잠실야구장'
+    team_id: number // 3
+  }
 }
 
 const Calendar = () => {
@@ -28,12 +37,19 @@ const Calendar = () => {
   const router = useRouter()
 
   // /tickets/ticket_list/
+
+  const currentYearMonth = format(currentDate, 'yyyy-MM')
+
   const {data: ticketList} = useQuery({
-    queryKey: ['ticket'],
+    queryKey: ['tickets', currentYearMonth],
     queryFn: () =>
-      ApiClient.get('/tickets/ticket_list/', {
-        favorite: false,
+      ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
+        date: currentYearMonth,
       }),
+    enabled: Boolean(currentYearMonth),
+    select(data) {
+      return groupBy(data, item => item.date)
+    },
   })
 
   const renderHeader = () => {
@@ -48,7 +64,7 @@ const Calendar = () => {
   }
   const dayClick = (pDay: Date) => {
     setSelectedDate(pDay)
-    // router.push({pathname: '/write', params: {date: format(pDay, 'yyyy-MM-dd')}})
+    router.push({pathname: '/write', params: {date: format(pDay, 'yyyy-MM-dd')}})
   }
 
   const renderDaysOfWeek = () => {
@@ -75,6 +91,10 @@ const Calendar = () => {
       day = addDays(day, 1)
     }
 
+    const ticketsGroupByDate = ticketList?.[format(day, 'yyyy-MM-dd')] || []
+
+    // ticketsGroupByDate[0].opponent.id
+
     return (
       <View style={styles.daysContainer}>
         {days.map((day, index) => {
@@ -86,11 +106,13 @@ const Calendar = () => {
                 styles.day,
                 !isSameMonth(day, currentDate) && styles.inactiveDay,
                 Boolean(selectedDate) && isSameDay(day, selectedDate!) && styles.selectedDay,
-              ]}
-              // onPress={() => dayClick(day)}
-            >
+              ]}>
               <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text>
-              <Swiper data={index % 2 === 0 ? ['happy', 'sad'] : ['sad']}></Swiper>
+              <MatchResultCell
+                onPress={() => dayClick(day)}
+                data={ticketsGroupByDate} //
+              />
+              {/* <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text> */}
             </View>
           )
         })}
