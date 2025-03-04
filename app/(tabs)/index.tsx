@@ -23,13 +23,13 @@ const CalendarScreen = () => {
   const overTwoMatch: boolean = true
 
   const onClickFloatingButton = () => {
-    if (overTwoMatch) {
-      openCommonPopup(`오늘의 야구 티켓은 최대 2번까지만\n작성하실 수 있어요!`)
+    if (!todayMatchingList?.length) {
+      openCommonPopup('오늘은 진행 중인 경기가 없어요!')
       return
     }
 
-    if (!todayMatchingList?.length) {
-      openCommonPopup('오늘은 진행 중인 경기가 없어요!')
+    if (overTwoMatch) {
+      openCommonPopup(`오늘의 야구 티켓은 최대 2번까지만\n작성하실 수 있어요!`)
       return
     }
 

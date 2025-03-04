@@ -42,7 +42,7 @@ const useTicketDetail = (id: number) => {
     queryKey: ['ticket', id],
     queryFn: () =>
       ApiClient.get<TicketDetail>(`/tickets/ticket_detail/`, {
-        ticket_id: id,
+        id: id,
       }),
     enabled: Boolean(id),
   })

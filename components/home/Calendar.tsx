@@ -10,6 +10,7 @@ import MatchResultCell from '../MatchResultCell'
 import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {groupBy} from '@/utils/groupBy'
+import useTeam from '@/hooks/match/useTeam'
 
 export type TicketCalendarLog = {
   id: number // 5
@@ -36,7 +37,7 @@ const Calendar = () => {
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
   const router = useRouter()
 
-  // /tickets/ticket_list/
+  const {findTeamById} = useTeam()
 
   const currentYearMonth = format(currentDate, 'yyyy-MM')
 
@@ -64,6 +65,16 @@ const Calendar = () => {
   }
   const dayClick = (pDay: Date) => {
     setSelectedDate(pDay)
+
+    const ticketsGroupByDate = ticketList?.[format(pDay, 'yyyy-MM-dd')] || []
+
+    if (ticketsGroupByDate?.length) {
+      router.push({
+        pathname: '/write/todayTicketCard', //
+        params: {id: ticketsGroupByDate[0].id},
+      })
+      return
+    }
     router.push({pathname: '/write', params: {date: format(pDay, 'yyyy-MM-dd')}})
   }
 
@@ -91,14 +102,13 @@ const Calendar = () => {
       day = addDays(day, 1)
     }
 
-    const ticketsGroupByDate = ticketList?.[format(day, 'yyyy-MM-dd')] || []
-
-    // ticketsGroupByDate[0].opponent.id
-
     return (
       <View style={styles.daysContainer}>
         {days.map((day, index) => {
-          const mood = getMoodForDate(day) // Replace with your logic to get the mood for the date
+          const ticketsGroupByDate = ticketList?.[format(day, 'yyyy-MM-dd')] || []
+          const opponent = findTeamById(ticketsGroupByDate[0]?.opponent?.id)
+          const myTeam = findTeamById(ticketsGroupByDate[0]?.ballpark?.team_id)
+
           return (
             <View
               key={index}
@@ -112,21 +122,16 @@ const Calendar = () => {
                 onPress={() => dayClick(day)}
                 data={ticketsGroupByDate} //
               />
-              {/* <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text> */}
+              {opponent && (
+                <Text style={styles.teamText}>
+                  {myTeam?.shortName}:{opponent.shortName}
+                </Text>
+              )}
             </View>
           )
         })}
       </View>
     )
-  }
-
-  const getMoodForDate = (date: Date) => {
-    // Replace this with your logic to get the mood for the date
-    const day = date.getDate()
-    if (day % 5 === 0) return 'angry'
-    if (day % 3 === 0) return 'neutral'
-    if (day % 2 === 0) return 'sad'
-    return 'happy'
   }
 
   const handleMonthYearChange = () => {
@@ -234,6 +239,11 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     color: '#77756C',
   },
+  teamText: {
+    color: '#171716',
+    fontSize: 10,
+    fontWeight: 400,
+  },
   inactiveDay: {
     opacity: 0.5,
   },
@@ -241,7 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#000000',
     color: 'white',
-    width: '100%',
+    width: 30,
     textAlign: 'center',
   },
   selectedDay: {
