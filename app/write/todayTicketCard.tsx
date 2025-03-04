@@ -61,8 +61,8 @@ export default function GameCard() {
             source={require('@/assets/images/Subtract.png')}
             style={styles.ticketBackground}
             imageStyle={styles.backgroundImage}>
-            <View style={styles.ticketContent}>
-              <View style={{position: 'relative'}}>
+            <View style={[styles.ticketContent]}>
+              <View style={{position: 'relative', width: '100%'}}>
                 <Image
                   //
                   source={require('@/assets/icons/star.png')}
@@ -77,28 +77,27 @@ export default function GameCard() {
                 />
                 <MaskedView
                   style={{
-                    width: '100%', // 부모 컨테이너의 너비를 상속
-                    aspectRatio: 307 / 220, // 원본 비율 유지
+                    aspectRatio: 400 / 220,
                   }}
                   maskElement={
-                    <Svg height="100%" width="100%" viewBox="0 0 307 220">
+                    <Svg height="100%" width="100%" viewBox="0 0 400 220">
                       <Path
                         fill="white"
                         d={`
                           M0 0 
-                          H307 
+                          H400 
                           V220 
                           H0 
                           Z
                           
                           M0 0 
-                          V0 20
-                          C0 20, 20 20, 20 0 
+                          V0 25
+                          C0 25, 25 25, 25 0 
                           Z
                           
-                          M287 0
-                          C287 20, 307 20, 307 20
-                          V307 0
+                          M375 0
+                          C375 25, 400 25, 400 25
+                          V400 0
                           Z
                           `}
                       />
@@ -106,23 +105,23 @@ export default function GameCard() {
                   }>
                   {/* 마스킹된 부분에 이미지 표시 */}
                   <Image source={require('./test_baseball.jpg')} style={{width: '100%'}} resizeMode="cover" />
-                  <Svg height="100%" width="100%" viewBox="0 0 307 220" style={{position: 'absolute', top: 0, left: 0}}>
+                  <Svg height="100%" width="100%" viewBox="0 0 400 220" style={{position: 'absolute', top: 0, left: 0}}>
                     <Path
                       d={`
                     M0 0 
-                    H307 
+                    H400 
                     V220 
                     H0 
                     Z
 
                     M0 0 
-                    V0 20
-                    C0 20, 20 20, 20 0 
+                    V0 25
+                    C0 25, 25 25, 25 0 
                     Z
 
-                    M287 0
-                    C287 20, 307 20, 307 20
-                    V307 0
+                    M375 0
+                    C375 25, 400 25, 400 25
+                    V400 0
                     Z
                 `}
                       fill="none"
@@ -190,7 +189,53 @@ export default function GameCard() {
                   </View>
                 </View>
               </View>
-              <View style={styles.thoughtsBox}>
+              <View style={{position: 'relative', width: '100%'}}>
+                <Image
+                  //
+                  source={require('@/assets/icons/star.png')}
+                  style={{width: 14, height: 14, position: 'absolute', bottom: 0, left: 0}}
+                  resizeMode="cover"
+                />
+                <Image
+                  //
+                  source={require('@/assets/icons/star.png')}
+                  style={{width: 14, height: 14, position: 'absolute', bottom: 0, right: 0}}
+                  resizeMode="cover"
+                />
+                <MaskedView
+                  style={{aspectRatio: 400 / 220}}
+                  maskElement={
+                    <Svg height="100%" width="100%" viewBox="0 0 400 220">
+                      <Path
+                        fill="red"
+                        d={`
+                          M0 0 
+                          H400 
+                          V220 
+                          H0 
+                          Z
+                          
+                          M400 220 
+                          V400 195
+                          C400 195, 375 195, 375 220 
+                          Z
+
+                          M25 220
+                          C25 220, 25 195, 0 195
+                          V0 220
+                          Z
+                          `}
+                      />
+                    </Svg>
+                  }>
+                  {/* 마스크로 보여질 영역 */}
+                  <View style={{width: '100%', height: '100%', backgroundColor: 'white', padding: 10}}>
+                    <Text style={{color: 'red'}}>123</Text>
+                  </View>
+                </MaskedView>
+              </View>
+
+              {/* <View style={styles.thoughtsBox}>
                 {ticketDetail?.only_me && (
                   <View style={styles.onlyMeButtonBox}>
                     <Image source={require('@/assets/icons/lock.png')} style={styles.lockButton} resizeMode="contain" />
@@ -200,7 +245,7 @@ export default function GameCard() {
                 <View style={styles.thoughtsTextBox}>
                   <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
                 </View>
-              </View>
+              </View> */}
             </View>
           </ImageBackground>
         </View>
@@ -321,11 +366,11 @@ const styles = StyleSheet.create({
   },
   resultImgBox: {
     flex: 1,
-    paddingVertical: 12,
     backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    height: 44,
     gap: 8,
   },
   resultIcon: {
@@ -424,7 +469,6 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   thoughtsBox: {
-    height: 220,
     width: '100%',
     backgroundColor: '#fff',
     paddingHorizontal: 8,
@@ -453,9 +497,9 @@ const styles = StyleSheet.create({
   ticketBackground: {
     width: '100%',
     height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
     flexDirection: 'column',
+    paddingVertical: 36,
   },
   backgroundImage: {
     resizeMode: 'stretch',
