@@ -9,7 +9,7 @@ import React from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, ImageBackground} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
-import Svg, {Circle, Path} from 'react-native-svg'
+import Svg, {Path} from 'react-native-svg'
 
 const emojis = [
   {emoji: '😆', count: 10},
@@ -230,22 +230,24 @@ export default function GameCard() {
                   }>
                   {/* 마스크로 보여질 영역 */}
                   <View style={{width: '100%', height: '100%', backgroundColor: 'white', padding: 10}}>
-                    <Text style={{color: 'red'}}>123</Text>
+                    <View style={styles.thoughtsBox}>
+                      {ticketDetail?.only_me && (
+                        <View style={styles.onlyMeButtonBox}>
+                          <Image
+                            source={require('@/assets/icons/lock.png')}
+                            style={styles.lockButton}
+                            resizeMode="contain"
+                          />
+                          <Text style={styles.onlyMeText}>나만보기</Text>
+                        </View>
+                      )}
+                      <View style={styles.thoughtsTextBox}>
+                        <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
+                      </View>
+                    </View>
                   </View>
                 </MaskedView>
               </View>
-
-              {/* <View style={styles.thoughtsBox}>
-                {ticketDetail?.only_me && (
-                  <View style={styles.onlyMeButtonBox}>
-                    <Image source={require('@/assets/icons/lock.png')} style={styles.lockButton} resizeMode="contain" />
-                    <Text style={styles.onlyMeText}>나만보기</Text>
-                  </View>
-                )}
-                <View style={styles.thoughtsTextBox}>
-                  <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
-                </View>
-              </View> */}
             </View>
           </ImageBackground>
         </View>
@@ -470,14 +472,11 @@ const styles = StyleSheet.create({
   },
   thoughtsBox: {
     width: '100%',
-    backgroundColor: '#fff',
-    paddingHorizontal: 8,
-    paddingVertical: 14,
   },
   onlyMeButtonBox: {
     width: '100%',
     flexDirection: 'row',
-    gap: 2,
+    gap: 5,
     alignItems: 'center',
   },
   lockButton: {
@@ -485,13 +484,12 @@ const styles = StyleSheet.create({
     height: 24,
   },
   thoughtsTextBox: {
-    flex: 1,
     marginTop: 12,
   },
   thoughtsText: {
     color: '#353430',
     fontSize: 15,
-    fontWeight: '400',
+    fontWeight: 400,
     lineHeight: 21,
   },
   ticketBackground: {
