@@ -1,6 +1,7 @@
 import ApiClient from '@/api'
-import {useMutation, useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {RegisterTicket} from './useWriteTicket'
+import {useState} from 'react'
 
 type TicketDetail = {
   id: number
@@ -38,10 +39,22 @@ type TicketDetail = {
 export type ReactionType = 'like' | 'love' | 'haha' | 'yay' | 'wow' | 'sad' | 'angry'
 
 const useTicketDetail = (id: number) => {
+  const queryClient = useQueryClient()
+
+  // 1차 2차 선택하는 state
+  const [ticketIndex, setTicketIndex] = useState<number>(0)
+  const onChangeTicket = (index: number) => {
+    setTicketIndex(index)
+  }
+
+  const initializeTicketInfo = () => {
+    queryClient.invalidateQueries({queryKey: ['ticket', id]})
+  }
+
   const {data} = useQuery({
     queryKey: ['ticket', id],
     queryFn: () =>
-      ApiClient.get<TicketDetail>(`/tickets/ticket_detail/`, {
+      ApiClient.get<TicketDetail[]>(`/tickets/ticket_detail/`, {
         id: id,
       }),
     enabled: Boolean(id),
@@ -50,17 +63,20 @@ const useTicketDetail = (id: number) => {
   // 직관일기 삭제
   const {mutateAsync: deleteTicket} = useMutation({
     mutationFn: () => ApiClient.post(`/tickets/ticket_del/`, {id}),
+    onSuccess: initializeTicketInfo,
   })
 
   // 직관일기 수정
   const {mutateAsync: updateTicket} = useMutation({
     mutationFn: (data: RegisterTicket) => ApiClient.post(`/tickets/ticket_upd/`, {...data, id}),
+    onSuccess: initializeTicketInfo,
   })
 
   // 직관일기 반응 추가
   const {mutateAsync: addReaction} = useMutation({
     mutationFn: (data: {reaction_pos: 'add' | 'del'; reaction_type: ReactionType}) =>
       ApiClient.post(`/tickets/ticket_reaction/`, {...data, id}),
+    onSuccess: initializeTicketInfo,
   })
 
   /**
@@ -70,14 +86,37 @@ const useTicketDetail = (id: number) => {
   const {mutateAsync: updateFavorite} = useMutation({
     mutationFn: ({favorite_status}: {favorite_status: 'clear' | 'excute'}) =>
       ApiClient.post(`/tickets/ticket_favorite/`, {id, favorite_status}),
+    onMutate: ({favorite_status}) => {
+      const favorite = favorite_status === 'clear' ? false : true
+
+      queryClient.setQueryData(['ticket', id], (old: TicketDetail[]) =>
+        old.map((ticket, index) => (index === ticketIndex ? {...ticket, favorite} : ticket)),
+      )
+    },
+    onError: (error, variables, context) => {
+      const favorite = variables.favorite_status === 'clear' ? false : true
+
+      queryClient.setQueryData(['ticket', id], (old: TicketDetail[]) =>
+        old.map((ticket, index) => (index === ticketIndex ? {...ticket, favorite} : ticket)),
+      )
+    },
   })
 
+  const toggleFavorite = () => {
+    if (!data?.[ticketIndex]) return
+    updateFavorite({favorite_status: data?.[ticketIndex]?.favorite ? 'clear' : 'excute'})
+  }
+
   return {
-    ticketDetail: data,
+    ticketDetail: data?.[ticketIndex],
     deleteTicket,
     updateTicket,
     addReaction,
     updateFavorite,
+    onChangeTicket,
+    ticketIndex,
+    data,
+    toggleFavorite,
   }
 }
 

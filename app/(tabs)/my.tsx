@@ -20,9 +20,9 @@ const ProfileScreen = () => {
         <View style={styles.profileInfoBox}>
           <View style={styles.profileInfo}>
             <Text style={styles.profileName}>{profile?.nickname} 님</Text>
-            <TouchableOpacity onPress={() => router.push('/my/change-nickname')} style={styles.profileEditIconBox}>
+            <TouchableOpacity onPress={() => router.push('/my/change-nickname')}>
               <Image
-                source={require('../../assets/icons/edit.png')}
+                source={require('@/assets/icons/edit_pen.png')}
                 style={styles.profileEditIcon}
                 resizeMode="contain"
               />
@@ -148,17 +148,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginRight: horizontalScale(4),
   },
-  profileEditIconBox: {
-    backgroundColor: '#00184F',
-    borderRadius: 50,
-    width: moderateScale(18),
-    height: moderateScale(18),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   profileEditIcon: {
-    width: moderateScale(8.18),
-    height: moderateScale(8.18),
+    width: 18,
+    height: 18,
   },
   winRateContainer: {
     flexDirection: 'row',

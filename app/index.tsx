@@ -34,7 +34,6 @@ export default function Index() {
   })
 
   useEffect(() => {
-    console.log('여기 호출 안 하고 갈까?')
     checkIsLogined()
   }, [])
 

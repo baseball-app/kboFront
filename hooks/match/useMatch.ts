@@ -35,7 +35,7 @@ const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
     enabled: Boolean(selectedDate),
   })
 
-  console.log(startDate, matchingList)
+  // console.log(startDate, matchingList)
 
   return {
     matchingList: matchingList?.results || [],

@@ -10,6 +10,7 @@ import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, ImageBackgr
 import {SafeAreaView} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
 import Svg, {Path} from 'react-native-svg'
+import useProfile from '@/hooks/my/useProfile'
 
 const emojis = [
   {emoji: '😆', count: 10},
@@ -27,13 +28,28 @@ export default function GameCard() {
   const router = useRouter()
   const {id} = useLocalSearchParams()
   const {findTeamById} = useTeam()
-  const {ticketDetail} = useTicketDetail(Number(id))
+
+  const {
+    ticketDetail, //
+    onChangeTicket,
+    ticketIndex,
+    data,
+    toggleFavorite,
+  } = useTicketDetail(Number(id))
+
+  const {profile} = useProfile()
+
+  const isMyTicket = profile?.id === ticketDetail?.writer
 
   const game_date = dayjs(ticketDetail?.date)
   const weekDay = DAYS_OF_WEEK[game_date.day()]
   const title = `${game_date.format(`M월 D일 ${weekDay}요일`)}`
 
   const opponent = findTeamById(ticketDetail?.opponent)
+
+  const heartIcon = ticketDetail?.favorite
+    ? require('@/assets/icons/heart_fill.png')
+    : require('@/assets/icons/heart.png')
 
   return (
     <SafeAreaView style={styles.container}>
@@ -45,17 +61,26 @@ export default function GameCard() {
       </View>
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         <View style={styles.iconBox}>
-          <Image source={require('@/assets/icons/heart.png')} resizeMode="contain" style={styles.editIcon} />
-          <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
+          <TouchableOpacity onPress={toggleFavorite}>
+            <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
+          </TouchableOpacity>
+          {isMyTicket && (
+            <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
+          )}
         </View>
-        {/* <View style={styles.matchButtonBox}>
-          <TouchableOpacity style={styles.matchButton}>
-            <Text style={styles.matchText}>1차 경기</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.matchButton}>
-            <Text style={styles.matchText}>2차 경기</Text>
-          </TouchableOpacity>
-        </View> */}
+        {Number(data?.length) > 1 ? (
+          <View style={styles.matchButtonBox}>
+            {data?.map((_, index) => (
+              <TouchableOpacity
+                style={[styles.matchButton, ticketIndex === index && styles.matchButtonActive]}
+                onPress={() => onChangeTicket(index)}>
+                <Text style={[styles.matchText, ticketIndex === index && styles.matchTextActive]}>
+                  {index + 1}차 경기
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ) : null}
         <View style={styles.ticketBox}>
           <ImageBackground
             source={require('@/assets/images/Subtract.png')}
@@ -344,11 +369,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  matchButtonActive: {
+    backgroundColor: '#1E5EF4',
+    borderColor: '#1E5EF4',
+  },
   matchText: {
     fontWeight: '700',
     fontSize: 14,
     lineHeight: 16.71,
     color: '#171716',
+  },
+  matchTextActive: {
+    color: '#fff',
   },
   ticketBox: {
     width: '100%',
