@@ -2,16 +2,23 @@ import ProfileImageBox from '@/components/common/ProfileImageBox'
 import Tag from '@/components/Tag'
 import {theme} from '@/constants/Colors'
 import {CLUB_LIST} from '@/constants/ticket'
+import useTeam from '@/hooks/match/useTeam'
+import useTicketListByTeam from '@/hooks/match/useTicketListByTeam'
 import useMyInfo from '@/hooks/my/useMyInfo'
+import {format} from 'date-fns'
 import React, {useState} from 'react'
 import {View, Text, Image, TouchableOpacity, ScrollView, StyleSheet} from 'react-native'
 
 const MyTicketBoxScreen = () => {
-  const [selectedClub, setSelectedClub] = useState(CLUB_LIST[0].value)
   const {profile} = useMyInfo()
+  const {ticketList, onChangeTeam, selectedTeamId} = useTicketListByTeam()
+  const {findTeamById} = useTeam()
+  console.log(ticketList)
+
+  const myTeam = findTeamById(profile.my_team?.id)
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.infoBox}>
         <View style={styles.profileCard}>
           <ProfileImageBox source={profile.profile_image} />
@@ -34,25 +41,53 @@ const MyTicketBoxScreen = () => {
             <Tag
               key={club.value}
               name={club.name} //
-              isActive={club.value === selectedClub}
-              onClick={() => setSelectedClub(club.value)}
+              isActive={club.id === selectedTeamId}
+              onClick={() => onChangeTeam(club.id)}
             />
           ))}
         </View>
       </View>
 
-      {/* <ScrollView style={styles.likeBoxContainer}>
-        {teams.map((team, index) => (
-          <TouchableOpacity key={index} style={styles.teamRow}>
-            <View style={styles.teamInfo}>
-              <Text style={styles.teamIcon}>{team.icon}</Text>
-              <Text style={styles.teamName}>{team.name}</Text>
-            </View>
-            <Text style={styles.teamScore}>{team.score}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView> */}
-    </View>
+      <View style={styles.likeBoxContainer}>
+        {ticketList?.length ? (
+          ticketList?.map(ticket => {
+            const opponentTeam = findTeamById(ticket.opponent_id)
+
+            return (
+              <View key={ticket.id} style={styles.teamCard}>
+                <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 12}}>
+                  <View style={[styles.teamLabel, {backgroundColor: opponentTeam?.color}]} />
+                  <View style={{gap: 4, paddingVertical: 8}}>
+                    <View style={styles.teamInfo}>
+                      <Text style={styles.teamName}>{myTeam?.shortName}</Text>
+                      <Text style={styles.teamSub}>{` VS `}</Text>
+                      <Text style={styles.teamName}>{opponentTeam?.shortName}</Text>
+                    </View>
+                    <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
+                    <Text style={styles.date}>{format(ticket.date, 'yyyy.MM.dd')}</Text>
+                  </View>
+                </View>
+                <View>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{
+                      backgroundColor: '#1E5EF4',
+                      padding: 8,
+                      borderRadius: 30,
+                    }}>
+                    <Text style={{color: 'white', fontSize: 13, fontWeight: 500}}>티켓보기</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )
+          })
+        ) : (
+          <View style={{alignItems: 'center', justifyContent: 'center', height: 100}}>
+            <Text style={{fontSize: 14, fontWeight: 400, color: '#171716'}}>해당 경기 티켓이 없어요.</Text>
+          </View>
+        )}
+      </View>
+    </ScrollView>
   )
 }
 
@@ -77,7 +112,7 @@ const styles = StyleSheet.create({
   },
   ticketBox: {
     paddingInline: 20,
-    paddingBlock: 40,
+    paddingBlock: 24,
   },
   ticketTitle: {
     fontSize: 18,
@@ -120,13 +155,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  teamRow: {
+  teamCard: {
+    gap: 12,
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
+    paddingRight: 16,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    overflow: 'hidden',
   },
   teamInfo: {
     flexDirection: 'row',
@@ -138,13 +175,43 @@ const styles = StyleSheet.create({
   },
   teamName: {
     fontSize: 16,
+    color: '#171716',
+    fontWeight: 500,
+    lineHeight: 24,
+  },
+  teamSub: {
+    fontSize: 14,
+    color: '#171716',
+    fontWeight: 500,
+    lineHeight: 21,
+  },
+  teamLabel: {
+    width: 8,
+    height: 88,
+  },
+  parkName: {
+    fontSize: 14,
+    color: '#171716',
+    fontWeight: 400,
+    lineHeight: 21,
+  },
+  date: {
+    fontSize: 14,
+    color: '#95938B',
+    fontWeight: 400,
+    lineHeight: 19.5,
   },
   teamScore: {
     fontSize: 16,
     color: '#3498db',
   },
   likeBoxContainer: {
-    backgroundColor: theme.colors.backgroundPrimary,
+    backgroundColor: '#F3F2EE',
+    padding: 16,
+    marginHorizontal: 20,
+    borderRadius: 10,
+    gap: 12,
+    marginBottom: 20,
   },
   tabContainer: {
     flexDirection: 'row',
