@@ -1,13 +1,12 @@
 import ProfileImageBox from '@/components/common/ProfileImageBox'
 import Tag from '@/components/Tag'
-import {theme} from '@/constants/Colors'
 import {CLUB_LIST} from '@/constants/ticket'
 import useTeam from '@/hooks/match/useTeam'
 import useTicketListByTeam from '@/hooks/match/useTicketListByTeam'
 import useMyInfo from '@/hooks/my/useMyInfo'
 import {format} from 'date-fns'
-import React, {useState} from 'react'
-import {View, Text, Image, TouchableOpacity, ScrollView, StyleSheet} from 'react-native'
+import React from 'react'
+import {View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native'
 
 const MyTicketBoxScreen = () => {
   const {profile} = useMyInfo()
