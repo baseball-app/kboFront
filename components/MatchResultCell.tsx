@@ -8,16 +8,15 @@ const MatchResultCell = ({data, onPress}: {data: TicketCalendarLog[]; onPress: (
   const matchResult = data[0]?.result
 
   return (
-    <View
+    <TouchableOpacity
       style={{
         width: 28,
         overflow: 'hidden',
-      }}>
+      }}
+      onPress={onPress}>
       {matchResult ? (
         <>
-          <TouchableOpacity onPress={onPress}>
-            <Image source={findMatchResultImage(matchResult)} style={styles.moodContainer} />
-          </TouchableOpacity>
+          <Image source={findMatchResultImage(matchResult)} style={styles.moodContainer} />
           {data.length > 1 && (
             <View style={{flexDirection: 'row', gap: 3, justifyContent: 'center'}}>
               <View style={[styles.swiperDot, styles.swiperDotActive]} />
@@ -28,7 +27,7 @@ const MatchResultCell = ({data, onPress}: {data: TicketCalendarLog[]; onPress: (
       ) : (
         <View style={[styles.moodContainer]} />
       )}
-    </View>
+    </TouchableOpacity>
   )
 }
 

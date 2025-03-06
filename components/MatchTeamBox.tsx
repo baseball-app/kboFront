@@ -14,6 +14,9 @@ type Props = {
 const MatchTeamBox = ({match, onClick, isSelected}: Props) => {
   const time = format(match.game_date, 'HH:mm')
 
+  const homeTeam = findTeamById(match.team_home_info.id)
+  const awayTeam = findTeamById(match.team_away_info.id)
+
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onClick}>
       <View style={isSelected ? styles.gameSelectedInfoBox : styles.gameInfoBox}>
@@ -25,24 +28,16 @@ const MatchTeamBox = ({match, onClick, isSelected}: Props) => {
         </View>
         <View style={styles.matchTeamBox}>
           <View style={styles.matchTeamInfo}>
-            <Image
-              source={findTeamById(match.team_home_info.id)?.logo}
-              resizeMode="contain"
-              style={{width: 35, height: 35}}
-            />
+            <Image source={homeTeam?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
             <View style={styles.ellipseBox}>
               <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
               <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
             </View>
-            <Image
-              source={findTeamById(match.team_away_info.id)?.logo}
-              resizeMode="contain"
-              style={{width: 35, height: 35}}
-            />
+            <Image source={awayTeam?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
           </View>
           <View style={styles.teamNameBox}>
-            <Text style={styles.teamText}>{match.team_home_info.name}</Text>
-            <Text style={styles.teamText}>{match.team_away_info.name}</Text>
+            <Text style={styles.teamText}>{homeTeam?.shortName}</Text>
+            <Text style={styles.teamText}>{awayTeam?.shortName}</Text>
           </View>
         </View>
       </View>

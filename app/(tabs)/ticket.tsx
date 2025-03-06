@@ -5,6 +5,7 @@ import useTeam from '@/hooks/match/useTeam'
 import useTicketListByTeam from '@/hooks/match/useTicketListByTeam'
 import useMyInfo from '@/hooks/my/useMyInfo'
 import {format} from 'date-fns'
+import {router} from 'expo-router'
 import React from 'react'
 import {View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native'
 
@@ -28,7 +29,7 @@ const MyTicketBoxScreen = () => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/ticket/my-stat')}>
           <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
         </TouchableOpacity>
       </View>

@@ -73,9 +73,9 @@ const Calendar = () => {
         pathname: '/write/todayTicketCard', //
         params: {id: ticketsGroupByDate[0].id},
       })
-      return
+    } else {
+      router.push({pathname: '/write', params: {date: format(pDay, 'yyyy-MM-dd')}})
     }
-    router.push({pathname: '/write', params: {date: format(pDay, 'yyyy-MM-dd')}})
   }
 
   const renderDaysOfWeek = () => {

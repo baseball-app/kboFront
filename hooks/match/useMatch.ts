@@ -22,23 +22,20 @@ export type Match = {
 }
 
 const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
-  const startDate = dayjs(selectedDate).startOf('date').format('YYYY-MM-DD')
-  const endDate = dayjs(selectedDate).add(10, 'day').startOf('date').format('YYYY-MM-DD')
+  const startDate = dayjs(selectedDate).format('YYYY-MM-DD')
 
   const {data: matchingList} = useQuery({
     queryKey: ['matchTeam', startDate],
     queryFn: async () =>
-      ApiClient.get<Pagination<Match>>('/games/', {
-        end_date: endDate,
+      ApiClient.get<Match[]>('/games/', {
+        end_date: startDate,
         start_date: startDate,
       }),
     enabled: Boolean(selectedDate),
   })
 
-  // console.log(startDate, matchingList)
-
   return {
-    matchingList: matchingList?.results || [],
+    matchingList: matchingList || [],
   }
 }
 

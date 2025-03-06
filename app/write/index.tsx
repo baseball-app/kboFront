@@ -65,7 +65,7 @@ const DailyLogWriteScreen = () => {
   const router = useRouter()
   const params = useLocalSearchParams()
   const date = params?.date
-
+  console.log(selectedDate)
   useEffect(() => {
     if (date) setSelectedDate(new Date(date as string))
   }, [date])
@@ -119,8 +119,15 @@ const DailyLogWriteScreen = () => {
 
   const {matchingList} = useMatch({selectedDate})
 
+  console.log(
+    matchingList?.map(match => ({
+      home: match.team_home_info.id,
+      away: match.team_away_info.id,
+    })),
+  )
+
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right', 'bottom']}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.stepHeaderBox}>
         <TouchableOpacity onPress={goToPreviousStep}>
           <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
@@ -172,20 +179,20 @@ const DailyLogWriteScreen = () => {
             어디서
             {'\n'}경기를 보셨나요?
           </Text>
-          <TouchableOpacity onPress={() => onPlaceClick('base')} activeOpacity={1}>
-            <View style={selectedPlace === 'base' ? styles.selectButton : styles.defaultSelectButton}>
+          <TouchableOpacity onPress={() => onPlaceClick('직관')} activeOpacity={1}>
+            <View style={selectedPlace === '직관' ? styles.selectButton : styles.defaultSelectButton}>
               <Image
                 source={require('@/assets/icons/round-check.png')}
-                style={selectedPlace === 'base' ? styles.roundCheck : {}}
+                style={selectedPlace === '직관' ? styles.roundCheck : {}}
               />
               <Text style={styles.placeText}>직관</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => onPlaceClick('home')} activeOpacity={1}>
-            <View style={selectedPlace === 'home' ? styles.selectButton : styles.defaultSelectButton}>
+          <TouchableOpacity onPress={() => onPlaceClick('집관')} activeOpacity={1}>
+            <View style={selectedPlace === '집관' ? styles.selectButton : styles.defaultSelectButton}>
               <Image
                 source={require('@/assets/icons/round-check.png')}
-                style={selectedPlace === 'home' ? styles.roundCheck : {}}
+                style={selectedPlace === '집관' ? styles.roundCheck : {}}
               />
               <Text style={styles.placeText}>집관</Text>
             </View>
@@ -212,7 +219,7 @@ export default DailyLogWriteScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
   scrollContainer: {
     flex: 1,
@@ -235,6 +242,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'relative',
+    backgroundColor: 'white',
   },
   title: {
     fontSize: 24,
@@ -302,6 +310,9 @@ const styles = StyleSheet.create({
   buttonBox: {
     width: '100%',
     paddingHorizontal: 24,
+    paddingVertical: 24,
+    paddingBottom: 32,
+    backgroundColor: '#fffcf3',
   },
   selectButton: {
     width: '100%',

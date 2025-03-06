@@ -41,10 +41,6 @@ export default function GameCard() {
 
   const isMyTicket = profile?.id === ticketDetail?.writer
 
-  const game_date = dayjs(ticketDetail?.date)
-  const weekDay = DAYS_OF_WEEK[game_date.day()]
-  const title = `${game_date.format(`M월 D일 ${weekDay}요일`)}`
-
   const opponent = findTeamById(ticketDetail?.opponent)
 
   const heartIcon = ticketDetail?.favorite
