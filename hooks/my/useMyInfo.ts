@@ -34,7 +34,7 @@ const useMyInfo = () => {
   }
 
   const openSuccessPasteInvitationCodeModal = () => {
-    openCommonPopup(`초대코드가 복사되었어요! \n 초대코드를 공유해주세요.`)
+    openCommonPopup(`초대코드가 복사됐어요!\n친구들한테 공유해보세요.`)
   }
 
   // 초대코드 복사

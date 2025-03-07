@@ -9,8 +9,6 @@ import {useEffect} from 'react'
 import useMatch from '@/hooks/match/useMatch'
 import dayjs from 'dayjs'
 import {usePopup} from '@/slice/commonSlice'
-import {useQuery} from '@tanstack/react-query'
-import ApiClient from '@/api'
 
 const CalendarScreen = () => {
   const router = useRouter()

@@ -13,7 +13,7 @@ import useFriends from './useFriends'
  */
 const useMakeFriend = () => {
   const {profile} = useProfile()
-  const {checkIsFriend} = useFriends()
+  const {checkIsFriend, reloadFriendList} = useFriends()
   const [friendInvitationCodeList, setFriendInvitationCodeList] = useMMKVObject<string[]>(
     MmkvStoreKeys.FRIEND_INVITATION_CODE,
   )
@@ -35,20 +35,34 @@ const useMakeFriend = () => {
         })
 
         // 이미 친구라면 진행하지 않음
-        if (checkIsFriend(Number(user_id))) return targetCode
+        if (checkIsFriend(Number(user_id))) {
+          return targetCode
+        }
 
         await ApiClient.post('/users/follow/', {
-          source_id: profile.id,
+          source_id: Number(profile.id),
           target_id: Number(user_id),
         })
         return targetCode
       } catch (error) {
-        throw new Error('친구 추가 실패')
+        return targetCode
       }
     },
     onError: error => {
       console.error('친구 추가 실패', error)
     },
+  })
+
+  const {mutateAsync: unfollowFriend} = useMutation({
+    mutationFn: (targetId: number) =>
+      ApiClient.post('/users/unfollow/', {
+        source_id: Number(profile.id),
+        target_id: targetId,
+      }),
+    onError: error => {
+      console.error('친구 추가 실패', error)
+    },
+    onSuccess: () => reloadFriendList(),
   })
 
   const addFriendList = async () => {
@@ -58,6 +72,7 @@ const useMakeFriend = () => {
     // 친구 추가 시도
     for (let i = 0; i < friendInvitationCodeList.length; i++) {
       try {
+        console.log('friendInvitationCodeList[i]', friendInvitationCodeList)
         const data = await addFriend(friendInvitationCodeList[i])
         successList.push(data)
       } catch (e) {
@@ -74,6 +89,7 @@ const useMakeFriend = () => {
     addFriend,
     friendInvitationCodeList,
     addFriendList,
+    unfollowFriend,
   }
 }
 

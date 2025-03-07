@@ -6,7 +6,10 @@ import {router, Stack} from 'expo-router'
 import {horizontalScale, moderateScale, verticalScale} from '@/utils/metrics'
 import {theme} from '@/constants/Colors'
 import {useLocalSearchParams} from 'expo-router'
-import useFriends, {FriendType} from '@/hooks/my/useFriends'
+import useFriends, {Friend, FriendType} from '@/hooks/my/useFriends'
+import {findProfileImageById} from '@/constants/join'
+import useMakeFriend from '@/hooks/my/useMakeFriend'
+import {usePopup} from '@/slice/commonSlice'
 
 interface Follower {
   id: string
@@ -17,6 +20,8 @@ interface Follower {
 const FollowerScreen = () => {
   const {id} = useLocalSearchParams()
   const [activeTab, setActiveTab] = useState<FriendType>(id as FriendType)
+  const {modal} = usePopup()
+  const {unfollowFriend} = useMakeFriend()
 
   const {followers, followings} = useFriends()
 
@@ -33,6 +38,32 @@ const FollowerScreen = () => {
 
   const handleTabChange = (tab: FriendType) => {
     setActiveTab(tab)
+  }
+
+  const openUnfollowPopup = (friend: Friend) => {
+    modal.open({
+      header: '안내',
+      content: `${friend.nickname}님과 친구를 끊겠습니까?`,
+      button: [
+        {
+          text: '취소',
+          onPress: modal.hide,
+          buttonStyle: {
+            backgroundColor: '#D0CEC7',
+          },
+        },
+        {
+          text: '친구 끊기',
+          onPress: () => unfollowFriend(friend.id).finally(modal.hide),
+          buttonStyle: {
+            backgroundColor: '#1E5EF4',
+          },
+          buttonTextStyle: {
+            color: '#fff',
+          },
+        },
+      ],
+    })
   }
 
   return (
@@ -63,14 +94,16 @@ const FollowerScreen = () => {
       {/* Follower List */}
       <ScrollView style={styles.scrollView}>
         {friendList?.map(friend => (
-          <View key={friend.user_id} style={styles.followerItem}>
+          <View key={friend.id} style={styles.followerItem}>
             <View style={styles.followerInfo}>
               <View style={styles.iconContainer}>
-                <Image source={require('../../assets/profile_images/ball.png')} style={styles.baseballIcon} />
+                <Image source={findProfileImageById(friend.profile_type)} style={styles.baseballIcon} />
               </View>
               <Text style={styles.followerName}>{friend.nickname}</Text>
             </View>
-            <TouchableOpacity style={styles.unfollowButton}>
+            <TouchableOpacity
+              style={styles.unfollowButton} //
+              onPress={() => openUnfollowPopup(friend)}>
               <Image source={require('../../assets/icons/x.png')} style={styles.unfollowIcon} />
             </TouchableOpacity>
           </View>
@@ -85,9 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  header: {
-    paddingBottom: verticalScale(10),
-  },
+  header: {},
   backButton: {
     paddingHorizontal: horizontalScale(20),
     marginBottom: verticalScale(20),
@@ -125,6 +156,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.backgroundPrimary,
     paddingHorizontal: horizontalScale(20),
+    paddingTop: verticalScale(10),
   },
   followerItem: {
     flexDirection: 'row',

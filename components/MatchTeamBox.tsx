@@ -20,7 +20,6 @@ const MatchTeamBox = ({match, onClick, isSelected}: Props) => {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onClick}>
       <View style={isSelected ? styles.gameSelectedInfoBox : styles.gameInfoBox}>
-        {/* <View  */}
         <View style={styles.matchDayBox}>
           <Text style={styles.matchDayTitle}>{time}</Text>
           <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />

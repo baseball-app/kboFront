@@ -4,14 +4,14 @@ import ApiClient from '@/api'
 
 export type FriendType = 'followers' | 'followings'
 
-export type Friends = Record<
-  FriendType,
-  {
-    user_id: number
-    nickname: string
-    profile_image: string
-  }[]
->
+export type Friend = {
+  id: number
+  nickname: string
+  profile_image: string
+  profile_type: number
+}
+
+export type Friends = Record<FriendType, Friend[]>
 
 export type FriendStatusList = {
   friends: FriendStatus[]
@@ -31,26 +31,35 @@ export type FriendStatus = {
 const useFriends = () => {
   const {user, isLogined} = useLogin()
 
-  const {data: followers} = useQuery({
-    queryKey: ['followers', user],
+  const {data: followers, refetch: refetchFollowers} = useQuery({
+    queryKey: ['friend', 'followers', user],
     queryFn: () => ApiClient.get<Friends>('/users/followers/'),
     enabled: Boolean(isLogined),
+    staleTime: 20 * 1000,
   })
 
-  const {data: followings} = useQuery({
-    queryKey: ['followings', user],
+  const {data: followings, refetch: refetchFollowings} = useQuery({
+    queryKey: ['friend', 'followings', user],
     queryFn: () => ApiClient.get<Friends>('/users/followings/'),
     enabled: Boolean(isLogined),
+    staleTime: 20 * 1000,
   })
 
-  const {data: friend_status} = useQuery({
-    queryKey: ['friend_status', user],
+  const {data: friend_status, refetch: refetchFriendStatus} = useQuery({
+    queryKey: ['friend', 'friend_status', user],
     queryFn: () => ApiClient.get<FriendStatusList>('/users/friends/'),
     enabled: Boolean(isLogined),
+    staleTime: 20 * 1000,
   })
 
   const checkIsFriend = (id: number) => {
     return friend_status?.friends.find(friend => friend.id === id)
+  }
+
+  const reloadFriendList = () => {
+    refetchFollowers()
+    refetchFollowings()
+    refetchFriendStatus()
   }
 
   return {
@@ -58,6 +67,7 @@ const useFriends = () => {
     followings: followings?.followings,
     friend_status: friend_status,
     checkIsFriend,
+    reloadFriendList,
   }
 }
 
