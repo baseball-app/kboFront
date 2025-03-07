@@ -140,6 +140,9 @@ const TicketPage = () => {
   const teamAwayInfo = writeStore.selectedMatch?.team_away_info
   const teamHomeInfo = writeStore.selectedMatch?.team_home_info
 
+  // 더블헤더 경기 여부
+  const isDoubleHeader = !writeStore.selectedMatch
+
   const [writeData, setWriteData] = useState<IWriteDataInterface>({
     todayScore: {},
     todayImg: undefined,
@@ -189,23 +192,7 @@ const TicketPage = () => {
 
   const onSubmit = () => {
     const formData = new FormData()
-    /**
-     * starting_pitchers: 대장
-is_double: true
-score_opponent: 3
-only_me: true
-date: 2023-03-25
-game: 12
-weather: 비
-gip_place: 
-memo: 나만보기
-image: (binary)
-result: 승리
-is_homeballpark: true
-food: 자몽에이드
-is_ballpark: true
-score_our: 2
-     */
+
     formData.append('image', {
       uri: writeData.todayImg?.uri,
       type: writeData.todayImg?.type, // image/jpeg, image/png 등
@@ -233,42 +220,11 @@ score_our: 2
     formData.append('memo', writeData.todayThoughts)
     formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
 
-    // is_homeballpark
-
     //나만보기
     formData.append('only_me', JSON.stringify(writeData.onlyMeCheck))
-    formData.append('is_double', JSON.stringify(false))
-
-    console.log(formDataToJson(formData))
+    formData.append('is_double', JSON.stringify(isDoubleHeader))
 
     registerTicket(formData)
-
-    // 더블 여부
-    // formData.append('is_double', false)
-
-    /**
-     *   
-
-  
-     */
-    // registerTicket
-    //     {
-    //   "date": "2025-04-09",
-    //   "result": "승리",
-    //   "weather": "흐림",
-    //   "is_ballpark": true,
-    //   "score_our": 9,
-    //   "score_opponent": 6,
-    //   "starting_pitchers": "고우석",
-    //   "gip_place": "",
-    //   "food": "닭강정",
-    //   "memo": "재미있었다",
-    //   "is_homeballpark": true,
-    //   "writer": 1,
-    //   "only_me": true,
-    //   "ballpark": 1,
-    //   "opponent": 1
-    // }
   }
 
   const uploadPhoto = async () => {
@@ -640,14 +596,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     padding: 24,
   },
-  writePlaceModalContent: {
-    width: '100%',
-    backgroundColor: '#fff',
-    height: 285,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 24,
-  },
+
   placeModalContent: {
     width: '100%',
     backgroundColor: '#fff',
@@ -666,11 +615,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 12,
   },
-  writePlaceOptionsContainer: {
-    marginTop: 24,
-    flexDirection: 'column',
-    gap: 16,
-  },
   optionButton: {
     width: 166,
     height: 48,
@@ -680,17 +624,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 22,
-    gap: 8,
-  },
-  writePlaceOptionButton: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#D0CEC7',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    paddingVertical: 13,
     gap: 8,
   },
   placeOptionButton: {

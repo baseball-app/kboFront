@@ -28,8 +28,9 @@ const useMyInfo = () => {
 
   const pasteInviteCode = async () => {
     if (!invitation) throw new Error('초대코드가 없습니다.')
+    const url = process.env.EXPO_PUBLIC_INVITATION_URL
 
-    Clipboard.setString(invitation?.code)
+    Clipboard.setString(`${url}?code=${invitation?.code}`)
   }
 
   const openSuccessPasteInvitationCodeModal = () => {
