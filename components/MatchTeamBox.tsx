@@ -17,6 +17,8 @@ const MatchTeamBox = ({match, onClick, isSelected}: Props) => {
   const homeTeam = findTeamById(match.team_home_info.id)
   const awayTeam = findTeamById(match.team_away_info.id)
 
+  console.log(match.ballpark_info)
+
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onClick}>
       <View style={isSelected ? styles.gameSelectedInfoBox : styles.gameInfoBox}>

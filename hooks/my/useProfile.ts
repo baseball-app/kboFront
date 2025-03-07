@@ -1,7 +1,7 @@
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import {useMMKVObject} from 'react-native-mmkv'
 import {useLogin} from '@/hooks/auth/useLogin'
-import {useQuery} from '@tanstack/react-query'
+import {useQuery, useQueryClient} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {findTeamById, PROFILE_IMAGES} from '@/constants/join'
 import {useEffect} from 'react'
@@ -27,6 +27,7 @@ export type Profile = {
 }
 
 const useProfile = () => {
+  const queryClient = useQueryClient()
   const {user, isLogined} = useLogin()
   const [profile, updateProfileCacheData] = useMMKVObject<Profile>(MmkvStoreKeys.USER_PROFILE)
   const {modal} = useCommonSlice()
@@ -35,13 +36,14 @@ const useProfile = () => {
   const {data, refetch} = useQuery({
     queryKey: ['profile', user],
     queryFn: () => ApiClient.get<Profile>('/users/me/'),
-    staleTime: 1000 * 60,
     enabled: Boolean(isLogined),
     placeholderData: profile ?? undefined,
   })
 
   // 회원가입 시, 초기 데이터 업데이트 하는 함수
   const updateInitialProfile = (joinSlice: IUserJoinSlice) => {
+    console.log('여기가 실행 될까?', joinSlice)
+
     updateProfileCacheData({
       id: joinSlice.id,
       nickname: joinSlice.nickname,
@@ -65,6 +67,7 @@ const useProfile = () => {
       profile_type: Number(joinSlice.profile?.id),
     })
 
+    console.log('여기 실행 안 됨?', joinSlice)
     updateInitialProfile(joinSlice)
   }
 
@@ -72,7 +75,8 @@ const useProfile = () => {
   const updateProfile = async (info: Partial<{my_team: number; nickname: string}>) => {
     if (!profile) return
     await ApiClient.post('/users/modify/', info)
-    refetch()
+    queryClient.invalidateQueries({queryKey: ['profile', user]})
+    // refetch()
   }
 
   const updateMyTeam = (teamId?: number) => {
@@ -128,11 +132,16 @@ const useProfile = () => {
   }
 
   useEffect(() => {
+    console.log('data', data)
     if (data) updateProfileCacheData(data)
   }, [data])
 
   const myTeam = findTeamById(data?.my_team.id)
   const myProfileImage = PROFILE_IMAGES.find(image => image.id === data?.profile_type)?.image
+
+  const checkIsMe = (id: number) => {
+    return data?.id === id
+  }
 
   return {
     profile: {
@@ -144,6 +153,7 @@ const useProfile = () => {
     updateProfileWithSignUp,
     updateMyTeam,
     updateProfile,
+    checkIsMe,
   }
 }
 

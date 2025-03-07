@@ -65,7 +65,7 @@ const DailyLogWriteScreen = () => {
   const router = useRouter()
   const params = useLocalSearchParams()
   const date = params?.date
-  console.log(selectedDate)
+
   useEffect(() => {
     if (date) setSelectedDate(new Date(date as string))
   }, [date])
@@ -117,14 +117,7 @@ const DailyLogWriteScreen = () => {
     }
   }
 
-  const {matchingList} = useMatch({selectedDate})
-
-  console.log(
-    matchingList?.map(match => ({
-      home: match.team_home_info.id,
-      away: match.team_away_info.id,
-    })),
-  )
+  const {onlyMyTeamMatchingList} = useMatch({selectedDate})
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -140,7 +133,7 @@ const DailyLogWriteScreen = () => {
         <ScrollView style={styles.scrollContainer}>
           <Text style={styles.title}>기록할 경기 일정을{'\n'}선택해주세요</Text>
           <View style={styles.matchListBox}>
-            {matchingList.map((match, index) => (
+            {onlyMyTeamMatchingList.map((match, index) => (
               <MatchTeamBox
                 key={index} //
                 isSelected={selectedMatch?.id === match.id}

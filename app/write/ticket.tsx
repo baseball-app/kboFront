@@ -17,48 +17,9 @@ import * as ImagePicker from 'expo-image-picker'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
 import React from 'react'
 import {findTeamById, TEAMS} from '@/constants/join'
-import dayjs, {Dayjs} from 'dayjs'
+import dayjs from 'dayjs'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import LocationTypeSelector from '@/components/write/LocationTypeSelector'
-
-const formDataToJson = (formData: any) => {
-  const json: any = {}
-
-  for (const pair of formData._parts) {
-    const [key, value] = pair
-
-    // 파일인지, 일반 텍스트인지 구분
-    if (typeof value === 'object' && value.uri) {
-      json[key] = {
-        uri: value.uri,
-        type: value.type,
-        name: value.name,
-      }
-    } else {
-      json[key] = value
-    }
-  }
-
-  return json
-}
-
-type TicketInfo = {
-  date: string // '2025-04-09'
-  result: string // '승리'
-  weather: string // '흐림'
-  is_ballpark: boolean // true
-  score_our: number // 9
-  score_opponent: number // 6
-  starting_pitchers: string // '고우석'
-  gip_place: string // ''
-  food: string // '닭강정'
-  memo: string // '재미있었다'
-  is_homeballpark: boolean // true
-  writer: number // 1
-  only_me: boolean // true
-  ballpark: number // 1
-  opponent: number // 1
-}
 
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
@@ -70,19 +31,6 @@ interface IWriteDataInterface {
   onlyMeCheck: boolean
   todayScore: {[key: string]: string}
 }
-
-const tabMenuConfig = [
-  {
-    id: 0,
-    value: 'live',
-    title: '직관',
-  },
-  {
-    id: 1,
-    value: 'home',
-    title: '집관',
-  },
-]
 
 const inputConfig = [
   {
