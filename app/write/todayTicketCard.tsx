@@ -1,9 +1,7 @@
-import {DAYS_OF_WEEK} from '@/constants/day'
 import {findMatchResultImage, findWeatherImage} from '@/constants/match'
 import useTeam from '@/hooks/match/useTeam'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {format} from 'date-fns'
-import dayjs from 'dayjs'
 import {useLocalSearchParams, useRouter} from 'expo-router'
 import React from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, ImageBackground} from 'react-native'
@@ -11,18 +9,6 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
 import Svg, {Path} from 'react-native-svg'
 import useProfile from '@/hooks/my/useProfile'
-
-const emojis = [
-  {emoji: '😆', count: 10},
-  {emoji: '😆', count: 8},
-  {emoji: '👍', count: 7},
-  {emoji: '👏', count: 6},
-  {emoji: '😒', count: 4},
-  {emoji: '☝️', count: 1},
-  {emoji: '👎', count: 0},
-  {emoji: '😡', count: 0},
-  {emoji: '😐', count: 0},
-]
 
 export default function GameCard() {
   const router = useRouter()
@@ -35,9 +21,8 @@ export default function GameCard() {
     ticketIndex,
     data,
     toggleFavorite,
+    reactionList,
   } = useTicketDetail(Number(id))
-
-  console.log(ticketDetail)
 
   const {profile} = useProfile()
 
@@ -281,10 +266,10 @@ export default function GameCard() {
           </ImageBackground>
         </View>
         <View style={styles.emojiBox}>
-          {emojis.map((emoji, index) => (
+          {reactionList.map((reaction, index) => (
             <TouchableOpacity key={index} style={styles.emojiButton}>
-              <Text>{emoji.emoji}</Text>
-              <Text>{emoji.count}</Text>
+              <Text>{reaction.title}</Text>
+              <Text>{reaction.count}</Text>
             </TouchableOpacity>
           ))}
         </View>

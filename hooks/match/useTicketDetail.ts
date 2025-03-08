@@ -23,6 +23,8 @@ type TicketDetail = {
   game: number
   opponent: number
   writer: number
+
+  // 감정표현
   like: number
   love: number
   haha: number
@@ -30,6 +32,8 @@ type TicketDetail = {
   wow: number
   sad: number
   angry: number
+  // 감정표현
+
   only_me: boolean
   is_double: boolean
   favorite: boolean
@@ -37,6 +41,17 @@ type TicketDetail = {
 
 //
 export type ReactionType = 'like' | 'love' | 'haha' | 'yay' | 'wow' | 'sad' | 'angry'
+
+const reactionTypeList: {key: ReactionType; title: string; count: number}[] = [
+  {key: 'like', title: '😜', count: 0},
+  {key: 'love', title: '👍', count: 0},
+  {key: 'haha', title: '🤨', count: 0},
+  {key: 'yay', title: '👆', count: 0},
+  {key: 'wow', title: '👎', count: 0},
+  {key: 'sad', title: '😠', count: 0},
+  {key: 'angry', title: '🤬', count: 0},
+]
+// 😆👏
 
 const useTicketDetail = (id: number) => {
   const queryClient = useQueryClient()
@@ -107,8 +122,17 @@ const useTicketDetail = (id: number) => {
     updateFavorite({favorite_status: data?.[ticketIndex]?.favorite ? 'clear' : 'excute'})
   }
 
+  const ticketDetail = data?.[ticketIndex]
+
+  const reactionList = reactionTypeList.map(reaction => {
+    return {
+      ...reaction,
+      count: ticketDetail?.[reaction.key] || 0,
+    }
+  })
+
   return {
-    ticketDetail: data?.[ticketIndex],
+    ticketDetail: ticketDetail,
     deleteTicket,
     updateTicket,
     addReaction,
@@ -117,6 +141,7 @@ const useTicketDetail = (id: number) => {
     ticketIndex,
     data,
     toggleFavorite,
+    reactionList,
   }
 }
 
