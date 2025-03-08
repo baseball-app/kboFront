@@ -5,7 +5,7 @@ const useDeepLink = (observer?: (url: string) => void) => {
   useEffect(() => {
     const handleDeepLink = (event: {url: string}) => {
       if (observer && event.url) {
-        console.log('딥링크 감지:', event.url)
+        // console.log('딥링크 감지:', event.url)
         observer(event.url)
       }
     }

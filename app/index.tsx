@@ -26,9 +26,7 @@ export default function Index() {
   // 딥링크 감지하여 invitationCode가 있을 경우 임시 저장
   useDeepLink(url => {
     const invitationCode = findQueryValueByName(url, 'code')
-    console.log('url', url)
     if (invitationCode) {
-      console.log('hi', url)
       temporarySaveFriendInvitationCode(invitationCode)
     }
   })

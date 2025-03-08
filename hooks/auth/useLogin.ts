@@ -33,6 +33,7 @@ export const useLogin = () => {
     } finally {
       setUser(undefined)
       // api 호출 /auths/token/revoke/
+      router.dismissAll()
       router.navigate('/auth/login')
     }
   }

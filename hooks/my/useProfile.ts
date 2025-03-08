@@ -132,7 +132,6 @@ const useProfile = () => {
   }
 
   useEffect(() => {
-    console.log('data', data)
     if (data) updateProfileCacheData(data)
   }, [data])
 

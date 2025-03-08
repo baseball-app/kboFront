@@ -90,13 +90,6 @@ const ProfileScreen = () => {
           <Ionicons name="chevron-forward" size={24} color="gray" />
         </TouchableOpacity>
       </View>
-
-      {/* <PopUpModal
-                isInviteModalVisible={isInviteModalVisible}
-                setIsInviteModalVisible={setIsInviteModalVisible}
-                isWithdrawalModalVisible={isWithdrawalModalVisible}
-                setIsWithdrawalModalVisible={setIsWithdrawalModalVisible}
-            /> */}
     </SafeAreaView>
   )
 }

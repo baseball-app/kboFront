@@ -26,15 +26,12 @@ export default function SwipeablePressable({
       isSwiping.current = false
     },
     onPanResponderMove: (_, gestureState) => {
-      console.log('hi')
-
       if (Math.abs(gestureState.dx) > 10) {
         isSwiping.current = true
       }
     },
     onPanResponderRelease: (_, gestureState) => {
       const touchDuration = Date.now() - touchStartTime.current
-      console.log('hi')
       if (!isSwiping.current && touchDuration < 200) {
         onPress?.()
         return
