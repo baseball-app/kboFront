@@ -35,7 +35,7 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
         </TouchableOpacity>
       </View>
       <Modal animationType="none" transparent={true} visible={tabMenuModalVisible}>
-        <View style={modal.overlay}>
+        <View style={modal.bottomSheetOverlay}>
           <View style={styles.writePlaceModalContent}>
             <Text style={styles.modalTitle}>기록하고 싶은 장소를 선택해주세요</Text>
             <View style={styles.writePlaceOptionsContainer}>
@@ -173,11 +173,25 @@ const styles = StyleSheet.create({
   },
 })
 
-const modal = StyleSheet.create({
-  overlay: {
+export const modal = StyleSheet.create({
+  bottomSheetOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  body: {
+    width: '100%',
+    maxWidth: 324,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
   },
 })
