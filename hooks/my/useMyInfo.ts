@@ -5,7 +5,6 @@ import {useQuery} from '@tanstack/react-query'
 import {useLogin} from '@/hooks/auth/useLogin'
 import Clipboard from '@react-native-clipboard/clipboard'
 import useProfile from './useProfile'
-import {useRouter} from 'expo-router'
 
 type InvitationCode = {
   code: string
@@ -14,8 +13,6 @@ type InvitationCode = {
 const useMyInfo = () => {
   const {user, isLogined, logout} = useLogin()
   const {openCommonPopup, modal} = usePopup()
-
-  const router = useRouter()
 
   const {profile} = useProfile()
 

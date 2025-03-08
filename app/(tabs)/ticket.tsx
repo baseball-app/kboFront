@@ -4,16 +4,16 @@ import {CLUB_LIST} from '@/constants/ticket'
 import useTeam from '@/hooks/match/useTeam'
 import useTicketListByTeam from '@/hooks/match/useTicketListByTeam'
 import useMyInfo from '@/hooks/my/useMyInfo'
+import useProfile from '@/hooks/my/useProfile'
 import {format} from 'date-fns'
 import {router} from 'expo-router'
 import React from 'react'
 import {View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native'
 
 const MyTicketBoxScreen = () => {
-  const {profile} = useMyInfo()
+  const {profile} = useProfile()
   const {ticketList, onChangeTeam, selectedTeamId} = useTicketListByTeam()
   const {findTeamById} = useTeam()
-  console.log(ticketList)
 
   const myTeam = findTeamById(profile.my_team?.id)
 
@@ -37,14 +37,15 @@ const MyTicketBoxScreen = () => {
       <View style={styles.ticketBox}>
         <Text style={styles.ticketTitle}>상대 구단별 경기티켓</Text>
         <View style={styles.tabContainer}>
-          {CLUB_LIST.map(club => (
-            <Tag
-              key={club.value}
-              name={club.name} //
-              isActive={club.id === selectedTeamId}
-              onClick={() => onChangeTeam(club.id)}
-            />
-          ))}
+          {CLUB_LIST.filter(club => club.id !== myTeam?.id) //
+            .map(club => (
+              <Tag
+                key={club.value}
+                name={club.name} //
+                isActive={club.id === selectedTeamId}
+                onClick={() => onChangeTeam(club.id)}
+              />
+            ))}
         </View>
       </View>
 
@@ -70,6 +71,14 @@ const MyTicketBoxScreen = () => {
                 <View>
                   <TouchableOpacity
                     activeOpacity={0.8}
+                    onPress={() =>
+                      router.push({
+                        pathname: '/write/todayTicketCard',
+                        params: {
+                          id: ticket.id,
+                        },
+                      })
+                    }
                     style={{
                       backgroundColor: '#1E5EF4',
                       padding: 8,

@@ -24,6 +24,8 @@ export default function GameCard() {
     reactionList,
   } = useTicketDetail(Number(id))
 
+  console.log(ticketDetail)
+
   const {profile} = useProfile()
 
   const isMyTicket = profile?.id === ticketDetail?.writer
