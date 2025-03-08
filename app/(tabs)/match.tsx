@@ -1,4 +1,4 @@
-import {StyleSheet, FlatList} from 'react-native'
+import {StyleSheet, FlatList, ScrollView} from 'react-native'
 import {View} from 'react-native'
 import MatchTeamBox from '@/components/MatchTeamBox'
 import MatchCalendar from '@/components/MatchCalendar'
@@ -10,7 +10,7 @@ import useWriteTicket from '@/hooks/match/useWriteTicket'
 
 const MatchScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const {matchingList} = useMatch({selectedDate})
+  const {matchingList, checkIsMyTeamMatch} = useMatch({selectedDate})
   const {moveToWriteTicket} = useWriteTicket()
 
   return (
@@ -20,6 +20,7 @@ const MatchScreen = () => {
         contentContainerStyle={styles.flatList}
         data={matchingList}
         ListEmptyComponent={<EmptyMatchView />}
+        scrollEnabled
         ListHeaderComponent={
           <MatchCalendar //
             value={selectedDate}
@@ -29,7 +30,8 @@ const MatchScreen = () => {
         renderItem={({item: match}) => (
           <MatchTeamBox
             match={match} //
-            onClick={() => moveToWriteTicket(selectedDate, match)}
+            isMyTeamMatch={checkIsMyTeamMatch(match)}
+            onClick={() => checkIsMyTeamMatch(match) && moveToWriteTicket(selectedDate, match)}
           />
         )}
         keyExtractor={item => `${item.id}`}
@@ -46,9 +48,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffcf3',
   },
   flatList: {
-    flex: 1,
+    // flex: 1,
     paddingTop: 8,
     paddingHorizontal: 24,
+    paddingBottom: 20,
     rowGap: 20,
   },
 })

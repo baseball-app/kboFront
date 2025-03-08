@@ -117,7 +117,7 @@ const DailyLogWriteScreen = () => {
     }
   }
 
-  const {onlyMyTeamMatchingList} = useMatch({selectedDate})
+  const {onlyMyTeamMatchingList, checkIsMyTeamMatch} = useMatch({selectedDate})
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -138,7 +138,8 @@ const DailyLogWriteScreen = () => {
                 key={index} //
                 isSelected={selectedMatch?.id === match.id}
                 match={match}
-                onClick={() => setSelectedMatch(match)}
+                onClick={() => checkIsMyTeamMatch(match) && setSelectedMatch(match)}
+                isMyTeamMatch={checkIsMyTeamMatch(match)}
               />
             ))}
           </View>

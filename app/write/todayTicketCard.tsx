@@ -37,6 +37,8 @@ export default function GameCard() {
     toggleFavorite,
   } = useTicketDetail(Number(id))
 
+  console.log(ticketDetail)
+
   const {profile} = useProfile()
 
   const isMyTicket = profile?.id === ticketDetail?.writer
@@ -98,15 +100,15 @@ export default function GameCard() {
                 />
                 <MaskedView
                   style={{
-                    aspectRatio: 400 / 220,
+                    aspectRatio: 307 / 220,
                   }}
                   maskElement={
-                    <Svg height="100%" width="100%" viewBox="0 0 400 220">
+                    <Svg height="100%" width="100%" viewBox="0 0 307 220">
                       <Path
                         fill="white"
                         d={`
                           M0 0 
-                          H400 
+                          H307 
                           V220 
                           H0 
                           Z
@@ -116,35 +118,41 @@ export default function GameCard() {
                           C0 25, 25 25, 25 0 
                           Z
                           
-                          M375 0
-                          C375 25, 400 25, 400 25
-                          V400 0
+                          M282 0
+                          C282 25, 307 25, 307 25
+                          V307 0
                           Z
                           `}
                       />
                     </Svg>
                   }>
                   {/* 마스킹된 부분에 이미지 표시 */}
-                  <Image source={require('./test_baseball.jpg')} style={{width: '100%'}} resizeMode="cover" />
-                  <Svg height="100%" width="100%" viewBox="0 0 400 220" style={{position: 'absolute', top: 0, left: 0}}>
+                  <Image
+                    source={{
+                      uri: 'https://helpx.adobe.com/content/dam/help/en/photoshop/using/quick-actions/remove-background-before-qa1.png',
+                    }}
+                    style={{width: '100%', height: 260}}
+                    resizeMode="cover"
+                  />
+                  <Svg height="100%" width="100%" viewBox="0 0 307 220" style={{position: 'absolute', top: 0, left: 0}}>
                     <Path
                       d={`
-                    M0 0 
-                    H400 
-                    V220 
-                    H0 
-                    Z
-
-                    M0 0 
-                    V0 25
-                    C0 25, 25 25, 25 0 
-                    Z
-
-                    M375 0
-                    C375 25, 400 25, 400 25
-                    V400 0
-                    Z
-                `}
+                          M0 0 
+                          H307 
+                          V220 
+                          H0 
+                          Z
+                          
+                          M0 0 
+                          V0 25
+                          C0 25, 25 25, 25 0 
+                          Z
+                          
+                          M282 0
+                          C282 25, 307 25, 307 25
+                          V307 0
+                          Z
+                          `}
                       fill="none"
                       stroke="white"
                       strokeWidth="6"
@@ -179,7 +187,7 @@ export default function GameCard() {
                 <View style={styles.scoreBox}>
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_our}</Text>
-                    <Text style={styles.teamText}></Text>
+                    <Text style={styles.teamText}>{profile.my_team?.shortName}</Text>
                   </View>
                   <Image source={require('@/assets/icons/matchDot.png')} resizeMode="contain" style={styles.matchDot} />
                   <View style={styles.teamScoreBox}>
@@ -224,21 +232,21 @@ export default function GameCard() {
                   resizeMode="cover"
                 />
                 <MaskedView
-                  style={{aspectRatio: 400 / 220}}
+                  style={{aspectRatio: 307 / 220}}
                   maskElement={
-                    <Svg height="100%" width="100%" viewBox="0 0 400 220">
+                    <Svg height="100%" width="100%" viewBox="0 0 307 220">
                       <Path
                         fill="red"
                         d={`
                           M0 0 
-                          H400 
+                          H307 
                           V220 
                           H0 
                           Z
                           
-                          M400 220 
-                          V400 195
-                          C400 195, 375 195, 375 220 
+                          M307 220 
+                          V307 195
+                          C307 195, 282 195, 282 220 
                           Z
 
                           M25 220
@@ -381,7 +389,7 @@ const styles = StyleSheet.create({
   ticketBox: {
     width: '100%',
     marginTop: 24,
-    height: 811,
+    height: 920,
   },
   imgViewBox: {
     width: '100%',
@@ -487,7 +495,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexWrap: 'wrap',
     gap: 8,
-    marginTop: 28,
   },
   emojiButton: {
     flexDirection: 'row',

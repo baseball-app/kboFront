@@ -36,15 +36,18 @@ const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
     enabled: Boolean(selectedDate),
   })
 
-  const onlyMyTeamMatchingList = matchingList?.filter(match => {
+  const checkIsMyTeamMatch = (match: Match) => {
     const isMyAwayTeam = match.team_away_info.id === profile.my_team?.id
     const isMyHomeTeam = match.team_home_info.id === profile.my_team?.id
     return isMyAwayTeam || isMyHomeTeam
-  })
+  }
+
+  const onlyMyTeamMatchingList = matchingList?.filter(match => checkIsMyTeamMatch(match))
 
   return {
     matchingList: matchingList || [],
     onlyMyTeamMatchingList: onlyMyTeamMatchingList || [],
+    checkIsMyTeamMatch,
   }
 }
 

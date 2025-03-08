@@ -8,24 +8,28 @@ type Props = {
   match: Match
   onClick: () => void
   isSelected?: boolean
+  isMyTeamMatch: boolean
 }
 
 /** 매치 팀 경기 카드 컴포넌트 */
-const MatchTeamBox = ({match, onClick, isSelected}: Props) => {
+const MatchTeamBox = ({match, onClick, isSelected, isMyTeamMatch}: Props) => {
   const time = format(match.game_date, 'HH:mm')
 
   const homeTeam = findTeamById(match.team_home_info.id)
   const awayTeam = findTeamById(match.team_away_info.id)
 
-  console.log(match.ballpark_info)
-
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onClick}>
-      <View style={isSelected ? styles.gameSelectedInfoBox : styles.gameInfoBox}>
+    <TouchableOpacity activeOpacity={isMyTeamMatch ? 0.8 : 1} onPress={onClick}>
+      <View
+        style={[
+          styles.gameInfoBox, //
+          !isMyTeamMatch && styles.disabledGameInfoBox,
+          isSelected && styles.gameSelectedInfoBox,
+        ]}>
         <View style={styles.matchDayBox}>
           <Text style={styles.matchDayTitle}>{time}</Text>
           <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
-          <Text style={[styles.matchDayTitle, {marginLeft: 3}]}>{match.ballpark_info.name}</Text>
+          <Text style={[styles.matchDayTitle, {marginLeft: 3}]}>{match.ballpark_info.name.slice(0, 2)}</Text>
         </View>
         <View style={styles.matchTeamBox}>
           <View style={styles.matchTeamInfo}>
@@ -50,7 +54,7 @@ export default MatchTeamBox
 
 const styles = StyleSheet.create({
   gameInfoBox: {
-    backgroundColor: '#F3F2EE',
+    backgroundColor: 'white',
     borderRadius: 10,
     width: '100%',
     borderWidth: 1,
@@ -60,16 +64,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  disabledGameInfoBox: {
+    backgroundColor: '#DDDDDD88',
+  },
   gameSelectedInfoBox: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    width: '100%',
-    borderWidth: 1,
     borderColor: '#353430',
-    height: 113,
-    padding: 12,
-    flexDirection: 'column',
-    alignItems: 'center',
   },
   matchTeamBox: {
     flexDirection: 'column',
