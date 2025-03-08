@@ -104,7 +104,7 @@ const FollowerScreen = () => {
             <TouchableOpacity
               style={styles.unfollowButton} //
               onPress={() => openUnfollowPopup(friend)}>
-              <Image source={require('../../assets/icons/x.png')} style={styles.unfollowIcon} />
+              <Image source={require('@/assets/icons/x.png')} style={styles.unfollowIcon} />
             </TouchableOpacity>
           </View>
         ))}

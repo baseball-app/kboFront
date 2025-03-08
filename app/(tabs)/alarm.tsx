@@ -2,7 +2,6 @@ import {StyleSheet, View, FlatList} from 'react-native'
 
 import useNotification from '@/hooks/notification/useNotification'
 import NotificationCard from '@/components/alarm/NotificationCard'
-import {format} from 'date-fns'
 import dayjs from 'dayjs'
 import EmptyNotificationView from '@/components/alarm/EmptyNotificationView'
 

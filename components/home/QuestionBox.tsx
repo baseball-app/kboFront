@@ -7,12 +7,17 @@ interface IQuestionBox {
   onQuestionClick: (p: string) => void
   selectedQuestion: string
   isDisabled?: boolean
+  backgroundColor?: string
 }
 
 const QuestionBox = (props: IQuestionBox) => {
-  const {title, questionData, onQuestionClick, selectedQuestion, isDisabled} = props
+  const {title, questionData, onQuestionClick, selectedQuestion, isDisabled, backgroundColor} = props
   return (
-    <View style={isDisabled ? styles.disabledContainer : styles.container}>
+    <View
+      style={[
+        isDisabled ? styles.disabledContainer : styles.container, //
+        backgroundColor && {backgroundColor},
+      ]}>
       <Text style={styles.questionTitle}>{title}</Text>
       <View style={styles.questionDataBox}>
         {questionData?.map((ev: any, idx: number) => (
@@ -101,11 +106,10 @@ const styles = StyleSheet.create({
   },
   checkImage: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: 24,
-    height: 24,
-    transform: [{translateX: -12}, {translateY: -12}],
+    top: 10,
+    left: 10,
+    width: 30,
+    height: 30,
   },
 })
 

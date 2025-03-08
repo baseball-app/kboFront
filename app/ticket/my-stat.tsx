@@ -14,7 +14,7 @@ export default function MyStatScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerBox}>
         <TouchableOpacity style={styles.backButton} onPress={router.back}>
-          <Image source={require('@/assets/icons/back.png')} />
+          <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
         </TouchableOpacity>
         <Text style={styles.headerText}>나의 승요력</Text>
       </View>
@@ -86,5 +86,9 @@ const styles = StyleSheet.create({
     gap: 40,
     paddingHorizontal: 24,
     marginTop: 48,
+  },
+  backImage: {
+    width: 16,
+    height: 28,
   },
 })

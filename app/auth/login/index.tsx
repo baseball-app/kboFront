@@ -44,14 +44,14 @@ export default function LoginScreen() {
       type: 'kakao',
       url: AUTH_URL.KAKAO,
       style: {button: styles.kakaoButton, text: styles.kakaoButtonText},
-      image: require('../../../assets/icons/kakao.png'),
+      image: require('@/assets/icons/kakao.png'),
     },
     {
       name: '네이버로 시작하기',
       type: 'naver',
       url: AUTH_URL.NAVER,
       style: {button: styles.naverButton, text: styles.naverButtonText},
-      image: require('../../../assets/icons/naver.png'),
+      image: require('@/assets/icons/naver.png'),
     },
   ] as const
 
@@ -60,11 +60,7 @@ export default function LoginScreen() {
       <SafeAreaView style={styles.container}>
         <View style={styles.contentContainer}>
           <View style={styles.topContent}>
-            <Image
-              source={require('../../../assets/images/landing-logo.png')}
-              style={styles.icon}
-              resizeMode="contain"
-            />
+            <Image source={require('@/assets/images/landing-logo.png')} style={styles.icon} resizeMode="contain" />
             <Text style={styles.title}>오늘의 야구</Text>
             <Text style={styles.subtitle}>반가워요! 오늘의 야구와 함께{'\n'}내가 응원하는 구단을 기록해보세요</Text>
           </View>

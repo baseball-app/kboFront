@@ -59,7 +59,14 @@ const CalendarScreen = () => {
         activeOpacity={0.95}
         style={styles.floatingButton}
         onPress={onClickFloatingButton}>
-        <Image source={require('@/assets/icons/write.png')} resizeMode="contain" />
+        <Image
+          source={require('@/assets/icons/write.png')}
+          resizeMode="contain"
+          style={{
+            width: 24,
+            height: 24,
+          }}
+        />
       </TouchableOpacity>
     </SafeAreaView>
   )
@@ -81,8 +88,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     bottom: 20,
-    width: 56,
-    height: 56,
+    width: 48,
+    height: 48,
     backgroundColor: '#353430',
     borderRadius: 28,
     justifyContent: 'center',

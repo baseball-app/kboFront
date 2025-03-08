@@ -1,7 +1,6 @@
 import React from 'react'
 import {View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView, Modal, Clipboard} from 'react-native'
 import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
-import {moderateScale, horizontalScale, verticalScale} from '../../utils/metrics'
 import {theme} from '@/constants/Colors'
 import {router} from 'expo-router'
 import {useLogin} from '@/hooks/auth/useLogin'
@@ -106,18 +105,18 @@ const styles = StyleSheet.create({
   },
   profileImageBox: {
     backgroundColor: '#F3F2EE',
-    width: moderateScale(80),
-    height: moderateScale(80),
+    width: 80,
+    height: 80,
     borderRadius: 50,
-    marginRight: horizontalScale(18),
+    marginRight: 18,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: moderateScale(0.8),
+    borderWidth: 1,
     borderColor: '#D0CEC7',
   },
   profileImage: {
-    width: horizontalScale(46.44),
-    height: verticalScale(50.58),
+    width: 46.44,
+    height: 50.58,
     backgroundColor: '#F5F5F5', // Light background color
   },
   profileInfo: {
@@ -127,19 +126,19 @@ const styles = StyleSheet.create({
   },
 
   profileInfoBox: {
-    // paddingTop: verticalScale(6),
-    // paddingBottom: verticalScale(7),
+    // paddingTop: 6,
+    // paddingBottom: 7,
 
-    gap: verticalScale(10),
+    gap: 10,
     // flex:1,
     justifyContent: 'center',
 
     flexDirection: 'column',
   },
   profileName: {
-    fontSize: moderateScale(20),
+    fontSize: 20,
     fontWeight: 'bold',
-    marginRight: horizontalScale(4),
+    marginRight: 4,
   },
   profileEditIcon: {
     width: 18,
@@ -150,12 +149,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   winRateLabel: {
-    fontSize: moderateScale(16),
-    marginRight: verticalScale(3),
+    fontSize: 16,
+    marginRight: 3,
     color: 'gray',
   },
   winRateValue: {
-    fontSize: moderateScale(16),
+    fontSize: 16,
     color: '#2D68FF', // Blue color for the percentage
     // fontWeight: "bold",
   },
@@ -164,70 +163,70 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderWidth: moderateScale(1),
+    borderWidth: 1,
     borderColor: theme.colors.borderColor,
-    margin: moderateScale(20),
-    padding: moderateScale(15),
-    borderRadius: moderateScale(10),
-    // width: verticalScale(327),
-    height: verticalScale(68),
+    margin: 20,
+    padding: 15,
+    borderRadius: 10,
+    // width: 327,
+    height: 68,
   },
   teamInfo: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   teamLogo: {
-    width: horizontalScale(32),
-    height: verticalScale(32),
+    width: 32,
+    height: 32,
     marginRight: 10,
   },
   teamName: {
     fontWeight: '600',
-    fontSize: moderateScale(16),
+    fontSize: 16,
   },
   teamSettingsIconBox: {
     backgroundColor: '#00184F',
-    borderRadius: moderateScale(50),
-    width: moderateScale(26),
-    height: moderateScale(26),
+    borderRadius: 50,
+    width: 26,
+    height: 26,
     justifyContent: 'center',
     alignItems: 'center',
   },
   teamSettingsIcon: {
-    width: moderateScale(16),
-    height: moderateScale(16),
+    width: 16,
+    height: 16,
   },
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 20,
-    gap: horizontalScale(12),
+    gap: 12,
   },
   statItem: {
     flex: 1,
   },
   statBox: {
     backgroundColor: 'white',
-    padding: moderateScale(15),
-    borderRadius: moderateScale(10),
-    gap: verticalScale(10),
+    padding: 15,
+    borderRadius: 10,
+    gap: 10,
     width: '100%',
     borderWidth: 1,
     borderColor: theme.colors.borderColor,
   },
   statValue: {
-    fontSize: moderateScale(18),
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: verticalScale(4),
+    marginBottom: 4,
   },
   statLabel: {
-    fontSize: moderateScale(16),
+    fontSize: 16,
     fontWeight: '400',
     color: '#171716',
   },
   inviteCodeIcon: {
-    width: horizontalScale(16),
-    height: verticalScale(16),
+    width: 32,
+    height: 32,
   },
   menuContainer: {
     flex: 1,
@@ -246,7 +245,7 @@ const styles = StyleSheet.create({
     marginVertical: 1,
   },
   menuText: {
-    fontSize: moderateScale(16),
+    fontSize: 16,
     fontWeight: '500',
   },
   tabBar: {
