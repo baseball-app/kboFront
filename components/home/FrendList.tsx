@@ -9,7 +9,7 @@ const FriendList = () => {
   const {friend_status} = useFriends()
   const {profile} = useProfile()
   const router = useRouter()
-  // todayTicketCard
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -19,8 +19,15 @@ const FriendList = () => {
             <FriendStatusProfile
               friendStatus={item}
               onClick={() => {
-                router.push('/write/todayTicketCard')
-                //
+                // game id 가 있으면 오늘의 티켓
+                // 없으면 친구의 달력
+                if (item.ticket_info?.game_id) {
+                  router.push('/write/todayTicketCard')
+                } else {
+                  console.log(item.ticket_info?.game_id)
+                  // router.push('/(tabs)')
+                  // TODO: 여기에서 id 변경해서 친구 달력으로 !
+                }
               }}
             />
           </View>
