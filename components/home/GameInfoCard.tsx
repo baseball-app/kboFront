@@ -53,7 +53,9 @@ const GameInfoCard = () => {
         </View>
       ) : (
         <View style={styles.noGameInfoBox}>
-          <Text style={styles.noGameText}>경기 일정이 없어요.</Text>
+          <Text style={styles.noGameText}>
+            <Text style={{fontWeight: 'bold'}}>{gameContext?.myTeamName}</Text>의 경기 일정이 없어요.
+          </Text>
         </View>
       )}
 

@@ -10,7 +10,6 @@ import MatchResultCell from '../MatchResultCell'
 import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {groupBy} from '@/utils/groupBy'
-import useTeam from '@/hooks/match/useTeam'
 
 export type TicketCalendarLog = {
   id: number // 5
@@ -36,8 +35,6 @@ const Calendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth())
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
   const router = useRouter()
-
-  const {findTeamById} = useTeam()
 
   const currentYearMonth = format(currentDate, 'yyyy-MM')
 
@@ -106,8 +103,6 @@ const Calendar = () => {
       <View style={styles.daysContainer}>
         {days.map((day, index) => {
           const ticketsGroupByDate = ticketList?.[format(day, 'yyyy-MM-dd')] || []
-          const opponent = findTeamById(ticketsGroupByDate[0]?.opponent?.id)
-          const myTeam = findTeamById(ticketsGroupByDate[0]?.ballpark?.team_id)
 
           return (
             <View
@@ -116,17 +111,13 @@ const Calendar = () => {
                 styles.day,
                 !isSameMonth(day, currentDate) && styles.inactiveDay,
                 Boolean(selectedDate) && isSameDay(day, selectedDate!) && styles.selectedDay,
+                {height: 88},
               ]}>
               <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text>
               <MatchResultCell
                 onPress={() => dayClick(day)}
                 data={ticketsGroupByDate} //
               />
-              {opponent && (
-                <Text style={styles.teamText}>
-                  {myTeam?.shortName}:{opponent.shortName}
-                </Text>
-              )}
             </View>
           )
         })}
@@ -228,9 +219,12 @@ const styles = StyleSheet.create({
   },
   day: {
     width: '14.28%',
-    padding: 6,
-    justifyContent: 'center',
+    padding: 4,
+    borderWidth: 2,
+    borderRadius: 10,
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    borderColor: 'transparent',
   },
   dayText: {
     fontSize: 12,
@@ -238,11 +232,6 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     fontWeight: 500,
     color: '#77756C',
-  },
-  teamText: {
-    color: '#171716',
-    fontSize: 10,
-    fontWeight: 400,
   },
   inactiveDay: {
     opacity: 0.5,
@@ -255,9 +244,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   selectedDay: {
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 4,
+    borderColor: '#000000',
   },
   moodContainer: {
     width: 28,
@@ -269,7 +256,7 @@ const styles = StyleSheet.create({
   },
   datePickerContainer: {
     flexDirection: 'row',
-    height: 134,
+    // height: 134,
     overflow: 'hidden',
   },
   picker: {

@@ -8,6 +8,7 @@ const today = dayjs()
 interface IGameContext {
   matchingList: Match[]
   todayMyTeamMatch: Match | undefined
+  myTeamName: string
 }
 
 const GameContext = createContext<IGameContext | null>(null)
@@ -26,6 +27,7 @@ export const GameProvider = ({children}: {children: React.ReactNode}) => {
       value={{
         matchingList,
         todayMyTeamMatch,
+        myTeamName: profile.my_team?.shortName || '',
       }}>
       {children}
     </GameContext.Provider>
