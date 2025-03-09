@@ -22,7 +22,7 @@ export default function NicknameScreen() {
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
-        <Text style={styles.subtitle}>한글/영어/숫자/밑줄/띄어쓰기를{'\n'} 사용할 수 있습니다.</Text>
+        <Text style={styles.subtitle}>한글/영어/숫자/밑줄/띄어쓰기를{'\n'}사용할 수 있습니다.</Text>
       </View>
 
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
@@ -61,23 +61,25 @@ const styles = StyleSheet.create({
   },
   inputSection: {
     flex: 1,
-    padding: 20,
+    padding: 24,
   },
   header: {
-    marginBottom: 20,
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
   },
   backButton: {
     marginBottom: 30,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 8,
+    lineHeight: 24 * 1.4,
+    fontWeight: 600,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: '#77756C',
+    lineHeight: 16 * 1.4,
+    fontWeight: 400,
   },
   inputContainer: {
     marginTop: 20,
@@ -91,8 +93,10 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#CCCCCC',
     marginTop: 4,
+    marginBottom: 1,
   },
   inputUnderlineActive: {
+    height: 2,
     backgroundColor: '#000000',
   },
   buttonContainer: {

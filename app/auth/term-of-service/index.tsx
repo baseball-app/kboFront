@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFCF3',
   },
   header: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
   },
   circle: {
     width: 24,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     // paddingTop: 10,
   },
   backButton: {
@@ -104,8 +104,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 30,
+    fontWeight: 600,
+    lineHeight: 24 * 1.4,
+    marginBottom: 40,
   },
   agreementAllItem: {
     flexDirection: 'row',

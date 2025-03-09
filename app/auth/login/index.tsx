@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image, Button} from 'react-native'
+import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image} from 'react-native'
 import {router} from 'expo-router'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {Channel, useLogin} from '@/hooks/auth/useLogin'
@@ -59,7 +59,6 @@ export default function LoginScreen() {
     <>
       <SafeAreaView style={styles.container}>
         <View style={styles.contentContainer}>
-          <Button title="이동" onPress={() => router.navigate('/auth/term-of-service')}></Button>
           <View style={styles.topContent}>
             <Image source={require('@/assets/images/landing-logo.png')} style={styles.icon} resizeMode="contain" />
             <Text style={styles.title}>오늘의 야구</Text>

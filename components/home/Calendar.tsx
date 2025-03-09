@@ -111,7 +111,8 @@ const Calendar = () => {
                 styles.day,
                 !isSameMonth(day, currentDate) && styles.inactiveDay,
                 Boolean(selectedDate) && isSameDay(day, selectedDate!) && styles.selectedDay,
-                {height: 88},
+                // styles.selectedDay,
+                {height: 80},
               ]}>
               <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text>
               <MatchResultCell
@@ -186,7 +187,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center', // Center the content horizontally
     alignItems: 'center',
-    marginBottom: 16,
   },
   headerTextContainer: {
     flexDirection: 'row',
@@ -205,12 +205,14 @@ const styles = StyleSheet.create({
   daysOfWeekContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 8,
+    paddingVertical: 12,
   },
   dayOfWeekText: {
     width: '14.28%',
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: 500,
+    fontSize: 13,
+    lineHeight: 13 * 1.4,
   },
   daysContainer: {
     flexDirection: 'row',
@@ -219,12 +221,12 @@ const styles = StyleSheet.create({
   },
   day: {
     width: '14.28%',
-    padding: 4,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 10,
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderColor: 'transparent',
+    paddingTop: 2,
   },
   dayText: {
     fontSize: 12,
@@ -244,7 +246,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   selectedDay: {
-    borderColor: '#000000',
+    borderColor: '#95938B',
   },
   moodContainer: {
     width: 28,

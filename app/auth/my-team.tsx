@@ -52,23 +52,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFCF3',
   },
   header: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
   },
   backButton: {
     marginBottom: 30,
   },
   content: {
-    padding: 20,
+    paddingHorizontal: 24,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 8,
+    lineHeight: 24 * 1.4,
+    fontWeight: 600,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: '#77756C',
     marginBottom: 24,
+    lineHeight: 16 * 1.4,
+    fontWeight: 400,
   },
   teamsGrid: {
     flexDirection: 'row',

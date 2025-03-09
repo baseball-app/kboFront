@@ -1,10 +1,11 @@
 import QuestionBox from '@/components/home/QuestionBox'
 import MatchTeamBox from '@/components/MatchTeamBox'
+import {findTeamById} from '@/constants/join'
 import useMatch from '@/hooks/match/useMatch'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
-import {Ionicons} from '@expo/vector-icons'
+import useProfile from '@/hooks/my/useProfile'
 import {useLocalSearchParams, useRouter} from 'expo-router'
-import {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity} from 'react-native'
 import {View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -119,6 +120,8 @@ const DailyLogWriteScreen = () => {
   }
 
   const {onlyMyTeamMatchingList, checkIsMyTeamMatch} = useMatch({selectedDate})
+  const {profile} = useProfile()
+  const myTeamName = findTeamById(profile.my_team?.id)?.shortName
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -132,24 +135,42 @@ const DailyLogWriteScreen = () => {
       </View>
       {currentStep === 1 && (
         <ScrollView style={styles.scrollContainer}>
-          <Text style={styles.title}>기록할 경기 일정을{'\n'}선택해주세요</Text>
+          <Text style={styles.title}>마이팀 경기 일정을{'\n'}선택해주세요</Text>
           <View style={styles.matchListBox}>
-            {onlyMyTeamMatchingList.map((match, index) => (
-              <MatchTeamBox
-                key={index} //
-                isSelected={selectedMatch?.id === match.id}
-                match={match}
-                onClick={() => checkIsMyTeamMatch(match) && setSelectedMatch(match)}
-                isMyTeamMatch={checkIsMyTeamMatch(match)}
-              />
-            ))}
+            {onlyMyTeamMatchingList.length > 0 ? (
+              <>
+                {onlyMyTeamMatchingList.map((match, index) => (
+                  <MatchTeamBox
+                    key={index} //
+                    isSelected={selectedMatch?.id === match.id}
+                    match={match}
+                    onClick={() => checkIsMyTeamMatch(match) && setSelectedMatch(match)}
+                    isMyTeamMatch={checkIsMyTeamMatch(match)}
+                  />
+                ))}
+                <View style={styles.doubleHeaderBox}>
+                  <TouchableOpacity onPress={nextButtonClick} style={styles.doubleHeaderButton}>
+                    <Text style={styles.doubleHeaderText}>더블헤더 작성하기</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : (
+              <View style={styles.noMatchBox}>
+                <Text style={[styles.noMatchText, {marginBottom: 24}]}>
+                  <Text style={[styles.noMatchText, {fontWeight: 600}]}>{myTeamName}</Text>의 경기 일정이 없어요.
+                </Text>
+                <TouchableOpacity onPress={nextButtonClick} style={styles.doubleHeaderButton}>
+                  <Text style={styles.doubleHeaderText}>직접 추가하기</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
-          <View style={styles.linkBox}>
+          {/* <View style={styles.linkBox}>
             <Text>더블헤더 작성 시</Text>
             <TouchableOpacity onPress={() => router.navigate('/')} style={styles.linkTextButton}>
               <Text style={styles.linkText}> 직접 추가하기</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </ScrollView>
       )}
       {currentStep === 2 && (
@@ -266,6 +287,18 @@ const styles = StyleSheet.create({
     paddingBottom: 28,
     alignItems: 'center',
   },
+  doubleHeaderButton: {
+    backgroundColor: '#353430',
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 99,
+  },
+  doubleHeaderText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 500,
+    lineHeight: 16 * 1.4,
+  },
   nextButton: {
     backgroundColor: '#1E5EF4',
     textAlign: 'center',
@@ -351,5 +384,22 @@ const styles = StyleSheet.create({
   },
   roundCheck: {
     tintColor: '#000',
+  },
+  doubleHeaderBox: {
+    alignItems: 'center',
+    marginTop: 40,
+  },
+  noMatchText: {
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 16 * 1.4,
+    color: '#000000',
+  },
+  noMatchBox: {
+    alignItems: 'center',
+    borderColor: '#D0CEC7',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingVertical: 40,
   },
 })

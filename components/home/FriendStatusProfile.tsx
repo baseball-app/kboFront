@@ -29,7 +29,7 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick}: Props) => {
           <Image source={require('@/assets/icons/myHome.png')} style={styles.myHomeImage} resizeMode="contain" />
         )}
       </View>
-      <Text style={styles.friendName} numberOfLines={1}>
+      <Text style={[styles.friendName, isMyProfile && {fontWeight: 500}]} numberOfLines={1}>
         {friendStatus.nickname}
       </Text>
     </TouchableOpacity>
@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
   friendName: {
     fontSize: 13,
     color: '#171716',
-    maxWidth: 50,
+    maxWidth: 60,
+    fontWeight: 400,
   },
   friendItem: {
     display: 'flex',

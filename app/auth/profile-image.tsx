@@ -29,10 +29,7 @@ export default function ProfileImageScreen() {
         </View>
         <View style={styles.imagesGrid}>
           {PROFILE_IMAGES.map(item => (
-            <TouchableOpacity
-              key={item.id}
-              style={[styles.imageButton, profile?.id === item.id && styles.selectedImageButton]}
-              onPress={() => setProfile(item)}>
+            <TouchableOpacity key={item.id} onPress={() => setProfile(item)}>
               <View style={[styles.imageOptionWrapper, profile?.id === item.id && styles.selectedImageOptionWrapper]}>
                 <Image source={item.image} style={styles.imageOption} />
               </View>
@@ -57,33 +54,36 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFCF3',
   },
   header: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
   },
   backButton: {
     marginBottom: 30,
   },
   content: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     flex: 1,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 5,
+    lineHeight: 24 * 1.4,
+    fontWeight: 600,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
-    marginBottom: 24,
+    color: '#77756C',
+    marginBottom: 40,
+    lineHeight: 16 * 1.4,
+    fontWeight: 400,
   },
   selectedImageContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 36,
   },
   selectedImageWrapper: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
+    width: 174,
+    height: 174,
+    borderRadius: 999,
     backgroundColor: '#F0F0F0',
     justifyContent: 'center',
     alignItems: 'center',
@@ -96,21 +96,20 @@ const styles = StyleSheet.create({
   imagesGrid: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 20,
-  },
-  imageButton: {
-    marginHorizontal: 10,
+    gap: 20,
   },
   selectedImageButton: {
-    transform: [{scale: 1.1}],
+    // transform: [{scale: 1.1}],
   },
   imageOptionWrapper: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 80,
+    height: 80,
+    borderRadius: 999,
     backgroundColor: '#F0F0F0',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D0CEC7',
   },
   selectedImageOptionWrapper: {
     backgroundColor: '#FFFFFF',
@@ -118,8 +117,8 @@ const styles = StyleSheet.create({
     borderColor: '#353430',
   },
   imageOption: {
-    width: 50,
-    height: 50,
+    width: '70%',
+    height: '70%',
     resizeMode: 'contain',
   },
   imageDimensions: {
