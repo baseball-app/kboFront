@@ -2,8 +2,11 @@ import React from 'react'
 import {View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {router} from 'expo-router'
+import useConsent from '@/hooks/auth/useConsent'
 
 const PrivacyPolicyScreen = () => {
+  const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent()
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -11,7 +14,7 @@ const PrivacyPolicyScreen = () => {
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.content}>
+      <ScrollView ref={scrollViewRef} style={styles.content} onScroll={handleScroll} scrollEventThrottle={400}>
         <View>
           <Text style={styles.headerTitle}>이용약관</Text>
           <Text style={styles.paragraph}>
@@ -94,8 +97,17 @@ const PrivacyPolicyScreen = () => {
           </Text>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.agreeButton}>
-        <Text style={styles.agreeButtonText}>동의하기</Text>
+      <TouchableOpacity
+        style={styles.agreeButton}
+        onPress={() => {
+          if (isScrolledToBottom) {
+            agreeConsent('terms-of-service')
+            router.back()
+          } else {
+            ;(scrollViewRef.current as any)?.scrollToEnd({animated: true})
+          }
+        }}>
+        <Text style={styles.agreeButtonText}>{isScrolledToBottom ? '동의하기' : '아래로 스크롤하기'}</Text>
       </TouchableOpacity>
     </SafeAreaView>
   )
@@ -104,7 +116,7 @@ const PrivacyPolicyScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFCF3',
   },
   header: {
     flexDirection: 'row',
@@ -135,10 +147,10 @@ const styles = StyleSheet.create({
   },
   agreeButton: {
     backgroundColor: '#1A73E8',
-    padding: 16,
+    padding: 14,
     alignItems: 'center',
     margin: 16,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   agreeButtonText: {
     color: '#FFFFFF',

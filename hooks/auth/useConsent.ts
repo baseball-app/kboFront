@@ -1,6 +1,6 @@
 import {userJoinSlice} from '@/slice/userJoinSlice'
 import {router} from 'expo-router'
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 
 const consentList = [
   {
@@ -19,6 +19,24 @@ const useConsent = () => {
   // 각각의 상태를 개별적으로 구독
   const checkedConsent = userJoinSlice(state => state.checkedConsent)
   const setCheckedConsent = userJoinSlice(state => state.setCheckedConsent)
+
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false)
+  const scrollViewRef = useRef(null)
+
+  const handleScroll = (event: any) => {
+    const {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent
+    const paddingToBottom = 20 // Adjust this value as needed
+    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom
+
+    if (isCloseToBottom) {
+      setIsScrolledToBottom(true)
+    }
+  }
+
+  const agreeConsent = (value: string) => {
+    if (checkedConsent.includes(value)) return
+    setCheckedConsent([...checkedConsent, value])
+  }
 
   // 단일 동의 체크
   const toggleConsent = (value: string) => {
@@ -52,9 +70,14 @@ const useConsent = () => {
     toggleConsent,
     toggleAllConsent,
     moveToConsentDetail,
+    agreeConsent,
     isChecked,
     isAllChecked,
     consentList,
+    // 동의 상세 페이지 스크롤 상태
+    isScrolledToBottom,
+    handleScroll,
+    scrollViewRef,
   }
 }
 

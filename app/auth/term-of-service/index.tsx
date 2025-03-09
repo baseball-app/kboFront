@@ -31,7 +31,16 @@ const TermUseScreen = () => {
           <View style={[styles.circle, isAllChecked && styles.checkedCircle]}>
             <Image source={require('../../../assets/icons/check.png')} style={styles.checkIcon} />
           </View>
-          <Text style={styles.agreementText}>필수 약관 모두 동의</Text>
+          <Text
+            style={[
+              styles.agreementText,
+              styles.agreementTextActive,
+              {
+                fontWeight: 600,
+              },
+            ]}>
+            필수 약관 모두 동의
+          </Text>
         </TouchableOpacity>
 
         {consentList.map(consent => (
@@ -42,7 +51,9 @@ const TermUseScreen = () => {
             <View style={[styles.circle, isChecked(consent.value) && styles.checkedCircle]}>
               <Image source={require('../../../assets/icons/check.png')} style={styles.checkIcon} />
             </View>
-            <Text style={styles.agreementText}>{consent.title}</Text>
+            <Text style={[styles.agreementText, isChecked(consent.value) && styles.agreementTextActive]}>
+              {consent.title}
+            </Text>
             <TouchableOpacity onPress={() => moveToConsentDetail(consent.value)}>
               <Ionicons name="chevron-forward" size={24} color="#D1D1D6" style={styles.chevron} />
             </TouchableOpacity>
@@ -63,7 +74,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFCF3',
-    // paddingHorizontal: 20,
   },
   header: {
     paddingHorizontal: 16,
@@ -81,8 +91,8 @@ const styles = StyleSheet.create({
   },
   checkIcon: {
     // position: 'absolute',
-    width: 10.29,
-    height: 6.5,
+    width: 24,
+    height: 24,
   },
   content: {
     flex: 1,
@@ -118,6 +128,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flex: 1,
     fontSize: 16,
+    color: '#95938B',
+    fontWeight: 400,
+    lineHeight: 16 * 1.4,
+  },
+  agreementTextActive: {
+    color: '#171716',
   },
   chevron: {
     marginLeft: 'auto',

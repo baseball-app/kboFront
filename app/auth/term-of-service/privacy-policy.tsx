@@ -1,21 +1,12 @@
-import React, {useState, useRef} from 'react'
+import React from 'react'
 import {View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {router} from 'expo-router'
+import useConsent from '@/hooks/auth/useConsent'
+import WebView from 'react-native-webview'
 
 const PrivacyPolicyScreen = () => {
-  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false)
-  const scrollViewRef = useRef(null)
-
-  const handleScroll = (event: any) => {
-    const {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent
-    const paddingToBottom = 20 // Adjust this value as needed
-    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom
-
-    if (isCloseToBottom) {
-      setIsScrolledToBottom(true)
-    }
-  }
+  const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -84,7 +75,7 @@ const PrivacyPolicyScreen = () => {
         </View>
 
         <View>
-          <Text style={styles.sectionTitle}>6. 개인정보 보호 조치</Text>
+          <Text style={styles.sectionTitle}>6. 이용자의 권리와 행사 방법</Text>
           <Text style={styles.paragraph}>
             6.1. 이용자는 개인정보에 대한 열람, 정정, 삭제, 처리정지 요구 등의 권리를 행사할 수 있습니다. 권리 행사를
             위해서는 회사의 고객 지원 채널을 이용하거나 별도의 절차를 따르셔야 합니다.
@@ -92,35 +83,68 @@ const PrivacyPolicyScreen = () => {
         </View>
 
         <View>
-          <Text style={styles.sectionTitle}>7. 개인정보의 안전성 확보 조치</Text>
-          <Text style={styles.paragraph}>
-            7.1. 회사는 개인정보를 안전하게 처리하기 위해 기술적, 관리적, 물리적 조치를 취하고 있습니다.
+          <Text style={styles.sectionTitle}>7. 계정 삭제 절차</Text>
+          <Text style={styles.paragraph}>7.1. 사용자가 계정을 삭제하려면 다음 단계를 따라야 합니다.</Text>
+          <Text style={styles.paragraph}> 1. 서비스 내 "마이" 메뉴로 이동합니다.</Text>
+          <Text style={styles.paragraph}> 2. "회원 탈퇴" 옵션을 클릭한 후 안내에 따라 절차를 진행합니다.</Text>
+          <Text style={styles.paragraph}> 3. 최종 확인 후 계정이 삭제됩니다.</Text>
+        </View>
+
+        <View>
+          <Text style={styles.sectionTitle}>8. 삭제되거나 보관되는 데이터 유형 및 추가 보관 기간</Text>
+          <Text style={styles.paragraph}>8.1. 계정 삭제 시 즉시 삭제되는 데이터:</Text>
+          <Text style={styles.bulletPoint}>
+            <Text style={styles.bullet}>{'\u2022'}</Text>
+            <Text style={styles.bulletText}> 사용자 프로필 정보</Text>
+          </Text>
+          <Text style={styles.bulletPoint}>
+            <Text style={styles.bullet}>{'\u2022'}</Text>
+            <Text style={styles.bulletText}> 서비스 내 활동 기록</Text>
+          </Text>
+          <Text style={styles.paragraph}>8.2. 법적 요구 또는 내부 정책에 따라 일정 기간 보관되는 데이터:</Text>
+          <Text style={styles.bulletPoint}>
+            <Text style={styles.bullet}>{'\u2022'}</Text>
+            <Text style={styles.bulletText}>
+              {' '}
+              고객 문의 및 지원 기록: 서비스 품질 개선 및 법적 대응을 위해 최대 3년간 보관
+            </Text>
           </Text>
         </View>
 
         <View>
-          <Text style={styles.sectionTitle}>8. 개인정보 처리 방침의 변경</Text>
+          <Text style={styles.sectionTitle}>9. 개인정보의 안전성 확보 조치</Text>
           <Text style={styles.paragraph}>
-            8.1. 회사는 필요한 경우 개인정보 처리 방침을 변경할 수 있으며, 변경 사항은 서비스 내 공지사항을 통해
+            9.1. 회사는 개인정보를 안전하게 처리하기 위해 기술적, 관리적, 물리적 조치를 취하고 있습니다.
+          </Text>
+        </View>
+
+        <View>
+          <Text style={styles.sectionTitle}>10. 개인정보 처리 방침의 변경</Text>
+          <Text style={styles.paragraph}>
+            10.1. 회사는 필요한 경우 개인정보 처리 방침을 변경할 수 있으며, 변경 사항은 서비스 내 공지사항을 통해
             공지됩니다.
           </Text>
         </View>
 
         {/* Add more sections here */}
         <View style={{marginBottom: 16}}>
-          <Text style={styles.sectionTitle}>9. 문의처</Text>
+          <Text style={styles.sectionTitle}>11. 문의처</Text>
           <Text style={styles.paragraph}>
-            9.1. 개인정보 처리와 관련하여 궁금한 사항이 있으면 @@@@@ (이메일 상세) 로 문의하실 수 있습니다.
+            11.1. 개인정보 처리와 관련하여 궁금한 사항이 있으면 baseballday@naver.com 로 문의하실 수 있습니다.
           </Text>
         </View>
       </ScrollView>
       <TouchableOpacity
-        style={[styles.agreeButton, !isScrolledToBottom && styles.disabledButton]}
-        disabled={!isScrolledToBottom}
+        style={[styles.agreeButton]}
         onPress={() => {
-          /* Your onPress handler */
+          if (isScrolledToBottom) {
+            agreeConsent('privacy-policy')
+            router.back()
+          } else {
+            ;(scrollViewRef.current as any)?.scrollToEnd({animated: true})
+          }
         }}>
-        <Text style={styles.agreeButtonText}>동의하기</Text>
+        <Text style={styles.agreeButtonText}>{isScrolledToBottom ? '동의하기' : '아래로 스크롤하기'}</Text>
       </TouchableOpacity>
     </SafeAreaView>
   )
@@ -129,13 +153,10 @@ const PrivacyPolicyScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFCF3',
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
     padding: 16,
-    // borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
   },
   headerTitle: {
@@ -160,10 +181,10 @@ const styles = StyleSheet.create({
   },
   agreeButton: {
     backgroundColor: '#1A73E8',
-    padding: 16,
+    padding: 14,
     alignItems: 'center',
     margin: 16,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   agreeButtonText: {
     color: '#FFFFFF',
