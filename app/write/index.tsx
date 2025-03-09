@@ -387,7 +387,7 @@ const styles = StyleSheet.create({
   },
   doubleHeaderBox: {
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 20,
   },
   noMatchText: {
     fontSize: 16,

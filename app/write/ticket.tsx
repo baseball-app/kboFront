@@ -21,6 +21,7 @@ import dayjs from 'dayjs'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import LocationTypeSelector from '@/components/write/LocationTypeSelector'
 import Ellipse from '@/components/common/Ellipse'
+import Input from '@/components/common/Input'
 
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
@@ -90,7 +91,7 @@ const TicketPage = () => {
   const teamHomeInfo = writeStore.selectedMatch?.team_home_info
 
   // 더블헤더 경기 여부
-  const isDoubleHeader = !writeStore.selectedMatch
+  const isDirectWrite = !writeStore.selectedMatch
 
   const [writeData, setWriteData] = useState<IWriteDataInterface>({
     todayScore: {},
@@ -171,7 +172,7 @@ const TicketPage = () => {
 
     //나만보기
     formData.append('only_me', JSON.stringify(writeData.onlyMeCheck))
-    formData.append('is_double', JSON.stringify(isDoubleHeader))
+    formData.append('is_double', JSON.stringify(isDirectWrite))
 
     registerTicket(formData)
   }
@@ -253,6 +254,13 @@ const TicketPage = () => {
                 </>
               )}
             </TouchableOpacity>
+            {/* 
+            <Input
+              label="오늘의 상대구단"
+              value={writeData.matchTeam}
+              onChangeText={value => handleInputChange('matchTeam', value)}
+            /> */}
+
             {inputConfig.map(item => (
               <View key={item.id} style={styles.inputContainer}>
                 <View style={styles.inputTitleBox}>
@@ -309,8 +317,8 @@ const TicketPage = () => {
         </View>
       </ScrollView>
       <View style={styles.footerButtonBox}>
-        <TouchableOpacity style={styles.footerButton} onPress={onSubmit}>
-          <Text style={styles.footerButtonText}>오늘의 티켓 발급하기</Text>
+        <TouchableOpacity style={[styles.footerButton, styles.activeButton]} onPress={onSubmit}>
+          <Text style={[styles.footerButtonText, styles.activeButtonText]}>오늘의 티켓 발급하기</Text>
         </TouchableOpacity>
       </View>
       <Modal animationType="none" transparent={true} visible={teamModalVisible}>
@@ -497,7 +505,7 @@ const styles = StyleSheet.create({
   },
   footerButtonBox: {
     width: '100%',
-    paddingHorizontal: 24,
+    // paddingHorizontal: 24,
     marginTop: 32,
   },
   footerButton: {
@@ -673,5 +681,11 @@ const styles = StyleSheet.create({
   addImage: {
     width: 34,
     height: 34,
+  },
+  activeButton: {
+    backgroundColor: '#1E5EF4',
+  },
+  activeButtonText: {
+    color: '#FFFFFF',
   },
 })
