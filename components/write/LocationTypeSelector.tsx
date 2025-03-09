@@ -170,6 +170,8 @@ const styles = StyleSheet.create({
   },
   dropDownImg: {
     marginBottom: 2,
+    width: 18,
+    height: 18,
   },
 })
 

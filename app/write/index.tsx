@@ -2,6 +2,7 @@ import QuestionBox from '@/components/home/QuestionBox'
 import MatchTeamBox from '@/components/MatchTeamBox'
 import useMatch from '@/hooks/match/useMatch'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
+import {Ionicons} from '@expo/vector-icons'
 import {useLocalSearchParams, useRouter} from 'expo-router'
 import {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity} from 'react-native'
@@ -164,6 +165,7 @@ const DailyLogWriteScreen = () => {
             questionData={weatherResult}
             onQuestionClick={onWeatherClick}
             selectedQuestion={selectedWeather}
+            backgroundColor="#F3F2EE"
           />
         </View>
       )}
@@ -176,8 +178,12 @@ const DailyLogWriteScreen = () => {
           <TouchableOpacity onPress={() => onPlaceClick('직관')} activeOpacity={1}>
             <View style={selectedPlace === '직관' ? styles.selectButton : styles.defaultSelectButton}>
               <Image
-                source={require('@/assets/icons/round-check.png')}
-                style={selectedPlace === '직관' ? styles.roundCheck : {}}
+                source={
+                  selectedPlace === '직관'
+                    ? require('@/assets/icons/round-check-active.png')
+                    : require('@/assets/icons/round-check.png')
+                }
+                style={[{width: 24, height: 24}, selectedPlace === '직관' ? styles.roundCheck : {}]}
               />
               <Text style={styles.placeText}>직관</Text>
             </View>
@@ -185,8 +191,12 @@ const DailyLogWriteScreen = () => {
           <TouchableOpacity onPress={() => onPlaceClick('집관')} activeOpacity={1}>
             <View style={selectedPlace === '집관' ? styles.selectButton : styles.defaultSelectButton}>
               <Image
-                source={require('@/assets/icons/round-check.png')}
-                style={selectedPlace === '집관' ? styles.roundCheck : {}}
+                source={
+                  selectedPlace === '집관'
+                    ? require('@/assets/icons/round-check-active.png')
+                    : require('@/assets/icons/round-check.png')
+                }
+                style={[{width: 24, height: 24}, selectedPlace === '집관' ? styles.roundCheck : {}]}
               />
               <Text style={styles.placeText}>집관</Text>
             </View>
@@ -242,7 +252,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     lineHeight: 33.6,
-    color: '#000',
+    color: '#171716',
   },
   matchListBox: {
     flexDirection: 'column',
@@ -300,6 +310,8 @@ const styles = StyleSheet.create({
   },
   backImage: {
     marginLeft: 24,
+    width: 16,
+    height: 28,
   },
   buttonBox: {
     width: '100%',
@@ -333,7 +345,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   placeText: {
-    fontWeight: '600',
+    fontWeight: 600,
     fontSize: 20,
     lineHeight: 28,
   },

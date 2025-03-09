@@ -3,6 +3,7 @@ import {Match} from '@/hooks/match/useMatch'
 import {format} from 'date-fns'
 import React from 'react'
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import Ellipse from './common/Ellipse'
 
 type Props = {
   match: Match
@@ -28,15 +29,15 @@ const MatchTeamBox = ({match, onClick, isSelected, isMyTeamMatch}: Props) => {
         ]}>
         <View style={styles.matchDayBox}>
           <Text style={styles.matchDayTitle}>{time}</Text>
-          <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
+          <Ellipse />
           <Text style={[styles.matchDayTitle, {marginLeft: 3}]}>{match.ballpark_info.name.slice(0, 2)}</Text>
         </View>
         <View style={styles.matchTeamBox}>
           <View style={styles.matchTeamInfo}>
             <Image source={homeTeam?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
             <View style={styles.ellipseBox}>
-              <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
-              <Image source={require('@/assets/icons/ellipse.png')} resizeMode="contain" />
+              <Ellipse size={5} />
+              <Ellipse size={5} />
             </View>
             <Image source={awayTeam?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
           </View>

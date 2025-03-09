@@ -20,6 +20,7 @@ import {findTeamById, TEAMS} from '@/constants/join'
 import dayjs from 'dayjs'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import LocationTypeSelector from '@/components/write/LocationTypeSelector'
+import Ellipse from '@/components/common/Ellipse'
 
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
@@ -205,7 +206,7 @@ const TicketPage = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.stepHeaderBox}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <Image source={require('@/assets/icons/back.png')} />
+          <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
         </TouchableOpacity>
         <Text style={styles.dateText}>{title}</Text>
       </View>
@@ -226,16 +227,8 @@ const TicketPage = () => {
                 onChangeText={value => handleScoreChange(findTeamById(teamHomeInfo?.id)?.shortName!, value)}
               />
               <View style={styles.ellipseBox}>
-                <Image
-                  source={require('@/assets/icons/ellipse.png')}
-                  resizeMode="contain"
-                  style={{width: 5, height: 5}}
-                />
-                <Image
-                  source={require('@/assets/icons/ellipse.png')}
-                  resizeMode="contain"
-                  style={{width: 5, height: 5}}
-                />
+                <Ellipse />
+                <Ellipse />
               </View>
               <TextInput
                 style={styles.scoreInput}
@@ -255,7 +248,7 @@ const TicketPage = () => {
                 <Image source={{uri: writeData.todayImg.uri}} style={styles.todayImg} />
               ) : (
                 <>
-                  <Image source={require('@/assets/icons/add_image.png')} />
+                  <Image source={require('@/assets/icons/add_image.png')} style={styles.addImage} />
                   <Text style={styles.uploadText}>오늘의 사진을 넣어주세요</Text>
                 </>
               )}
@@ -265,26 +258,26 @@ const TicketPage = () => {
                 <View style={styles.inputTitleBox}>
                   <Text style={styles.label}>{item.title}</Text>
                   {item.title === '오늘의 소감' && (
-                    <View style={styles.onlyMeBox}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          setWriteData(prev => ({
-                            ...prev,
-                            onlyMeCheck: !prev.onlyMeCheck,
-                          }))
+                    <TouchableOpacity
+                      style={styles.onlyMeBox}
+                      onPress={() =>
+                        setWriteData(prev => ({
+                          ...prev,
+                          onlyMeCheck: !prev.onlyMeCheck,
+                        }))
+                      }
+                      activeOpacity={1}>
+                      <Image
+                        source={
+                          writeData.onlyMeCheck
+                            ? require('@/assets/icons/onlyMeOnCheck.png')
+                            : require('@/assets/icons/onlyMeOffCheck.png')
                         }
-                        activeOpacity={1}>
-                        <Image
-                          source={
-                            writeData.onlyMeCheck
-                              ? require('@/assets/icons/onlyMeOnCheck.png')
-                              : require('@/assets/icons/onlyMeOffCheck.png')
-                          }
-                          resizeMode="contain"
-                        />
-                      </TouchableOpacity>
+                        resizeMode="contain"
+                        style={{width: 18, height: 18}}
+                      />
                       <Text>나만보기</Text>
-                    </View>
+                    </TouchableOpacity>
                   )}
                 </View>
                 <TextInput
@@ -373,6 +366,10 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
+  backImage: {
+    width: 16,
+    height: 28,
+  },
   container: {
     flex: 1,
     backgroundColor: '#F3F2EE',
@@ -432,6 +429,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     marginHorizontal: 10,
+    gap: 6,
   },
   teamNmBox: {
     flexDirection: 'row',
@@ -671,5 +669,9 @@ const styles = StyleSheet.create({
   selectedWriteOptionText: {
     color: '#1E5EF4',
     fontWeight: '700',
+  },
+  addImage: {
+    width: 34,
+    height: 34,
   },
 })

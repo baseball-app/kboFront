@@ -53,13 +53,19 @@ const GameInfoCard = () => {
         </View>
       ) : (
         <View style={styles.noGameInfoBox}>
-          <Text style={styles.noGameText}>경기 일정이 없어요.</Text>
+          <Text style={styles.noGameText}>
+            <Text style={{fontWeight: 'bold'}}>{gameContext?.myTeamName}</Text>의 경기 일정이 없어요.
+          </Text>
         </View>
       )}
 
       <TouchableOpacity style={styles.seeMoreButton} onPress={() => router.navigate('/(tabs)/match')}>
         <View style={styles.imgBox}>
-          <Image source={require('@/assets/icons/see-more-calendar.png')} resizeMode="contain" />
+          <Image
+            source={require('@/assets/icons/see-more-calendar.png')}
+            resizeMode="contain"
+            style={{width: 24, height: 24}}
+          />
         </View>
         <Text style={styles.buttonText}>경기일정 더보기</Text>
       </TouchableOpacity>

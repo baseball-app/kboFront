@@ -38,7 +38,7 @@ export default function GameCard() {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerBox}>
         <TouchableOpacity style={styles.backButton} onPress={router.back}>
-          <Image source={require('@/assets/icons/back.png')} />
+          <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
         </TouchableOpacity>
         <Text style={styles.headerText}>오늘의 티켓</Text>
       </View>
@@ -528,5 +528,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 4,
     paddingHorizontal: 10,
+  },
+  backImage: {
+    width: 16,
+    height: 28,
   },
 })
