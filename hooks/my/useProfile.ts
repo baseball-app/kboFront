@@ -3,12 +3,13 @@ import {useMMKVObject} from 'react-native-mmkv'
 import {useLogin} from '@/hooks/auth/useLogin'
 import {useQuery, useQueryClient} from '@tanstack/react-query'
 import ApiClient from '@/api'
-import {findTeamById, PROFILE_IMAGES} from '@/constants/join'
+import {PROFILE_IMAGES} from '@/constants/join'
 import {useEffect} from 'react'
 import {IUserJoinSlice} from '@/slice/userJoinSlice'
 import {useCommonSlice} from '@/slice/commonSlice'
 import {moderateScale, verticalScale} from '@/utils/metrics'
 import {useRouter} from 'expo-router'
+import useTeam from '../match/useTeam'
 
 export type Team = {
   id: number // 3
@@ -33,6 +34,8 @@ const useProfile = () => {
   const {modal} = useCommonSlice()
   const router = useRouter()
 
+  const {findTeamById} = useTeam()
+
   const {data, refetch} = useQuery({
     queryKey: ['profile', user],
     queryFn: () => ApiClient.get<Profile>('/users/me/'),
@@ -51,7 +54,7 @@ const useProfile = () => {
       my_team: {
         id: joinSlice.myTeam?.id ?? 0,
         name: joinSlice.myTeam?.name ?? '',
-        logo_url: joinSlice.myTeam?.logo ?? '',
+        logo_url: '',
       },
       followers: 0,
       followings: 0,

@@ -26,7 +26,7 @@ const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
   const {profile} = useProfile()
   const startDate = dayjs(selectedDate).format('YYYY-MM-DD')
 
-  const {data: matchingList} = useQuery({
+  const {data: matchingList, isSuccess} = useQuery({
     queryKey: ['matchTeam', startDate],
     queryFn: async () =>
       ApiClient.get<Match[]>('/games/', {
@@ -48,6 +48,7 @@ const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
     matchingList: matchingList || [],
     onlyMyTeamMatchingList: onlyMyTeamMatchingList || [],
     checkIsMyTeamMatch,
+    isSuccess,
   }
 }
 

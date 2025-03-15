@@ -3,15 +3,17 @@ import {StyleSheet, Text, TextInput, TextInputProps, View} from 'react-native'
 
 interface InputProps extends TextInputProps {
   variant?: 'default' | 'multiline'
-  label?: string
+  label?: string | React.ReactNode
 }
 
-const Input = ({variant = 'default', style, label, ...props}: InputProps) => {
+const Input = ({variant = 'default', editable = true, style, label, ...props}: InputProps) => {
   return (
     <View style={styles.container}>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && typeof label === 'string' ? <Text style={styles.label}>{label}</Text> : null}
+      {label && typeof label !== 'string' ? label : null}
       <TextInput
-        style={[styles.base, style, props.editable && styles.editable]}
+        style={[styles.base, style, !editable && styles.editable]}
+        editable={editable}
         placeholderTextColor="#D0CEC7"
         {...props}
       />
@@ -29,8 +31,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   base: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 18,
     paddingVertical: 12,
+    paddingTop: 8,
     borderColor: '#D0CEC7',
     borderWidth: 1,
     textAlign: 'center',
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     lineHeight: 22.4,
     flex: 1,
-    minHeight: 45,
+    minHeight: 42,
   },
   editable: {
     backgroundColor: '#F3F2EE',

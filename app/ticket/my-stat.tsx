@@ -38,10 +38,10 @@ export default function MyStatScreen() {
         />
       </View>
       <View style={styles.summaryContainer}>
-        <Input label="최다 관람구장" editable value={data?.mostWatchStadium} />
-        <Input label="나의 승요 요일" editable value={data?.weekdayMostWin} />
-        <Input label="나의 최다 연승" editable value={data?.longestWinningStreak} />
-        <Input label="최다 승리 구단" editable value={data?.mostWinTeam} />
+        <Input label="최다 관람구장" editable={false} value={data?.mostWatchStadium} />
+        <Input label="나의 승요 요일" editable={false} value={data?.weekdayMostWin} />
+        <Input label="나의 최다 연승" editable={false} value={data?.longestWinningStreak} />
+        <Input label="최다 승리 구단" editable={false} value={data?.mostWinTeam} />
       </View>
     </SafeAreaView>
   )

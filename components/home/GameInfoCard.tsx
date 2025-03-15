@@ -1,6 +1,6 @@
 import {DAYS_OF_WEEK} from '@/constants/day'
-import {findTeamById} from '@/constants/join'
 import {useGameContext} from '@/hooks/game/useGame'
+import useTeam from '@/hooks/match/useTeam'
 import dayjs from 'dayjs'
 import {useRouter} from 'expo-router'
 import React from 'react'
@@ -8,6 +8,7 @@ import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native'
 
 const GameInfoCard = () => {
   const gameContext = useGameContext()
+  const {findTeamById} = useTeam()
 
   const router = useRouter()
 

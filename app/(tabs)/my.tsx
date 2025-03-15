@@ -6,10 +6,12 @@ import {router} from 'expo-router'
 import {useLogin} from '@/hooks/auth/useLogin'
 import useMyInfo from '@/hooks/my/useMyInfo'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
+import useTeam from '@/hooks/match/useTeam'
 
 const ProfileScreen = () => {
   const {logout} = useLogin()
   const {profile, onPasteInviteCode, withdrawUser} = useMyInfo()
+  const {} = useTeam()
 
   return (
     <SafeAreaView style={styles.container}>

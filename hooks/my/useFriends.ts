@@ -25,6 +25,7 @@ export type FriendStatus = {
   ticket_info: {
     writer_id?: number // 1
     game_id?: number // 1
+    id: number
   }
 }
 

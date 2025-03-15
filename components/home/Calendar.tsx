@@ -10,6 +10,7 @@ import MatchResultCell from '../MatchResultCell'
 import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {groupBy} from '@/utils/groupBy'
+import useDiary from '@/hooks/diary/useDiary'
 
 export type TicketCalendarLog = {
   id: number // 5
@@ -29,26 +30,13 @@ export type TicketCalendarLog = {
 }
 
 const Calendar = () => {
-  const [currentDate, setCurrentDate] = useState(new Date())
+  const {currentDate, setCurrentDate, ticketList} = useDiary()
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth())
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
   const router = useRouter()
-
-  const currentYearMonth = format(currentDate, 'yyyy-MM')
-
-  const {data: ticketList} = useQuery({
-    queryKey: ['tickets', currentYearMonth],
-    queryFn: () =>
-      ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
-        date: currentYearMonth,
-      }),
-    enabled: Boolean(currentYearMonth),
-    select(data) {
-      return groupBy(data, item => item.date)
-    },
-  })
 
   const renderHeader = () => {
     return (

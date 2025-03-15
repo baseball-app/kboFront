@@ -7,6 +7,7 @@ import {useState} from 'react'
 import EmptyMatchView from '@/components/match/EmptyMatchView'
 import useMatch from '@/hooks/match/useMatch'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
+import dayjs from 'dayjs'
 
 const MatchScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -30,8 +31,7 @@ const MatchScreen = () => {
         renderItem={({item: match}) => (
           <MatchTeamBox
             match={match} //
-            isMyTeamMatch={checkIsMyTeamMatch(match)}
-            onClick={() => checkIsMyTeamMatch(match) && moveToWriteTicket(selectedDate, match)}
+            onClick={() => moveToWriteTicket(selectedDate, match)}
           />
         )}
         keyExtractor={item => `${item.id}`}

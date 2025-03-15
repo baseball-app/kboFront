@@ -25,6 +25,7 @@ export default function LoginScreen() {
   const handleLoginSuccess = async (channel: Channel, code: string) => {
     try {
       const data = await login(channel, code)
+      console.log('data', data)
 
       if (data?.is_new_user) {
         startSignUpProcessWithCode(code)
@@ -39,6 +40,13 @@ export default function LoginScreen() {
   }
 
   const loginButtonList = [
+    {
+      name: 'Apple로 등록하기',
+      type: 'apple',
+      url: AUTH_URL.APPLE,
+      style: {button: styles.appleButton, text: styles.appleButtonText},
+      image: require('@/assets/icons/apple.png'),
+    },
     {
       name: '카카오로 시작하기',
       type: 'kakao',
@@ -71,7 +79,10 @@ export default function LoginScreen() {
                 key={loginButton.name}
                 style={loginButton.style.button}
                 onPress={() => setLoginWebViewInfo(loginButton)}>
-                <Image source={loginButton.image} style={styles.loginIcon} />
+                <Image
+                  source={loginButton.image}
+                  style={[styles.loginIcon, loginButton.type === 'apple' && {height: 18, marginBottom: 3}]}
+                />
                 <Text style={loginButton.style.text}>{loginButton.name}</Text>
               </TouchableOpacity>
             ))}
@@ -128,6 +139,26 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     color: '#666',
   },
+  appleButton: {
+    backgroundColor: '#000000',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: '100%',
+    aspectRatio: 327 / 50, // This maintains the 327:50 ratio
+    marginBottom: 20,
+  },
+  appleButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10,
+
+    // marginBottom: 10,
+  },
   kakaoButton: {
     backgroundColor: '#FEE500',
     flexDirection: 'row',
@@ -150,8 +181,8 @@ const styles = StyleSheet.create({
   },
   loginIcon: {
     marginRight: 5,
-    width: '5%',
-    aspectRatio: 1,
+    width: 14,
+    height: 14,
     // aspectRatio: 12 / 12, // This maintains the 327:50 ratio
   },
   naverButton: {

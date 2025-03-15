@@ -172,13 +172,13 @@ export default function GameCard() {
                 <View style={styles.scoreBox}>
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_our}</Text>
-                    <Text style={styles.teamText}>{profile.my_team?.shortName}</Text>
+                    <Text style={styles.teamText}>{profile.my_team?.short_name}</Text>
                   </View>
                   <Image source={require('@/assets/icons/matchDot.png')} resizeMode="contain" style={styles.matchDot} />
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_opponent}</Text>
                     <Text style={[styles.teamText, {backgroundColor: `${opponent?.color}4B`}]}>
-                      {opponent?.shortName}
+                      {opponent?.short_name}
                     </Text>
                   </View>
                 </View>

@@ -1,30 +1,29 @@
-import {findTeamById} from '@/constants/join'
 import {Match} from '@/hooks/match/useMatch'
 import {format} from 'date-fns'
 import React from 'react'
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import Ellipse from './common/Ellipse'
+import useTeam from '@/hooks/match/useTeam'
 
 type Props = {
   match: Match
   onClick: () => void
   isSelected?: boolean
-  isMyTeamMatch: boolean
 }
 
 /** 매치 팀 경기 카드 컴포넌트 */
-const MatchTeamBox = ({match, onClick, isSelected, isMyTeamMatch}: Props) => {
+const MatchTeamBox = ({match, onClick, isSelected}: Props) => {
   const time = format(match.game_date, 'HH:mm')
+  const {findTeamById, teams} = useTeam()
 
   const homeTeam = findTeamById(match.team_home_info.id)
   const awayTeam = findTeamById(match.team_away_info.id)
 
   return (
-    <TouchableOpacity activeOpacity={isMyTeamMatch ? 0.8 : 1} onPress={onClick}>
+    <TouchableOpacity activeOpacity={0.8} onPress={onClick}>
       <View
         style={[
           styles.gameInfoBox, //
-          !isMyTeamMatch && styles.disabledGameInfoBox,
           isSelected && styles.gameSelectedInfoBox,
         ]}>
         <View style={styles.matchDayBox}>
@@ -42,8 +41,8 @@ const MatchTeamBox = ({match, onClick, isSelected, isMyTeamMatch}: Props) => {
             <Image source={awayTeam?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
           </View>
           <View style={styles.teamNameBox}>
-            <Text style={styles.teamText}>{homeTeam?.shortName}</Text>
-            <Text style={styles.teamText}>{awayTeam?.shortName}</Text>
+            <Text style={styles.teamText}>{homeTeam?.short_name}</Text>
+            <Text style={styles.teamText}>{awayTeam?.short_name}</Text>
           </View>
         </View>
       </View>

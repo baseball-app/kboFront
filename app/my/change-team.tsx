@@ -3,11 +3,13 @@ import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Imag
 import {useRouter} from 'expo-router'
 import {Ionicons} from '@expo/vector-icons'
 import {moderateScale, verticalScale} from '@/utils/metrics'
-import {TEAMS} from '@/constants/join'
 import useProfile from '@/hooks/my/useProfile'
+import useTeam from '@/hooks/match/useTeam'
 
 export default function ChangeScreen() {
   const {updateMyTeam, profile} = useProfile()
+
+  const {teams} = useTeam()
 
   const [selectedTeamId, setSelectedTeamId] = useState(profile.my_team?.id)
 
@@ -30,7 +32,7 @@ export default function ChangeScreen() {
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.teamsGrid}>
-          {TEAMS.map(team => (
+          {teams?.map(team => (
             <TouchableOpacity
               key={team.id}
               style={[styles.teamButton, selectedTeamId === team.id && styles.selectedTeam]}

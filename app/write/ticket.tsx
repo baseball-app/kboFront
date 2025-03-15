@@ -16,12 +16,13 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
 import React from 'react'
-import {findTeamById, TEAMS} from '@/constants/join'
 import dayjs from 'dayjs'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import LocationTypeSelector from '@/components/write/LocationTypeSelector'
 import Ellipse from '@/components/common/Ellipse'
 import Input from '@/components/common/Input'
+import useProfile from '@/hooks/my/useProfile'
+import useTeam from '@/hooks/match/useTeam'
 
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
@@ -80,6 +81,8 @@ const placeOption = [
 
 const TicketPage = () => {
   const {moveToWriteTicket, registerTicket, ...writeStore} = useWriteTicket()
+  const {profile} = useProfile()
+  const {findTeamById, teams} = useTeam()
 
   const title = (() => {
     const date = dayjs(writeStore.selectedDate)
@@ -90,7 +93,12 @@ const TicketPage = () => {
   const teamAwayInfo = writeStore.selectedMatch?.team_away_info
   const teamHomeInfo = writeStore.selectedMatch?.team_home_info
 
-  // 더블헤더 경기 여부
+  const opponentTeam =
+    writeStore.selectedMatch?.team_away_info.id === profile.my_team?.id
+      ? writeStore.selectedMatch?.team_home_info
+      : writeStore.selectedMatch?.team_away_info
+
+  // 직접입력 여부
   const isDirectWrite = !writeStore.selectedMatch
 
   const [writeData, setWriteData] = useState<IWriteDataInterface>({
@@ -154,8 +162,8 @@ const TicketPage = () => {
     formData.append('weather', writeStore.selectedWeather)
     formData.append('is_ballpark', JSON.stringify(tabMenu === '직관'))
 
-    formData.append('score_our', writeData.todayScore[findTeamById(teamHomeInfo?.id)?.shortName!])
-    formData.append('score_opponent', writeData.todayScore[findTeamById(teamAwayInfo?.id)?.shortName!])
+    formData.append('score_our', writeData.todayScore[findTeamById(teamHomeInfo?.id)?.short_name!])
+    formData.append('score_opponent', writeData.todayScore[findTeamById(teamAwayInfo?.id)?.short_name!])
 
     // 선발선수
     formData.append('starting_pitchers', writeData.matchPlayer)
@@ -189,8 +197,6 @@ const TicketPage = () => {
     })
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      console.log(result.assets)
-
       setWriteData(prevData => ({
         ...prevData,
         todayImg: result.assets[0],
@@ -218,32 +224,35 @@ const TicketPage = () => {
             <LocationTypeSelector value={tabMenu} onChange={setTabMenu} />
           </View>
           <View style={styles.tabMenuBox}>
-            <View style={styles.scoreBox}>
-              <TextInput
-                style={styles.scoreInput}
-                maxLength={2}
-                placeholder="0"
-                placeholderTextColor="#ddd"
-                keyboardType="number-pad"
-                onChangeText={value => handleScoreChange(findTeamById(teamHomeInfo?.id)?.shortName!, value)}
-              />
-              <View style={styles.ellipseBox}>
-                <Ellipse />
-                <Ellipse />
+            <View>
+              <View style={styles.scoreBox}>
+                <TextInput
+                  style={styles.scoreInput}
+                  maxLength={2}
+                  placeholder="0"
+                  placeholderTextColor="#ddd"
+                  keyboardType="number-pad"
+                  onChangeText={value => handleScoreChange(findTeamById(teamHomeInfo?.id)?.short_name!, value)}
+                />
+                <View style={styles.ellipseBox}>
+                  <Ellipse />
+                  <Ellipse />
+                </View>
+                <TextInput
+                  style={styles.scoreInput}
+                  maxLength={2}
+                  placeholder="0"
+                  placeholderTextColor="#ddd"
+                  keyboardType="number-pad"
+                  onChangeText={value => handleScoreChange(findTeamById(teamAwayInfo?.id)?.short_name!, value)}
+                />
               </View>
-              <TextInput
-                style={styles.scoreInput}
-                maxLength={2}
-                placeholder="0"
-                placeholderTextColor="#ddd"
-                keyboardType="number-pad"
-                onChangeText={value => handleScoreChange(findTeamById(teamAwayInfo?.id)?.shortName!, value)}
-              />
+              <View style={styles.teamNmBox}>
+                <Text style={styles.teamNmText}>{findTeamById(teamHomeInfo?.id)?.short_name}</Text>
+                <Text style={styles.teamNmText}>{findTeamById(teamAwayInfo?.id)?.short_name}</Text>
+              </View>
             </View>
-            <View style={styles.teamNmBox}>
-              <Text style={styles.teamNmText}>{findTeamById(teamHomeInfo?.id)?.shortName}</Text>
-              <Text style={styles.teamNmText}>{findTeamById(teamAwayInfo?.id)?.shortName}</Text>
-            </View>
+
             <TouchableOpacity style={styles.imageUploadBox} onPress={uploadPhoto} activeOpacity={1}>
               {writeData.todayImg ? (
                 <Image source={{uri: writeData.todayImg.uri}} style={styles.todayImg} />
@@ -254,65 +263,69 @@ const TicketPage = () => {
                 </>
               )}
             </TouchableOpacity>
-            {/* 
-            <Input
-              label="오늘의 상대구단"
-              value={writeData.matchTeam}
-              onChangeText={value => handleInputChange('matchTeam', value)}
-            /> */}
 
-            {inputConfig.map(item => (
-              <View key={item.id} style={styles.inputContainer}>
+            {!isDirectWrite && (
+              <Input
+                label="오늘의 상대구단"
+                value={opponentTeam?.name} //
+                editable={false}
+              />
+            )}
+
+            {!isDirectWrite && (
+              <Input
+                label="오늘의 직관장소"
+                value={ballparkInfo?.name} //
+                editable={false}
+              />
+            )}
+
+            <Input
+              label="오늘의 선발선수"
+              value={writeData.matchPlayer} //
+              onChangeText={value => handleInputChange('matchPlayer', value)}
+              placeholder="선수 이름을 기록해주세요"
+            />
+
+            <Input
+              label="오늘의 직관푸드"
+              value={writeData.todayFood} //
+              onChangeText={value => handleInputChange('todayFood', value)}
+              placeholder="오늘 먹은 직관푸드를 기록해주세요"
+            />
+
+            <Input
+              label={
                 <View style={styles.inputTitleBox}>
-                  <Text style={styles.label}>{item.title}</Text>
-                  {item.title === '오늘의 소감' && (
-                    <TouchableOpacity
-                      style={styles.onlyMeBox}
-                      onPress={() =>
-                        setWriteData(prev => ({
-                          ...prev,
-                          onlyMeCheck: !prev.onlyMeCheck,
-                        }))
+                  <Text style={styles.label}>오늘의 소감</Text>
+                  <TouchableOpacity
+                    style={styles.onlyMeBox}
+                    onPress={() =>
+                      setWriteData(prev => ({
+                        ...prev,
+                        onlyMeCheck: !prev.onlyMeCheck,
+                      }))
+                    }
+                    activeOpacity={1}>
+                    <Image
+                      source={
+                        writeData.onlyMeCheck
+                          ? require('@/assets/icons/onlyMeOnCheck.png')
+                          : require('@/assets/icons/onlyMeOffCheck.png')
                       }
-                      activeOpacity={1}>
-                      <Image
-                        source={
-                          writeData.onlyMeCheck
-                            ? require('@/assets/icons/onlyMeOnCheck.png')
-                            : require('@/assets/icons/onlyMeOffCheck.png')
-                        }
-                        resizeMode="contain"
-                        style={{width: 18, height: 18}}
-                      />
-                      <Text>나만보기</Text>
-                    </TouchableOpacity>
-                  )}
+                      resizeMode="contain"
+                      style={{width: 18, height: 18}}
+                    />
+                    <Text>나만보기</Text>
+                  </TouchableOpacity>
                 </View>
-                <TextInput
-                  multiline={item.title === '오늘의 소감'}
-                  numberOfLines={4}
-                  style={item.title === '오늘의 소감' ? styles.textThoughtsInput : styles.textInput}
-                  placeholder={item.placeholder}
-                  value={
-                    ['matchTeam', 'matchPlace', 'matchPlayer', 'todayFood', 'todayThoughts'].includes(item.value)
-                      ? (writeData[item.value as keyof IWriteDataInterface] as string)
-                      : ''
-                  }
-                  onFocus={() => {
-                    if (item.value === 'matchTeam') {
-                      Keyboard.dismiss()
-                      setTeamModalVisible(true)
-                    }
-                    if (item.value === 'matchPlace') {
-                      Keyboard.dismiss()
-                      setPlaceModalVisible(true)
-                    }
-                  }}
-                  placeholderTextColor="#D0CEC7"
-                  onChangeText={text => handleInputChange(item.value as keyof IWriteDataInterface, text)}
-                />
-              </View>
-            ))}
+              }
+              value={writeData.todayThoughts} //
+              onChangeText={value => handleInputChange('todayThoughts', value)}
+              placeholder="오늘의 소감을 기록해주세요"
+              multiline={true}
+              style={{height: 125, textAlign: 'left'}}
+            />
           </View>
         </View>
       </ScrollView>
@@ -326,15 +339,15 @@ const TicketPage = () => {
           <View style={styles.teamModalContent}>
             <Text style={styles.modalTitle}>오늘의 상대구단</Text>
             <View style={styles.optionsContainer}>
-              {TEAMS.map(team => (
+              {teams?.map(team => (
                 <TouchableOpacity
                   key={team.id}
-                  style={[styles.optionButton, writeData.matchTeam === team.shortName && styles.selectedOption]}
+                  style={[styles.optionButton, writeData.matchTeam === team.short_name && styles.selectedOption]}
                   activeOpacity={1}
                   onPress={() => handleSelectTeam(team.name)}>
                   <Image source={team.logo} style={styles.logoImg} resizeMode="contain" />
                   <Text
-                    style={[styles.optionText, writeData.matchTeam === team.shortName && styles.selectedOptionText]}>
+                    style={[styles.optionText, writeData.matchTeam === team.short_name && styles.selectedOptionText]}>
                     {team.name}
                   </Text>
                 </TouchableOpacity>
@@ -410,6 +423,7 @@ const styles = StyleSheet.create({
   },
   tabMenuBox: {
     alignItems: 'center',
+    gap: 24,
     paddingHorizontal: 14,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
@@ -421,7 +435,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
-    marginTop: 31,
+    marginTop: 28,
   },
   scoreInput: {
     width: 55,
@@ -460,8 +474,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D0CEC7',
     justifyContent: 'center',
-    marginBottom: 28,
-    marginTop: 20,
+    marginBottom: 8,
   },
   uploadText: {
     fontSize: 14,

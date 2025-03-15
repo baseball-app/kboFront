@@ -1,8 +1,8 @@
 import React from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
-import {TEAMS} from '@/constants/join'
 import useUserJoin from '@/hooks/auth/useUserJoin'
+import useTeam from '@/hooks/match/useTeam'
 
 export default function MyTeamScreen() {
   const {
@@ -11,6 +11,8 @@ export default function MyTeamScreen() {
     moveToNextStep, //
     moveToPrevStep,
   } = useUserJoin()
+
+  const {teams} = useTeam()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -23,7 +25,7 @@ export default function MyTeamScreen() {
       </View>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.teamsGrid}>
-          {TEAMS.map(team => (
+          {teams?.map(team => (
             <TouchableOpacity
               key={team.id}
               style={[styles.teamButton, myTeam?.id === team.id && styles.selectedTeam]}

@@ -42,10 +42,10 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
               {tabMenuConfig.map(option => (
                 <TouchableOpacity
                   key={option.value}
-                  style={[styles.writePlaceOptionButton, value === option.title && styles.selectedOption]}
+                  style={[styles.writePlaceOptionButton, tempValue === option.title && styles.selectedOption]}
                   activeOpacity={1}
                   onPress={() => setTempValue(option.title)}>
-                  <Text style={[styles.optionText, value === option.title && styles.selectedWriteOptionText]}>
+                  <Text style={[styles.optionText, tempValue === option.title && styles.selectedWriteOptionText]}>
                     {option.title}
                   </Text>
                 </TouchableOpacity>

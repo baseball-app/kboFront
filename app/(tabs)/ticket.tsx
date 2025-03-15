@@ -60,9 +60,9 @@ const MyTicketBoxScreen = () => {
                   <View style={[styles.teamLabel, {backgroundColor: opponentTeam?.color}]} />
                   <View style={{gap: 4, paddingVertical: 8}}>
                     <View style={styles.teamInfo}>
-                      <Text style={styles.teamName}>{myTeam?.shortName}</Text>
+                      <Text style={styles.teamName}>{myTeam?.short_name}</Text>
                       <Text style={styles.teamSub}>{` VS `}</Text>
-                      <Text style={styles.teamName}>{opponentTeam?.shortName}</Text>
+                      <Text style={styles.teamName}>{opponentTeam?.short_name}</Text>
                     </View>
                     <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
                     <Text style={styles.date}>{format(ticket.date, 'yyyy.MM.dd')}</Text>

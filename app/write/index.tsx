@@ -1,7 +1,7 @@
 import QuestionBox from '@/components/home/QuestionBox'
 import MatchTeamBox from '@/components/MatchTeamBox'
-import {findTeamById} from '@/constants/join'
 import useMatch from '@/hooks/match/useMatch'
+import useTeam from '@/hooks/match/useTeam'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
 import useProfile from '@/hooks/my/useProfile'
 import {useLocalSearchParams, useRouter} from 'expo-router'
@@ -66,11 +66,6 @@ const DailyLogWriteScreen = () => {
 
   const router = useRouter()
   const params = useLocalSearchParams()
-  const date = params?.date
-
-  useEffect(() => {
-    if (date) setSelectedDate(new Date(date as string))
-  }, [date])
 
   /** 현재 단계를 나타내는 상태 */
   const [currentStep, setCurrentStep] = useState(1)
@@ -119,9 +114,18 @@ const DailyLogWriteScreen = () => {
     }
   }
 
-  const {onlyMyTeamMatchingList, checkIsMyTeamMatch} = useMatch({selectedDate})
+  const {matchingList, isSuccess} = useMatch({selectedDate})
   const {profile} = useProfile()
-  const myTeamName = findTeamById(profile.my_team?.id)?.shortName
+  const {findTeamById} = useTeam()
+  const myTeamName = findTeamById(profile.my_team?.id)?.short_name
+
+  const date = params?.date
+
+  useEffect(() => {
+    if (date) setSelectedDate(new Date(date as string))
+    if (params.matchId && matchingList)
+      setSelectedMatch(matchingList?.find(match => match.id === Number(params.matchId))!)
+  }, [date, isSuccess])
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -137,15 +141,14 @@ const DailyLogWriteScreen = () => {
         <ScrollView style={styles.scrollContainer}>
           <Text style={styles.title}>마이팀 경기 일정을{'\n'}선택해주세요</Text>
           <View style={styles.matchListBox}>
-            {onlyMyTeamMatchingList.length > 0 ? (
+            {matchingList.length > 0 ? (
               <>
-                {onlyMyTeamMatchingList.map((match, index) => (
+                {matchingList.map((match, index) => (
                   <MatchTeamBox
                     key={index} //
                     isSelected={selectedMatch?.id === match.id}
                     match={match}
-                    onClick={() => checkIsMyTeamMatch(match) && setSelectedMatch(match)}
-                    isMyTeamMatch={checkIsMyTeamMatch(match)}
+                    onClick={() => setSelectedMatch(match)}
                   />
                 ))}
                 <View style={styles.doubleHeaderBox}>

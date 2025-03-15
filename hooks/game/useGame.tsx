@@ -27,7 +27,7 @@ export const GameProvider = ({children}: {children: React.ReactNode}) => {
       value={{
         matchingList,
         todayMyTeamMatch,
-        myTeamName: profile.my_team?.shortName || '',
+        myTeamName: profile.my_team?.short_name || '',
       }}>
       {children}
     </GameContext.Provider>
