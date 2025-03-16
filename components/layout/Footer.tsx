@@ -3,7 +3,7 @@ import {useRouter, useSegments} from 'expo-router'
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-
+import useTicketListByTeam from '@/hooks/match/useTicketListByTeam'
 const footerList = [
   {
     name: '캘린더',
@@ -51,6 +51,7 @@ const footerList = [
 const Footer = () => {
   const router = useRouter()
   const segments = useSegments()
+  const {ticketList} = useTicketListByTeam()
 
   const currentPath = `/${segments.join('/')}`
 
@@ -60,7 +61,12 @@ const Footer = () => {
         <View style={styles.wrapper}>
           {footerList.map(item => {
             return (
-              <TouchableOpacity key={item.name} onPress={() => router.push(item.path)} style={styles.tabButton}>
+              <TouchableOpacity
+                key={item.name}
+                onPress={() => {
+                  router.push(item.path)
+                }}
+                style={styles.tabButton}>
                 <Image
                   source={currentPath === item.path ? item.icon.active : item.icon.inactive}
                   style={styles.tabImg}

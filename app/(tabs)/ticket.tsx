@@ -13,7 +13,7 @@ import {View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native
 const MyTicketBoxScreen = () => {
   const {profile} = useProfile()
   const {ticketList, onChangeTeam, selectedTeamId} = useTicketListByTeam()
-  const {findTeamById} = useTeam()
+  const {findTeamById, teams} = useTeam()
 
   const myTeam = findTeamById(profile.my_team?.id)
 
@@ -37,11 +37,12 @@ const MyTicketBoxScreen = () => {
       <View style={styles.ticketBox}>
         <Text style={styles.ticketTitle}>상대 구단별 경기티켓</Text>
         <View style={styles.tabContainer}>
-          {CLUB_LIST.filter(club => club.id !== myTeam?.id) //
+          {[{id: 0, short_name: '최애 경기'}, ...(teams || []), {id: 999, short_name: '타구단'}]
+            ?.filter(club => club.id !== myTeam?.id) //
             .map(club => (
               <Tag
-                key={club.value}
-                name={club.name} //
+                key={club.id}
+                name={club.short_name || ''} //
                 isActive={club.id === selectedTeamId}
                 onClick={() => onChangeTeam(club.id)}
               />
