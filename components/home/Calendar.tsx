@@ -8,6 +8,10 @@ import {useRouter} from 'expo-router'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import MatchResultCell from '../MatchResultCell'
 import useDiary from '@/hooks/diary/useDiary'
+import {useQueryClient} from '@tanstack/react-query'
+import ApiClient from '@/api'
+import {TicketDetail} from '@/hooks/match/useTicketDetail'
+import {Match} from '@/hooks/match/useMatch'
 
 export type TicketCalendarLog = {
   id: number // 5
@@ -28,6 +32,7 @@ export type TicketCalendarLog = {
 
 const Calendar = () => {
   const {currentDate, setCurrentDate, ticketList} = useDiary()
+  const queryClient = useQueryClient()
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -45,6 +50,33 @@ const Calendar = () => {
       </View>
     )
   }
+
+  const prefetchTicket = async (date: string) => {
+    const queryKey = ['ticket', date]
+
+    if (queryClient.getQueryData<TicketDetail[]>(queryKey)) return
+
+    return queryClient.prefetchQuery({
+      queryKey,
+      queryFn: () => ApiClient.get<TicketDetail[]>(`/tickets/ticket_detail/`, {date}),
+    })
+  }
+
+  const prefetchMatchList = async (date: string) => {
+    const queryKey = ['matchTeam', date]
+
+    if (queryClient.getQueryData<Match[]>(queryKey)) return
+
+    return queryClient.prefetchQuery({
+      queryKey,
+      queryFn: () =>
+        ApiClient.get<Match[]>('/games/', {
+          end_date: date,
+          start_date: date,
+        }),
+    })
+  }
+
   const dayClick = (pDay: Date) => {
     setSelectedDate(pDay)
 
@@ -52,12 +84,20 @@ const Calendar = () => {
     const ticketsGroupByDate = ticketList?.[targetDate] || []
 
     if (ticketsGroupByDate?.length) {
-      router.push({
-        pathname: '/write/todayTicketCard', //
-        params: {date: targetDate},
+      // ;['ticket', id]
+      // 해당 날짜 직관일기 prefetch
+
+      prefetchTicket(targetDate).finally(() => {
+        router.push({
+          pathname: '/write/todayTicketCard', //
+          params: {date: targetDate},
+        })
       })
     } else {
-      router.push({pathname: '/write', params: {date: targetDate}})
+      // 해당 날짜 경기 일정 prefetch
+      prefetchMatchList(targetDate).finally(() => {
+        router.push({pathname: '/write', params: {date: targetDate}})
+      })
     }
   }
 

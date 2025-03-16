@@ -3,7 +3,7 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {RegisterTicket} from './useWriteTicket'
 import {useState} from 'react'
 
-type TicketDetail = {
+export type TicketDetail = {
   id: number
   date: string // '2024-03-22'
   result: string // '승리'
