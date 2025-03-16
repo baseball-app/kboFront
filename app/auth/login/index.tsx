@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image} from 'react-native'
+import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image, Platform} from 'react-native'
 import {router} from 'expo-router'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {Channel, useLogin} from '@/hooks/auth/useLogin'
@@ -63,6 +63,8 @@ export default function LoginScreen() {
     },
   ] as const
 
+  const isAndroid = Platform.OS === 'android'
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -74,18 +76,20 @@ export default function LoginScreen() {
           </View>
 
           <View style={styles.bottomContent}>
-            {loginButtonList.map(loginButton => (
-              <TouchableOpacity
-                key={loginButton.name}
-                style={loginButton.style.button}
-                onPress={() => setLoginWebViewInfo(loginButton)}>
-                <Image
-                  source={loginButton.image}
-                  style={[styles.loginIcon, loginButton.type === 'apple' && {height: 18, marginBottom: 3}]}
-                />
-                <Text style={loginButton.style.text}>{loginButton.name}</Text>
-              </TouchableOpacity>
-            ))}
+            {loginButtonList
+              .filter(buttonList => !(isAndroid && buttonList.type === 'apple'))
+              .map(loginButton => (
+                <TouchableOpacity
+                  key={loginButton.name}
+                  style={loginButton.style.button}
+                  onPress={() => setLoginWebViewInfo(loginButton)}>
+                  <Image
+                    source={loginButton.image}
+                    style={[styles.loginIcon, loginButton.type === 'apple' && {height: 18, marginBottom: 3}]}
+                  />
+                  <Text style={loginButton.style.text}>{loginButton.name}</Text>
+                </TouchableOpacity>
+              ))}
           </View>
         </View>
 
@@ -115,11 +119,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   bottomContent: {
-    // marginHorizontal: 20,
+    marginHorizontal: 24,
     paddingBottom: 24,
     justifyContent: 'center',
-    width: '100%',
+    // width: '100%',
     alignItems: 'center',
+    gap: 12,
   },
   icon: {
     width: 173,
@@ -146,9 +151,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
-    width: 327,
+    width: '100%',
     height: 50,
-    marginBottom: 20,
   },
   titleImage: {
     width: 140,
@@ -156,9 +160,9 @@ const styles = StyleSheet.create({
   },
   appleButtonText: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 10,
+    fontSize: 15,
+    fontWeight: 600,
+    marginLeft: 8,
 
     // marginBottom: 10,
   },
@@ -170,17 +174,14 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
-    width: 327,
+    width: '100%',
     height: 50,
-    marginBottom: 20,
   },
   kakaoButtonText: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 10,
-
-    // marginBottom: 10,
+    color: '#191919',
+    fontSize: 15,
+    fontWeight: 600,
+    marginLeft: 8,
   },
   loginIcon: {
     marginRight: 5,
@@ -197,12 +198,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
     height: 50,
-    width: 327,
+    width: '100%',
   },
   naverButtonText: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 10,
+    fontSize: 15,
+    fontWeight: 600,
+    marginLeft: 8,
   },
 })
