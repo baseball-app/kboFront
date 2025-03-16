@@ -3,11 +3,10 @@ import {TicketCalendarLog} from '@/components/home/Calendar'
 import {groupBy} from '@/utils/groupBy'
 import {useQuery} from '@tanstack/react-query'
 import {format} from 'date-fns'
-import React, {useState} from 'react'
 
-import {ProfileImage, Team} from '@/constants/join'
 import {create, StateCreator} from 'zustand'
 import useProfile from '../my/useProfile'
+import {useEffect} from 'react'
 
 export interface IDiarySlice {
   currentDate: Date
@@ -28,6 +27,10 @@ export const useDiaryStore = create<IDiarySlice>(diarySlice)
 const useDiary = () => {
   const {currentDate, setCurrentDate, userId, setUserId} = useDiaryStore()
   const {profile} = useProfile()
+
+  useEffect(() => {
+    if (!userId && profile.id) setUserId(profile.id)
+  }, [userId, profile.id])
 
   const currentYearMonth = format(currentDate, 'yyyy-MM')
 

@@ -10,7 +10,9 @@ const FriendList = () => {
   const {friend_status} = useFriends()
   const {profile} = useProfile()
   const router = useRouter()
-  const {setUserId} = useDiaryStore()
+  const {setUserId, userId} = useDiaryStore()
+
+  const isChoiceTheOther = userId !== profile.id
 
   return (
     <View style={styles.container}>
@@ -19,6 +21,10 @@ const FriendList = () => {
         renderItem={({item}) => (
           <View style={styles.friendItem}>
             <FriendStatusProfile
+              choice={{
+                isChoiceTheOther,
+                id: userId,
+              }}
               friendStatus={item}
               onClick={() => {
                 // game id 가 있으면 오늘의 티켓

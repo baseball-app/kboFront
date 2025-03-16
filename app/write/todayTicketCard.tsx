@@ -44,14 +44,14 @@ export default function GameCard() {
         <Text style={styles.headerText}>오늘의 티켓</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
-        <View style={styles.iconBox}>
-          <TouchableOpacity onPress={toggleFavorite}>
-            <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
-          </TouchableOpacity>
-          {isMyTicket && (
+        {isMyTicket && (
+          <View style={styles.iconBox}>
+            <TouchableOpacity onPress={toggleFavorite}>
+              <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
+            </TouchableOpacity>
             <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
-          )}
-        </View>
+          </View>
+        )}
         {Number(data?.length) > 1 ? (
           <View style={styles.matchButtonBox}>
             {data?.map((_, index) => (
@@ -174,14 +174,14 @@ export default function GameCard() {
                 <View style={styles.scoreBox}>
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_our}</Text>
-                    <Text style={[styles.teamText, {backgroundColor: `${hometeam?.color}4B`}]}>
+                    <Text style={[styles.teamText, {backgroundColor: `${hometeam?.color}`}]}>
                       {hometeam?.short_name}
                     </Text>
                   </View>
                   <Image source={require('@/assets/icons/matchDot.png')} resizeMode="contain" style={styles.matchDot} />
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_opponent}</Text>
-                    <Text style={[styles.teamText, {backgroundColor: `${awayteam?.color}4B`}]}>
+                    <Text style={[styles.teamText, {backgroundColor: `${awayteam?.color}`}]}>
                       {awayteam?.short_name}
                     </Text>
                   </View>
@@ -277,24 +277,26 @@ export default function GameCard() {
             </TouchableOpacity>
           ))}
         </View>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#1E5EF4',
-            borderRadius: 10,
-            paddingVertical: 10,
-            marginTop: 32,
-          }}>
-          <Text
+        {Number(data?.length) <= 1 && (
+          <TouchableOpacity
             style={{
-              fontSize: 16,
-              fontWeight: 600,
-              color: '#fff',
-              lineHeight: 22.4,
-              margin: 'auto',
+              backgroundColor: '#1E5EF4',
+              borderRadius: 10,
+              paddingVertical: 10,
+              marginTop: 32,
             }}>
-            더블헤더 티켓 추가하기
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                color: '#fff',
+                lineHeight: 22.4,
+                margin: 'auto',
+              }}>
+              더블헤더 티켓 추가하기
+            </Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </SafeAreaView>
   )
@@ -449,8 +451,9 @@ const styles = StyleSheet.create({
   },
   matchBox: {
     width: '100%',
-    height: 148,
+    height: 150,
     flexDirection: 'column',
+    paddingBottom: 10,
   },
   infoBox: {
     flex: 1,

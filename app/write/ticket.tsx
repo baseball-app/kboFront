@@ -23,18 +23,21 @@ import LocationTypeSelector from '@/components/write/LocationTypeSelector'
 import Ellipse from '@/components/common/Ellipse'
 import Input from '@/components/common/Input'
 import useProfile from '@/hooks/my/useProfile'
-import useTeam from '@/hooks/match/useTeam'
+import useTeam, {Team} from '@/hooks/match/useTeam'
 import SelectBox from '@/components/common/SelectBox'
 
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
-  matchTeam: string
+  matchTeam: Team | null
   matchPlace: string
   matchPlayer: string
   todayFood: string
   todayThoughts: string
   onlyMeCheck: boolean
-  todayScore: {[key: string]: string}
+  todayScore: {
+    our: string
+    opponent: string
+  }
 }
 
 const placeOption = [
@@ -72,9 +75,12 @@ const TicketPage = () => {
   const isDirectWrite = !writeStore.selectedMatch
 
   const [writeData, setWriteData] = useState<IWriteDataInterface>({
-    todayScore: {},
+    todayScore: {
+      our: '',
+      opponent: '',
+    },
     todayImg: undefined,
-    matchTeam: '',
+    matchTeam: null,
     matchPlace: '',
     matchPlayer: '',
     todayFood: '',
@@ -104,7 +110,7 @@ const TicketPage = () => {
     }))
   }
 
-  const handleSelectTeam = (team: string) => {
+  const handleSelectTeam = (team: Team) => {
     setWriteData(prevData => ({
       ...prevData,
       matchTeam: team,
@@ -129,8 +135,8 @@ const TicketPage = () => {
     } as any)
     formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
     console.log('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
-    formData.append('game', String(writeStore.selectedMatch?.id))
-    console.log('game', String(writeStore.selectedMatch?.id))
+    formData.append('game', String(writeStore.selectedMatch?.id || ''))
+    console.log('game', String(writeStore.selectedMatch?.id || '676'))
     formData.append('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
     console.log('result', writeStore.selectedMatchResult)
     formData.append('weather', writeStore.selectedWeather)
@@ -138,10 +144,10 @@ const TicketPage = () => {
     formData.append('is_ballpark', JSON.stringify(tabMenu === '직관'))
     console.log('is_ballpark', JSON.stringify(tabMenu === '직관'))
 
-    formData.append('score_our', writeData.todayScore[findTeamById(teamHomeInfo?.id)?.short_name!])
-    console.log('score_our', writeData.todayScore[findTeamById(teamHomeInfo?.id)?.short_name!])
-    formData.append('score_opponent', writeData.todayScore[findTeamById(teamAwayInfo?.id)?.short_name!])
-    console.log('score_opponent', writeData.todayScore[findTeamById(teamAwayInfo?.id)?.short_name!])
+    formData.append('score_our', writeData.todayScore.our)
+    console.log('score_our', writeData.todayScore.our)
+    formData.append('score_opponent', writeData.todayScore.opponent)
+    console.log('score_opponent', writeData.todayScore.opponent)
 
     // 선발선수
     formData.append('starting_pitchers', writeData.matchPlayer)
@@ -168,10 +174,10 @@ const TicketPage = () => {
     console.log('is_double', JSON.stringify(isDirectWrite))
 
     // hometeam_id
-    formData.append('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id))
-    console.log('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id))
-    formData.append('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id))
-    console.log('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id))
+    formData.append('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
+    console.log('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
+    formData.append('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
+    console.log('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
     formData.append('direct_yn', JSON.stringify(isDirectWrite))
     console.log('direct_yn', JSON.stringify(isDirectWrite))
     formData.append('is_cheer', 'false')
@@ -227,7 +233,7 @@ const TicketPage = () => {
                     placeholder="0"
                     placeholderTextColor="#ddd"
                     keyboardType="number-pad"
-                    onChangeText={value => handleScoreChange(findTeamById(teamHomeInfo?.id)?.short_name!, value)}
+                    onChangeText={value => handleScoreChange('our', value)}
                   />
                   <View style={styles.ellipseBox}>
                     <Ellipse />
@@ -239,12 +245,16 @@ const TicketPage = () => {
                     placeholder="0"
                     placeholderTextColor="#ddd"
                     keyboardType="number-pad"
-                    onChangeText={value => handleScoreChange(findTeamById(teamAwayInfo?.id)?.short_name!, value)}
+                    onChangeText={value => handleScoreChange('opponent', value)}
                   />
                 </View>
                 <View style={styles.teamNmBox}>
-                  <Text style={styles.teamNmText}>{findTeamById(teamHomeInfo?.id)?.short_name}</Text>
-                  <Text style={styles.teamNmText}>{findTeamById(teamAwayInfo?.id)?.short_name}</Text>
+                  <Text style={styles.teamNmText}>
+                    {findTeamById(teamHomeInfo?.id)?.short_name || findTeamById(profile.my_team?.id)?.short_name}
+                  </Text>
+                  <Text style={styles.teamNmText}>
+                    {findTeamById(teamAwayInfo?.id)?.short_name || writeData.matchTeam?.short_name}
+                  </Text>
                 </View>
               </View>
 
@@ -269,7 +279,7 @@ const TicketPage = () => {
                 <SelectBox
                   label={'오늘의 상대구단'}
                   placeholder={'상대구단을 선택해주세요'}
-                  value={writeData.matchTeam}
+                  value={writeData.matchTeam?.name}
                   onPress={() => setTeamModalVisible(true)}
                 />
               )}
@@ -353,11 +363,12 @@ const TicketPage = () => {
               {teams?.map(team => (
                 <TouchableOpacity
                   key={team.id}
-                  style={[styles.optionButton, writeData.matchTeam === team.name && styles.selectedOption]}
+                  style={[styles.optionButton, writeData.matchTeam?.name === team.name && styles.selectedOption]}
                   activeOpacity={1}
-                  onPress={() => handleSelectTeam(team.name)}>
+                  onPress={() => handleSelectTeam(team as any)}>
                   <Image source={team.logo} style={styles.logoImg} resizeMode="contain" />
-                  <Text style={[styles.optionText, writeData.matchTeam === team.name && styles.selectedOptionText]}>
+                  <Text
+                    style={[styles.optionText, writeData.matchTeam?.name === team.name && styles.selectedOptionText]}>
                     {team.name}
                   </Text>
                 </TouchableOpacity>
