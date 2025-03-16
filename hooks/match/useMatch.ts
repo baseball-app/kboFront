@@ -1,6 +1,6 @@
 import ApiClient from '@/api'
 import {Pagination} from '@/types/generic'
-import {useQuery} from '@tanstack/react-query'
+import {useQuery, useQueryClient} from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import useProfile from '../my/useProfile'
 
@@ -25,6 +25,7 @@ export type Match = {
 const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
   const {profile} = useProfile()
   const startDate = dayjs(selectedDate).format('YYYY-MM-DD')
+  const queryClient = useQueryClient()
 
   const {data: matchingList, isSuccess} = useQuery({
     queryKey: ['matchTeam', startDate],
@@ -44,11 +45,28 @@ const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
 
   const onlyMyTeamMatchingList = matchingList?.filter(match => checkIsMyTeamMatch(match))
 
+  const prefetchMatchList = async (date: string) => {
+    const queryKey = ['matchTeam', date]
+    const data = queryClient.getQueryData<Match[]>(queryKey)
+
+    if (data) return
+
+    return queryClient.prefetchQuery({
+      queryKey,
+      queryFn: () =>
+        ApiClient.get<Match[]>('/games/', {
+          end_date: date,
+          start_date: date,
+        }),
+    })
+  }
+
   return {
     matchingList: matchingList || [],
     onlyMyTeamMatchingList: onlyMyTeamMatchingList || [],
     checkIsMyTeamMatch,
     isSuccess,
+    prefetchMatchList,
   }
 }
 

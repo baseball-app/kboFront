@@ -7,11 +7,11 @@ import {useState} from 'react'
 import EmptyMatchView from '@/components/match/EmptyMatchView'
 import useMatch from '@/hooks/match/useMatch'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
-import dayjs from 'dayjs'
+import {format} from 'date-fns'
 
 const MatchScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const {matchingList, checkIsMyTeamMatch} = useMatch({selectedDate})
+  const {matchingList, prefetchMatchList} = useMatch({selectedDate})
   const {moveToWriteTicket} = useWriteTicket()
 
   return (
@@ -25,13 +25,19 @@ const MatchScreen = () => {
         ListHeaderComponent={
           <MatchCalendar //
             value={selectedDate}
-            onChange={date => setSelectedDate(date)}
+            onChange={date => {
+              prefetchMatchList(format(date, 'yyyy-MM-dd')).finally(() => setSelectedDate(date))
+            }}
           />
         }
         renderItem={({item: match}) => (
           <MatchTeamBox
             match={match} //
-            onClick={() => moveToWriteTicket(selectedDate, match)}
+            onClick={() =>
+              prefetchMatchList(format(selectedDate, 'yyyy-MM-dd')).finally(() =>
+                moveToWriteTicket(selectedDate, match),
+              )
+            }
           />
         )}
         keyExtractor={item => `${item.id}`}

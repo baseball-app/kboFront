@@ -2,7 +2,7 @@ import {findMatchResultImage, findWeatherImage} from '@/constants/match'
 import useTeam from '@/hooks/match/useTeam'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {format} from 'date-fns'
-import {useLocalSearchParams, useRouter} from 'expo-router'
+import {useLocalSearchParams, useRootNavigationState, useRouter} from 'expo-router'
 import React from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, ImageBackground} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -14,6 +14,9 @@ export default function GameCard() {
   const router = useRouter()
   const {id, date} = useLocalSearchParams()
   const {findTeamById} = useTeam()
+
+  const navigationState = useRootNavigationState()
+  const previousRoute = navigationState.routes.at(-1)?.name || ''
 
   const {
     ticketDetail, //
@@ -41,8 +44,10 @@ export default function GameCard() {
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => {
-            router.dismissAll()
-            router.navigate('/(tabs)')
+            if (previousRoute.includes('write')) {
+              router.dismiss(2)
+            }
+            router.back()
           }}>
           <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
         </TouchableOpacity>
