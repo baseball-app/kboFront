@@ -36,8 +36,6 @@ axiosInstance.interceptors.response.use(
   async (err: AxiosError) => {
     const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
     if (err.status == 403 && token?.accessToken && token?.refreshToken && !lock) {
-      console.log('durl??', err.status, token, lock)
-
       lock = true
       try {
         const data = await ApiClient.post<LoginServerResponse>('/auths/token/refresh/', {

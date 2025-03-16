@@ -23,7 +23,7 @@ export default function ChangeScreen() {
         <TouchableOpacity style={styles.backButton} onPress={router.back}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>마이팀 변경하기</Text>
+        <Text style={styles.headerTitle}>마이팀 변경</Text>
       </View>
 
       <View style={styles.headerDescription}>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   content: {
-    paddingHorizontal: verticalScale(24),
+    paddingHorizontal: 24,
   },
   headerTitle: {
     flex: 1,
@@ -80,45 +80,48 @@ const styles = StyleSheet.create({
 
   headerDescription: {
     alignItems: 'center',
-    paddingHorizontal: verticalScale(24),
-    marginBottom: verticalScale(28),
+    marginBottom: 28,
   },
 
   headerDescriptionText: {
-    fontSize: moderateScale(16),
+    fontSize: 16,
+    lineHeight: 16 * 1.4,
     color: '#999999',
+    textAlign: 'center',
   },
-
   teamsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    gap: 16,
   },
   teamButton: {
     width: '30%',
-    aspectRatio: 1,
+    aspectRatio: 99 / 90,
+    paddingVertical: 16,
     backgroundColor: '#F0F0F0',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 16,
     borderWidth: 2,
     borderColor: '#F0F0F0',
   },
   selectedTeam: {
-    backgroundColor: '#E0E0E0',
+    backgroundColor: 'white',
     borderWidth: 2,
     borderColor: '#000',
   },
   teamLogo: {
-    width: '40%',
-    height: '40%',
+    width: '60%',
+    height: '60%',
     resizeMode: 'contain',
   },
   teamName: {
-    fontSize: 12,
+    fontSize: 16,
+    fontWeight: 500,
     textAlign: 'center',
-    marginTop: 4,
+    marginTop: 8,
+    lineHeight: 16 * 1.4,
   },
   footer: {
     paddingHorizontal: verticalScale(24),
@@ -131,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nextButtonActive: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#1E5EF4',
   },
   nextButtonText: {
     color: 'white',

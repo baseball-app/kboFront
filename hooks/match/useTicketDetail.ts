@@ -24,6 +24,9 @@ type TicketDetail = {
   opponent: number
   writer: number
 
+  hometeam_id: string
+  awayteam_id: string
+
   // 감정표현
   like: number
   love: number
@@ -53,8 +56,10 @@ const reactionTypeList: {key: ReactionType; title: string; count: number}[] = [
 ]
 // 😆👏
 
-const useTicketDetail = (id: number) => {
+const useTicketDetail = (id: number | string) => {
   const queryClient = useQueryClient()
+
+  const isDate = typeof id === 'string'
 
   // 1차 2차 선택하는 state
   const [ticketIndex, setTicketIndex] = useState<number>(0)
@@ -69,9 +74,16 @@ const useTicketDetail = (id: number) => {
   const {data} = useQuery({
     queryKey: ['ticket', id],
     queryFn: () =>
-      ApiClient.get<TicketDetail[]>(`/tickets/ticket_detail/`, {
-        id: 12,
-      }),
+      ApiClient.get<TicketDetail[]>(
+        `/tickets/ticket_detail/`,
+        isDate
+          ? {
+              date: id,
+            }
+          : {
+              id: id,
+            },
+      ),
     enabled: Boolean(id),
   })
 
@@ -119,6 +131,7 @@ const useTicketDetail = (id: number) => {
 
   const toggleFavorite = () => {
     if (!data?.[ticketIndex]) return
+    console.log(data?.[ticketIndex], {favorite_status: data?.[ticketIndex]?.favorite ? 'clear' : 'excute'})
     updateFavorite({favorite_status: data?.[ticketIndex]?.favorite ? 'clear' : 'excute'})
   }
 

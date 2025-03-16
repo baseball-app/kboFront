@@ -11,6 +11,7 @@ import {
   Modal,
   Keyboard,
   Platform,
+  KeyboardAvoidingView,
 } from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
@@ -23,6 +24,7 @@ import Ellipse from '@/components/common/Ellipse'
 import Input from '@/components/common/Input'
 import useProfile from '@/hooks/my/useProfile'
 import useTeam from '@/hooks/match/useTeam'
+import SelectBox from '@/components/common/SelectBox'
 
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
@@ -35,48 +37,16 @@ interface IWriteDataInterface {
   todayScore: {[key: string]: string}
 }
 
-const inputConfig = [
-  {
-    id: 0,
-    value: 'matchTeam',
-    title: '오늘의 상대구단',
-    placeholder: '상대구단을 기록해주세요',
-  },
-  {
-    id: 1,
-    value: 'matchPlace',
-    title: '오늘의 직관장소',
-    placeholder: '집관장소를 기록해주세요',
-  },
-  {
-    id: 2,
-    value: 'matchPlayer',
-    title: '오늘의 선발선수',
-    placeholder: '선수 이름을 기록해주세요',
-  },
-  {
-    id: 3,
-    value: 'todayFood',
-    title: '오늘의 직관푸드',
-    placeholder: '오늘 먹은 직관푸드를 기록해주세요',
-  },
-  {
-    id: 4,
-    value: 'todayThoughts',
-    title: '오늘의 소감',
-    placeholder: '오늘의 소감을 기록해주세요',
-  },
-]
-
 const placeOption = [
   {label: '대구 삼성 라이온즈 파크', value: '대구 삼성 라이온즈 파크'},
   {label: '사직 야구장', value: '사직 야구장'},
-  {label: '서울 종합운동장 야구장', value: '서울 종합운동장 야구장'},
+  {label: '잠실 종합운동장 야구장', value: '잠실 종합운동장 야구장'},
   {label: '고척 스카이돔', value: '고척 스카이돔'},
   {label: '인천 SSG랜더스필드', value: '인천 SSG랜더스필드'},
   {label: '수원 KT위즈 파크', value: '수원 KT위즈 파크'},
   {label: '대전 한화생명 이글스파크', value: '대전 한화생명 이글스파크'},
   {label: '창원 NC파크', value: '창원 NC파크'},
+  {label: '광주 기아챔피언스 필드', value: '광주 기아챔피언스 필드'},
 ]
 
 const TicketPage = () => {
@@ -111,6 +81,7 @@ const TicketPage = () => {
     todayThoughts: '',
     onlyMeCheck: false,
   })
+
   const [tabMenu, setTabMenu] = useState(writeStore.selectedPlace)
   const [teamModalVisible, setTeamModalVisible] = useState(false)
   const [placeModalVisible, setPlaceModalVisible] = useState(false)
@@ -157,30 +128,53 @@ const TicketPage = () => {
       name: Platform.OS === 'android' ? writeData.todayImg?.uri : writeData.todayImg?.uri.replace('file://', ''),
     } as any)
     formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
+    console.log('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
     formData.append('game', String(writeStore.selectedMatch?.id))
-    formData.append('result', writeStore.selectedMatchResult)
+    console.log('game', String(writeStore.selectedMatch?.id))
+    formData.append('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
+    console.log('result', writeStore.selectedMatchResult)
     formData.append('weather', writeStore.selectedWeather)
+    console.log('weather', writeStore.selectedWeather)
     formData.append('is_ballpark', JSON.stringify(tabMenu === '직관'))
+    console.log('is_ballpark', JSON.stringify(tabMenu === '직관'))
 
     formData.append('score_our', writeData.todayScore[findTeamById(teamHomeInfo?.id)?.short_name!])
+    console.log('score_our', writeData.todayScore[findTeamById(teamHomeInfo?.id)?.short_name!])
     formData.append('score_opponent', writeData.todayScore[findTeamById(teamAwayInfo?.id)?.short_name!])
+    console.log('score_opponent', writeData.todayScore[findTeamById(teamAwayInfo?.id)?.short_name!])
 
     // 선발선수
     formData.append('starting_pitchers', writeData.matchPlayer)
+    console.log('starting_pitchers', writeData.matchPlayer)
 
     // 경기구단
-    formData.append('gip_place', writeData.matchPlace)
+    formData.append('gip_place', ballparkInfo?.name || writeData.matchPlace)
+    console.log('gip_place', ballparkInfo?.name || writeData.matchPlace)
 
     // 직관푸드
     formData.append('food', writeData.todayFood)
+    console.log('food', writeData.todayFood)
 
     // 오늘의 소감
     formData.append('memo', writeData.todayThoughts)
+    console.log('memo', writeData.todayThoughts)
     formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
+    console.log('is_homeballpark', JSON.stringify(tabMenu === '집관'))
 
     //나만보기
     formData.append('only_me', JSON.stringify(writeData.onlyMeCheck))
+    console.log('only_me', JSON.stringify(writeData.onlyMeCheck))
     formData.append('is_double', JSON.stringify(isDirectWrite))
+    console.log('is_double', JSON.stringify(isDirectWrite))
+
+    // hometeam_id
+    formData.append('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id))
+    console.log('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id))
+    formData.append('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id))
+    console.log('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id))
+    formData.append('direct_yn', JSON.stringify(isDirectWrite))
+    console.log('direct_yn', JSON.stringify(isDirectWrite))
+    formData.append('is_cheer', 'false')
 
     registerTicket(formData)
   }
@@ -217,124 +211,141 @@ const TicketPage = () => {
         </TouchableOpacity>
         <Text style={styles.dateText}>{title}</Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.tabMenuContainer}>
-          <View style={styles.tabMenu}>
-            {/* 직관, 집관 선택 컴포넌트 */}
-            <LocationTypeSelector value={tabMenu} onChange={setTabMenu} />
-          </View>
-          <View style={styles.tabMenuBox}>
-            <View>
-              <View style={styles.scoreBox}>
-                <TextInput
-                  style={styles.scoreInput}
-                  maxLength={2}
-                  placeholder="0"
-                  placeholderTextColor="#ddd"
-                  keyboardType="number-pad"
-                  onChangeText={value => handleScoreChange(findTeamById(teamHomeInfo?.id)?.short_name!, value)}
-                />
-                <View style={styles.ellipseBox}>
-                  <Ellipse />
-                  <Ellipse />
-                </View>
-                <TextInput
-                  style={styles.scoreInput}
-                  maxLength={2}
-                  placeholder="0"
-                  placeholderTextColor="#ddd"
-                  keyboardType="number-pad"
-                  onChangeText={value => handleScoreChange(findTeamById(teamAwayInfo?.id)?.short_name!, value)}
-                />
-              </View>
-              <View style={styles.teamNmBox}>
-                <Text style={styles.teamNmText}>{findTeamById(teamHomeInfo?.id)?.short_name}</Text>
-                <Text style={styles.teamNmText}>{findTeamById(teamAwayInfo?.id)?.short_name}</Text>
-              </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.tabMenuContainer}>
+            <View style={styles.tabMenu}>
+              {/* 직관, 집관 선택 컴포넌트 */}
+              <LocationTypeSelector value={tabMenu} onChange={setTabMenu} />
             </View>
-
-            <TouchableOpacity style={styles.imageUploadBox} onPress={uploadPhoto} activeOpacity={1}>
-              {writeData.todayImg ? (
-                <Image source={{uri: writeData.todayImg.uri}} style={styles.todayImg} />
-              ) : (
-                <>
-                  <Image source={require('@/assets/icons/add_image.png')} style={styles.addImage} />
-                  <Text style={styles.uploadText}>오늘의 사진을 넣어주세요</Text>
-                </>
-              )}
-            </TouchableOpacity>
-
-            {!isDirectWrite && (
-              <Input
-                label="오늘의 상대구단"
-                value={opponentTeam?.name} //
-                editable={false}
-              />
-            )}
-
-            {!isDirectWrite && (
-              <Input
-                label="오늘의 직관장소"
-                value={ballparkInfo?.name} //
-                editable={false}
-              />
-            )}
-
-            <Input
-              label="오늘의 선발선수"
-              value={writeData.matchPlayer} //
-              onChangeText={value => handleInputChange('matchPlayer', value)}
-              placeholder="선수 이름을 기록해주세요"
-            />
-
-            <Input
-              label="오늘의 직관푸드"
-              value={writeData.todayFood} //
-              onChangeText={value => handleInputChange('todayFood', value)}
-              placeholder="오늘 먹은 직관푸드를 기록해주세요"
-            />
-
-            <Input
-              label={
-                <View style={styles.inputTitleBox}>
-                  <Text style={styles.label}>오늘의 소감</Text>
-                  <TouchableOpacity
-                    style={styles.onlyMeBox}
-                    onPress={() =>
-                      setWriteData(prev => ({
-                        ...prev,
-                        onlyMeCheck: !prev.onlyMeCheck,
-                      }))
-                    }
-                    activeOpacity={1}>
-                    <Image
-                      source={
-                        writeData.onlyMeCheck
-                          ? require('@/assets/icons/onlyMeOnCheck.png')
-                          : require('@/assets/icons/onlyMeOffCheck.png')
-                      }
-                      resizeMode="contain"
-                      style={{width: 18, height: 18}}
-                    />
-                    <Text>나만보기</Text>
-                  </TouchableOpacity>
+            <View style={styles.tabMenuBox}>
+              <View>
+                <View style={styles.scoreBox}>
+                  <TextInput
+                    style={styles.scoreInput}
+                    maxLength={2}
+                    placeholder="0"
+                    placeholderTextColor="#ddd"
+                    keyboardType="number-pad"
+                    onChangeText={value => handleScoreChange(findTeamById(teamHomeInfo?.id)?.short_name!, value)}
+                  />
+                  <View style={styles.ellipseBox}>
+                    <Ellipse />
+                    <Ellipse />
+                  </View>
+                  <TextInput
+                    style={styles.scoreInput}
+                    maxLength={2}
+                    placeholder="0"
+                    placeholderTextColor="#ddd"
+                    keyboardType="number-pad"
+                    onChangeText={value => handleScoreChange(findTeamById(teamAwayInfo?.id)?.short_name!, value)}
+                  />
                 </View>
-              }
-              value={writeData.todayThoughts} //
-              onChangeText={value => handleInputChange('todayThoughts', value)}
-              placeholder="오늘의 소감을 기록해주세요"
-              multiline={true}
-              style={{height: 125, textAlign: 'left'}}
-            />
+                <View style={styles.teamNmBox}>
+                  <Text style={styles.teamNmText}>{findTeamById(teamHomeInfo?.id)?.short_name}</Text>
+                  <Text style={styles.teamNmText}>{findTeamById(teamAwayInfo?.id)?.short_name}</Text>
+                </View>
+              </View>
+
+              <TouchableOpacity style={styles.imageUploadBox} onPress={uploadPhoto} activeOpacity={1}>
+                {writeData.todayImg ? (
+                  <Image source={{uri: writeData.todayImg.uri}} style={styles.todayImg} />
+                ) : (
+                  <>
+                    <Image source={require('@/assets/icons/add_image.png')} style={styles.addImage} />
+                    <Text style={styles.uploadText}>오늘의 사진을 넣어주세요</Text>
+                  </>
+                )}
+              </TouchableOpacity>
+
+              {!isDirectWrite ? (
+                <Input
+                  label="오늘의 상대구단"
+                  value={opponentTeam?.name} //
+                  editable={false}
+                />
+              ) : (
+                <SelectBox
+                  label={'오늘의 상대구단'}
+                  placeholder={'상대구단을 선택해주세요'}
+                  value={writeData.matchTeam}
+                  onPress={() => setTeamModalVisible(true)}
+                />
+              )}
+
+              {!isDirectWrite ? (
+                <Input
+                  label="오늘의 경기구장"
+                  value={ballparkInfo?.name} //
+                  editable={false}
+                />
+              ) : (
+                <SelectBox
+                  label={'오늘의 경기구장'}
+                  placeholder={'경기구장을 선택해주세요'}
+                  value={writeData.matchPlace}
+                  onPress={() => setPlaceModalVisible(true)}
+                />
+              )}
+
+              <Input
+                label="오늘의 선발선수"
+                value={writeData.matchPlayer} //
+                onChangeText={value => handleInputChange('matchPlayer', value)}
+                placeholder="선수 이름을 기록해주세요"
+              />
+
+              <Input
+                label="오늘의 직관푸드"
+                value={writeData.todayFood} //
+                onChangeText={value => handleInputChange('todayFood', value)}
+                placeholder="오늘 먹은 직관푸드를 기록해주세요"
+              />
+
+              <Input
+                label={
+                  <View style={styles.inputTitleBox}>
+                    <Text style={styles.label}>오늘의 소감</Text>
+                    <TouchableOpacity
+                      style={styles.onlyMeBox}
+                      onPress={() =>
+                        setWriteData(prev => ({
+                          ...prev,
+                          onlyMeCheck: !prev.onlyMeCheck,
+                        }))
+                      }
+                      activeOpacity={1}>
+                      <Image
+                        source={
+                          writeData.onlyMeCheck
+                            ? require('@/assets/icons/onlyMeOnCheck.png')
+                            : require('@/assets/icons/onlyMeOffCheck.png')
+                        }
+                        resizeMode="contain"
+                        style={{width: 18, height: 18}}
+                      />
+                      <Text>나만보기</Text>
+                    </TouchableOpacity>
+                  </View>
+                }
+                value={writeData.todayThoughts} //
+                onChangeText={value => handleInputChange('todayThoughts', value)}
+                placeholder="오늘의 소감을 기록해주세요"
+                multiline={true}
+                style={{height: 125, textAlign: 'left'}}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+
       <View style={styles.footerButtonBox}>
         <TouchableOpacity style={[styles.footerButton, styles.activeButton]} onPress={onSubmit}>
           <Text style={[styles.footerButtonText, styles.activeButtonText]}>오늘의 티켓 발급하기</Text>
         </TouchableOpacity>
       </View>
-      <Modal animationType="none" transparent={true} visible={teamModalVisible}>
+      <Modal animationType="slide" transparent={true} visible={teamModalVisible}>
         <View style={styles.modalOverlay}>
           <View style={styles.teamModalContent}>
             <Text style={styles.modalTitle}>오늘의 상대구단</Text>
@@ -342,12 +353,11 @@ const TicketPage = () => {
               {teams?.map(team => (
                 <TouchableOpacity
                   key={team.id}
-                  style={[styles.optionButton, writeData.matchTeam === team.short_name && styles.selectedOption]}
+                  style={[styles.optionButton, writeData.matchTeam === team.name && styles.selectedOption]}
                   activeOpacity={1}
                   onPress={() => handleSelectTeam(team.name)}>
                   <Image source={team.logo} style={styles.logoImg} resizeMode="contain" />
-                  <Text
-                    style={[styles.optionText, writeData.matchTeam === team.short_name && styles.selectedOptionText]}>
+                  <Text style={[styles.optionText, writeData.matchTeam === team.name && styles.selectedOptionText]}>
                     {team.name}
                   </Text>
                 </TouchableOpacity>
@@ -356,7 +366,7 @@ const TicketPage = () => {
           </View>
         </View>
       </Modal>
-      <Modal animationType="none" transparent={true} visible={placeModalVisible}>
+      <Modal animationType="slide" transparent={true} visible={placeModalVisible}>
         <View style={styles.modalOverlay}>
           <View style={styles.placeModalContent}>
             <Text style={styles.modalTitle}>오늘의 경기구단</Text>
@@ -567,7 +577,7 @@ const styles = StyleSheet.create({
   placeModalContent: {
     width: '100%',
     backgroundColor: '#fff',
-    height: 334,
+    height: 400,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 24,
@@ -609,8 +619,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   optionText: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 14,
+    color: '#171716',
+    fontWeight: 500,
+    lineHeight: 19.6,
   },
   logoImg: {
     width: 24,

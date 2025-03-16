@@ -105,6 +105,11 @@ const DailyLogWriteScreen = () => {
     }
   }
 
+  const onClickDoubleHeaderMatch = () => {
+    setCurrentStep(currentStep + 1)
+    setSelectedMatch(null)
+  }
+
   /** 이전 화살표 클릭 */
   const goToPreviousStep = () => {
     if (currentStep > 1) {
@@ -152,7 +157,7 @@ const DailyLogWriteScreen = () => {
                   />
                 ))}
                 <View style={styles.doubleHeaderBox}>
-                  <TouchableOpacity onPress={nextButtonClick} style={styles.doubleHeaderButton}>
+                  <TouchableOpacity onPress={onClickDoubleHeaderMatch} style={styles.doubleHeaderButton}>
                     <Text style={styles.doubleHeaderText}>더블헤더 작성하기</Text>
                   </TouchableOpacity>
                 </View>

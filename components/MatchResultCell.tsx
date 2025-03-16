@@ -20,7 +20,7 @@ const MatchResultCell = ({data, onPress}: {data: TicketCalendarLog[]; onPress: (
           <Text style={styles.teamText}>
             {myTeam?.short_name}:{opponent?.short_name}
           </Text>
-          {data.length == 1 && (
+          {data.length > 1 && (
             <View style={{flexDirection: 'row', gap: 3}}>
               <View style={[styles.swiperDot]} />
               <View style={[styles.swiperDot]} />

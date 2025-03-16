@@ -24,6 +24,7 @@ const FriendList = () => {
                 // game id 가 있으면 오늘의 티켓
                 // 없으면 친구의 달력
                 if (item.ticket_info?.id) {
+                  console.log('여기?', item.ticket_info?.id)
                   router.push({
                     pathname: '/write/todayTicketCard', //
                     params: {id: item.ticket_info?.id},
@@ -43,7 +44,6 @@ const FriendList = () => {
                 nickname: '내 캘린더',
                 profile_type: profile.profile_type!,
                 profile_image: '',
-                ticket_info: {},
               }}
               isMyProfile
               onClick={() => {

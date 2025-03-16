@@ -12,7 +12,7 @@ import useProfile from '@/hooks/my/useProfile'
 
 export default function GameCard() {
   const router = useRouter()
-  const {id} = useLocalSearchParams()
+  const {id, date} = useLocalSearchParams()
   const {findTeamById} = useTeam()
 
   const {
@@ -22,13 +22,14 @@ export default function GameCard() {
     data,
     toggleFavorite,
     reactionList,
-  } = useTicketDetail(Number(id))
+  } = useTicketDetail(Number(id) || (date as string))
 
   const {profile} = useProfile()
 
   const isMyTicket = profile?.id === ticketDetail?.writer
 
-  const opponent = findTeamById(ticketDetail?.opponent)
+  const hometeam = findTeamById(Number(ticketDetail?.hometeam_id))
+  const awayteam = findTeamById(Number(ticketDetail?.awayteam_id))
 
   const heartIcon = ticketDetail?.favorite
     ? require('@/assets/icons/heart_fill.png')
@@ -55,6 +56,7 @@ export default function GameCard() {
           <View style={styles.matchButtonBox}>
             {data?.map((_, index) => (
               <TouchableOpacity
+                key={index}
                 style={[styles.matchButton, ticketIndex === index && styles.matchButtonActive]}
                 onPress={() => onChangeTicket(index)}>
                 <Text style={[styles.matchText, ticketIndex === index && styles.matchTextActive]}>
@@ -172,13 +174,15 @@ export default function GameCard() {
                 <View style={styles.scoreBox}>
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_our}</Text>
-                    <Text style={styles.teamText}>{profile.my_team?.short_name}</Text>
+                    <Text style={[styles.teamText, {backgroundColor: `${hometeam?.color}4B`}]}>
+                      {hometeam?.short_name}
+                    </Text>
                   </View>
                   <Image source={require('@/assets/icons/matchDot.png')} resizeMode="contain" style={styles.matchDot} />
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_opponent}</Text>
-                    <Text style={[styles.teamText, {backgroundColor: `${opponent?.color}4B`}]}>
-                      {opponent?.short_name}
+                    <Text style={[styles.teamText, {backgroundColor: `${awayteam?.color}4B`}]}>
+                      {awayteam?.short_name}
                     </Text>
                   </View>
                 </View>

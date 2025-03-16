@@ -7,9 +7,6 @@ import {ko} from 'date-fns/locale'
 import {useRouter} from 'expo-router'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import MatchResultCell from '../MatchResultCell'
-import {useQuery} from '@tanstack/react-query'
-import ApiClient from '@/api'
-import {groupBy} from '@/utils/groupBy'
 import useDiary from '@/hooks/diary/useDiary'
 
 export type TicketCalendarLog = {
@@ -51,15 +48,16 @@ const Calendar = () => {
   const dayClick = (pDay: Date) => {
     setSelectedDate(pDay)
 
-    const ticketsGroupByDate = ticketList?.[format(pDay, 'yyyy-MM-dd')] || []
+    const targetDate = format(pDay, 'yyyy-MM-dd')
+    const ticketsGroupByDate = ticketList?.[targetDate] || []
 
     if (ticketsGroupByDate?.length) {
       router.push({
         pathname: '/write/todayTicketCard', //
-        params: {id: ticketsGroupByDate[0].id},
+        params: {date: targetDate},
       })
     } else {
-      router.push({pathname: '/write', params: {date: format(pDay, 'yyyy-MM-dd')}})
+      router.push({pathname: '/write', params: {date: targetDate}})
     }
   }
 

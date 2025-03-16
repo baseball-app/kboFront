@@ -22,7 +22,7 @@ export type FriendStatus = {
   nickname: string // 'abc'
   profile_type: number // 0
   profile_image: string // ''
-  ticket_info: {
+  ticket_info?: {
     writer_id?: number // 1
     game_id?: number // 1
     id: number

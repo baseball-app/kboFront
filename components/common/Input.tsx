@@ -32,8 +32,9 @@ const styles = StyleSheet.create({
   },
   base: {
     paddingHorizontal: 18,
-    paddingVertical: 12,
-    paddingTop: 8,
+    paddingVertical: 10,
+    paddingBottom: 14,
+    // paddingTop: 8,
     borderColor: '#D0CEC7',
     borderWidth: 1,
     textAlign: 'center',
