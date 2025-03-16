@@ -12,13 +12,19 @@ const useMyStat = () => {
         queryKey: ['myStat', user, 'win_site_percent'],
         staleTime: 1000 * 20,
         // 직관승률
-        queryFn: () => ApiClient.get<number>('/tickets/win_site_percent/'),
+        queryFn: () =>
+          ApiClient.get<number>('/tickets/win_site_percent/', {
+            ballpark_gbn: true,
+          }),
       },
       {
         queryKey: ['myStat', user, 'win_home_percent'],
         staleTime: 1000 * 20,
         // 집관승률
-        queryFn: () => ApiClient.get<number>('/tickets/win_home_percent/'),
+        queryFn: () =>
+          ApiClient.get<number>('/tickets/win_site_percent/', {
+            ballpark_gbn: false,
+          }),
       },
       {
         queryKey: ['myStat', user, 'weekday_most_win'],

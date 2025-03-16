@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@react-native-community/cli": "^18.0.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/axios": "^0.14.4",
     "@types/jest": "^29.5.12",

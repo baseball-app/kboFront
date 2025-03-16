@@ -1,6 +1,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:drawable="@color/splashscreen_background"/>
+  <!-- 중앙에 이미지 추가 -->
   <item>
-    <bitmap android:gravity="center" android:src="@drawable/launch_screen"/>
+      <bitmap 
+            android:gravity="center" 
+            android:src="@drawable/launch_screen"/>
   </item>
 </layer-list>
