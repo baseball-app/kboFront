@@ -61,21 +61,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFCF3',
   },
   header: {
-    paddingHorizontal: verticalScale(24),
+    paddingHorizontal: 24,
     flexDirection: 'row',
   },
   backButton: {
     marginBottom: 30,
   },
   content: {
+    flex: 1,
     paddingHorizontal: 24,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   headerTitle: {
     flex: 1,
     textAlign: 'center',
-    fontSize: moderateScale(20),
+    fontSize: 20,
     fontWeight: 'bold',
-    marginRight: verticalScale(16),
+    marginRight: 16,
   },
 
   headerDescription: {
@@ -92,12 +95,13 @@ const styles = StyleSheet.create({
   teamsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     gap: 16,
   },
   teamButton: {
-    width: '30%',
-    aspectRatio: 99 / 90,
+    // width: '30%',
+    width: 99,
+    height: 90,
     paddingVertical: 16,
     backgroundColor: '#F0F0F0',
     borderRadius: 8,
@@ -124,8 +128,8 @@ const styles = StyleSheet.create({
     lineHeight: 16 * 1.4,
   },
   footer: {
-    paddingHorizontal: verticalScale(24),
-    paddingVertical: verticalScale(67),
+    paddingHorizontal: 24,
+    paddingVertical: 67,
   },
   nextButton: {
     backgroundColor: '#CCCCCC',

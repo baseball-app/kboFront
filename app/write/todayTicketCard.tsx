@@ -38,7 +38,12 @@ export default function GameCard() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerBox}>
-        <TouchableOpacity style={styles.backButton} onPress={router.back}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => {
+            router.dismissAll()
+            router.navigate('/(tabs)')
+          }}>
           <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
         </TouchableOpacity>
         <Text style={styles.headerText}>오늘의 티켓</Text>
@@ -101,12 +106,12 @@ export default function GameCard() {
                           Z
                           
                           M0 0 
-                          V0 25
-                          C0 25, 25 25, 25 0 
+                          V0 20
+                          C0 20, 20 20, 20 0 
                           Z
                           
-                          M282 0
-                          C282 25, 307 25, 307 25
+                          M287 0
+                          C287 20, 307 20, 307 20
                           V307 0
                           Z
                           `}
@@ -131,12 +136,12 @@ export default function GameCard() {
                           Z
                           
                           M0 0 
-                          V0 25
-                          C0 25, 25 25, 25 0 
+                          V0 20
+                          C0 20, 20 20, 20 0 
                           Z
                           
-                          M282 0
-                          C282 25, 307 25, 307 25
+                          M287 0
+                          C287 20, 307 20, 307 20
                           V307 0
                           Z
                           `}
@@ -234,12 +239,12 @@ export default function GameCard() {
                           Z
                           
                           M307 220 
-                          V307 195
-                          C307 195, 282 195, 282 220 
+                          V307 200
+                          C307 200, 287 200, 287 220 
                           Z
 
-                          M25 220
-                          C25 220, 25 195, 0 195
+                          M20 220
+                          C20 220, 20 200, 0 200
                           V0 220
                           Z
                           `}
@@ -338,6 +343,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
     paddingHorizontal: 24,
     backgroundColor: '#fffcf3',
+    gap: 24,
   },
   iconBox: {
     flexDirection: 'row',
@@ -352,7 +358,6 @@ const styles = StyleSheet.create({
   matchButtonBox: {
     width: '100%',
     flexDirection: 'row',
-    marginTop: 20,
     gap: 12,
   },
   matchButton: {
@@ -378,9 +383,9 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   ticketBox: {
-    width: '100%',
-    marginTop: 24,
-    height: 920,
+    height: 840,
+    width: 327,
+    marginHorizontal: 'auto',
   },
   imgViewBox: {
     width: '100%',
@@ -524,7 +529,7 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'flex-start',
     flexDirection: 'column',
-    paddingVertical: 36,
+    paddingVertical: 16,
   },
   backgroundImage: {
     resizeMode: 'stretch',
@@ -535,6 +540,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 4,
     paddingHorizontal: 10,
+    paddingTop: 20,
   },
   backImage: {
     width: 16,

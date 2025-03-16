@@ -4,7 +4,7 @@ import StatBox from '@/components/ticket/StatBox'
 import useMyStat from '@/hooks/stat/useMyStat'
 import {router} from 'expo-router'
 import React from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
 export default function MyStatScreen() {
@@ -18,31 +18,33 @@ export default function MyStatScreen() {
         </TouchableOpacity>
         <Text style={styles.headerText}>나의 승요력</Text>
       </View>
-      <View style={styles.section}>
-        <MyStat percentage={80} />
-      </View>
-      <View style={styles.row}>
-        <StatBox
-          title="직관"
-          value={data?.winSitePercent}
-          win={data.winRateCalculation.win_count}
-          draw={data.winRateCalculation.draw_count}
-          lose={data.winRateCalculation.loss_count}
-        />
-        <StatBox
-          title="집관"
-          value={data?.winHomePercent}
-          win={data.winRateCalculation.win_count}
-          draw={data.winRateCalculation.draw_count}
-          lose={data.winRateCalculation.loss_count}
-        />
-      </View>
-      <View style={styles.summaryContainer}>
-        <Input label="최다 관람구장" editable={false} value={data?.mostWatchStadium} />
-        <Input label="나의 승요 요일" editable={false} value={data?.weekdayMostWin} />
-        <Input label="나의 최다 연승" editable={false} value={data?.longestWinningStreak} />
-        <Input label="최다 승리 구단" editable={false} value={data?.mostWinTeam} />
-      </View>
+      <ScrollView>
+        <View style={styles.section}>
+          <MyStat percentage={80} />
+        </View>
+        <View style={styles.row}>
+          <StatBox
+            title="직관"
+            value={data?.winSitePercent}
+            win={data.winRateCalculation.win_count}
+            draw={data.winRateCalculation.draw_count}
+            lose={data.winRateCalculation.loss_count}
+          />
+          <StatBox
+            title="집관"
+            value={data?.winHomePercent}
+            win={data.winRateCalculation.win_count}
+            draw={data.winRateCalculation.draw_count}
+            lose={data.winRateCalculation.loss_count}
+          />
+        </View>
+        <View style={styles.summaryContainer}>
+          <Input label="최다 관람구장" editable={false} value={data?.mostWatchStadium} />
+          <Input label="나의 승요 요일" editable={false} value={data?.weekdayMostWin} />
+          <Input label="나의 최다 연승" editable={false} value={data?.longestWinningStreak} />
+          <Input label="최다 승리 구단" editable={false} value={data?.mostWinTeam} />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }

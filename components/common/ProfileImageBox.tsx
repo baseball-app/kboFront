@@ -14,18 +14,18 @@ export default ProfileImageBox
 const styles = StyleSheet.create({
   profileImageBox: {
     backgroundColor: '#F3F2EE',
-    width: moderateScale(80),
-    height: moderateScale(80),
+    width: 80,
+    height: 80,
     borderRadius: 50,
-    marginRight: horizontalScale(18),
+    marginRight: 18,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: moderateScale(0.8),
+    borderWidth: 0.8,
     borderColor: '#D0CEC7',
   },
   profileImage: {
-    width: horizontalScale(46.44),
-    height: verticalScale(50.58),
+    width: 46.44,
+    height: 50.58,
     backgroundColor: '#F5F5F5', // Light background color
   },
 })

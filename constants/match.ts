@@ -3,6 +3,7 @@ export const MATCH_RESULT_IMAGE = {
   패배: require('@/assets/icons/emo/lose.png'),
   무승부: require('@/assets/icons/emo/draw.png'),
   '경기 취소': require('@/assets/icons/emo/cancel.png'),
+  취소: require('@/assets/icons/emo/cancel.png'),
 }
 
 export const findMatchResultImage = (result?: string) => {

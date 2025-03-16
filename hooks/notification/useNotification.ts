@@ -88,7 +88,7 @@ const useNotification = () => {
     }
 
     // TODO: Ticket 페이지로 이동하기
-    router.push('/ticket/stat')
+    // router.push('/ticket/stat')
   }
 
   const fetchNextNotificationPage = () => {

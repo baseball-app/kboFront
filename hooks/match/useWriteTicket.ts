@@ -2,7 +2,7 @@ import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
 import {Match} from './useMatch'
 import {useRouter} from 'expo-router'
 import {format} from 'date-fns'
-import {useMutation} from '@tanstack/react-query'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import ApiClient, {uploadFile} from '@/api'
 
 export type RegisterTicket = {
@@ -26,6 +26,7 @@ const useWriteTicket = () => {
   const router = useRouter()
 
   const writeStore = useDailyWriteStore()
+  const queryClient = useQueryClient()
 
   const {mutateAsync: registerTicket} = useMutation({
     mutationFn: (data: FormData) => uploadFile<{id: number}>(`/tickets/ticket_add/`, data),
@@ -34,6 +35,8 @@ const useWriteTicket = () => {
         pathname: '/write/todayTicketCard', //
         params: {id: data.id},
       })
+
+      queryClient.invalidateQueries({queryKey: ['tickets']})
     },
   })
 

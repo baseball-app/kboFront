@@ -120,13 +120,16 @@ const styles = StyleSheet.create({
   },
   bottomContent: {
     // marginHorizontal: 20,
-    marginHorizontal: '10%',
     // paddingBottom: "3",
+    justifyContent: 'center',
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
   },
   icon: {
-    height: undefined,
     aspectRatio: 1,
     width: '50%',
+    maxWidth: 200,
   },
   title: {
     fontSize: 24,
@@ -147,8 +150,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
-    width: '100%',
-    aspectRatio: 327 / 50, // This maintains the 327:50 ratio
+    width: 327,
+    height: 50,
     marginBottom: 20,
   },
   appleButtonText: {
@@ -167,8 +170,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
-    width: '100%',
-    aspectRatio: 327 / 50, // This maintains the 327:50 ratio
+    width: 327,
+    height: 50,
     marginBottom: 20,
   },
   kakaoButtonText: {
@@ -193,8 +196,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
-    width: '100%',
-    aspectRatio: 327 / 50, // This maintains the 327:50 ratio
+    height: 50,
+    width: 327,
   },
   naverButtonText: {
     color: '#FFFFFF',

@@ -25,7 +25,7 @@ import Input from '@/components/common/Input'
 import useProfile from '@/hooks/my/useProfile'
 import useTeam, {Team} from '@/hooks/match/useTeam'
 import SelectBox from '@/components/common/SelectBox'
-
+import ImageResizer from '@bam.tech/react-native-image-resizer'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
   matchTeam: Team | null
@@ -125,14 +125,30 @@ const TicketPage = () => {
     setPlaceModalVisible(false)
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const formData = new FormData()
 
+    const resizedImage = await ImageResizer.createResizedImage(
+      writeData.todayImg?.uri || '', // 원본 이미지
+      500, // 리사이즈할 가로 크기 (필요한 크기로 변경)
+      500, // 리사이즈할 세로 크기
+      'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
+      80, // 품질 (0 ~ 100)
+      0, // 회전 (0 = 그대로)
+      undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
+      false, // 메타데이터 유지 여부
+    )
+
+    console.log('📏 리사이징된 이미지:', resizedImage.uri)
+
     formData.append('image', {
-      uri: writeData.todayImg?.uri,
-      type: writeData.todayImg?.type, // image/jpeg, image/png 등
+      uri: resizedImage.uri, // 리사이징된 이미지 URI 사용
+      type: writeData.todayImg?.type, // 원본 이미지의 MIME 타입 유지
       name: Platform.OS === 'android' ? writeData.todayImg?.uri : writeData.todayImg?.uri.replace('file://', ''),
     } as any)
+
+    console.log(writeData.todayImg?.uri.replace('file://', ''))
+
     formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
     console.log('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
     formData.append('game', String(writeStore.selectedMatch?.id || ''))

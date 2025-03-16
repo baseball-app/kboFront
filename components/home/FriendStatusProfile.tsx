@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
     borderColor: '#21376C',
   },
   profileImage: {
-    width: horizontalScale(30),
-    height: verticalScale(30),
+    width: 30,
+    height: 30,
   },
   myHomeImage: {
     width: 16,
