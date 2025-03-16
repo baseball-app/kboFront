@@ -9,6 +9,7 @@ import {useEffect} from 'react'
 import useMatch from '@/hooks/match/useMatch'
 import dayjs from 'dayjs'
 import {usePopup} from '@/slice/commonSlice'
+import useDiary from '@/hooks/diary/useDiary'
 
 const CalendarScreen = () => {
   const router = useRouter()
@@ -16,9 +17,12 @@ const CalendarScreen = () => {
 
   const {addFriendList, friendInvitationCodeList} = useMakeFriend()
   const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()})
+  const {ticketList} = useDiary()
+
+  const todayTicketList = ticketList?.[dayjs().format('YYYY-MM-DD')]
 
   // 오늘 경기가 두 개 이상일 경우 클릭했을 때 안내문구 출력
-  const overTwoMatch: boolean = true
+  const overTwoMatch: boolean = Boolean(todayTicketList?.length) && Number(todayTicketList?.length) > 1
 
   const onClickFloatingButton = () => {
     if (!todayMatchingList?.length) {
