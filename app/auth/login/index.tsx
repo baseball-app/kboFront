@@ -69,7 +69,7 @@ export default function LoginScreen() {
         <View style={styles.contentContainer}>
           <View style={styles.topContent}>
             <Image source={require('@/assets/images/landing-logo.png')} style={styles.icon} resizeMode="contain" />
-            <Text style={styles.title}>오늘의 야구</Text>
+            <Image source={require('@/assets/images/title.png')} style={styles.titleImage} resizeMode="contain" />
             <Text style={styles.subtitle}>반가워요! 오늘의 야구와 함께{'\n'}내가 응원하는 구단을 기록해보세요</Text>
           </View>
 
@@ -106,41 +106,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFCF3',
   },
   contentContainer: {
-    // flex: 1,
+    flex: 1,
     justifyContent: 'space-between',
   },
   topContent: {
-    // flex: 1,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-
-    marginTop: '40%',
-    marginHorizontal: '10%',
-    marginBottom: '20%',
   },
   bottomContent: {
     // marginHorizontal: 20,
-    // paddingBottom: "3",
+    paddingBottom: 24,
     justifyContent: 'center',
-    flex: 1,
     width: '100%',
     alignItems: 'center',
   },
   icon: {
-    aspectRatio: 1,
-    width: '50%',
-    maxWidth: 200,
+    width: 173,
+    height: 147,
+    marginBottom: 40,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   subtitle: {
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 30,
-    color: '#666',
+    lineHeight: 16 * 1.4,
+    color: '#77756C',
+    fontWeight: 400,
   },
   appleButton: {
     backgroundColor: '#000000',
@@ -152,6 +148,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: 327,
     height: 50,
+    marginBottom: 20,
+  },
+  titleImage: {
+    width: 140,
     marginBottom: 20,
   },
   appleButtonText: {
