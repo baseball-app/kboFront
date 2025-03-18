@@ -21,11 +21,13 @@ type Props = {
 
 const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props) => {
   const getFirendStatus = () => {
-    if (choice?.isChoiceTheOther) {
-      return choice.id === friendStatus.id ? 'CHOICE' : 'OTHER'
-    } else {
-      return friendStatus.ticket_info?.writer_id ? 'HAS_TICKET' : 'NO_TICKET'
+    if (friendStatus.ticket_info?.writer_id) return 'HAS_TICKET'
+
+    if (choice?.id === friendStatus.id) {
+      return 'CHOICE'
     }
+
+    return 'OTHER'
   }
 
   const type = getFirendStatus()
@@ -33,10 +35,7 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
   const getStyle = () => {
     switch (type) {
       case 'CHOICE':
-        return {
-          borderWidth: 2,
-          borderColor: '#1E5EF4',
-        }
+        return {}
       case 'OTHER':
         return {
           borderWidth: 1,
@@ -46,11 +45,6 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
         return {
           borderWidth: 2,
           borderColor: '#21376C',
-        }
-      case 'NO_TICKET':
-        return {
-          borderWidth: 1,
-          borderColor: '#D0CEC7',
         }
       default:
         return {
@@ -64,7 +58,7 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
     switch (type) {
       case 'CHOICE':
         return {
-          color: '#1E5EF4',
+          color: '#21376C',
           fontWeight: 700 as const,
         }
       case 'OTHER':
@@ -73,11 +67,7 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
         }
       case 'HAS_TICKET':
         return {
-          color: '#21376C',
-        }
-      case 'NO_TICKET':
-        return {
-          color: '#171716',
+          color: '#77756C',
         }
     }
   }

@@ -6,7 +6,8 @@ import {format} from 'date-fns'
 
 import {create, StateCreator} from 'zustand'
 import useProfile from '../my/useProfile'
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
+import {usePathname} from 'expo-router'
 
 export interface IDiarySlice {
   currentDate: Date
@@ -25,12 +26,20 @@ export const diarySlice: StateCreator<IDiarySlice> = set => ({
 export const useDiaryStore = create<IDiarySlice>(diarySlice)
 
 const useDiary = () => {
-  const {currentDate, setCurrentDate, userId, setUserId} = useDiaryStore()
+  const {currentDate, setCurrentDate} = useDiaryStore()
   const {profile} = useProfile()
+
+  const [userId, setUserId] = useState<number | null>(null)
 
   useEffect(() => {
     if (!userId && profile.id) setUserId(profile.id)
   }, [userId, profile.id])
+
+  const pathname = usePathname()
+
+  useEffect(() => {
+    if (pathname !== '/') setUserId(null)
+  }, [])
 
   const currentYearMonth = format(currentDate, 'yyyy-MM')
 
