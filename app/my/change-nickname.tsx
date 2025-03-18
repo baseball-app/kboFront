@@ -1,3 +1,4 @@
+import Header from '@/components/common/Header'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import useProfile from '@/hooks/my/useProfile'
 import {moderateScale, verticalScale} from '@/utils/metrics'
@@ -22,12 +23,7 @@ const ChangeNicknameScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={router.back}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>닉네임 변경하기</Text>
-      </View>
+      <Header title="닉네임 변경하기" variants="transparent" />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
         <View style={styles.inputSection}>
           <View style={styles.inputContainer}>

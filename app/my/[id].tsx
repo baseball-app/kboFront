@@ -10,6 +10,7 @@ import useFriends, {Friend, FriendType} from '@/hooks/my/useFriends'
 import {findProfileImageById} from '@/constants/join'
 import useMakeFriend from '@/hooks/my/useMakeFriend'
 import {usePopup} from '@/slice/commonSlice'
+import Header from '@/components/common/Header'
 
 interface Follower {
   id: string
@@ -70,9 +71,7 @@ const FollowerScreen = () => {
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
+        <Header title="" variants="transparent" />
         <View style={styles.tabContainer}>
           <TouchableOpacity
             style={activeTab === 'followers' ? styles.ActiveTab : styles.NonActiveTab}

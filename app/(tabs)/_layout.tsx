@@ -4,6 +4,7 @@ import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs'
 
 import Footer from '@/components/layout/Footer'
 import {TextStyle} from 'react-native'
+import Header from '@/components/common/Header'
 
 const headerStyle: TextStyle = {
   fontWeight: '700',
@@ -28,11 +29,11 @@ export default function TabLayout() {
       {/* 캘린더 탭 화면 */}
       <Tabs.Screen name="index" options={{headerShown: false}} />
       {/* 경기 일정 탭 화면 */}
-      <Tabs.Screen name="match" options={{title: '경기일정', ...headerOptions}} />
+      <Tabs.Screen name="match" options={{header: () => <Header title="경기일정" hasBackButton={false} />}} />
       {/* 티켓 박스 탭 화면 */}
-      <Tabs.Screen name="ticket" options={{title: '나의 티켓박스', ...headerOptions}} />
+      <Tabs.Screen name="ticket" options={{header: () => <Header title="나의 티켓박스" hasBackButton={false} />}} />
       {/* 알림 탭 화면 */}
-      <Tabs.Screen name="alarm" options={{title: '알림', ...headerOptions}} />
+      <Tabs.Screen name="alarm" options={{header: () => <Header title="알림" hasBackButton={false} />}} />
       {/* 마이 페이지 탭 화면 */}
       <Tabs.Screen name="my" options={{headerShown: false}} />
     </Tabs>

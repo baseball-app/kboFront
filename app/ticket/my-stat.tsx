@@ -1,3 +1,4 @@
+import Header from '@/components/common/Header'
 import Input from '@/components/common/Input'
 import MyStat from '@/components/ticket/MyStat'
 import StatBox from '@/components/ticket/StatBox'
@@ -12,12 +13,7 @@ export default function MyStatScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerBox}>
-        <TouchableOpacity style={styles.backButton} onPress={router.back}>
-          <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>나의 승요력</Text>
-      </View>
+      <Header title="나의 승요력" variants="transparent" />
       <ScrollView>
         <View style={styles.section}>
           <MyStat percentage={(data?.winSitePercent + data?.winHomePercent) / 2} />

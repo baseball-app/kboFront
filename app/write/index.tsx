@@ -1,13 +1,14 @@
+import Header from '@/components/common/Header'
+import Progress from '@/components/common/Progress'
 import QuestionBox from '@/components/home/QuestionBox'
 import MatchTeamBox from '@/components/MatchTeamBox'
 import useMatch from '@/hooks/match/useMatch'
 import useTeam from '@/hooks/match/useTeam'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
 import useProfile from '@/hooks/my/useProfile'
-import {useLocalSearchParams, useRootNavigationState, useRouter} from 'expo-router'
+import {useLocalSearchParams, useRouter} from 'expo-router'
 import React, {useEffect, useMemo, useState} from 'react'
-import {StyleSheet, ScrollView, Image, Text, TouchableOpacity} from 'react-native'
-import {View} from 'react-native'
+import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
 /** 경기 결과 목업데이터 */
@@ -134,13 +135,19 @@ const DailyLogWriteScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <View style={styles.stepHeaderBox}>
+      {/* <View style={styles.stepHeaderBox}>
         <TouchableOpacity onPress={goToPreviousStep}>
           <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
         </TouchableOpacity>
-        <View style={styles.progressBarContainer}>
-          <View style={[styles.progressBar, {width: `${(currentStep / 3) * 100}%`}]} />
-        </View>
+      </View> */}
+      <View style={{position: 'relative'}}>
+        <Header
+          leftButton={{
+            content: <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />,
+            onPress: goToPreviousStep,
+          }}
+        />
+        <Progress current={currentStep} max={3} />
       </View>
       {currentStep === 1 && (
         <ScrollView style={styles.scrollContainer}>
@@ -340,18 +347,17 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   progressBarContainer: {
-    height: 4,
-    position: 'absolute',
     width: '100%',
-    bottom: 0,
-    backgroundColor: '#E0E0E0',
+    height: 4,
+    backgroundColor: '#E4E2DC',
+    borderRadius: 2,
+    overflow: 'hidden',
   },
   progressBar: {
     height: '100%',
     backgroundColor: '#1E5EF4',
   },
   backImage: {
-    marginLeft: 24,
     width: 16,
     height: 28,
   },

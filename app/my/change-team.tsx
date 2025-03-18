@@ -5,6 +5,7 @@ import {Ionicons} from '@expo/vector-icons'
 import {moderateScale, verticalScale} from '@/utils/metrics'
 import useProfile from '@/hooks/my/useProfile'
 import useTeam from '@/hooks/match/useTeam'
+import Header from '@/components/common/Header'
 
 export default function ChangeScreen() {
   const {updateMyTeam, profile} = useProfile()
@@ -19,12 +20,7 @@ export default function ChangeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={router.back}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>마이팀 변경</Text>
-      </View>
+      <Header title="마이팀 변경" variants="transparent" />
 
       <View style={styles.headerDescription}>
         <Text style={styles.headerDescriptionText}>내가 설정한 마이팀을 기준으로{'\n'}데이터가 새로 작성됩니다.</Text>

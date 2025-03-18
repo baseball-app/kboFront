@@ -151,6 +151,8 @@ const styles = StyleSheet.create({
     lineHeight: 25.2,
     fontWeight: '500',
     textAlign: 'center',
+    width: '100%',
+    marginLeft: 6,
   },
   inactiveDay: {
     opacity: 0.5,

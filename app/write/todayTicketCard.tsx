@@ -9,7 +9,7 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
 import Svg, {Path} from 'react-native-svg'
 import useProfile from '@/hooks/my/useProfile'
-
+import Header from '@/components/common/Header'
 export default function GameCard() {
   const router = useRouter()
   const {id, date} = useLocalSearchParams()
@@ -38,21 +38,23 @@ export default function GameCard() {
     ? require('@/assets/icons/heart_fill.png')
     : require('@/assets/icons/heart.png')
 
+  const onBackButtonClick = () => {
+    if (previousRoute.includes('write')) {
+      router.dismiss(2)
+    }
+    router.back()
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerBox}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => {
-            if (previousRoute.includes('write')) {
-              router.dismiss(2)
-            }
-            router.back()
-          }}>
-          <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>오늘의 티켓</Text>
-      </View>
+      <Header
+        title="오늘의 티켓"
+        variants="transparent"
+        leftButton={{
+          onPress: onBackButtonClick,
+          content: <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />,
+        }}
+      />
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
           <View style={styles.iconBox}>
