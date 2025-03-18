@@ -652,13 +652,14 @@ const styles = StyleSheet.create({
   optionsContainer: {
     marginTop: 24,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
-    gap: 12,
+    rowGap: 12,
   },
   optionButton: {
-    width: 166,
     height: 48,
     borderWidth: 1,
+    minWidth: '48%',
     borderColor: '#D0CEC7',
     borderRadius: 10,
     alignItems: 'center',
@@ -667,7 +668,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   placeOptionButton: {
-    width: 166,
+    minWidth: '48%',
     height: 48,
     borderWidth: 1,
     borderColor: '#D0CEC7',

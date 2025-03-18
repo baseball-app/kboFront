@@ -312,6 +312,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 14,
     borderRadius: 10,
+    height: 50,
   },
   nextDisabledButton: {
     backgroundColor: '#E4E2DC',
