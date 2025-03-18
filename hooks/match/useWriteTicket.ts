@@ -3,7 +3,7 @@ import {Match} from './useMatch'
 import {useRouter} from 'expo-router'
 import {format} from 'date-fns'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
-import ApiClient, {uploadFile} from '@/api'
+import {uploadFile} from '@/api'
 
 export type RegisterTicket = {
   starting_pitchers: string
@@ -31,12 +31,12 @@ const useWriteTicket = () => {
   const {mutateAsync: registerTicket} = useMutation({
     mutationFn: (data: FormData) => uploadFile<{id: number}>(`/tickets/ticket_add/`, data),
     onSuccess: data => {
+      queryClient.invalidateQueries({queryKey: ['tickets']})
+
       router.push({
         pathname: '/write/todayTicketCard', //
         params: {id: data.id},
       })
-
-      queryClient.invalidateQueries({queryKey: ['tickets']})
     },
   })
 

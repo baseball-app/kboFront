@@ -53,7 +53,7 @@ const CalendarScreen = () => {
       <FriendList />
       <ScrollView style={styles.scollContainer}>
         <GameContainer />
-        <View style={{marginBottom: 100}}>
+        <View style={{marginBottom: 70}}>
           <Calendar />
         </View>
       </ScrollView>

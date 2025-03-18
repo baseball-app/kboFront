@@ -194,7 +194,6 @@ const DailyLogWriteScreen = () => {
             questionData={weatherResult}
             onQuestionClick={onWeatherClick}
             selectedQuestion={selectedWeather}
-            backgroundColor="#F3F2EE"
           />
         </View>
       )}

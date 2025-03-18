@@ -130,10 +130,10 @@ const TicketPage = () => {
 
     const resizedImage = await ImageResizer.createResizedImage(
       writeData.todayImg?.uri || '', // 원본 이미지
-      500, // 리사이즈할 가로 크기 (필요한 크기로 변경)
-      500, // 리사이즈할 세로 크기
+      800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
+      800, // 리사이즈할 세로 크기
       'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
-      80, // 품질 (0 ~ 100)
+      100, // 품질 (0 ~ 100)
       0, // 회전 (0 = 그대로)
       undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
       false, // 메타데이터 유지 여부
@@ -359,6 +359,7 @@ const TicketPage = () => {
                 onChangeText={value => handleInputChange('todayThoughts', value)}
                 placeholder="오늘의 소감을 기록해주세요"
                 multiline={true}
+                numberOfLines={6}
                 style={{height: 125, textAlign: 'left'}}
               />
             </View>
@@ -556,6 +557,7 @@ const styles = StyleSheet.create({
   footerButtonBox: {
     width: '100%',
     // paddingHorizontal: 24,
+    paddingBottom: 32,
     marginTop: 32,
   },
   footerButton: {

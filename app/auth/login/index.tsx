@@ -25,12 +25,11 @@ export default function LoginScreen() {
   const handleLoginSuccess = async (channel: Channel, code: string) => {
     try {
       const data = await login(channel, code)
-      console.log('data', data)
 
       if (data?.is_new_user) {
         startSignUpProcessWithCode(code)
       } else {
-        router.navigate('/(tabs)')
+        router.replace('/(tabs)')
       }
 
       onCloseWebView()

@@ -126,7 +126,7 @@ export default function GameCard() {
                   {/* 마스킹된 부분에 이미지 표시 */}
                   <Image
                     source={{
-                      uri: 'https://helpx.adobe.com/content/dam/help/en/photoshop/using/quick-actions/remove-background-before-qa1.png',
+                      uri: ticketDetail?.image,
                     }}
                     style={{width: '100%', height: 260}}
                     resizeMode="cover"
@@ -184,14 +184,14 @@ export default function GameCard() {
                 <View style={styles.scoreBox}>
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_our}</Text>
-                    <Text style={[styles.teamText, {backgroundColor: `${hometeam?.color}`}]}>
+                    <Text style={[styles.teamText, {backgroundColor: `${hometeam?.color}4D`}]}>
                       {hometeam?.short_name}
                     </Text>
                   </View>
                   <Image source={require('@/assets/icons/matchDot.png')} resizeMode="contain" style={styles.matchDot} />
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_opponent}</Text>
-                    <Text style={[styles.teamText, {backgroundColor: `${awayteam?.color}`}]}>
+                    <Text style={[styles.teamText, {backgroundColor: `${awayteam?.color}4D`}]}>
                       {awayteam?.short_name}
                     </Text>
                   </View>
@@ -293,7 +293,8 @@ export default function GameCard() {
               backgroundColor: '#1E5EF4',
               borderRadius: 10,
               paddingVertical: 10,
-              marginTop: 32,
+              marginTop: 10,
+              height: 50,
             }}>
             <Text
               style={{
@@ -497,6 +498,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexWrap: 'wrap',
     gap: 8,
+    marginTop: -30,
   },
   emojiButton: {
     flexDirection: 'row',
