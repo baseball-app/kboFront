@@ -8,7 +8,6 @@ type Props = {
   isMyProfile?: boolean
   onClick?: () => void
   choice?: {
-    isChoiceTheOther: boolean
     id: number
   }
 }

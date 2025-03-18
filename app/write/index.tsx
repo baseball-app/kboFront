@@ -286,6 +286,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: 28,
     gap: 20,
+    marginBottom: 40,
   },
   linkBox: {
     flexDirection: 'row',

@@ -30,7 +30,7 @@ export type TicketCalendarLog = {
   }
 }
 
-const Calendar = () => {
+const Calendar = ({isMyDiary}: {isMyDiary: boolean}) => {
   const {currentDate, setCurrentDate, ticketList} = useDiary()
   const queryClient = useQueryClient()
 
@@ -83,22 +83,24 @@ const Calendar = () => {
     const targetDate = format(pDay, 'yyyy-MM-dd')
     const ticketsGroupByDate = ticketList?.[targetDate] || []
 
-    if (ticketsGroupByDate?.length) {
-      // ;['ticket', id]
-      // 해당 날짜 직관일기 prefetch
-
-      prefetchTicket(targetDate).finally(() => {
-        router.push({
-          pathname: '/write/todayTicketCard', //
-          params: {date: targetDate},
+    if (!ticketsGroupByDate?.length) {
+      if (isMyDiary) {
+        // 해당 날짜 경기 일정 prefetch
+        prefetchMatchList(targetDate).finally(() => {
+          router.push({pathname: '/write', params: {date: targetDate}})
         })
-      })
-    } else {
-      // 해당 날짜 경기 일정 prefetch
-      prefetchMatchList(targetDate).finally(() => {
-        router.push({pathname: '/write', params: {date: targetDate}})
-      })
+      }
+
+      return
     }
+
+    // 해당 날짜 직관일기 prefetch
+    prefetchTicket(targetDate).finally(() => {
+      router.push({
+        pathname: '/write/todayTicketCard', //
+        params: {date: targetDate},
+      })
+    })
   }
 
   const renderDaysOfWeek = () => {

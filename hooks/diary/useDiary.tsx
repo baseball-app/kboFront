@@ -56,12 +56,16 @@ const useDiary = () => {
     },
   })
 
+  const isMyDiary = userId === profile.id
+
   return {
     currentDate,
     setCurrentDate,
     setUserId,
     ticketList,
     currentYearMonth,
+    isMyDiary,
+    userId,
   }
 }
 

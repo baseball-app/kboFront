@@ -17,7 +17,7 @@ const CalendarScreen = () => {
 
   const {addFriendList, friendInvitationCodeList} = useMakeFriend()
   const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()})
-  const {ticketList} = useDiary()
+  const {ticketList, isMyDiary, setUserId, userId} = useDiary()
 
   const todayTicketList = ticketList?.[dayjs().format('YYYY-MM-DD')]
 
@@ -50,28 +50,30 @@ const CalendarScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <FriendList />
+      <FriendList setUserId={setUserId} userId={userId} />
       <ScrollView style={styles.scollContainer}>
         <GameContainer />
         <View style={{marginBottom: 70}}>
-          <Calendar />
+          <Calendar isMyDiary={isMyDiary} />
         </View>
       </ScrollView>
 
       {/* Floating Button */}
-      <TouchableOpacity //
-        activeOpacity={0.95}
-        style={styles.floatingButton}
-        onPress={onClickFloatingButton}>
-        <Image
-          source={require('@/assets/icons/write.png')}
-          resizeMode="contain"
-          style={{
-            width: 24,
-            height: 24,
-          }}
-        />
-      </TouchableOpacity>
+      {isMyDiary && (
+        <TouchableOpacity //
+          activeOpacity={0.95}
+          style={styles.floatingButton}
+          onPress={onClickFloatingButton}>
+          <Image
+            source={require('@/assets/icons/write.png')}
+            resizeMode="contain"
+            style={{
+              width: 24,
+              height: 24,
+            }}
+          />
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   )
 }

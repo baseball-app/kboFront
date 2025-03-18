@@ -4,15 +4,11 @@ import {View, Text, StyleSheet, FlatList, Image} from 'react-native'
 import FriendStatusProfile from './FriendStatusProfile'
 import useProfile from '@/hooks/my/useProfile'
 import {useRouter} from 'expo-router'
-import {useDiaryStore} from '@/hooks/diary/useDiary'
 
-const FriendList = () => {
+const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; userId: number | null}) => {
   const {friend_status} = useFriends()
   const {profile} = useProfile()
   const router = useRouter()
-  const {setUserId, userId} = useDiaryStore()
-
-  const isChoiceTheOther = userId !== profile.id
 
   return (
     <View style={styles.container}>
@@ -22,8 +18,7 @@ const FriendList = () => {
           <View style={styles.friendItem}>
             <FriendStatusProfile
               choice={{
-                isChoiceTheOther,
-                id: userId,
+                id: userId || profile.id!,
               }}
               friendStatus={item}
               onClick={() => {

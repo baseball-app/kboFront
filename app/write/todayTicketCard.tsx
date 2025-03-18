@@ -289,11 +289,15 @@ export default function GameCard() {
         </View>
         {Number(data?.length) <= 1 && (
           <TouchableOpacity
+            onPress={() => {
+              router.push({pathname: '/write', params: {date: ticketDetail?.date}})
+            }}
             style={{
               backgroundColor: '#1E5EF4',
               borderRadius: 10,
               paddingVertical: 10,
               marginTop: 10,
+              marginBottom: 32,
               height: 50,
             }}>
             <Text
