@@ -1,5 +1,5 @@
 import {Modal} from 'react-native'
-import WebView from 'react-native-webview'
+import WebView, {WebViewMessageEvent} from 'react-native-webview'
 import {SafeAreaView, StyleSheet} from 'react-native'
 import {useRef} from 'react'
 
@@ -29,6 +29,16 @@ const LoginModal = ({
   url, //
 }: LoginModalProps) => {
   const isAlreadyRequest = useRef(false)
+
+  const handleWebViewMessage = (event: WebViewMessageEvent) => {
+    try {
+      const data = JSON.parse(event.nativeEvent.data)
+      console.log('Apple Login Success:', data)
+      // 로그인 성공 시 처리 로직
+    } catch (error) {
+      console.error('Apple Login Error:', error)
+    }
+  }
 
   return (
     <Modal

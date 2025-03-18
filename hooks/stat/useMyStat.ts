@@ -13,7 +13,7 @@ const useMyStat = () => {
         staleTime: 1000 * 20,
         // 직관승률
         queryFn: () =>
-          ApiClient.get<number>('/tickets/win_site_percent/', {
+          ApiClient.get<number>('/tickets/win_percnet/', {
             ballpark_gbn: true,
           }),
       },
@@ -22,7 +22,7 @@ const useMyStat = () => {
         staleTime: 1000 * 20,
         // 집관승률
         queryFn: () =>
-          ApiClient.get<number>('/tickets/win_site_percent/', {
+          ApiClient.get<number>('/tickets/win_percnet/', {
             ballpark_gbn: false,
           }),
       },
@@ -128,6 +128,8 @@ const useMyStat = () => {
       }
     },
   })
+
+  console.log(data)
 
   return {
     data,

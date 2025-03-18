@@ -20,7 +20,7 @@ export default function MyStatScreen() {
       </View>
       <ScrollView>
         <View style={styles.section}>
-          <MyStat percentage={80} />
+          <MyStat percentage={(data?.winSitePercent + data?.winHomePercent) / 2} />
         </View>
         <View style={styles.row}>
           <StatBox
@@ -85,9 +85,10 @@ const styles = StyleSheet.create({
     marginTop: 28,
   },
   summaryContainer: {
-    gap: 40,
+    gap: 24,
     paddingHorizontal: 24,
-    marginTop: 48,
+    marginTop: 40,
+    marginBottom: 40,
   },
   backImage: {
     width: 16,

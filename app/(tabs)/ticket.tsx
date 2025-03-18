@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   teamLabel: {
     width: 8,
-    height: 88,
+    height: 100,
   },
   parkName: {
     fontSize: 14,

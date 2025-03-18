@@ -1,5 +1,5 @@
-import {useRouter} from 'expo-router'
-import {useState} from 'react'
+import {useLocalSearchParams, useRouter} from 'expo-router'
+import {useEffect, useState} from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -26,6 +26,7 @@ import useProfile from '@/hooks/my/useProfile'
 import useTeam, {Team} from '@/hooks/match/useTeam'
 import SelectBox from '@/components/common/SelectBox'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
+import useTicketDetail from '@/hooks/match/useTicketDetail'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
   matchTeam: Team | null
@@ -57,8 +58,14 @@ const TicketPage = () => {
   const {profile} = useProfile()
   const {findTeamById, teams} = useTeam()
 
+  const {id, date: ticketDate} = useLocalSearchParams()
+
+  const {
+    ticketDetail, //
+  } = useTicketDetail(Number(id) || (ticketDate as string))
+
   const title = (() => {
-    const date = dayjs(writeStore.selectedDate)
+    const date = dayjs(writeStore.selectedDate || (ticketDate as string))
     return `${date.format(`M월 D일 ${DAYS_OF_WEEK[date.day()]}요일`)}`
   })()
 
@@ -87,6 +94,33 @@ const TicketPage = () => {
     todayThoughts: '',
     onlyMeCheck: false,
   })
+
+  useEffect(() => {
+    if (ticketDetail) {
+      const opponentTeamId =
+        Number(ticketDetail.hometeam_id) === profile.my_team?.id ? ticketDetail.awayteam_id : ticketDetail.hometeam_id
+
+      const opponentTeam = findTeamById(Number(opponentTeamId))
+
+      setWriteData({
+        todayScore: {
+          our: String(ticketDetail.score_our),
+          opponent: String(ticketDetail.score_opponent),
+        },
+        todayImg: undefined,
+        matchTeam: {
+          id: Number(opponentTeamId),
+          name: opponentTeam?.name || '',
+          logo_url: opponentTeam?.logo || '',
+        },
+        matchPlace: ticketDetail.gip_place,
+        matchPlayer: ticketDetail.starting_pitchers,
+        todayFood: ticketDetail.food,
+        todayThoughts: ticketDetail.memo,
+        onlyMeCheck: false,
+      })
+    }
+  }, [ticketDetail])
 
   const [tabMenu, setTabMenu] = useState(writeStore.selectedPlace)
   const [teamModalVisible, setTeamModalVisible] = useState(false)

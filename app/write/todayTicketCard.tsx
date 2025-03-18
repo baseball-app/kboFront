@@ -59,7 +59,12 @@ export default function GameCard() {
             <TouchableOpacity onPress={toggleFavorite}>
               <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
-            <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
+            {/* <TouchableOpacity
+              onPress={() => {
+                router.push({pathname: '/write/ticket', params: {id: ticketDetail?.id, date: ticketDetail?.date}})
+              }}>
+              <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
+            </TouchableOpacity> */}
           </View>
         )}
         {Number(data?.length) > 1 ? (
@@ -353,13 +358,13 @@ const styles = StyleSheet.create({
     marginTop: 14,
     paddingHorizontal: 24,
     backgroundColor: '#fffcf3',
-    gap: 24,
   },
   iconBox: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 24,
     width: '100%',
     justifyContent: 'flex-end',
+    marginBottom: 20,
   },
   editIcon: {
     width: 24,
@@ -393,8 +398,9 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   ticketBox: {
-    height: 840,
-    width: 327,
+    // height: 840,
+    width: '100%',
+    aspectRatio: 327 / 840,
     marginHorizontal: 'auto',
   },
   imgViewBox: {
@@ -502,7 +508,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexWrap: 'wrap',
     gap: 8,
-    marginTop: -30,
+    marginBottom: 30,
   },
   emojiButton: {
     flexDirection: 'row',
