@@ -56,7 +56,7 @@ const reactionTypeList: {key: ReactionType; title: string; count: number}[] = [
 ]
 // 😆👏
 
-const useTicketDetail = (id: number | string) => {
+const useTicketDetail = (id: number | string, targetId: number) => {
   const queryClient = useQueryClient()
 
   const isDate = typeof id === 'string'
@@ -78,9 +78,11 @@ const useTicketDetail = (id: number | string) => {
         isDate
           ? {
               date: id,
+              target_id: targetId,
             }
           : {
               id: id,
+              target_id: targetId,
             },
       ),
     enabled: Boolean(id),

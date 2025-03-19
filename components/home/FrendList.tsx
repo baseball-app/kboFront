@@ -25,10 +25,9 @@ const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; u
                 // game id 가 있으면 오늘의 티켓
                 // 없으면 친구의 달력
                 if (item.ticket_info?.id) {
-                  console.log('여기?', item.ticket_info?.id)
                   router.push({
                     pathname: '/write/todayTicketCard', //
-                    params: {id: item.ticket_info?.id},
+                    params: {id: item.ticket_info?.id, target_id: item.id},
                   })
                 } else {
                   setUserId(item.id)

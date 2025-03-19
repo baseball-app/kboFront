@@ -10,6 +10,7 @@ import useMatch from '@/hooks/match/useMatch'
 import dayjs from 'dayjs'
 import {usePopup} from '@/slice/commonSlice'
 import useDiary from '@/hooks/diary/useDiary'
+import useProfile from '@/hooks/my/useProfile'
 
 const CalendarScreen = () => {
   const router = useRouter()
@@ -17,7 +18,15 @@ const CalendarScreen = () => {
 
   const {addFriendList, friendInvitationCodeList} = useMakeFriend()
   const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()})
-  const {ticketList, isMyDiary, setUserId, userId} = useDiary()
+  const {
+    ticketList,
+    isMyDiary,
+    setUserId,
+    userId,
+    setCurrentDate,
+    currentDate, //
+  } = useDiary()
+  const {profile} = useProfile()
 
   const todayTicketList = ticketList?.[dayjs().format('YYYY-MM-DD')]
 
@@ -54,7 +63,13 @@ const CalendarScreen = () => {
       <ScrollView style={styles.scollContainer}>
         <GameContainer />
         <View style={{marginBottom: 70}}>
-          <Calendar isMyDiary={isMyDiary} />
+          <Calendar
+            isMyDiary={isMyDiary}
+            targetId={userId || profile.id!}
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
+            ticketList={ticketList || {}}
+          />
         </View>
       </ScrollView>
 

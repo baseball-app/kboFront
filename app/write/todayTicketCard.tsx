@@ -12,7 +12,7 @@ import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
 export default function GameCard() {
   const router = useRouter()
-  const {id, date} = useLocalSearchParams()
+  const {id, date, target_id} = useLocalSearchParams()
   const {findTeamById} = useTeam()
 
   const navigationState = useRootNavigationState()
@@ -25,7 +25,7 @@ export default function GameCard() {
     data,
     toggleFavorite,
     reactionList,
-  } = useTicketDetail(Number(id) || (date as string))
+  } = useTicketDetail(Number(id) || (date as string), Number(target_id))
 
   const {profile} = useProfile()
 
@@ -376,6 +376,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     gap: 12,
+    marginBottom: 24,
   },
   matchButton: {
     borderWidth: 1,

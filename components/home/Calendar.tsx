@@ -30,8 +30,19 @@ export type TicketCalendarLog = {
   }
 }
 
-const Calendar = ({isMyDiary}: {isMyDiary: boolean}) => {
-  const {currentDate, setCurrentDate, ticketList} = useDiary()
+const Calendar = ({
+  isMyDiary,
+  targetId,
+  currentDate,
+  setCurrentDate,
+  ticketList,
+}: {
+  isMyDiary: boolean
+  targetId: number
+  currentDate: Date
+  setCurrentDate: (date: Date) => void
+  ticketList: Record<string, TicketCalendarLog[]>
+}) => {
   const queryClient = useQueryClient()
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -98,7 +109,7 @@ const Calendar = ({isMyDiary}: {isMyDiary: boolean}) => {
     prefetchTicket(targetDate).finally(() => {
       router.push({
         pathname: '/write/todayTicketCard', //
-        params: {date: targetDate},
+        params: {date: targetDate, target_id: targetId},
       })
     })
   }

@@ -62,7 +62,7 @@ const TicketPage = () => {
 
   const {
     ticketDetail, //
-  } = useTicketDetail(Number(id) || (ticketDate as string))
+  } = useTicketDetail(Number(id) || (ticketDate as string), Number(profile.id))
 
   const title = (() => {
     const date = dayjs(writeStore.selectedDate || (ticketDate as string))

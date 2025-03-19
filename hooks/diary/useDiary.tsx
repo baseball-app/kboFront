@@ -42,7 +42,7 @@ const useDiary = () => {
   }, [])
 
   const currentYearMonth = format(currentDate, 'yyyy-MM')
-
+  console.log(userId)
   const {data: ticketList} = useQuery({
     queryKey: ['tickets', currentYearMonth, userId],
     queryFn: () =>
