@@ -9,7 +9,6 @@ import {
   ScrollView,
   TextInput,
   Modal,
-  Keyboard,
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
@@ -77,6 +76,11 @@ const TicketPage = () => {
     writeStore.selectedMatch?.team_away_info.id === profile.my_team?.id
       ? writeStore.selectedMatch?.team_home_info
       : writeStore.selectedMatch?.team_away_info
+
+  // 마이팀이 포함되어 있는지 여부
+  const isCheer =
+    writeStore.selectedMatch?.team_away_info.id === profile.my_team?.id ||
+    writeStore.selectedMatch?.team_home_info.id === profile.my_team?.id
 
   // 직접입력 여부
   const isDirectWrite = !writeStore.selectedMatch
@@ -181,56 +185,37 @@ const TicketPage = () => {
       name: Platform.OS === 'android' ? writeData.todayImg?.uri : writeData.todayImg?.uri.replace('file://', ''),
     } as any)
 
-    console.log(writeData.todayImg?.uri.replace('file://', ''))
-
     formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
-    console.log('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
     formData.append('game', String(writeStore.selectedMatch?.id || ''))
-    console.log('game', String(writeStore.selectedMatch?.id || '676'))
     formData.append('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
-    console.log('result', writeStore.selectedMatchResult)
     formData.append('weather', writeStore.selectedWeather)
-    console.log('weather', writeStore.selectedWeather)
     formData.append('is_ballpark', JSON.stringify(tabMenu === '직관'))
-    console.log('is_ballpark', JSON.stringify(tabMenu === '직관'))
 
     formData.append('score_our', writeData.todayScore.our)
-    console.log('score_our', writeData.todayScore.our)
     formData.append('score_opponent', writeData.todayScore.opponent)
-    console.log('score_opponent', writeData.todayScore.opponent)
 
     // 선발선수
     formData.append('starting_pitchers', writeData.matchPlayer)
-    console.log('starting_pitchers', writeData.matchPlayer)
 
     // 경기구단
     formData.append('gip_place', ballparkInfo?.name || writeData.matchPlace)
-    console.log('gip_place', ballparkInfo?.name || writeData.matchPlace)
 
     // 직관푸드
     formData.append('food', writeData.todayFood)
-    console.log('food', writeData.todayFood)
 
     // 오늘의 소감
     formData.append('memo', writeData.todayThoughts)
-    console.log('memo', writeData.todayThoughts)
     formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
-    console.log('is_homeballpark', JSON.stringify(tabMenu === '집관'))
 
     //나만보기
     formData.append('only_me', JSON.stringify(writeData.onlyMeCheck))
-    console.log('only_me', JSON.stringify(writeData.onlyMeCheck))
     formData.append('is_double', JSON.stringify(isDirectWrite))
-    console.log('is_double', JSON.stringify(isDirectWrite))
 
     // hometeam_id
     formData.append('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
-    console.log('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
     formData.append('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
-    console.log('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
     formData.append('direct_yn', JSON.stringify(isDirectWrite))
-    console.log('direct_yn', JSON.stringify(isDirectWrite))
-    formData.append('is_cheer', 'false')
+    formData.append('is_cheer', JSON.stringify(isCheer))
 
     registerTicket(formData)
   }

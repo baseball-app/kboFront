@@ -87,8 +87,13 @@ const useNotification = () => {
       onUpdateNotificationStatus({id: notification.ticket, is_read: true})
     }
 
-    // TODO: Ticket 페이지로 이동하기
-    // router.push('/ticket/stat')
+    router.push({
+      pathname: '/write/todayTicketCard',
+      params: {
+        id: notification.ticket,
+        target_id: notification.user_info.id,
+      },
+    })
   }
 
   const fetchNextNotificationPage = () => {
@@ -104,18 +109,3 @@ const useNotification = () => {
 }
 
 export default useNotification
-
-const mockData: Notification[] = Array.from({length: 30}, (_, i) => ({
-  id: i + 1,
-  user: 1,
-  user_info: {
-    id: 1,
-    nickname: 'test',
-    profile_image: 'https://example.com/image.png',
-  },
-  type: i % 2 === 1 ? 'FRIEND_FEEDBACK' : 'FRIEND_UPDATE',
-  is_read: false,
-  created_at: '2025-01-25T12:42:01.067Z',
-  updated_at: '2025-01-25T12:42:01.067Z',
-  ticket: i + 1,
-}))

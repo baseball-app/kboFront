@@ -135,11 +135,6 @@ const DailyLogWriteScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      {/* <View style={styles.stepHeaderBox}>
-        <TouchableOpacity onPress={goToPreviousStep}>
-          <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
-        </TouchableOpacity>
-      </View> */}
       <View style={{position: 'relative'}}>
         <Header
           leftButton={{

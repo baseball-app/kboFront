@@ -8,7 +8,7 @@ import {AUTH_URL} from '@/constants/auth'
 import {appleAuth} from '@invertase/react-native-apple-authentication'
 import {Profile} from '@/hooks/my/useProfile'
 import ApiClient from '@/api'
-
+import {usePopup} from '@/slice/commonSlice'
 type LoginButtonType = {
   name: string
   type: Channel
@@ -17,7 +17,7 @@ type LoginButtonType = {
 
 export default function LoginScreen() {
   const [loginWebViewInfo, setLoginWebViewInfo] = useState<LoginButtonType | null>(null)
-
+  const {openCommonPopup} = usePopup()
   const {startSignUpProcessWithCode} = useUserJoin()
   const {login} = useLogin()
 
@@ -41,6 +41,7 @@ export default function LoginScreen() {
       onCloseWebView()
     } catch (error) {
       onCloseWebView()
+      openCommonPopup('로그인에 실패했어요.\n다시 시도해주세요.')
     }
   }
 
