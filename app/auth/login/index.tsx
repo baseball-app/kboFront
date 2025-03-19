@@ -6,6 +6,8 @@ import {Channel, useLogin} from '@/hooks/auth/useLogin'
 import LoginModal from '../component/LoginModal'
 import {AUTH_URL} from '@/constants/auth'
 import {appleAuth} from '@invertase/react-native-apple-authentication'
+import {Profile} from '@/hooks/my/useProfile'
+import ApiClient from '@/api'
 
 type LoginButtonType = {
   name: string
@@ -25,9 +27,12 @@ export default function LoginScreen() {
 
   const handleLoginSuccess = async (channel: Channel, code: string) => {
     try {
-      const data = await login(channel, code)
+      await login(channel, code)
 
-      if (data?.is_new_user) {
+      const profile = await ApiClient.get<Profile>('/users/me/')
+      const myTeamId = profile?.my_team?.id
+
+      if (!myTeamId) {
         startSignUpProcessWithCode(code)
       } else {
         router.replace('/(tabs)')

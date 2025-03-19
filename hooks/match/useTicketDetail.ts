@@ -60,7 +60,6 @@ const useTicketDetail = (id: number | string) => {
   const queryClient = useQueryClient()
 
   const isDate = typeof id === 'string'
-
   // 1차 2차 선택하는 state
   const [ticketIndex, setTicketIndex] = useState<number>(0)
   const onChangeTicket = (index: number) => {
