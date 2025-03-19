@@ -14,18 +14,22 @@ type Props = {
   rightButton?: ButtonType
   leftButton?: ButtonType
   title?: string
+  topInset?: number
 }
 
-const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButton, title}: Props) => {
+const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButton, title, topInset = 0}: Props) => {
   const router = useRouter()
-  const {top} = useSafeAreaInsets()
 
   const onBackButtonClick = () => {
     router.back()
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: variants === 'white' ? '#fff' : '#FFFCF3', paddingTop: top}]}>
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: variants === 'white' ? '#fff' : '#FFFCF3', paddingTop: topInset + 18},
+      ]}>
       {leftButton ? (
         <TouchableOpacity style={styles.icon} onPress={leftButton.onPress}>
           {leftButton.content}
@@ -58,7 +62,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 24,
-    paddingTop: 18,
   },
   icon: {
     minWidth: 16,
