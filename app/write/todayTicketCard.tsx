@@ -15,6 +15,8 @@ export default function GameCard() {
   const {id, date, target_id} = useLocalSearchParams()
   const {findTeamById} = useTeam()
 
+  console.log(id, date, target_id)
+
   const navigationState = useRootNavigationState()
   const previousRoute = navigationState.routes.at(-1)?.name || ''
 

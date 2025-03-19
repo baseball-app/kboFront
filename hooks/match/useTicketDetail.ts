@@ -71,9 +71,10 @@ const useTicketDetail = (id: number | string, targetId: number) => {
   }
 
   const {data} = useQuery({
-    queryKey: ['ticket', id],
-    queryFn: () =>
-      ApiClient.get<TicketDetail[]>(
+    queryKey: ['ticket', id, targetId],
+    queryFn: () => {
+      console.log(id, targetId)
+      return ApiClient.get<TicketDetail[]>(
         `/tickets/ticket_detail/`,
         isDate
           ? {
@@ -84,9 +85,11 @@ const useTicketDetail = (id: number | string, targetId: number) => {
               id: id,
               target_id: targetId,
             },
-      ),
+      )
+    },
     enabled: Boolean(id),
   })
+  const ticketDetail = data?.[ticketIndex]
 
   // 직관일기 삭제
   const {mutateAsync: deleteTicket} = useMutation({
@@ -96,7 +99,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
 
   // 직관일기 수정
   const {mutateAsync: updateTicket} = useMutation({
-    mutationFn: (data: RegisterTicket) => ApiClient.post(`/tickets/ticket_upd/`, {...data, id}),
+    mutationFn: (data: RegisterTicket) => ApiClient.post(`/tickets/ticket_upd/`, {...data, id: ticketDetail?.id}),
     onSuccess: initializeTicketInfo,
   })
 
@@ -113,18 +116,20 @@ const useTicketDetail = (id: number | string, targetId: number) => {
    */
   const {mutateAsync: updateFavorite} = useMutation({
     mutationFn: ({favorite_status}: {favorite_status: 'clear' | 'excute'}) =>
-      ApiClient.post(`/tickets/ticket_favorite/`, {id, favorite_status}),
+      ApiClient.post(`/tickets/ticket_favorite/`, {id: ticketDetail?.id, favorite_status}),
     onMutate: ({favorite_status}) => {
       const favorite = favorite_status === 'clear' ? false : true
+      console.log(favorite_status, id, targetId)
 
-      queryClient.setQueryData(['ticket', id], (old: TicketDetail[]) =>
+      queryClient.setQueryData(['ticket', id, targetId], (old: TicketDetail[]) =>
         old.map((ticket, index) => (index === ticketIndex ? {...ticket, favorite} : ticket)),
       )
     },
     onError: (error, variables, context) => {
-      const favorite = variables.favorite_status === 'clear' ? false : true
+      console.log('error')
+      const favorite = variables.favorite_status === 'clear' ? true : false
 
-      queryClient.setQueryData(['ticket', id], (old: TicketDetail[]) =>
+      queryClient.setQueryData(['ticket', id, targetId], (old: TicketDetail[]) =>
         old.map((ticket, index) => (index === ticketIndex ? {...ticket, favorite} : ticket)),
       )
     },
@@ -132,11 +137,8 @@ const useTicketDetail = (id: number | string, targetId: number) => {
 
   const toggleFavorite = () => {
     if (!data?.[ticketIndex]) return
-    console.log(data?.[ticketIndex], {favorite_status: data?.[ticketIndex]?.favorite ? 'clear' : 'excute'})
     updateFavorite({favorite_status: data?.[ticketIndex]?.favorite ? 'clear' : 'excute'})
   }
-
-  const ticketDetail = data?.[ticketIndex]
 
   const reactionList = reactionTypeList.map(reaction => {
     return {

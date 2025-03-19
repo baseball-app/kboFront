@@ -42,19 +42,26 @@ const useDiary = () => {
   }, [])
 
   const currentYearMonth = format(currentDate, 'yyyy-MM')
-  console.log(userId)
   const {data: ticketList} = useQuery({
     queryKey: ['tickets', currentYearMonth, userId],
-    queryFn: () =>
-      ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
+    queryFn: () => {
+      console.log({
         date: currentYearMonth,
         user_id: userId || profile?.id,
-      }),
+      })
+
+      return ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
+        date: currentYearMonth,
+        user_id: userId || profile?.id,
+      })
+    },
     enabled: Boolean(currentYearMonth),
     select(data) {
       return groupBy(data, item => item.date)
     },
   })
+
+  console.log(ticketList)
 
   const isMyDiary = userId === profile.id
 
