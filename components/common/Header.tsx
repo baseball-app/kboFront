@@ -1,6 +1,7 @@
 import {useRouter} from 'expo-router'
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 type ButtonType = {
   onPress: () => void
@@ -17,13 +18,14 @@ type Props = {
 
 const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButton, title}: Props) => {
   const router = useRouter()
+  const {top} = useSafeAreaInsets()
 
   const onBackButtonClick = () => {
     router.back()
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: variants === 'white' ? '#fff' : '#FFFCF3'}]}>
+    <View style={[styles.container, {backgroundColor: variants === 'white' ? '#fff' : '#FFFCF3', paddingTop: top}]}>
       {leftButton ? (
         <TouchableOpacity style={styles.icon} onPress={leftButton.onPress}>
           {leftButton.content}
