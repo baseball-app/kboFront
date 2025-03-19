@@ -8,7 +8,12 @@ const CommonModal = () => {
   if (!currentModal) return null
 
   return (
-    <Modal transparent visible={!!currentModal} animationType="fade" onRequestClose={modal.hide}>
+    <Modal //
+      transparent
+      visible={!!currentModal}
+      animationType="fade"
+      onRequestClose={modal.hide}
+      onDismiss={modal.hide}>
       <View style={styles.overlay}>
         <View style={styles.container}>
           <Text style={styles.headerTitle}>{currentModal.header}</Text>

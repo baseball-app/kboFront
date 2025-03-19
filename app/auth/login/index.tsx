@@ -5,6 +5,7 @@ import useUserJoin from '@/hooks/auth/useUserJoin'
 import {Channel, useLogin} from '@/hooks/auth/useLogin'
 import LoginModal from '../component/LoginModal'
 import {AUTH_URL} from '@/constants/auth'
+import {appleAuth} from '@invertase/react-native-apple-authentication'
 
 type LoginButtonType = {
   name: string
@@ -40,13 +41,6 @@ export default function LoginScreen() {
 
   const loginButtonList = [
     {
-      name: 'Apple로 등록하기',
-      type: 'apple',
-      url: AUTH_URL.APPLE,
-      style: {button: styles.appleButton, text: styles.appleButtonText},
-      image: require('@/assets/icons/apple.png'),
-    },
-    {
       name: '카카오로 시작하기',
       type: 'kakao',
       url: AUTH_URL.KAKAO,
@@ -64,6 +58,26 @@ export default function LoginScreen() {
 
   const isAndroid = Platform.OS === 'android'
 
+  async function handleSignInApple() {
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      // Note: it appears putting FULL_NAME first is important, see issue #293
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+    })
+
+    const authCode = appleAuthRequestResponse.authorizationCode
+
+    // get current authentication state for user
+    // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+    const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user)
+
+    // use credentialState response to ensure the user is authenticated
+    if (credentialState === appleAuth.State.AUTHORIZED && authCode) {
+      handleLoginSuccess('apple', authCode)
+      // user is authenticated
+    }
+  }
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -75,20 +89,25 @@ export default function LoginScreen() {
           </View>
 
           <View style={styles.bottomContent}>
-            {loginButtonList
-              .filter(buttonList => !(isAndroid && buttonList.type === 'apple'))
-              .map(loginButton => (
-                <TouchableOpacity
-                  key={loginButton.name}
-                  style={loginButton.style.button}
-                  onPress={() => setLoginWebViewInfo(loginButton)}>
-                  <Image
-                    source={loginButton.image}
-                    style={[styles.loginIcon, loginButton.type === 'apple' && {height: 18, marginBottom: 3}]}
-                  />
-                  <Text style={loginButton.style.text}>{loginButton.name}</Text>
-                </TouchableOpacity>
-              ))}
+            {!isAndroid && (
+              <TouchableOpacity style={styles.appleButton} onPress={handleSignInApple}>
+                <Image
+                  source={require('@/assets/icons/apple.png')}
+                  style={[styles.loginIcon, {height: 18, marginBottom: 3}]}
+                />
+                <Text style={styles.appleButtonText}>Apple로 시작하기</Text>
+              </TouchableOpacity>
+            )}
+
+            {loginButtonList.map(loginButton => (
+              <TouchableOpacity
+                key={loginButton.name}
+                style={loginButton.style.button}
+                onPress={() => setLoginWebViewInfo(loginButton)}>
+                <Image source={loginButton.image} style={[styles.loginIcon]} />
+                <Text style={loginButton.style.text}>{loginButton.name}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
 
