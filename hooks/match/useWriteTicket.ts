@@ -53,6 +53,7 @@ const useWriteTicket = () => {
       params: {
         matchId: match?.id,
         date: format(date, 'yyyy-MM-dd'),
+        step: 2,
       },
     })
   }

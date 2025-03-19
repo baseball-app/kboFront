@@ -69,7 +69,7 @@ const DailyLogWriteScreen = () => {
   const params = useLocalSearchParams()
 
   /** 현재 단계를 나타내는 상태 */
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(Number(params?.step) || 1)
   /** 경기 결과 이미지를 클릭하는 함수 */
   const onMatchResultClick = (pR: string) => {
     setSelectedMatchResult(pR)
