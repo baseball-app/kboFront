@@ -14,8 +14,8 @@ type TicketListByTeam = {
     team_id: number
   }
   favorite: boolean
-  direct_home_team: string
-  direct_away_team: string
+  hometeam_id: string
+  awayteam_id: string
   direct_yn: boolean
 }
 

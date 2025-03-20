@@ -14,7 +14,6 @@ const MyTicketBoxScreen = () => {
   const {profile} = useProfile()
   const {ticketList, onChangeTeam, selectedTeamId} = useTicketListByTeam()
   const {findTeamById, teams} = useTeam()
-
   const myTeam = findTeamById(profile.my_team?.id)
 
   return (
@@ -53,17 +52,18 @@ const MyTicketBoxScreen = () => {
       <View style={styles.likeBoxContainer}>
         {ticketList?.length ? (
           ticketList?.map(ticket => {
-            const opponentTeam = findTeamById(ticket.opponent_id)
+            const homeTeam = findTeamById(Number(ticket.hometeam_id))
+            const awayTeam = findTeamById(Number(ticket.awayteam_id))
 
             return (
               <View key={ticket.id} style={styles.teamCard}>
                 <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 12}}>
-                  <View style={[styles.teamLabel, {backgroundColor: opponentTeam?.color}]} />
+                  <View style={[styles.teamLabel, {backgroundColor: homeTeam?.color}]} />
                   <View style={{gap: 4, paddingVertical: 8}}>
                     <View style={styles.teamInfo}>
-                      <Text style={styles.teamName}>{myTeam?.short_name}</Text>
+                      <Text style={styles.teamName}>{homeTeam?.short_name}</Text>
                       <Text style={styles.teamSub}>{` VS `}</Text>
-                      <Text style={styles.teamName}>{opponentTeam?.short_name}</Text>
+                      <Text style={styles.teamName}>{awayTeam?.short_name}</Text>
                     </View>
                     <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
                     <Text style={styles.date}>{format(ticket.date, 'yyyy.MM.dd')}</Text>

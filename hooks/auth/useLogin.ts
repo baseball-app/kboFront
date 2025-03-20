@@ -24,7 +24,6 @@ export const useLogin = () => {
   const [user, setUser] = useMMKVObject<TUser>(MmkvStoreKeys.USER_LOGIN)
   const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
   const router = useRouter()
-
   const logout = async () => {
     try {
       await ApiClient.post('/auths/token/revoke/', {})
