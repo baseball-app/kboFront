@@ -156,6 +156,7 @@ const useProfile = () => {
     updateMyTeam,
     updateProfile,
     checkIsMe,
+    refetch,
   }
 }
 

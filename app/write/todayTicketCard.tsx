@@ -27,6 +27,7 @@ export default function GameCard() {
     data,
     toggleFavorite,
     reactionList,
+    toggleReaction,
   } = useTicketDetail(Number(id) || (date as string), Number(target_id))
 
   const {profile} = useProfile()
@@ -289,8 +290,11 @@ export default function GameCard() {
           </ImageBackground>
         </View>
         <View style={styles.emojiBox}>
-          {reactionList.map((reaction, index) => (
-            <TouchableOpacity key={index} style={styles.emojiButton}>
+          {reactionList.map(reaction => (
+            <TouchableOpacity
+              key={reaction.key}
+              style={[styles.emojiButton, reaction.isPressed && {borderColor: '#1E5EF4'}]}
+              onPress={() => toggleReaction(reaction.key)}>
               <Text>{reaction.title}</Text>
               <Text>{reaction.count}</Text>
             </TouchableOpacity>
@@ -521,7 +525,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#95938B',
     borderRadius: 40,
-    paddingHorizontal: 12.5,
+    paddingHorizontal: 8,
     paddingVertical: 4,
   },
   thoughtsBox: {
