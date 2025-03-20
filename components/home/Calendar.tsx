@@ -12,6 +12,7 @@ import {useQueryClient} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {TicketDetail} from '@/hooks/match/useTicketDetail'
 import {Match} from '@/hooks/match/useMatch'
+import WheelPicker from '../WheelPicker'
 
 export type TicketCalendarLog = {
   id: number // 5
@@ -47,7 +48,7 @@ const Calendar = ({
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth())
+  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
   const router = useRouter()
 
@@ -167,7 +168,7 @@ const Calendar = ({
   }
 
   const handleMonthYearChange = () => {
-    const newDate = new Date(selectedYear, selectedMonth, 1)
+    const newDate = new Date(`${selectedYear}-${selectedMonth}-01`)
     setCurrentDate(newDate)
     setIsModalVisible(false)
   }
@@ -183,28 +184,20 @@ const Calendar = ({
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
             <View style={styles.datePickerContainer}>
-              <Picker
-                selectedValue={selectedYear}
-                onValueChange={itemValue => setSelectedYear(itemValue)}
-                style={styles.picker}
-                itemStyle={styles.pickerItem}>
-                {Array.from({length: 10}, (_, i) => (
-                  <Picker.Item key={i} label={`${2020 + i}년`} value={2020 + i} />
-                ))}
-              </Picker>
-              <Picker
-                selectedValue={selectedMonth}
-                onValueChange={itemValue => setSelectedMonth(itemValue)}
-                style={styles.picker}
-                itemStyle={styles.pickerItem}>
-                {Array.from({length: 12}, (_, i) => (
-                  <Picker.Item //
-                    key={i}
-                    label={format(new Date(0, i), 'LLLL', {locale: ko})}
-                    value={i}
-                  />
-                ))}
-              </Picker>
+              <WheelPicker
+                items={Array.from({length: 10}, (_, i) => `${2020 + i}년`)}
+                itemHeight={42}
+                initValue={`${selectedYear}년`}
+                onItemChange={item => setSelectedYear(Number(item.replaceAll(/\D/g, '')))}
+                containerStyle={{width: '49%'}}
+              />
+              <WheelPicker
+                items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
+                itemHeight={42}
+                initValue={`${selectedMonth}월`}
+                onItemChange={item => setSelectedMonth(Number(item.replaceAll(/\D/g, '')))}
+                containerStyle={{width: '49%'}}
+              />
             </View>
             <View style={styles.buttonBox}>
               <TouchableOpacity style={styles.cancelButton} onPress={() => setIsModalVisible(false)}>
@@ -331,13 +324,13 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 16,
     fontWeight: '700',
-    marginBottom: 28,
+    marginBottom: 16,
   },
   buttonBox: {
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 13,
-    marginTop: 40,
+    marginTop: 30,
     marginBottom: 16,
   },
   confirmButton: {
