@@ -2,13 +2,14 @@ import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react
 import Calendar from '@/components/home/Calendar'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
-import {useRouter} from 'expo-router'
+import {usePathname, useRouter} from 'expo-router'
 import GameContainer from '@/components/game/GameContainer'
 import useMatch from '@/hooks/match/useMatch'
 import dayjs from 'dayjs'
 import {usePopup} from '@/slice/commonSlice'
 import useDiary from '@/hooks/diary/useDiary'
 import useProfile from '@/hooks/my/useProfile'
+import {useEffect} from 'react'
 
 const CalendarScreen = () => {
   const router = useRouter()
@@ -24,6 +25,17 @@ const CalendarScreen = () => {
     currentDate, //
   } = useDiary()
   const {profile} = useProfile()
+
+  const pathname = usePathname()
+
+  // 페이지 이동 시, 초기화
+  useEffect(() => {
+    const tabPathList = ['/', '/alarm', '/match', '/my', '/ticket']
+
+    if (profile.id && tabPathList.includes(pathname)) {
+      setUserId(profile.id)
+    }
+  }, [pathname, profile.id])
 
   const todayTicketList = ticketList?.[dayjs().format('YYYY-MM-DD')]
 
