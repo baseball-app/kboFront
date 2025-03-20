@@ -27,9 +27,14 @@ export default function LoginScreen() {
 
   const handleLoginSuccess = async (channel: Channel, code: string) => {
     try {
-      await login(channel, code)
+      if (channel === 'apple') {
+        openCommonPopup(`${code}`)
+        return
+      }
+      const data = await login(channel, code)
 
       const profile = await ApiClient.get<Profile>('/users/me/')
+
       const myTeamId = profile?.my_team?.id
 
       if (!myTeamId) {
@@ -41,7 +46,7 @@ export default function LoginScreen() {
       onCloseWebView()
     } catch (error) {
       onCloseWebView()
-      openCommonPopup('로그인에 실패했어요.\n다시 시도해주세요.')
+      openCommonPopup(`로그인에 실패했어요.\n다시 시도해주세요.`)
     }
   }
 

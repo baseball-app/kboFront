@@ -4,6 +4,8 @@ import useMakeFriend from '@/hooks/my/useMakeFriend'
 import {useLogin} from '@/hooks/auth/useLogin'
 import {useRouter} from 'expo-router'
 import {useEffect} from 'react'
+import ApiClient from '@/api'
+import {Profile} from '@/hooks/my/useProfile'
 
 export default function Index() {
   const {refreshAccessToken} = useLogin()
@@ -12,7 +14,12 @@ export default function Index() {
   const checkIsLogined = async () => {
     try {
       await refreshAccessToken()
-      router.replace('/(tabs)')
+      const profile = await ApiClient.get<Profile>('/users/me/')
+      if (profile?.my_team?.id) {
+        router.replace('/(tabs)')
+      } else {
+        router.replace('/auth/login')
+      }
     } catch (error) {
       console.log('error', error)
       router.replace('/auth/login')

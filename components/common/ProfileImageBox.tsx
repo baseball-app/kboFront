@@ -26,6 +26,5 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 46.44,
     height: 50.58,
-    backgroundColor: '#F5F5F5', // Light background color
   },
 })
