@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {Ionicons} from '@expo/vector-icons'
-import {router, Stack} from 'expo-router'
 import {horizontalScale, moderateScale, verticalScale} from '@/utils/metrics'
 import {theme} from '@/constants/Colors'
 import {useLocalSearchParams} from 'expo-router'

@@ -12,6 +12,7 @@ import CommonModal from '@/components/common/CommonModal'
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import {Text} from 'react-native'
+import DeepLinkProvider from '@/components/provider/DeepLinkProvider'
 
 enableScreens(false)
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -40,16 +41,18 @@ export default function RootLayout() {
 
   return (
     <QueryProvider>
-      <Stack>
-        <Stack.Screen name="auth" options={{headerShown: false}} />
-        <Stack.Screen name="(tabs)" options={{headerShown: false}} />
-        <Stack.Screen name="my" options={{headerShown: false}} />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name="index" options={{headerShown: false}} />
-        <Stack.Screen name="write" options={{headerShown: false}} />
-        <Stack.Screen name="ticket" options={{headerShown: false}} />
-      </Stack>
-      <CommonModal />
+      <DeepLinkProvider>
+        <Stack>
+          <Stack.Screen name="auth" options={{headerShown: false}} />
+          <Stack.Screen name="(tabs)" options={{headerShown: false}} />
+          <Stack.Screen name="my" options={{headerShown: false}} />
+          <Stack.Screen name="+not-found" />
+          <Stack.Screen name="index" options={{headerShown: false}} />
+          <Stack.Screen name="write" options={{headerShown: false}} />
+          <Stack.Screen name="ticket" options={{headerShown: false}} />
+        </Stack>
+        <CommonModal />
+      </DeepLinkProvider>
     </QueryProvider>
   )
 }
