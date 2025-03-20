@@ -12,7 +12,7 @@ import useFriends from './useFriends'
  * 3. 친구 추가 완료 시, 친구 추가 플로우 완료 후 저장해둔 코드 삭제
  */
 const useMakeFriend = () => {
-  const {profile, checkIsMe} = useProfile()
+  const {profile, checkIsMe, refetch: refetchProfile} = useProfile()
   const {checkIsFriend, reloadFriendList} = useFriends()
   const [friendInvitationCodeList, setFriendInvitationCodeList] = useMMKVObject<string[]>(
     MmkvStoreKeys.FRIEND_INVITATION_CODE,
@@ -62,7 +62,10 @@ const useMakeFriend = () => {
     onError: error => {
       console.error('친구 추가 실패', error)
     },
-    onSuccess: () => reloadFriendList(),
+    onSuccess: () => {
+      reloadFriendList()
+      refetchProfile()
+    },
   })
 
   const addFriendList = async () => {

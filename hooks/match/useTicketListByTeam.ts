@@ -45,7 +45,7 @@ const useTicketListByTeam = () => {
         '/tickets/ticket_list/',
         teamId === 999
           ? {
-              cheer: true,
+              is_cheer: true,
             }
           : teamId
           ? {

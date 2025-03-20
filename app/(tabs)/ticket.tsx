@@ -77,6 +77,7 @@ const MyTicketBoxScreen = () => {
                         pathname: '/write/todayTicketCard',
                         params: {
                           id: ticket.id,
+                          target_id: profile.id,
                         },
                       })
                     }

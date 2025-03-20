@@ -71,7 +71,7 @@ const FollowerScreen = () => {
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* Header */}
       <View style={styles.header}>
-        <Header title="" variants="transparent" />
+        <Header title="" variants="white" />
         <View style={styles.tabContainer}>
           <TouchableOpacity
             style={activeTab === 'followers' ? styles.ActiveTab : styles.NonActiveTab}
