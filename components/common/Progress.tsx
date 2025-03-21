@@ -45,12 +45,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 4,
     backgroundColor: '#E4E2DC',
-    borderRadius: 2,
     overflow: 'hidden',
   },
   progressBar: {
     height: '100%',
     backgroundColor: '#1E5EF4',
-    borderRadius: 2,
+    borderTopRightRadius: 2,
+    borderBottomRightRadius: 2,
   },
 })
