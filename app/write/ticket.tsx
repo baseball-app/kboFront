@@ -172,8 +172,8 @@ const TicketPage = () => {
 
     const resizedImage = await ImageResizer.createResizedImage(
       writeData.todayImg?.uri || '', // 원본 이미지
-      1200, // 리사이즈할 가로 크기 (필요한 크기로 변경)
-      1200, // 리사이즈할 세로 크기
+      800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
+      800, // 리사이즈할 세로 크기
       'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
       100, // 품질 (0 ~ 100)
       0, // 회전 (0 = 그대로)
