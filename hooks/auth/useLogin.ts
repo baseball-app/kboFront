@@ -3,7 +3,7 @@ import {useMMKVObject} from 'react-native-mmkv'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import ApiClient from '@/api'
 import {useRouter} from 'expo-router'
-
+import {useQueryClient} from '@tanstack/react-query'
 export type TUser = {
   accessToken: string
   refreshToken: string
@@ -24,6 +24,8 @@ export const useLogin = () => {
   const [user, setUser] = useMMKVObject<TUser>(MmkvStoreKeys.USER_LOGIN)
   const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
   const router = useRouter()
+  const queryClient = useQueryClient()
+
   const logout = async () => {
     try {
       await ApiClient.post('/auths/token/revoke/', {})
@@ -32,6 +34,7 @@ export const useLogin = () => {
     } finally {
       setUser(undefined)
       // api 호출 /auths/token/revoke/
+      queryClient.clear()
       router.dismissAll()
       router.navigate('/auth/login')
     }

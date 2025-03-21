@@ -10,12 +10,11 @@ import MaskedView from '@react-native-masked-view/masked-view'
 import Svg, {Path} from 'react-native-svg'
 import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
+
 export default function GameCard() {
   const router = useRouter()
-  const {id, date, target_id} = useLocalSearchParams()
+  const {id, date, target_id, from_ticket_box} = useLocalSearchParams()
   const {findTeamById} = useTeam()
-
-  console.log(id, date, target_id)
 
   const navigationState = useRootNavigationState()
   const previousRoute = navigationState.routes.at(-1)?.name || ''
@@ -300,30 +299,35 @@ export default function GameCard() {
             </TouchableOpacity>
           ))}
         </View>
-        {Number(data?.length) <= 1 && isMyTicket && (
-          <TouchableOpacity
-            onPress={() => {
-              router.push({pathname: '/write', params: {date: ticketDetail?.date}})
-            }}
-            style={{
-              backgroundColor: '#1E5EF4',
-              borderRadius: 10,
-              paddingVertical: 10,
-              marginTop: 10,
-              marginBottom: 32,
-              height: 50,
-            }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: 600,
-                color: '#fff',
-                lineHeight: 22.4,
-                margin: 'auto',
-              }}>
-              더블헤더 티켓 추가하기
-            </Text>
-          </TouchableOpacity>
+
+        {from_ticket_box ? null : (
+          <>
+            {Number(data?.length) <= 1 && isMyTicket && (
+              <TouchableOpacity
+                onPress={() => {
+                  router.push({pathname: '/write', params: {date: ticketDetail?.date}})
+                }}
+                style={{
+                  backgroundColor: '#1E5EF4',
+                  borderRadius: 10,
+                  paddingVertical: 10,
+                  marginTop: 10,
+                  marginBottom: 32,
+                  height: 50,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 600,
+                    color: '#fff',
+                    lineHeight: 22.4,
+                    margin: 'auto',
+                  }}>
+                  더블헤더 티켓 추가하기
+                </Text>
+              </TouchableOpacity>
+            )}
+          </>
         )}
       </ScrollView>
     </SafeAreaView>

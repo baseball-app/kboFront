@@ -78,6 +78,7 @@ const MyTicketBoxScreen = () => {
                         params: {
                           id: ticket.id,
                           target_id: profile.id,
+                          from_ticket_box: 'true',
                         },
                       })
                     }
