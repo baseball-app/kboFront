@@ -63,14 +63,14 @@ const useMyInfo = () => {
           text: '취소',
           onPress: modal.hide,
           buttonStyle: {
-            paddingVertical: verticalScale(12),
+            paddingVertical: 12,
             borderRadius: 8,
             backgroundColor: '#EEEEEE',
             flex: 1,
           },
           buttonTextStyle: {
             color: '#000000',
-            fontSize: moderateScale(16),
+            fontSize: 16,
             fontWeight: '600',
             textAlign: 'center',
           },
@@ -84,12 +84,12 @@ const useMyInfo = () => {
           buttonStyle: {
             backgroundColor: '#1E5EF4',
             flex: 1,
-            paddingVertical: verticalScale(12),
+            paddingVertical: 12,
             borderRadius: 8,
           },
           buttonTextStyle: {
             color: 'white',
-            fontSize: moderateScale(16),
+            fontSize: 16,
             fontWeight: '600',
             textAlign: 'center',
           },
@@ -107,14 +107,14 @@ const useMyInfo = () => {
           text: '취소',
           onPress: modal.hide,
           buttonStyle: {
-            paddingVertical: verticalScale(12),
+            paddingVertical: 12,
             borderRadius: 8,
             backgroundColor: '#EEEEEE',
             flex: 1,
           },
           buttonTextStyle: {
             color: '#000000',
-            fontSize: moderateScale(16),
+            fontSize: 16,
             fontWeight: '600',
             textAlign: 'center',
           },
@@ -125,12 +125,12 @@ const useMyInfo = () => {
           buttonStyle: {
             backgroundColor: '#1E5EF4',
             flex: 1,
-            paddingVertical: verticalScale(12),
+            paddingVertical: 12,
             borderRadius: 8,
           },
           buttonTextStyle: {
             color: 'white',
-            fontSize: moderateScale(16),
+            fontSize: 16,
             fontWeight: '600',
             textAlign: 'center',
           },

@@ -9,7 +9,7 @@ import useProfile from '@/hooks/my/useProfile'
 import {useLocalSearchParams, useRouter} from 'expo-router'
 import React, {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 
 /** 경기 결과 목업데이터 */
 const matchResult = [
@@ -64,6 +64,7 @@ const DailyLogWriteScreen = () => {
     selectedPlace,
     setSelectedPlace,
   } = useWriteTicket()
+  const insets = useSafeAreaInsets()
 
   const router = useRouter()
   const params = useLocalSearchParams()
@@ -233,7 +234,7 @@ const DailyLogWriteScreen = () => {
           </TouchableOpacity>
         </View>
       )}
-      <View style={styles.buttonBox}>
+      <View style={[styles.buttonBox, {paddingBottom: 16 + insets.bottom}]}>
         <TouchableOpacity
           activeOpacity={1}
           style={nextButtonEnabled ? styles.nextButton : styles.nextDisabledButton}
@@ -359,8 +360,6 @@ const styles = StyleSheet.create({
   buttonBox: {
     width: '100%',
     paddingHorizontal: 24,
-    paddingVertical: 24,
-    paddingBottom: 32,
     backgroundColor: '#fffcf3',
   },
   selectButton: {

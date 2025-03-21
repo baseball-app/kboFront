@@ -30,7 +30,7 @@ export default function MyTeamScreen() {
               key={team.id}
               style={[styles.teamButton, myTeam?.id === team.id && styles.selectedTeam]}
               onPress={() => setMyTeam(team)}>
-              <Image source={team.logo} style={styles.teamLogo} resizeMode="contain" />
+              <Image source={team.logo} style={styles.teamLogo} />
               <Text style={styles.teamName}>{team.name}</Text>
             </TouchableOpacity>
           ))}
@@ -60,7 +60,10 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   content: {
+    flex: 1,
     paddingHorizontal: 24,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,
@@ -79,32 +82,36 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    gap: 16,
   },
   teamButton: {
     width: '30%',
-    aspectRatio: 1,
+    aspectRatio: 99 / 90,
+    paddingTop: 16,
+    paddingBottom: 10,
     backgroundColor: '#F0F0F0',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 16,
     borderWidth: 2,
     borderColor: '#F0F0F0',
   },
   selectedTeam: {
-    backgroundColor: '#E0E0E0',
+    backgroundColor: 'white',
     borderWidth: 2,
     borderColor: '#000',
   },
   teamLogo: {
-    width: '40%',
-    height: '40%',
+    width: '60%',
+    height: '60%',
     resizeMode: 'contain',
   },
   teamName: {
-    fontSize: 12,
+    fontSize: 16,
+    fontWeight: 500,
     textAlign: 'center',
-    marginTop: 4,
+    marginTop: 8,
+    lineHeight: 16 * 1.4,
   },
   footer: {
     padding: 20,

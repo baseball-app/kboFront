@@ -12,7 +12,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
 import React from 'react'
@@ -57,6 +57,7 @@ const TicketPage = () => {
   const {moveToWriteTicket, registerTicket, isPending, ...writeStore} = useWriteTicket()
   const {profile} = useProfile()
   const {findTeamById, teams} = useTeam()
+  const insets = useSafeAreaInsets()
 
   const {id, date: ticketDate} = useLocalSearchParams()
 
@@ -422,7 +423,7 @@ const TicketPage = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <View style={styles.footerButtonBox}>
+      <View style={[styles.footerButtonBox, {paddingBottom: 16}]}>
         <TouchableOpacity style={[styles.footerButton, styles.activeButton]} onPress={onSubmit}>
           {isPending ? (
             <LottieView
@@ -620,8 +621,6 @@ const styles = StyleSheet.create({
   },
   footerButtonBox: {
     width: '100%',
-    // paddingHorizontal: 24,
-    paddingBottom: 32,
     marginTop: 32,
   },
   footerButton: {
