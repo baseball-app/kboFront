@@ -49,6 +49,10 @@ const useMakeFriend = () => {
         return targetCode
       }
     },
+    onSuccess: () => {
+      reloadFriendList()
+      refetchProfile()
+    },
     onError: error => {
       console.error('친구 추가 실패', error)
     },
