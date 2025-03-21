@@ -27,7 +27,10 @@ const GameInfoCard = () => {
         <View style={styles.gameInfoBox}>
           <View style={styles.titleSection}>
             <Text style={styles.date}>{title}</Text>
-            <Text style={styles.location}>{` ・ ${gameContext?.todayMyTeamMatch?.ballpark_info.name}`}</Text>
+            <Text style={styles.location}>{` ・ ${gameContext?.todayMyTeamMatch?.ballpark_info.name.slice(
+              0,
+              2,
+            )}`}</Text>
           </View>
           <View style={styles.matchTeamBox}>
             <View style={styles.matchTeamInfo}>
@@ -47,8 +50,8 @@ const GameInfoCard = () => {
               <Image source={away_info?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
             </View>
             <View style={styles.teamNameBox}>
-              <Text style={styles.teamText}>{gameContext?.todayMyTeamMatch?.team_home_info.name}</Text>
-              <Text style={styles.teamText}>{gameContext?.todayMyTeamMatch?.team_away_info.name}</Text>
+              <Text style={styles.teamText}>{home_info?.short_name}</Text>
+              <Text style={styles.teamText}>{away_info?.short_name}</Text>
             </View>
           </View>
         </View>
@@ -100,13 +103,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     fontSize: 14,
+    lineHeight: 14 * 1.4,
   },
   location: {
     color: '#77756C',
     fontWeight: '400',
+    fontSize: 14,
+    lineHeight: 14 * 1.4,
   },
   date: {
     color: '#171716',
+    fontSize: 14,
+    lineHeight: 14 * 1.4,
+    fontWeight: '500',
   },
   noGameInfoBox: {
     backgroundColor: '#fff',
