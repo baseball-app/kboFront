@@ -3,7 +3,7 @@ import useTeam from '@/hooks/match/useTeam'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {format} from 'date-fns'
 import {useLocalSearchParams, useRootNavigationState, useRouter} from 'expo-router'
-import React from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, ImageBackground} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
@@ -47,6 +47,22 @@ export default function GameCard() {
     router.back()
   }
 
+  const dotRef = useRef<View>(null)
+
+  const [halfWidth, setHalfWidth] = useState(0)
+
+  const getRefWidth = () => {
+    if (dotRef.current) {
+      dotRef.current.measure((x, y, width, height, pageX, pageY) => {
+        if (width) {
+          halfWidth !== width / 2 && setHalfWidth(width / 2)
+        }
+      })
+    }
+  }
+
+  getRefWidth()
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -86,24 +102,22 @@ export default function GameCard() {
           </View>
         ) : null}
         <View style={styles.ticketBox}>
-          <ImageBackground
-            source={require('@/assets/images/Subtract.png')}
-            style={styles.ticketBackground}
-            imageStyle={styles.backgroundImage}>
+          {Array.from({length: 10}).map((_, index) => (
+            <View
+              ref={dotRef}
+              key={index}
+              style={[styles.ticketBoxDot, {top: halfWidth * -1, left: `${4.76 + index * 4.76 * 2}%`}]}
+            />
+          ))}
+          {Array.from({length: 10}).map((_, index) => (
+            <View
+              key={index}
+              style={[styles.ticketBoxDot, {bottom: halfWidth * -1, left: `${4.76 + index * 4.76 * 2}%`}]}
+            />
+          ))}
+          <View style={styles.ticketBackground}>
             <View style={[styles.ticketContent]}>
               <View style={{position: 'relative', width: '100%'}}>
-                <Image
-                  //
-                  source={require('@/assets/icons/star.png')}
-                  style={{width: 14, height: 14, position: 'absolute', top: 0, left: 0}}
-                  resizeMode="cover"
-                />
-                <Image
-                  //
-                  source={require('@/assets/icons/star.png')}
-                  style={{width: 14, height: 14, position: 'absolute', top: 0, right: 0}}
-                  resizeMode="cover"
-                />
                 <MaskedView
                   style={{
                     aspectRatio: 307 / 220,
@@ -227,18 +241,6 @@ export default function GameCard() {
                 </View>
               </View>
               <View style={{position: 'relative', width: '100%'}}>
-                <Image
-                  //
-                  source={require('@/assets/icons/star.png')}
-                  style={{width: 14, height: 14, position: 'absolute', bottom: 0, left: 0}}
-                  resizeMode="cover"
-                />
-                <Image
-                  //
-                  source={require('@/assets/icons/star.png')}
-                  style={{width: 14, height: 14, position: 'absolute', bottom: 0, right: 0}}
-                  resizeMode="cover"
-                />
                 <MaskedView
                   style={{aspectRatio: 307 / 220}}
                   maskElement={
@@ -268,25 +270,41 @@ export default function GameCard() {
                   {/* 마스크로 보여질 영역 */}
                   <View style={{width: '100%', height: '100%', backgroundColor: 'white', padding: 10}}>
                     <View style={styles.thoughtsBox}>
-                      {ticketDetail?.only_me && (
-                        <View style={styles.onlyMeButtonBox}>
-                          <Image
-                            source={require('@/assets/icons/lock.png')}
-                            style={styles.lockButton}
-                            resizeMode="contain"
-                          />
-                          <Text style={styles.onlyMeText}>나만보기</Text>
-                        </View>
-                      )}
-                      <View style={styles.thoughtsTextBox}>
-                        <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
-                      </View>
+                      {(() => {
+                        if (!ticketDetail?.only_me) {
+                          return (
+                            <View style={styles.thoughtsTextBox}>
+                              <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
+                            </View>
+                          )
+                        }
+
+                        if (ticketDetail?.only_me && profile.id === ticketDetail.writer) {
+                          return (
+                            <>
+                              <View style={styles.onlyMeButtonBox}>
+                                <Image
+                                  source={require('@/assets/icons/lock.png')}
+                                  style={styles.lockButton}
+                                  resizeMode="contain"
+                                />
+                                <Text style={styles.onlyMeText}>나만보기</Text>
+                              </View>
+                              <View style={styles.thoughtsTextBox}>
+                                <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
+                              </View>
+                            </>
+                          )
+                        }
+
+                        return null
+                      })()}
                     </View>
                   </View>
                 </MaskedView>
               </View>
             </View>
-          </ImageBackground>
+          </View>
         </View>
         <View style={styles.emojiBox}>
           {reactionList.map(reaction => (
@@ -411,10 +429,18 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   ticketBox: {
-    // height: 840,
     width: '100%',
-    aspectRatio: 327 / 840,
     marginHorizontal: 'auto',
+    backgroundColor: '#202020',
+    position: 'relative',
+    marginBottom: 32,
+  },
+  ticketBoxDot: {
+    backgroundColor: '#FFFCF3',
+    width: '5%',
+    aspectRatio: 1,
+    borderRadius: 100,
+    position: 'absolute',
   },
   imgViewBox: {
     width: '100%',
@@ -424,7 +450,6 @@ const styles = StyleSheet.create({
   resultBox: {
     width: '100%',
     flexDirection: 'row',
-    gap: 3,
     backgroundColor: '#202020',
   },
   resultImgBox: {
@@ -449,6 +474,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff',
     flexDirection: 'column',
+    marginVertical: 2,
   },
   scoreBox: {
     width: '100%',
@@ -546,7 +572,7 @@ const styles = StyleSheet.create({
     height: 24,
   },
   thoughtsTextBox: {
-    marginTop: 12,
+    marginTop: 2,
   },
   thoughtsText: {
     color: '#353430',
@@ -556,10 +582,9 @@ const styles = StyleSheet.create({
   },
   ticketBackground: {
     width: '100%',
-    height: '100%',
     justifyContent: 'flex-start',
     flexDirection: 'column',
-    paddingVertical: 16,
+    paddingVertical: 32,
   },
   backgroundImage: {
     resizeMode: 'stretch',
@@ -568,9 +593,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     flexDirection: 'column',
-    gap: 4,
     paddingHorizontal: 10,
-    paddingTop: 20,
   },
   backImage: {
     width: 16,
