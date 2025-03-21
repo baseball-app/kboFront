@@ -300,7 +300,7 @@ export default function GameCard() {
             </TouchableOpacity>
           ))}
         </View>
-        {Number(data?.length) <= 1 && (
+        {Number(data?.length) <= 1 && isMyTicket && (
           <TouchableOpacity
             onPress={() => {
               router.push({pathname: '/write', params: {date: ticketDetail?.date}})
