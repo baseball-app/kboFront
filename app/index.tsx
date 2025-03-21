@@ -1,5 +1,5 @@
 import {useLogin} from '@/hooks/auth/useLogin'
-import {useRouter} from 'expo-router'
+import {SplashScreen, useRouter} from 'expo-router'
 import {useEffect} from 'react'
 import ApiClient from '@/api'
 import {Profile} from '@/hooks/my/useProfile'
@@ -20,6 +20,8 @@ export default function Index() {
     } catch (error) {
       console.log('error', error)
       router.replace('/auth/login')
+    } finally {
+      SplashScreen.hideAsync()
     }
   }
 

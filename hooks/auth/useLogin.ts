@@ -25,7 +25,6 @@ export const useLogin = () => {
   const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
   const router = useRouter()
   const queryClient = useQueryClient()
-  console.log(user)
 
   const logout = async () => {
     try {

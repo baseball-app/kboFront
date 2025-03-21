@@ -33,9 +33,9 @@ export default function RootLayout() {
     if (!pathname.includes('/write')) dailyWriteStore.clearState()
   }, [pathname])
 
-  useEffect(() => {
-    if (loaded) SplashScreen.hideAsync()
-  }, [loaded])
+  // useEffect(() => {
+  //   if (loaded) SplashScreen.hideAsync()
+  // }, [loaded])
 
   if (!loaded) return null
 
