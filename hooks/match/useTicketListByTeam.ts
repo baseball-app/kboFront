@@ -34,7 +34,7 @@ const useTicketListByTeam = () => {
       queryFn: () =>
         ApiClient.get<TicketListByTeam[]>(
           '/tickets/ticket_list/',
-          teamId === 999 ? {cheer: true} : teamId ? {team_id: teamId} : {favorite: true},
+          teamId === 999 ? {is_cheer: false} : teamId ? {team_id: teamId, favorite: false} : {favorite: true},
         ),
     })
   }
@@ -45,7 +45,7 @@ const useTicketListByTeam = () => {
         '/tickets/ticket_list/',
         teamId === 999
           ? {
-              is_cheer: true,
+              is_cheer: false,
             }
           : teamId
           ? {
