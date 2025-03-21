@@ -414,7 +414,12 @@ const TicketPage = () => {
       <View style={styles.footerButtonBox}>
         <TouchableOpacity style={[styles.footerButton, styles.activeButton]} onPress={onSubmit}>
           {isPending ? (
-            <LottieView source={require('@/assets/lottie/loading.json')} autoPlay loop />
+            <LottieView
+              source={require('@/assets/lottie/loading.json')}
+              autoPlay
+              loop
+              style={{width: 100, height: 100}}
+            />
           ) : (
             <Text style={[styles.footerButtonText, styles.activeButtonText]}>오늘의 티켓 발급하기</Text>
           )}
