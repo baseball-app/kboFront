@@ -76,7 +76,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
     queryClient.invalidateQueries({queryKey: ['ticket', id, targetId]})
   }
 
-  const {data} = useQuery({
+  const {data, isSuccess} = useQuery({
     queryKey: ['ticket', id, targetId],
     queryFn: () => {
       return ApiClient.get<TicketDetail[]>(
@@ -188,6 +188,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
     toggleFavorite,
     reactionList,
     toggleReaction,
+    isSuccess,
   }
 }
 

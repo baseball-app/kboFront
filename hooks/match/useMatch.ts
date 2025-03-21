@@ -1,5 +1,4 @@
 import ApiClient from '@/api'
-import {Pagination} from '@/types/generic'
 import {useQuery, useQueryClient} from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import useProfile from '../my/useProfile'
