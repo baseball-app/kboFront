@@ -10,6 +10,7 @@ import {usePopup} from '@/slice/commonSlice'
 import useDiary from '@/hooks/diary/useDiary'
 import useProfile from '@/hooks/my/useProfile'
 import {useEffect} from 'react'
+import useNotification from '@/hooks/notification/useNotification'
 
 const CalendarScreen = () => {
   const router = useRouter()
@@ -25,6 +26,7 @@ const CalendarScreen = () => {
     currentDate, //
   } = useDiary()
   const {profile} = useProfile()
+  const {} = useNotification()
 
   const pathname = usePathname()
 
