@@ -14,7 +14,6 @@ const MyStat = ({percentage}: Props) => {
         width={8}
         fill={percentage} // percentage
         tintColor="#1E5EF4"
-        onAnimationComplete={() => console.log('onAnimationComplete')}
         arcSweepAngle={270}
         backgroundColor="#E4E2DC"
         lineCap="round"

@@ -108,7 +108,6 @@ const Calendar = ({
 
     // 해당 날짜 직관일기 prefetch
     prefetchTicket(targetDate).finally(() => {
-      console.log(targetId)
       router.push({
         pathname: '/write/todayTicketCard', //
         params: {date: targetDate, target_id: targetId},

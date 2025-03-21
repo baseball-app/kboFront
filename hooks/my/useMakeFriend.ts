@@ -80,7 +80,6 @@ const useMakeFriend = () => {
     // 친구 추가 시도
     for (let i = 0; i < friendInvitationCodeList.length; i++) {
       try {
-        console.log('friendInvitationCodeList[i]', friendInvitationCodeList)
         const data = await addFriend(friendInvitationCodeList[i])
         successList.push(data)
       } catch (e) {

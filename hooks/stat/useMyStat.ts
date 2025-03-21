@@ -88,7 +88,6 @@ const useMyStat = () => {
         winRateCalculation,
       ] = result
 
-      console.log(winSitePercent.data, winHomePercent.data)
       const isLoading = result.some(item => item.isLoading)
       const isSuccess = result.every(item => item.isSuccess)
 
@@ -131,8 +130,6 @@ const useMyStat = () => {
       }
     },
   })
-
-  console.log(data)
 
   return {
     data,

@@ -45,8 +45,6 @@ const useProfile = () => {
 
   // 회원가입 시, 초기 데이터 업데이트 하는 함수
   const updateInitialProfile = (joinSlice: IUserJoinSlice) => {
-    console.log('여기가 실행 될까?', joinSlice)
-
     updateProfileCacheData({
       id: joinSlice.id,
       nickname: joinSlice.nickname,
@@ -70,7 +68,6 @@ const useProfile = () => {
       profile_type: Number(joinSlice.profile?.id),
     })
 
-    console.log('여기 실행 안 됨?', joinSlice)
     updateInitialProfile(joinSlice)
   }
 

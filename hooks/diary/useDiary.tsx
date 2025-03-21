@@ -45,11 +45,6 @@ const useDiary = () => {
   const {data: ticketList} = useQuery({
     queryKey: ['tickets', currentYearMonth, userId],
     queryFn: () => {
-      console.log({
-        date: currentYearMonth,
-        user_id: userId || profile?.id,
-      })
-
       return ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
         date: currentYearMonth,
         user_id: userId || profile?.id,
@@ -60,8 +55,6 @@ const useDiary = () => {
       return groupBy(data, item => item.date)
     },
   })
-
-  console.log(ticketList)
 
   const isMyDiary = userId === profile.id
 

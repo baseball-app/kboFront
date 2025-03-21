@@ -100,32 +100,32 @@ const TicketPage = () => {
     onlyMeCheck: false,
   })
 
-  useEffect(() => {
-    if (ticketDetail) {
-      const opponentTeamId =
-        Number(ticketDetail.hometeam_id) === profile.my_team?.id ? ticketDetail.awayteam_id : ticketDetail.hometeam_id
+  // useEffect(() => {
+  //   if (ticketDetail) {
+  //     const opponentTeamId =
+  //       Number(ticketDetail.hometeam_id) === profile.my_team?.id ? ticketDetail.awayteam_id : ticketDetail.hometeam_id
 
-      const opponentTeam = findTeamById(Number(opponentTeamId))
+  //     const opponentTeam = findTeamById(Number(opponentTeamId))
 
-      setWriteData({
-        todayScore: {
-          our: String(ticketDetail.score_our),
-          opponent: String(ticketDetail.score_opponent),
-        },
-        todayImg: undefined,
-        matchTeam: {
-          id: Number(opponentTeamId),
-          name: opponentTeam?.name || '',
-          logo_url: opponentTeam?.logo || '',
-        },
-        matchPlace: ticketDetail.gip_place,
-        matchPlayer: ticketDetail.starting_pitchers,
-        todayFood: ticketDetail.food,
-        todayThoughts: ticketDetail.memo,
-        onlyMeCheck: false,
-      })
-    }
-  }, [ticketDetail])
+  //     setWriteData({
+  //       todayScore: {
+  //         our: String(ticketDetail.score_our),
+  //         opponent: String(ticketDetail.score_opponent),
+  //       },
+  //       todayImg: undefined,
+  //       matchTeam: {
+  //         id: Number(opponentTeamId),
+  //         name: opponentTeam?.name || '',
+  //         logo_url: opponentTeam?.logo || '',
+  //       },
+  //       matchPlace: ticketDetail.gip_place,
+  //       matchPlayer: ticketDetail.starting_pitchers,
+  //       todayFood: ticketDetail.food,
+  //       todayThoughts: ticketDetail.memo,
+  //       onlyMeCheck: false,
+  //     })
+  //   }
+  // }, [ticketDetail])
 
   const [tabMenu, setTabMenu] = useState(writeStore.selectedPlace)
   const [teamModalVisible, setTeamModalVisible] = useState(false)
@@ -171,8 +171,8 @@ const TicketPage = () => {
 
     const resizedImage = await ImageResizer.createResizedImage(
       writeData.todayImg?.uri || '', // 원본 이미지
-      800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
-      800, // 리사이즈할 세로 크기
+      1200, // 리사이즈할 가로 크기 (필요한 크기로 변경)
+      1200, // 리사이즈할 세로 크기
       'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
       100, // 품질 (0 ~ 100)
       0, // 회전 (0 = 그대로)
@@ -209,8 +209,8 @@ const TicketPage = () => {
     console.log('starting_pitchers', writeData.matchPlayer)
 
     // 경기구단
-    formData.append('gip_place', ballparkInfo?.name || writeData.matchPlace)
-    console.log('gip_place', ballparkInfo?.name || writeData.matchPlace)
+    formData.append('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
+    console.log('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
 
     // 직관푸드
     formData.append('food', writeData.todayFood)
@@ -344,19 +344,30 @@ const TicketPage = () => {
                 </>
               ) : null}
 
-              {!isDirectWrite ? (
+              {tabMenu === '집관' ? (
                 <Input
-                  label="오늘의 경기구장"
-                  value={ballparkInfo?.name} //
-                  editable={false}
+                  label="오늘의 집관장소"
+                  value={writeData.matchPlace}
+                  onChangeText={value => handleInputChange('matchPlace', value)}
+                  placeholder="집관 장소를 기록해주세요"
                 />
               ) : (
-                <SelectBox
-                  label={'오늘의 경기구장'}
-                  placeholder={'경기구장을 선택해주세요'}
-                  value={writeData.matchPlace}
-                  onPress={() => setPlaceModalVisible(true)}
-                />
+                <>
+                  {!isDirectWrite ? (
+                    <Input
+                      label="오늘의 경기구장"
+                      value={ballparkInfo?.name} //
+                      editable={false}
+                    />
+                  ) : (
+                    <SelectBox
+                      label={'오늘의 경기구장'}
+                      placeholder={'경기구장을 선택해주세요'}
+                      value={writeData.matchPlace}
+                      onPress={() => setPlaceModalVisible(true)}
+                    />
+                  )}
+                </>
               )}
 
               <Input

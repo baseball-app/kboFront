@@ -128,21 +128,6 @@ const useTicketDetail = (id: number | string, targetId: number) => {
     },
   })
 
-  useEffect(() => {
-    console.log('ticketDetail', {
-      dislike: ticketDetail?.dislike,
-      confused: ticketDetail?.confused,
-      rage: ticketDetail?.rage,
-      laugh: ticketDetail?.laugh,
-      clap: ticketDetail?.clap,
-      good: ticketDetail?.good,
-      petulance: ticketDetail?.petulance,
-      point_up: ticketDetail?.point_up,
-      wink: ticketDetail?.wink,
-    })
-    console.log('my_reaction', my_reaction)
-  }, [ticketDetail, my_reaction])
-
   /**
    * 직관일기 최애경기 선정 및 해제
    * @params favorite_status: clear: 최애경기 해제, excute: 최애경기 선정
@@ -188,8 +173,6 @@ const useTicketDetail = (id: number | string, targetId: number) => {
       return
     }
 
-    //
-    console.log(reaction)
     addReaction({reaction_pos: my_reaction?.[reaction] ? 'del' : 'add', reaction_type: reaction})
   }
 

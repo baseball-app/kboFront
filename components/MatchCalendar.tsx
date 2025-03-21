@@ -92,7 +92,6 @@ const MatchCalendar = ({onChange, value}: Props) => {
         currentDate={currentDate}
         selectedDate={value}
         onChange={date => {
-          console.log('onchange', date)
           setCurrentDate(date)
           onChange(date)
         }}

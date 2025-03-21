@@ -48,7 +48,6 @@ const useMyInfo = () => {
   const withdraw = async () => {
     try {
       await ApiClient.post<InvitationCode>('/users/leave/', {})
-      console.log('성공')
       await logout()
     } catch (error) {
       console.error('회원 탈퇴 오류 :: ', error)
