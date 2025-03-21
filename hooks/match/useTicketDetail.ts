@@ -49,15 +49,15 @@ export type TicketDetail = {
 } & Reaction
 
 const reactionTypeList: {key: ReactionType; title: string; count: number}[] = [
-  {key: 'clap', title: '👏', count: 0},
+  {key: 'laugh', title: '😁', count: 0},
+  {key: 'wink', title: '🤣', count: 0},
+  {key: 'good', title: '🥲', count: 0},
   {key: 'confused', title: '🤔', count: 0},
+  {key: 'rage', title: '🤬', count: 0},
+  {key: 'clap', title: '👏', count: 0},
+  {key: 'petulance', title: '✌️', count: 0},
   {key: 'dislike', title: '👎', count: 0},
-  {key: 'good', title: '�', count: 0},
-  {key: 'laugh', title: '😜', count: 0},
-  {key: 'petulance', title: '🤨', count: 0},
-  {key: 'point_up', title: '👆', count: 0},
-  {key: 'rage', title: '😠', count: 0},
-  {key: 'wink', title: '👀', count: 0},
+  {key: 'point_up', title: '👍', count: 0},
 ]
 
 const useTicketDetail = (id: number | string, targetId: number) => {

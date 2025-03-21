@@ -54,13 +54,14 @@ const useMyStat = () => {
           }>('/tickets/opponent_most_win/'),
       },
       {
-        queryKey: ['myStat', user, 'most_watch_stadium'],
+        queryKey: ['myStat', user, 'ballpark_most_view'],
         staleTime: 1000 * 20,
         // 나의 최다 관람 구장
         // TODO: API 연동 필요
-        queryFn: () => {
-          return '삼성 라이온즈 파크'
-        },
+        queryFn: () =>
+          ApiClient.get<{
+            most_wins_ballpark: string
+          }>('/tickets/ballpark_most_view/'),
       },
       {
         queryKey: ['myStat', user, 'win_rate_calculation'],
@@ -86,6 +87,8 @@ const useMyStat = () => {
         mostWatchStadium,
         winRateCalculation,
       ] = result
+
+      console.log(winSitePercent.data, winHomePercent.data)
       const isLoading = result.some(item => item.isLoading)
       const isSuccess = result.every(item => item.isSuccess)
 
@@ -114,7 +117,7 @@ const useMyStat = () => {
           // 나의 최다 승리 구단
           mostWinTeam: mostWinTeam?.data?.most_wins_opponent ?? '-',
           // 나의 최다 관람 구장
-          mostWatchStadium: mostWatchStadium?.data ?? '-',
+          mostWatchStadium: mostWatchStadium.data?.most_wins_ballpark ?? '-',
           // 티켓 경기 결과
           winRateCalculation: winRateCalculation?.data ?? {
             win_count: 0,

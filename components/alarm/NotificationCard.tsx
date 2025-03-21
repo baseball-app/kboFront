@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flexDirection: 'row',
+    alignItems: 'center',
     fontWeight: '400',
     fontSize: 14,
   },

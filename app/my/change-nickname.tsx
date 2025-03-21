@@ -33,6 +33,7 @@ const ChangeNicknameScreen = () => {
               onChangeText={setNickname}
               placeholder="닉네임 입력"
               placeholderTextColor="#CCCCCC"
+              maxLength={10}
             />
             <View style={[styles.inputUnderline, nickname ? styles.inputUnderlineActive : null]} />
             <Text style={styles.subtitle}>* 한글/영어/숫자/밑줄/띄어쓰기를 사용할 수 있습니다.</Text>

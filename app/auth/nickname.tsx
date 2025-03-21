@@ -34,6 +34,7 @@ export default function NicknameScreen() {
               onChangeText={setNickname}
               placeholder="닉네임 입력"
               placeholderTextColor="#CCCCCC"
+              maxLength={10}
             />
             <View style={[styles.inputUnderline, nickname ? styles.inputUnderlineActive : null]} />
           </View>
