@@ -30,7 +30,7 @@ const useWriteTicket = () => {
   const queryClient = useQueryClient()
   const {profile} = useProfile()
 
-  const {mutateAsync: registerTicket} = useMutation({
+  const {mutateAsync: registerTicket, isPending} = useMutation({
     mutationFn: (data: FormData) => uploadFile<{id: number}>(`/tickets/ticket_add/`, data),
     onSuccess: data => {
       queryClient.invalidateQueries({queryKey: ['tickets']})
@@ -61,6 +61,7 @@ const useWriteTicket = () => {
   return {
     moveToWriteTicket,
     registerTicket,
+    isPending,
     ...writeStore,
   }
 }

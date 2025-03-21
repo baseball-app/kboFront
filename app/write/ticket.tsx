@@ -26,6 +26,7 @@ import useTeam, {Team} from '@/hooks/match/useTeam'
 import SelectBox from '@/components/common/SelectBox'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
+import LottieView from 'lottie-react-native'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
   matchTeam: Team | null
@@ -53,7 +54,7 @@ const placeOption = [
 ]
 
 const TicketPage = () => {
-  const {moveToWriteTicket, registerTicket, ...writeStore} = useWriteTicket()
+  const {moveToWriteTicket, registerTicket, isPending, ...writeStore} = useWriteTicket()
   const {profile} = useProfile()
   const {findTeamById, teams} = useTeam()
 
@@ -164,6 +165,8 @@ const TicketPage = () => {
   }
 
   const onSubmit = async () => {
+    if (isPending) return
+
     const formData = new FormData()
 
     const resizedImage = await ImageResizer.createResizedImage(
@@ -410,7 +413,11 @@ const TicketPage = () => {
 
       <View style={styles.footerButtonBox}>
         <TouchableOpacity style={[styles.footerButton, styles.activeButton]} onPress={onSubmit}>
-          <Text style={[styles.footerButtonText, styles.activeButtonText]}>오늘의 티켓 발급하기</Text>
+          {isPending ? (
+            <LottieView source={require('@/assets/lottie/loading.json')} autoPlay loop />
+          ) : (
+            <Text style={[styles.footerButtonText, styles.activeButtonText]}>오늘의 티켓 발급하기</Text>
+          )}
         </TouchableOpacity>
       </View>
       <Modal animationType="slide" transparent={true} visible={teamModalVisible}>

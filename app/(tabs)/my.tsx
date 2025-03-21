@@ -1,5 +1,5 @@
-import React from 'react'
-import {View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView, Modal, Clipboard} from 'react-native'
+import React, {useRef, useState} from 'react'
+import {View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView, TextInput} from 'react-native'
 import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
 import {theme} from '@/constants/Colors'
 import {router} from 'expo-router'
@@ -7,11 +7,15 @@ import {useLogin} from '@/hooks/auth/useLogin'
 import useMyInfo from '@/hooks/my/useMyInfo'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
 import useTeam from '@/hooks/match/useTeam'
+import useMakeFriend from '@/hooks/my/useMakeFriend'
 
 const ProfileScreen = () => {
   const {logout} = useLogin()
   const {profile, onPasteInviteCode, withdrawUser} = useMyInfo()
   const {} = useTeam()
+
+  const [inviteCode, setInviteCode] = useState('')
+  const {addFriend} = useMakeFriend()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -80,6 +84,21 @@ const ProfileScreen = () => {
         </View>
       </View>
 
+      <View style={styles.inviteCodeInputBox}>
+        <TextInput
+          placeholder="초대코드를 입력해주세요"
+          style={styles.inviteCodeInput}
+          value={inviteCode}
+          onChangeText={setInviteCode}
+        />
+        <TouchableOpacity
+          style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: '#E4E2DC'}]} //
+          disabled={!inviteCode}
+          onPress={() => addFriend(inviteCode)}>
+          <Text style={[styles.inviteCodeInputButtonText, !inviteCode && {color: '#77756C'}]}>확인</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.menuContainer}>
         <TouchableOpacity style={styles.menuItem} onPress={logout}>
           <Text style={styles.menuText}>로그아웃</Text>
@@ -105,34 +124,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  profileImageBox: {
-    backgroundColor: '#F3F2EE',
-    width: 80,
-    height: 80,
-    borderRadius: 50,
-    marginRight: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#D0CEC7',
-  },
-  profileImage: {
-    width: 46.44,
-    height: 50.58,
-    backgroundColor: '#F5F5F5', // Light background color
-  },
   profileInfo: {
-    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   profileInfoBox: {
-    // paddingTop: 6,
-    // paddingBottom: 7,
-
     gap: 10,
-    // flex:1,
     justifyContent: 'center',
 
     flexDirection: 'column',
@@ -168,6 +165,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.borderColor,
     margin: 20,
+    marginBottom: 14,
     padding: 15,
     borderRadius: 10,
     // width: 327,
@@ -201,7 +199,7 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 20,
+    marginHorizontal: 20,
     gap: 12,
   },
   statItem: {
@@ -233,10 +231,9 @@ const styles = StyleSheet.create({
   menuContainer: {
     flex: 1,
     flexDirection: 'column',
-    // justifyContent: 'space-between',
     backgroundColor: 'white',
     padding: 15,
-    marginVertical: 1,
+    marginTop: 20,
   },
   menuItem: {
     flexDirection: 'row',
@@ -259,6 +256,37 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  inviteCodeInputBox: {
+    marginHorizontal: 20,
+    marginTop: 14,
+    backgroundColor: '#F3F2EE',
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    paddingLeft: 16,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#D0CEC7',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  inviteCodeInput: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#171716',
+    maxWidth: '60%',
+  },
+  inviteCodeInputButton: {
+    backgroundColor: '#1E5EF4',
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 4,
+  },
+  inviteCodeInputButtonText: {
+    fontSize: 14,
+    lineHeight: 14 * 1.4,
+    color: '#FFFFFF',
   },
 })
 

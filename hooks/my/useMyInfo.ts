@@ -23,11 +23,12 @@ const useMyInfo = () => {
     enabled: Boolean(isLogined),
   })
 
+  // TODO: copy인데 잘못씀
   const pasteInviteCode = async () => {
     if (!invitation) throw new Error('초대코드가 없습니다.')
-    const url = process.env.EXPO_PUBLIC_INVITATION_URL
+    // const url = process.env.EXPO_PUBLIC_INVITATION_URL
 
-    Clipboard.setString(`${url}?code=${invitation?.code}`)
+    Clipboard.setString(invitation?.code)
   }
 
   const openSuccessPasteInvitationCodeModal = () => {

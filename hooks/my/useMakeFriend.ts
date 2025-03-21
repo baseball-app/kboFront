@@ -43,6 +43,7 @@ const useMakeFriend = () => {
           source_id: Number(profile.id),
           target_id: Number(user_id),
         })
+
         return targetCode
       } catch (error) {
         return targetCode
