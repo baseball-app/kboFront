@@ -64,13 +64,13 @@ const Calendar = ({
   }
 
   const prefetchTicket = async (date: string) => {
-    const queryKey = ['ticket', date]
+    const queryKey = ['ticket', date, targetId]
 
     if (queryClient.getQueryData<TicketDetail[]>(queryKey)) return
 
     return queryClient.prefetchQuery({
       queryKey,
-      queryFn: () => ApiClient.get<TicketDetail[]>(`/tickets/ticket_detail/`, {date}),
+      queryFn: () => ApiClient.get<TicketDetail[]>(`/tickets/ticket_detail/`, {date, target_id: targetId}),
     })
   }
 
