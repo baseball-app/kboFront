@@ -14,9 +14,9 @@ const ProfileScreen = () => {
   const {profile, onPasteInviteCode, withdrawUser} = useMyInfo()
   const {} = useTeam()
 
-  const [inviteCode, setInviteCode] = useState('')
+  const [inviteCode, setInviteCode] = useState<string | undefined>(undefined)
   const {addFriend} = useMakeFriend()
-
+  const inputRef = useRef<TextInput>(null)
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileHeader}>
@@ -58,30 +58,36 @@ const ProfileScreen = () => {
       </View>
 
       <View style={styles.statsContainer}>
-        <View style={[styles.statItem, styles.statBox]}>
-          <Text style={styles.statLabel}>팔로워</Text>
-          <TouchableOpacity
-            onPress={() => {
-              router.push('/my/followers')
-            }}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={[styles.statItem, styles.statBox]}
+          onPress={() => {
+            router.push('/my/followers')
+          }}>
+          <View style={{gap: 10}}>
+            <Text style={styles.statLabel}>팔로워</Text>
             <Text style={styles.statValue}>{profile?.followers}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.statItem, styles.statBox]}>
-          <Text style={styles.statLabel}>팔로잉</Text>
-          <TouchableOpacity
-            onPress={() => {
-              router.push('/my/followings')
-            }}>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={[styles.statItem, styles.statBox]}
+          onPress={() => {
+            router.push('/my/followings')
+          }}>
+          <View style={{gap: 10}}>
+            <Text style={styles.statLabel}>팔로잉</Text>
             <Text style={styles.statValue}>{profile?.followings}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.statItem, styles.statBox]}>
-          <Text style={styles.statLabel}>초대코드</Text>
-          <TouchableOpacity onPress={onPasteInviteCode}>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity activeOpacity={0.9} style={[styles.statItem, styles.statBox]} onPress={onPasteInviteCode}>
+          <View style={{gap: 10}}>
+            <Text style={styles.statLabel}>초대코드</Text>
             <Image source={require('../../assets/icons/invitation.png')} style={styles.inviteCodeIcon} />
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.inviteCodeInputBox}>
@@ -90,11 +96,19 @@ const ProfileScreen = () => {
           style={styles.inviteCodeInput}
           value={inviteCode}
           onChangeText={setInviteCode}
+          placeholderTextColor="#95938B"
+          ref={inputRef}
         />
         <TouchableOpacity
           style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: '#E4E2DC'}]} //
           disabled={!inviteCode}
-          onPress={() => addFriend(inviteCode)}>
+          onPress={() =>
+            inviteCode &&
+            addFriend(inviteCode).finally(() => {
+              setInviteCode(undefined)
+              inputRef.current?.blur()
+            })
+          }>
           <Text style={[styles.inviteCodeInputButtonText, !inviteCode && {color: '#77756C'}]}>확인</Text>
         </TouchableOpacity>
       </View>
@@ -209,13 +223,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 15,
     borderRadius: 10,
-    gap: 10,
     width: '100%',
     borderWidth: 1,
     borderColor: theme.colors.borderColor,
   },
   statValue: {
-    fontSize: 18,
+    fontSize: 22,
+    lineHeight: 22 * 1.4,
     fontWeight: 'bold',
     marginBottom: 4,
   },

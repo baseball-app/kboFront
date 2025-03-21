@@ -1,6 +1,5 @@
 import ApiClient from '@/api'
 import {usePopup} from '@/slice/commonSlice'
-import {moderateScale, verticalScale} from '@/utils/metrics'
 import {useQuery} from '@tanstack/react-query'
 import {useLogin} from '@/hooks/auth/useLogin'
 import Clipboard from '@react-native-clipboard/clipboard'
@@ -63,16 +62,12 @@ const useMyInfo = () => {
           text: '취소',
           onPress: modal.hide,
           buttonStyle: {
-            paddingVertical: 12,
-            borderRadius: 8,
+            borderRadius: 10,
             backgroundColor: '#EEEEEE',
             flex: 1,
           },
           buttonTextStyle: {
             color: '#000000',
-            fontSize: 16,
-            fontWeight: '600',
-            textAlign: 'center',
           },
         },
         {
@@ -83,56 +78,10 @@ const useMyInfo = () => {
           },
           buttonStyle: {
             backgroundColor: '#1E5EF4',
-            flex: 1,
-            paddingVertical: 12,
-            borderRadius: 8,
+            borderRadius: 10,
           },
           buttonTextStyle: {
             color: 'white',
-            fontSize: 16,
-            fontWeight: '600',
-            textAlign: 'center',
-          },
-        },
-      ],
-    })
-  }
-
-  const updateMyTeam = async (teamId: number) => {
-    modal.open({
-      header: '안내',
-      content: `마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n변경하시겠습니까?`,
-      button: [
-        {
-          text: '취소',
-          onPress: modal.hide,
-          buttonStyle: {
-            paddingVertical: 12,
-            borderRadius: 8,
-            backgroundColor: '#EEEEEE',
-            flex: 1,
-          },
-          buttonTextStyle: {
-            color: '#000000',
-            fontSize: 16,
-            fontWeight: '600',
-            textAlign: 'center',
-          },
-        },
-        {
-          text: '팀 변경',
-          onPress: modal.hide,
-          buttonStyle: {
-            backgroundColor: '#1E5EF4',
-            flex: 1,
-            paddingVertical: 12,
-            borderRadius: 8,
-          },
-          buttonTextStyle: {
-            color: 'white',
-            fontSize: 16,
-            fontWeight: '600',
-            textAlign: 'center',
           },
         },
       ],
@@ -143,7 +92,6 @@ const useMyInfo = () => {
     profile,
     onPasteInviteCode,
     withdrawUser,
-    updateMyTeam,
   }
 }
 

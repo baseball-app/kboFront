@@ -7,7 +7,6 @@ import {PROFILE_IMAGES} from '@/constants/join'
 import {useEffect} from 'react'
 import {IUserJoinSlice} from '@/slice/userJoinSlice'
 import {useCommonSlice} from '@/slice/commonSlice'
-import {moderateScale, verticalScale} from '@/utils/metrics'
 import {useRouter} from 'expo-router'
 import useTeam from '../match/useTeam'
 
@@ -90,16 +89,11 @@ const useProfile = () => {
           text: '취소',
           onPress: modal.hide,
           buttonStyle: {
-            paddingVertical: verticalScale(12),
-            borderRadius: 8,
+            borderRadius: 10,
             backgroundColor: '#EEEEEE',
-            flex: 1,
           },
           buttonTextStyle: {
             color: '#000000',
-            fontSize: moderateScale(16),
-            fontWeight: '600',
-            textAlign: 'center',
           },
         },
         {
@@ -116,15 +110,10 @@ const useProfile = () => {
           },
           buttonStyle: {
             backgroundColor: '#1E5EF4',
-            flex: 1,
-            paddingVertical: verticalScale(12),
-            borderRadius: 8,
+            borderRadius: 10,
           },
           buttonTextStyle: {
             color: 'white',
-            fontSize: moderateScale(16),
-            fontWeight: '600',
-            textAlign: 'center',
           },
         },
       ],

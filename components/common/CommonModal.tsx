@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '80%',
-    maxWidth: 320,
+    maxWidth: 330,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   headerTitle: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '600',
     lineHeight: 16.71,
   },
