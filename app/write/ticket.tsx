@@ -251,7 +251,9 @@ const TicketPage = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
-    })
+      aspect: [307, 220],
+      selectionLimit: 1,
+    } as ImagePicker.ImagePickerOptions)
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
       setWriteData(prevData => ({
@@ -259,10 +261,10 @@ const TicketPage = () => {
         todayImg: result.assets[0],
       }))
     } else if (result.canceled) {
-      setWriteData(prevData => ({
-        ...prevData,
-        todayImg: undefined,
-      }))
+      // setWriteData(prevData => ({
+      //   ...prevData,
+      //   todayImg: undefined,
+      // }))
     }
   }
 
