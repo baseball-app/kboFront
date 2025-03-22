@@ -4,6 +4,8 @@ import useProfile from './useProfile'
 import {useMMKVObject} from 'react-native-mmkv'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import useFriends from './useFriends'
+import Toast from 'react-native-toast-message'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 /**
  * 친구 추가 플로우
@@ -17,6 +19,19 @@ const useMakeFriend = () => {
   const [friendInvitationCodeList, setFriendInvitationCodeList] = useMMKVObject<string[]>(
     MmkvStoreKeys.FRIEND_INVITATION_CODE,
   )
+
+  const insets = useSafeAreaInsets()
+
+  const showToast = (text: string) => {
+    Toast.show({
+      type: 'info',
+      text1: text,
+      visibilityTime: 2000,
+      autoHide: true,
+      position: 'bottom',
+      bottomOffset: insets.bottom + 92,
+    })
+  }
 
   const temporarySaveFriendInvitationCode = (code: string) => {
     // 이미 친구 추가 플로우 완료한 사용자일 경우 저장하지 않음
@@ -36,6 +51,7 @@ const useMakeFriend = () => {
 
         // 이미 친구라면 진행하지 않음
         if (checkIsFriend(Number(user_id)) || checkIsMe(Number(user_id))) {
+          showToast('이미 추가된 친구입니다')
           return targetCode
         }
 
@@ -44,8 +60,11 @@ const useMakeFriend = () => {
           target_id: Number(user_id),
         })
 
+        showToast('친구가 추가 되었습니다')
+
         return targetCode
       } catch (error) {
+        showToast('코드가 잘못 입력되었습니다')
         return targetCode
       }
     },

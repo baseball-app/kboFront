@@ -10,9 +10,20 @@ import {enableScreens} from 'react-native-screens'
 import QueryProvider from '@/components/provider/QueryProvider'
 import CommonModal from '@/components/common/CommonModal'
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
-import {GestureHandlerRootView} from 'react-native-gesture-handler'
-import {Text} from 'react-native'
+import {Text, View} from 'react-native'
 import DeepLinkProvider from '@/components/provider/DeepLinkProvider'
+import Toast, {ToastConfig} from 'react-native-toast-message'
+
+/*
+  1. Create the config
+*/
+const toastConfig: ToastConfig = {
+  info: ({text1}) => (
+    <View style={{paddingVertical: 8, paddingHorizontal: 16, backgroundColor: '#353430', borderRadius: 999}}>
+      <Text style={{color: '#fff', fontSize: 15}}>{text1}</Text>
+    </View>
+  ),
+}
 
 enableScreens(false)
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -52,6 +63,7 @@ export default function RootLayout() {
           <Stack.Screen name="ticket" options={{headerShown: false}} />
         </Stack>
         <CommonModal />
+        <Toast config={toastConfig} />
       </DeepLinkProvider>
     </QueryProvider>
   )

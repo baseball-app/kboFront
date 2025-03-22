@@ -58,21 +58,23 @@ const MatchScreen = () => {
           />
         )}
         ListFooterComponent={
-          <View style={styles.doubleHeaderBox}>
-            <TouchableOpacity
-              onPress={() =>
-                router.push({
-                  pathname: '/write',
-                  params: {
-                    date: dayjs(selectedDate).format('YYYY-MM-DD'),
-                    step: 2,
-                  },
-                })
-              }
-              style={styles.doubleHeaderButton}>
-              <Text style={styles.doubleHeaderText}>더블헤더 작성하기</Text>
-            </TouchableOpacity>
-          </View>
+          matchingList.length > 0 ? (
+            <View style={styles.doubleHeaderBox}>
+              <TouchableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: '/write',
+                    params: {
+                      date: dayjs(selectedDate).format('YYYY-MM-DD'),
+                      step: 2,
+                    },
+                  })
+                }
+                style={styles.doubleHeaderButton}>
+                <Text style={styles.doubleHeaderText}>더블헤더 작성하기</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null
         }
         keyExtractor={item => `${item.id}`}
       />

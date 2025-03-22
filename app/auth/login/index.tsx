@@ -27,10 +27,6 @@ export default function LoginScreen() {
 
   const handleLoginSuccess = async (channel: Channel, code: string) => {
     try {
-      if (channel === 'apple') {
-        openCommonPopup(`${code}`)
-        return
-      }
       const data = await login(channel, code)
 
       const profile = await ApiClient.get<Profile>('/users/me/')
@@ -78,15 +74,15 @@ export default function LoginScreen() {
 
     const authCode = appleAuthRequestResponse.authorizationCode
 
+    handleLoginSuccess('apple', authCode!)
     // get current authentication state for user
     // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-    const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user)
+    // const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user)
 
     // use credentialState response to ensure the user is authenticated
-    if (credentialState === appleAuth.State.AUTHORIZED && authCode) {
-      handleLoginSuccess('apple', authCode)
-      // user is authenticated
-    }
+    // if (credentialState === appleAuth.State.AUTHORIZED && authCode) {
+    // user is authenticated
+    // }
   }
 
   return (

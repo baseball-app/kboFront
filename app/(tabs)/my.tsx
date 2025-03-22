@@ -100,7 +100,7 @@ const ProfileScreen = () => {
           ref={inputRef}
         />
         <TouchableOpacity
-          style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: '#E4E2DC'}]} //
+          style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: '#D0CEC7'}]} //
           disabled={!inviteCode}
           onPress={() =>
             inviteCode &&
@@ -293,8 +293,8 @@ const styles = StyleSheet.create({
   },
   inviteCodeInputButton: {
     backgroundColor: '#1E5EF4',
-    paddingVertical: 4,
-    paddingHorizontal: 12,
+    paddingVertical: 5,
+    paddingHorizontal: 14,
     borderRadius: 4,
   },
   inviteCodeInputButtonText: {
