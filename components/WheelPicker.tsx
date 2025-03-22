@@ -64,7 +64,8 @@ const WheelPicker: React.FC<Props> = ({items, onItemChange, itemHeight, initValu
 
   const onMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y
-    const index = Math.floor(y / itemHeight)
+    const index = Math.round(y / itemHeight)
+
     if (index !== selectedIndex) {
       setSelectedIndex(index)
     }

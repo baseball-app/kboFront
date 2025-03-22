@@ -3,7 +3,9 @@ import {PropsWithChildren} from 'react'
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {},
+    queries: {
+      retry: 1,
+    },
   },
 })
 

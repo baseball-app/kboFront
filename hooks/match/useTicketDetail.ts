@@ -93,6 +93,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
       )
     },
     enabled: Boolean(id) && Boolean(targetId),
+    retry: false,
   })
   const ticketDetail = data?.[ticketIndex]
 

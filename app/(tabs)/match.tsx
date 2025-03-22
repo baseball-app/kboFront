@@ -24,15 +24,19 @@ const MatchScreen = () => {
   const {profile} = useProfile()
   const {data, isSuccess} = useTicketDetail(dayjs(selectedDate).format('YYYY-MM-DD'), Number(profile?.id))
 
+  console.log(dayjs(selectedDate).format('YYYY-MM-DD'), Number(profile?.id))
+
   const onClickMatch = (match: Match) => {
     if (isSuccess && Number(data?.length) > 1) {
       openCommonPopup('오늘의 야구 티켓은 최대 2번까지만\n작성하실 수 있어요!')
       return
     }
 
-    prefetchMatchList(format(selectedDate, 'yyyy-MM-dd')).finally(() => {
-      return moveToWriteTicket(selectedDate, match)
-    })
+    moveToWriteTicket(selectedDate, match)
+
+    // prefetchMatchList(format(selectedDate, 'yyyy-MM-dd')).finally(() => {
+    //   return
+    // })
   }
 
   return (
