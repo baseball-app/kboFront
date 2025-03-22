@@ -326,7 +326,29 @@ const TicketPage = () => {
                 )}
               </TouchableOpacity>
 
-              {isCheer ? (
+              {(() => {
+                if (isDirectWrite) {
+                  return (
+                    <SelectBox
+                      label={'오늘의 상대구단'}
+                      placeholder={'상대구단을 선택해주세요'}
+                      value={writeData.matchTeam?.name}
+                      onPress={() => setTeamModalVisible(true)}
+                    />
+                  )
+                }
+
+                if (!isCheer) return null
+                return (
+                  <Input
+                    label="오늘의 상대구단"
+                    value={opponentTeam?.name} //
+                    editable={false}
+                  />
+                )
+              })()}
+
+              {/* {isCheer ? (
                 <>
                   {!isDirectWrite ? (
                     <Input
@@ -343,7 +365,7 @@ const TicketPage = () => {
                     />
                   )}
                 </>
-              ) : null}
+              ) : null} */}
 
               {tabMenu === '집관' ? (
                 <Input
