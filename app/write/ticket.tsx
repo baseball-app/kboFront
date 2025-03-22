@@ -594,7 +594,7 @@ const styles = StyleSheet.create({
   },
   imageUploadBox: {
     width: '100%',
-    height: 220,
+    aspectRatio: 307 / 220,
     backgroundColor: '#F3F2EE',
     borderRadius: 10,
     alignItems: 'center',
