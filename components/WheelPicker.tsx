@@ -5,6 +5,7 @@ import {
   ListRenderItemInfo,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Platform,
   TouchableOpacity,
   View,
   ViewStyle,
@@ -44,19 +45,19 @@ const WheelPicker: React.FC<Props> = ({items, onItemChange, itemHeight, initValu
     const inputRange = [(index - 2) * itemHeight, (index - 1) * itemHeight, index * itemHeight]
     const scale = scrollY.interpolate({
       inputRange,
-      outputRange: [0.8, isTrigger ? 1 : 0.8, 0.8],
+      outputRange: [0.8, Platform.OS === 'ios' || isTrigger ? 1 : 0.8, 0.8],
       extrapolate: 'clamp',
     })
 
     const opacity = scrollY.interpolate({
       inputRange,
-      outputRange: [0.8, isTrigger ? 1 : 0.8, 0.8],
+      outputRange: [0.8, Platform.OS === 'ios' || isTrigger ? 1 : 0.8, 0.8],
       extrapolate: 'clamp',
     })
 
     const color = scrollY.interpolate({
       inputRange,
-      outputRange: ['#95938B', isTrigger ? '#171716' : '#95938B', '#95938B'],
+      outputRange: ['#95938B', Platform.OS === 'ios' || isTrigger ? '#171716' : '#95938B', '#95938B'],
       extrapolate: 'clamp',
     })
 
