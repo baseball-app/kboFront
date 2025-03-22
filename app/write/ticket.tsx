@@ -27,6 +27,17 @@ import SelectBox from '@/components/common/SelectBox'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import LottieView from 'lottie-react-native'
+
+import * as FileSystem from 'expo-file-system'
+import {useLogin} from '@/hooks/auth/useLogin'
+import Toast from 'react-native-toast-message'
+const getBase64 = async (uri: string) => {
+  const base64 = await FileSystem.readAsStringAsync(uri, {
+    encoding: FileSystem.EncodingType.Base64,
+  })
+  return base64
+}
+
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
   matchTeam: Team | null
@@ -54,16 +65,14 @@ const placeOption = [
 ]
 
 const TicketPage = () => {
-  const {registerTicket, isPending, ...writeStore} = useWriteTicket()
+  const {registerTicket, initializeTicket, ...writeStore} = useWriteTicket()
   const {profile} = useProfile()
+  const {user} = useLogin()
+  const [isPending, setIsPending] = useState(false)
+
   const {findTeamById, teams} = useTeam()
-  const insets = useSafeAreaInsets()
 
-  const {id, date: ticketDate} = useLocalSearchParams()
-
-  const {
-    ticketDetail, //
-  } = useTicketDetail(Number(id) || (ticketDate as string), Number(profile.id))
+  const {date: ticketDate} = useLocalSearchParams()
 
   const title = (() => {
     const date = dayjs(writeStore.selectedDate || (ticketDate as string))
@@ -138,10 +147,10 @@ const TicketPage = () => {
     setPlaceModalVisible(false)
   }
 
+  const insets = useSafeAreaInsets()
+
   const onSubmit = async () => {
     if (isPending) return
-
-    const formData = new FormData()
 
     const resizedImage = await ImageResizer.createResizedImage(
       writeData.todayImg?.uri || '', // 원본 이미지
@@ -154,65 +163,124 @@ const TicketPage = () => {
       false, // 메타데이터 유지 여부
     )
 
-    console.log('📏 리사이징된 이미지:', resizedImage.uri)
+    setIsPending(true)
 
-    formData.append('image', {
-      uri: resizedImage.uri, // 리사이징된 이미지 URI 사용
-      type: writeData.todayImg?.type, // 원본 이미지의 MIME 타입 유지
-      name: Platform.OS === 'android' ? writeData.todayImg?.uri : writeData.todayImg?.uri.replace('file://', ''),
-    } as any)
+    await FileSystem.uploadAsync(`${process.env.EXPO_PUBLIC_API_URL}/tickets/ticket_add/`, resizedImage.uri, {
+      fieldName: 'image',
+      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+      parameters: {
+        date: dayjs(writeStore.selectedDate).format('YYYY-MM-DD'),
+        game: String(writeStore.selectedMatch?.id || ''),
+        result: writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult,
+        weather: writeStore.selectedWeather,
+        is_ballpark: JSON.stringify(tabMenu === '직관'),
+        score_our: writeData.todayScore.our,
+        score_opponent: writeData.todayScore.opponent,
+        starting_pitchers: writeData.matchPlayer,
+        gip_place: tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace,
+        food: writeData.todayFood,
+        memo: writeData.todayThoughts,
+        is_homeballpark: JSON.stringify(tabMenu === '집관'),
+        only_me: JSON.stringify(writeData.onlyMeCheck),
+        is_double: JSON.stringify(isDirectWrite),
+        hometeam_id: String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id),
+        awayteam_id: String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id),
+        direct_yn: JSON.stringify(isDirectWrite),
+        is_cheer: JSON.stringify(isCheer),
+      },
+      headers: {
+        'X-KBOAPP-TOKEN': user?.accessToken || '',
+      },
+    })
+      .then((res: any) => {
+        try {
+          console.log('res', res.body)
+          console.log('res', typeof res.body)
+          console.log('res', JSON.parse(res.body).id)
+          initializeTicket(JSON.parse(res.body).id)
+        } catch (error) {
+          Toast.show({
+            type: 'info',
+            text1: '티켓 발급에 실패했어요',
+            visibilityTime: 2000,
+            autoHide: true,
+            position: 'bottom',
+            bottomOffset: insets.bottom + 92,
+          })
+        }
+        // console.log('res')
+      })
+      .catch(err => {
+        console.log('err', err)
+      })
+      .finally(() => {
+        setIsPending(false)
+      })
 
-    formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
-    console.log('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
-    formData.append('game', String(writeStore.selectedMatch?.id || ''))
-    console.log('game', String(writeStore.selectedMatch?.id || ''))
-    formData.append('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
-    console.log('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
-    formData.append('weather', writeStore.selectedWeather)
-    console.log('weather', writeStore.selectedWeather)
-    formData.append('is_ballpark', JSON.stringify(tabMenu === '직관'))
-    console.log('is_ballpark', JSON.stringify(tabMenu === '직관'))
+    // console.log('📏 리사이징된 이미지:', resizedImage.uri)
 
-    formData.append('score_our', writeData.todayScore.our)
-    console.log('score_our', writeData.todayScore.our)
-    formData.append('score_opponent', writeData.todayScore.opponent)
-    console.log('score_opponent', writeData.todayScore.opponent)
+    // // formData.append('image', writeData.todayImg as any)
 
-    // 선발선수
-    formData.append('starting_pitchers', writeData.matchPlayer)
-    console.log('starting_pitchers', writeData.matchPlayer)
+    // formData.append('image', {
+    //   uri: resizedImage.uri, // 리사이징된 이미지 URI 사용
+    //   type: writeData.todayImg?.type, // 원본 이미지의 MIME 타입 유지
+    //   name: 'image.png',
+    // } as any)
 
-    // 경기구단
-    formData.append('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
-    console.log('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
+    // // const base64 = await getBase64(resizedImage.uri)
+    // // formData.append('image', `data:image/png;base64,${base64}`)
 
-    // 직관푸드
-    formData.append('food', writeData.todayFood)
-    console.log('food', writeData.todayFood)
+    // formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
+    // console.log('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
+    // formData.append('game', String(writeStore.selectedMatch?.id || ''))
+    // console.log('game', String(writeStore.selectedMatch?.id || ''))
+    // formData.append('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
+    // console.log('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
+    // formData.append('weather', writeStore.selectedWeather)
+    // console.log('weather', writeStore.selectedWeather)
+    // formData.append('is_ballpark', JSON.stringify(tabMenu === '직관'))
+    // console.log('is_ballpark', JSON.stringify(tabMenu === '직관'))
 
-    // 오늘의 소감
-    formData.append('memo', writeData.todayThoughts)
-    console.log('memo', writeData.todayThoughts)
-    formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
-    console.log('is_homeballpark', JSON.stringify(tabMenu === '집관'))
+    // formData.append('score_our', writeData.todayScore.our)
+    // console.log('score_our', writeData.todayScore.our)
+    // formData.append('score_opponent', writeData.todayScore.opponent)
+    // console.log('score_opponent', writeData.todayScore.opponent)
 
-    //나만보기
-    formData.append('only_me', JSON.stringify(writeData.onlyMeCheck))
-    console.log('only_me', JSON.stringify(writeData.onlyMeCheck))
-    formData.append('is_double', JSON.stringify(isDirectWrite))
-    console.log('is_double', JSON.stringify(isDirectWrite))
+    // // 선발선수
+    // formData.append('starting_pitchers', writeData.matchPlayer)
+    // console.log('starting_pitchers', writeData.matchPlayer)
 
-    // hometeam_id
-    formData.append('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
-    console.log('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
-    formData.append('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
-    console.log('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
-    formData.append('direct_yn', JSON.stringify(isDirectWrite))
-    console.log('direct_yn', JSON.stringify(isDirectWrite))
-    formData.append('is_cheer', JSON.stringify(isCheer))
-    console.log('is_cheer', JSON.stringify(isCheer))
+    // // 경기구단
+    // formData.append('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
+    // console.log('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
 
-    registerTicket(formData)
+    // // 직관푸드
+    // formData.append('food', writeData.todayFood)
+    // console.log('food', writeData.todayFood)
+
+    // // 오늘의 소감
+    // formData.append('memo', writeData.todayThoughts)
+    // console.log('memo', writeData.todayThoughts)
+    // formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
+    // console.log('is_homeballpark', JSON.stringify(tabMenu === '집관'))
+
+    // //나만보기
+    // formData.append('only_me', JSON.stringify(writeData.onlyMeCheck))
+    // console.log('only_me', JSON.stringify(writeData.onlyMeCheck))
+    // formData.append('is_double', JSON.stringify(isDirectWrite))
+    // console.log('is_double', JSON.stringify(isDirectWrite))
+
+    // // hometeam_id
+    // formData.append('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
+    // console.log('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
+    // formData.append('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
+    // console.log('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
+    // formData.append('direct_yn', JSON.stringify(isDirectWrite))
+    // console.log('direct_yn', JSON.stringify(isDirectWrite))
+    // formData.append('is_cheer', JSON.stringify(isCheer))
+    // console.log('is_cheer', JSON.stringify(isCheer))
+
+    // registerTicket(formData)
   }
 
   const uploadPhoto = async () => {
@@ -221,7 +289,7 @@ const TicketPage = () => {
 
     /** 갤러리에서 이미지 선택 */
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'],
       allowsEditing: true,
       quality: 1,
       aspect: [307, 220],
@@ -685,6 +753,7 @@ const styles = StyleSheet.create({
   optionButton: {
     height: 48,
     borderWidth: 1,
+    maxWidth: '48%',
     minWidth: '48%',
     borderColor: '#D0CEC7',
     borderRadius: 10,
@@ -694,6 +763,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   placeOptionButton: {
+    maxWidth: '48%',
     minWidth: '48%',
     height: 48,
     borderWidth: 1,

@@ -453,6 +453,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     backgroundColor: '#202020',
+    marginTop: -1,
   },
   resultImgBox: {
     flex: 1,
@@ -524,7 +525,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 22,
     alignItems: 'center',
-    gap: 52,
+    gap: 30,
   },
   infoLabel: {
     fontSize: 14,

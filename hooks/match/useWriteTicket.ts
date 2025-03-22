@@ -5,6 +5,7 @@ import {format} from 'date-fns'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {uploadFile} from '@/api'
 import useProfile from '../my/useProfile'
+import {useLogin} from '../auth/useLogin'
 
 export type RegisterTicket = {
   starting_pitchers: string
@@ -29,16 +30,22 @@ const useWriteTicket = () => {
   const writeStore = useDailyWriteStore()
   const queryClient = useQueryClient()
   const {profile} = useProfile()
+  const {user} = useLogin()
+
+  const initializeTicket = (id: number) => {
+    writeStore.clearState()
+    queryClient.invalidateQueries({queryKey: ['tickets']})
+
+    router.push({
+      pathname: '/write/todayTicketCard', //
+      params: {id: id, target_id: profile.id},
+    })
+  }
 
   const {mutateAsync: registerTicket, isPending} = useMutation({
     mutationFn: (data: FormData) => uploadFile<{id: number}>(`/tickets/ticket_add/`, data),
     onSuccess: data => {
-      queryClient.invalidateQueries({queryKey: ['tickets']})
-
-      router.push({
-        pathname: '/write/todayTicketCard', //
-        params: {id: data.id, target_id: profile.id},
-      })
+      initializeTicket(data.id)
     },
   })
 
@@ -73,6 +80,7 @@ const useWriteTicket = () => {
     moveToWriteTicket,
     registerTicket,
     isPending,
+    initializeTicket,
     ...writeStore,
   }
 }

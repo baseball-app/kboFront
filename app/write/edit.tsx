@@ -26,7 +26,8 @@ import SelectBox from '@/components/common/SelectBox'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import LottieView from 'lottie-react-native'
-
+import * as FileSystem from 'expo-file-system'
+import {useLogin} from '@/hooks/auth/useLogin'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined | string
   matchTeam: Team | null
@@ -79,8 +80,9 @@ const placeOption = [
 const EditTicketPage = () => {
   const {id} = useLocalSearchParams()
 
+  const [isPending, setIsPending] = useState(false)
   const {profile} = useProfile()
-  const {ticketDetail, updateTicket, isUpdating} = useTicketDetail(Number(id), Number(profile?.id))
+  const {ticketDetail, updateTicket, initializeTicketInfo} = useTicketDetail(Number(id), Number(profile?.id))
 
   const [writeData, setWriteData] = useState<ITicketEditData>({
     homeTeam: {
@@ -156,13 +158,71 @@ const EditTicketPage = () => {
 
   const router = useRouter()
 
+  const {user} = useLogin()
+
   const onSubmit = async () => {
-    if (isUpdating) return
+    if (isPending) return
+
+    setIsPending(true)
 
     const formData = new FormData()
 
     if (typeof writeData?.todayImg === 'string') {
       formData.append('image', writeData?.todayImg)
+
+      formData.append('id', String(ticketDetail?.id))
+      console.log('id', String(ticketDetail?.id))
+      formData.append('result', writeData?.result === '경기 취소' ? '취소' : writeData?.result || '')
+      console.log('result', writeData?.result === '경기 취소' ? '취소' : writeData?.result || '')
+      formData.append('weather', writeData?.weather || '')
+      console.log('weather', writeData?.weather || '')
+      formData.append('is_ballpark', JSON.stringify(writeData?.placeType === '직관'))
+      console.log('is_ballpark', JSON.stringify(writeData?.placeType === '직관'))
+      formData.append('score_our', String(writeData?.homeTeam.score))
+      console.log('score_our', String(writeData?.homeTeam.score))
+      formData.append('score_opponent', String(writeData?.awayTeam.score))
+      console.log('score_opponent', String(writeData?.awayTeam.score))
+      // 선발선수
+      formData.append('starting_pitchers', writeData?.player || '')
+      console.log('starting_pitchers', writeData?.player || '')
+      // 관람장소
+      formData.append('gip_place', String(writeData?.place || ''))
+      console.log('gip_place', String(writeData?.place || ''))
+
+      // 직관푸드
+      formData.append('food', writeData?.food || '')
+      console.log('food', writeData?.food || '')
+
+      // 오늘의 소감
+      formData.append('memo', writeData?.memo || '')
+      console.log('memo', writeData?.memo || '')
+
+      formData.append('is_homeballpark', JSON.stringify(writeData?.placeType === '직관'))
+      console.log('is_homeballpark', JSON.stringify(writeData?.placeType === '직관'))
+
+      //나만보기
+      formData.append('only_me', JSON.stringify(writeData?.onlyMe))
+      console.log('only_me', JSON.stringify(writeData?.onlyMe))
+
+      formData.append('direct_yn', JSON.stringify(isDirectWrite))
+      console.log('direct_yn', JSON.stringify(isDirectWrite))
+
+      // hometeam_id
+      formData.append('hometeam_id', String(writeData?.homeTeam.id))
+      console.log('hometeam_id', String(writeData?.homeTeam.id))
+      formData.append('awayteam_id', String(writeData?.awayTeam.id))
+      console.log('awayteam_id', String(writeData?.awayTeam.id))
+
+      formData.append('is_cheer', JSON.stringify(isCheer))
+      console.log('is_cheer', JSON.stringify(isCheer))
+
+      formData.append('is_double', JSON.stringify(isDirectWrite))
+      console.log('is_double', JSON.stringify(isDirectWrite))
+
+      updateTicket(formData).finally(() => {
+        setIsPending(false)
+        router.back()
+      })
     } else {
       const image = writeData?.todayImg
 
@@ -176,67 +236,45 @@ const EditTicketPage = () => {
         undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
         false, // 메타데이터 유지 여부
       )
-      console.log('📏 리사이징된 이미지:', resizedImage.uri)
 
-      formData.append('image', {
-        uri: resizedImage.uri, // 리사이징된 이미지 URI 사용
-        type: image?.type, // 원본 이미지의 MIME 타입 유지
-        name: Platform.OS === 'android' ? image?.uri : image?.uri.replace('file://', ''),
-      } as any)
+      await FileSystem.uploadAsync(`${process.env.EXPO_PUBLIC_API_URL}/tickets/ticket_upd/`, resizedImage.uri, {
+        fieldName: 'image',
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        parameters: {
+          id: String(ticketDetail?.id),
+          result: writeData?.result === '경기 취소' ? '취소' : writeData?.result || '',
+          weather: writeData?.weather || '',
+          is_ballpark: JSON.stringify(writeData?.placeType === '직관'),
+          score_our: String(writeData?.homeTeam.score),
+          score_opponent: String(writeData?.awayTeam.score),
+          starting_pitchers: writeData?.player || '',
+          gip_place: String(writeData?.place || ''),
+          food: writeData?.food || '',
+          memo: writeData?.memo || '',
+          is_homeballpark: JSON.stringify(writeData?.placeType === '직관'),
+          only_me: JSON.stringify(writeData?.onlyMe),
+          direct_yn: JSON.stringify(isDirectWrite),
+          hometeam_id: String(writeData?.homeTeam.id),
+          awayteam_id: String(writeData?.awayTeam.id),
+          is_cheer: JSON.stringify(isCheer),
+          is_double: JSON.stringify(isDirectWrite),
+        },
+        headers: {
+          'X-KBOAPP-TOKEN': user?.accessToken || '',
+        },
+      })
+        .then((res: any) => {
+          initializeTicketInfo()
+          console.log('res', res)
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+        .finally(() => {
+          setIsPending(false)
+          router.back()
+        })
     }
-
-    formData.append('id', String(ticketDetail?.id))
-    console.log('id', String(ticketDetail?.id))
-    formData.append('result', writeData?.result === '경기 취소' ? '취소' : writeData?.result || '')
-    console.log('result', writeData?.result === '경기 취소' ? '취소' : writeData?.result || '')
-    formData.append('weather', writeData?.weather || '')
-    console.log('weather', writeData?.weather || '')
-    formData.append('is_ballpark', JSON.stringify(writeData?.placeType === '직관'))
-    console.log('is_ballpark', JSON.stringify(writeData?.placeType === '직관'))
-    formData.append('score_our', String(writeData?.homeTeam.score))
-    console.log('score_our', String(writeData?.homeTeam.score))
-    formData.append('score_opponent', String(writeData?.awayTeam.score))
-    console.log('score_opponent', String(writeData?.awayTeam.score))
-    // 선발선수
-    formData.append('starting_pitchers', writeData?.player || '')
-    console.log('starting_pitchers', writeData?.player || '')
-    // 관람장소
-    formData.append('gip_place', String(writeData?.place || ''))
-    console.log('gip_place', String(writeData?.place || ''))
-
-    // 직관푸드
-    formData.append('food', writeData?.food || '')
-    console.log('food', writeData?.food || '')
-
-    // 오늘의 소감
-    formData.append('memo', writeData?.memo || '')
-    console.log('memo', writeData?.memo || '')
-
-    formData.append('is_homeballpark', JSON.stringify(writeData?.placeType === '직관'))
-    console.log('is_homeballpark', JSON.stringify(writeData?.placeType === '직관'))
-
-    //나만보기
-    formData.append('only_me', JSON.stringify(writeData?.onlyMe))
-    console.log('only_me', JSON.stringify(writeData?.onlyMe))
-
-    formData.append('direct_yn', JSON.stringify(isDirectWrite))
-    console.log('direct_yn', JSON.stringify(isDirectWrite))
-
-    // hometeam_id
-    formData.append('hometeam_id', String(writeData?.homeTeam.id))
-    console.log('hometeam_id', String(writeData?.homeTeam.id))
-    formData.append('awayteam_id', String(writeData?.awayTeam.id))
-    console.log('awayteam_id', String(writeData?.awayTeam.id))
-
-    formData.append('is_cheer', JSON.stringify(isCheer))
-    console.log('is_cheer', JSON.stringify(isCheer))
-
-    formData.append('is_double', JSON.stringify(isDirectWrite))
-    console.log('is_double', JSON.stringify(isDirectWrite))
-
-    updateTicket(formData).finally(() => {
-      router.back()
-    })
   }
 
   const uploadPhoto = async () => {
@@ -440,7 +478,7 @@ const EditTicketPage = () => {
 
       <View style={[styles.footerButtonBox, {paddingBottom: 16}]}>
         <TouchableOpacity style={[styles.footerButton, styles.activeButton]} onPress={onSubmit}>
-          {isUpdating ? (
+          {isPending ? (
             <LottieView
               source={require('@/assets/lottie/loading.json')}
               autoPlay
@@ -707,6 +745,7 @@ const styles = StyleSheet.create({
   optionButton: {
     height: 48,
     borderWidth: 1,
+    maxWidth: '48%',
     minWidth: '48%',
     borderColor: '#D0CEC7',
     borderRadius: 10,
@@ -716,6 +755,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   placeOptionButton: {
+    maxWidth: '48%',
     minWidth: '48%',
     height: 48,
     borderWidth: 1,

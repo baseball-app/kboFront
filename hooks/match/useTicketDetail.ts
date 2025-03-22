@@ -192,6 +192,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
     toggleReaction,
     isSuccess,
     isUpdating,
+    initializeTicketInfo,
   }
 }
 
