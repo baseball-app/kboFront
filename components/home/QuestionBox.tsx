@@ -8,6 +8,7 @@ interface IQuestionBox {
   selectedQuestion: string
   isDisabled?: boolean
   backgroundColor?: string
+  type: string
 }
 
 const QuestionBox = (props: IQuestionBox) => {
@@ -27,8 +28,11 @@ const QuestionBox = (props: IQuestionBox) => {
             activeOpacity={1}
             disabled={isDisabled}>
             <View style={styles.questionInfo}>
-              <View style={styles.imageContainer}>
-                <Image source={ev.questionImage} style={styles.questionImage} />
+              <View style={[styles.imageContainer, props.type === 'weather' && {backgroundColor: '#F3F2EE'}]}>
+                <Image
+                  source={ev.questionImage}
+                  style={[styles.questionImage, props.type === 'weather' && {width: 30, height: 30}]}
+                />
                 {selectedQuestion === ev.questionText && (
                   <>
                     <View style={styles.overlay} />
@@ -90,10 +94,16 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: 'relative',
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 999,
   },
   questionImage: {
     width: 50,
     height: 50,
+    resizeMode: 'contain',
   },
   overlay: {
     position: 'absolute',

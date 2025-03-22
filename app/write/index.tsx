@@ -147,7 +147,7 @@ const DailyLogWriteScreen = () => {
       </View>
       {currentStep === 1 && (
         <ScrollView style={styles.scrollContainer}>
-          <Text style={styles.title}>마이팀 경기 일정을{'\n'}선택해주세요</Text>
+          <Text style={styles.title}>경기 일정을{'\n'}선택해주세요</Text>
           <View style={styles.matchListBox}>
             {matchingList.length > 0 ? (
               <>
@@ -167,9 +167,7 @@ const DailyLogWriteScreen = () => {
               </>
             ) : (
               <View style={styles.noMatchBox}>
-                <Text style={[styles.noMatchText, {marginBottom: 24}]}>
-                  <Text style={[styles.noMatchText, {fontWeight: 600}]}>{myTeamName}</Text>의 경기 일정이 없어요.
-                </Text>
+                <Text style={[styles.noMatchText, {marginBottom: 24}]}>경기 일정이 없어요.</Text>
                 <TouchableOpacity onPress={nextButtonClick} style={styles.doubleHeaderButton}>
                   <Text style={styles.doubleHeaderText}>직접 추가하기</Text>
                 </TouchableOpacity>
@@ -187,12 +185,14 @@ const DailyLogWriteScreen = () => {
       {currentStep === 2 && (
         <View style={styles.viewContainer}>
           <QuestionBox
+            type={'result'}
             title={'오늘의 경기 결과는 어땠나요?'}
             questionData={matchResult}
             onQuestionClick={onMatchResultClick}
             selectedQuestion={selectedMatchResult}
           />
           <QuestionBox
+            type={'weather'}
             title={'오늘의 날씨는 어땠나요?'}
             questionData={weatherResult}
             onQuestionClick={onWeatherClick}

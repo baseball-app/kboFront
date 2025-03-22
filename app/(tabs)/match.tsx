@@ -41,7 +41,7 @@ const MatchScreen = () => {
       <FlatList
         contentContainerStyle={styles.flatList}
         data={matchingList}
-        ListEmptyComponent={<EmptyMatchView />}
+        ListEmptyComponent={<EmptyMatchView selectedDate={dayjs(selectedDate).format('YYYY-MM-DD')} />}
         scrollEnabled
         ListHeaderComponent={
           <MatchCalendar //

@@ -3,8 +3,7 @@ import {router} from 'expo-router'
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 
-const EmptyMatchView = () => {
-  const selectedDate = dayjs().format('YYYY-MM-DD')
+const EmptyMatchView = ({selectedDate}: {selectedDate: string}) => {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.text}>경기 일정이 없어요.</Text>
@@ -14,7 +13,7 @@ const EmptyMatchView = () => {
             router.push({
               pathname: '/write',
               params: {
-                date: dayjs(selectedDate).format('YYYY-MM-DD'),
+                date: selectedDate,
                 step: 2,
               },
             })
