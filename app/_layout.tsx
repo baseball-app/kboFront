@@ -10,9 +10,25 @@ import {enableScreens} from 'react-native-screens'
 import QueryProvider from '@/components/provider/QueryProvider'
 import CommonModal from '@/components/common/CommonModal'
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
-import {Text, View} from 'react-native'
+import {Text, View, TextInput} from 'react-native'
 import DeepLinkProvider from '@/components/provider/DeepLinkProvider'
 import Toast, {ToastConfig} from 'react-native-toast-message'
+
+interface TextWithDefaultProps extends Text {
+  defaultProps?: {allowFontScaling?: boolean}
+}
+interface TextInputWithDefaultProps extends TextInput {
+  defaultProps?: {allowFontScaling?: boolean}
+}
+
+// Text 적용 : 시스템 폰트 크기를 무시하고 앱에서 지정한 크기를 사용함.
+;(Text as unknown as TextWithDefaultProps).defaultProps = (Text as unknown as TextWithDefaultProps).defaultProps || {}
+;(Text as unknown as TextWithDefaultProps).defaultProps!.allowFontScaling = false
+
+// TextInput 적용 : 시스템 폰트 크기를 앱에서 지정
+;(TextInput as unknown as TextInputWithDefaultProps).defaultProps =
+  (TextInput as unknown as TextInputWithDefaultProps).defaultProps || {}
+;(TextInput as unknown as TextInputWithDefaultProps).defaultProps!.allowFontScaling = false
 
 /*
   1. Create the config
