@@ -47,7 +47,18 @@ const useWriteTicket = () => {
    * @param match 매치 정보
    * @param date 날짜
    */
-  const moveToWriteTicket = (date: Date, match: Match | null) => {
+  const moveToWriteTicket = (date: Date, match?: Match | null) => {
+    if (!match) {
+      router.push({
+        pathname: '/write',
+        params: {
+          date: format(date, 'yyyy-MM-dd'),
+          step: 2,
+        },
+      })
+      return
+    }
+
     router.push({
       pathname: '/write',
       params: {

@@ -12,31 +12,23 @@ import useTicketDetail from '@/hooks/match/useTicketDetail'
 import dayjs from 'dayjs'
 import useProfile from '@/hooks/my/useProfile'
 import {usePopup} from '@/slice/commonSlice'
-import {useRouter} from 'expo-router'
 
 const MatchScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const {matchingList, prefetchMatchList} = useMatch({selectedDate})
   const {moveToWriteTicket} = useWriteTicket()
   const {openCommonPopup} = usePopup()
-  const router = useRouter()
 
   const {profile} = useProfile()
   const {data, isSuccess} = useTicketDetail(dayjs(selectedDate).format('YYYY-MM-DD'), Number(profile?.id))
 
-  console.log(dayjs(selectedDate).format('YYYY-MM-DD'), Number(profile?.id))
-
-  const onClickMatch = (match: Match) => {
+  const onClickMatch = (match?: Match) => {
     if (isSuccess && Number(data?.length) > 1) {
       openCommonPopup('오늘의 야구 티켓은 최대 2번까지만\n작성하실 수 있어요!')
       return
     }
 
     moveToWriteTicket(selectedDate, match)
-
-    // prefetchMatchList(format(selectedDate, 'yyyy-MM-dd')).finally(() => {
-    //   return
-    // })
   }
 
   return (
@@ -45,7 +37,7 @@ const MatchScreen = () => {
       <FlatList
         contentContainerStyle={styles.flatList}
         data={matchingList}
-        ListEmptyComponent={<EmptyMatchView selectedDate={dayjs(selectedDate).format('YYYY-MM-DD')} />}
+        ListEmptyComponent={<EmptyMatchView onClick={onClickMatch} />}
         scrollEnabled
         ListHeaderComponent={
           <MatchCalendar //
@@ -64,17 +56,7 @@ const MatchScreen = () => {
         ListFooterComponent={
           matchingList.length > 0 ? (
             <View style={styles.doubleHeaderBox}>
-              <TouchableOpacity
-                onPress={() =>
-                  router.push({
-                    pathname: '/write',
-                    params: {
-                      date: dayjs(selectedDate).format('YYYY-MM-DD'),
-                      step: 2,
-                    },
-                  })
-                }
-                style={styles.doubleHeaderButton}>
+              <TouchableOpacity onPress={() => onClickMatch()} style={styles.doubleHeaderButton}>
                 <Text style={styles.doubleHeaderText}>더블헤더 작성하기</Text>
               </TouchableOpacity>
             </View>

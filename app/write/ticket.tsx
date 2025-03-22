@@ -54,7 +54,7 @@ const placeOption = [
 ]
 
 const TicketPage = () => {
-  const {moveToWriteTicket, registerTicket, isPending, ...writeStore} = useWriteTicket()
+  const {registerTicket, isPending, ...writeStore} = useWriteTicket()
   const {profile} = useProfile()
   const {findTeamById, teams} = useTeam()
   const insets = useSafeAreaInsets()
@@ -100,33 +100,6 @@ const TicketPage = () => {
     todayThoughts: '',
     onlyMeCheck: false,
   })
-
-  // useEffect(() => {
-  //   if (ticketDetail) {
-  //     const opponentTeamId =
-  //       Number(ticketDetail.hometeam_id) === profile.my_team?.id ? ticketDetail.awayteam_id : ticketDetail.hometeam_id
-
-  //     const opponentTeam = findTeamById(Number(opponentTeamId))
-
-  //     setWriteData({
-  //       todayScore: {
-  //         our: String(ticketDetail.score_our),
-  //         opponent: String(ticketDetail.score_opponent),
-  //       },
-  //       todayImg: undefined,
-  //       matchTeam: {
-  //         id: Number(opponentTeamId),
-  //         name: opponentTeam?.name || '',
-  //         logo_url: opponentTeam?.logo || '',
-  //       },
-  //       matchPlace: ticketDetail.gip_place,
-  //       matchPlayer: ticketDetail.starting_pitchers,
-  //       todayFood: ticketDetail.food,
-  //       todayThoughts: ticketDetail.memo,
-  //       onlyMeCheck: false,
-  //     })
-  //   }
-  // }, [ticketDetail])
 
   const [tabMenu, setTabMenu] = useState(writeStore.selectedPlace)
   const [teamModalVisible, setTeamModalVisible] = useState(false)

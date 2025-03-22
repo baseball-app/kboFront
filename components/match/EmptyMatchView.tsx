@@ -1,24 +1,12 @@
-import dayjs from 'dayjs'
-import {router} from 'expo-router'
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 
-const EmptyMatchView = ({selectedDate}: {selectedDate: string}) => {
+const EmptyMatchView = ({onClick}: {onClick: () => void}) => {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.text}>경기 일정이 없어요.</Text>
       <View style={styles.doubleHeaderBox}>
-        <TouchableOpacity
-          onPress={() =>
-            router.push({
-              pathname: '/write',
-              params: {
-                date: selectedDate,
-                step: 2,
-              },
-            })
-          }
-          style={styles.doubleHeaderButton}>
+        <TouchableOpacity onPress={onClick} style={styles.doubleHeaderButton}>
           <Text style={styles.doubleHeaderText}>직접 추가하기</Text>
         </TouchableOpacity>
       </View>
