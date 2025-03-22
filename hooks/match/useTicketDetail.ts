@@ -1,4 +1,4 @@
-import ApiClient from '@/api'
+import ApiClient, {uploadFile} from '@/api'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import {RegisterTicket} from './useWriteTicket'
 import {useEffect, useState} from 'react'
@@ -45,6 +45,7 @@ export type TicketDetail = {
 
   only_me: boolean
   is_double: boolean
+  direct_yn: boolean
   favorite: boolean
 } & Reaction
 
@@ -110,8 +111,8 @@ const useTicketDetail = (id: number | string, targetId: number) => {
   })
 
   // 직관일기 수정
-  const {mutateAsync: updateTicket} = useMutation({
-    mutationFn: (data: RegisterTicket) => ApiClient.post(`/tickets/ticket_upd/`, {...data, id: ticketDetail?.id}),
+  const {mutateAsync: updateTicket, isPending: isUpdating} = useMutation({
+    mutationFn: (data: FormData) => uploadFile(`/tickets/ticket_upd/`, data),
     onSuccess: initializeTicketInfo,
   })
 
@@ -190,6 +191,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
     reactionList,
     toggleReaction,
     isSuccess,
+    isUpdating,
   }
 }
 

@@ -79,12 +79,12 @@ export default function GameCard() {
             <TouchableOpacity onPress={toggleFavorite}>
               <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               onPress={() => {
-                router.push({pathname: '/write/ticket', params: {id: ticketDetail?.id, date: ticketDetail?.date}})
+                router.push({pathname: '/write/edit', params: {id: ticketDetail?.id}})
               }}>
               <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         )}
         {Number(data?.length) > 1 ? (
@@ -191,7 +191,9 @@ export default function GameCard() {
                     resizeMode="contain"
                     style={styles.editIcon}
                   />
-                  <Text style={styles.resultText}>{ticketDetail?.result}</Text>
+                  <Text style={styles.resultText}>
+                    {ticketDetail?.result === '취소' ? '경기 취소' : ticketDetail?.result}
+                  </Text>
                 </View>
                 <View style={styles.resultImgBox}>
                   <Image
