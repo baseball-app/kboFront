@@ -55,7 +55,7 @@ const TermUseScreen = () => {
               {consent.title}
             </Text>
             <TouchableOpacity onPress={() => moveToConsentDetail(consent.value)}>
-              <Ionicons name="chevron-forward" size={24} color="#D1D1D6" style={styles.chevron} />
+              <Ionicons name="chevron-forward" size={20} color="#D1D1D6" style={styles.chevron} />
             </TouchableOpacity>
           </TouchableOpacity>
         ))}
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFCF3',
   },
   header: {
+    paddingTop: 24,
     paddingHorizontal: 24,
   },
   circle: {
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     // paddingTop: 10,
   },
   backButton: {
@@ -114,7 +115,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 12,
     backgroundColor: '#F3F2EE',
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
     borderRadius: 10,
   },
   agreementItem: {
@@ -122,7 +124,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 4,
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
     borderRadius: 10,
   },
   agreementText: {
@@ -141,13 +144,14 @@ const styles = StyleSheet.create({
   },
   agreeButton: {
     backgroundColor: '#E4E2DC',
-    padding: 15,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
     borderRadius: 8,
     alignItems: 'center',
     position: 'absolute',
     bottom: 40,
-    left: 20,
-    right: 20,
+    left: 16,
+    right: 16,
   },
   agreeButtonActive: {
     backgroundColor: '#1E5EF4',

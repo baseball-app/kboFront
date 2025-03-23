@@ -20,10 +20,11 @@ export default function MyTeamScreen() {
         <TouchableOpacity style={styles.backButton} onPress={moveToPrevStep}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>마이팀을{'\n'}선택해주세요</Text>
         <Text style={styles.subtitle}>마이팀은 나가 응원하고 싶은{'\n'}최애 야구 구단을 뜻해요.</Text>
-      </View>
-      <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.teamsGrid}>
           {teams?.map(team => (
             <TouchableOpacity
@@ -55,15 +56,14 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 24,
+    paddingTop: 24,
   },
   backButton: {
-    marginBottom: 30,
+    marginBottom: 16,
   },
   content: {
-    flex: 1,
     paddingHorizontal: 24,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    paddingBottom: 50,
   },
   title: {
     fontSize: 24,
@@ -82,10 +82,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 16,
+    rowGap: 12,
   },
   teamButton: {
-    width: '30%',
+    width: '32%',
     aspectRatio: 99 / 90,
     paddingTop: 16,
     paddingBottom: 10,

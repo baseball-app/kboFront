@@ -92,10 +92,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 16,
+    rowGap: 12,
   },
   teamButton: {
-    width: '30%',
+    width: '31%',
     aspectRatio: 99 / 90,
     paddingTop: 16,
     paddingBottom: 10,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingHorizontal: 24,
-    paddingVertical: 67,
+    paddingBottom: 24,
   },
   nextButton: {
     backgroundColor: '#CCCCCC',

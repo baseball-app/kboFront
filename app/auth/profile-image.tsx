@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 24,
+    paddingTop: 24,
   },
   backButton: {
     marginBottom: 30,

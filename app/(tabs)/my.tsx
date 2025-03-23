@@ -1,5 +1,16 @@
 import React, {useRef, useState} from 'react'
-import {View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView, TextInput} from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  TextInput,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native'
 import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
 import {theme} from '@/constants/Colors'
 import {router} from 'expo-router'
@@ -19,111 +30,123 @@ const ProfileScreen = () => {
   const inputRef = useRef<TextInput>(null)
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.profileHeader}>
-        <ProfileImageBox source={profile.profile_image} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+        keyboardVerticalOffset={100}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
+          <View style={{flex: 1, backgroundColor: theme.colors.backgroundPrimary, paddingBottom: 20}}>
+            <View style={styles.profileHeader}>
+              <ProfileImageBox source={profile.profile_image} />
 
-        <View style={styles.profileInfoBox}>
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>{profile?.nickname} 님</Text>
-            <TouchableOpacity onPress={() => router.push('/my/change-nickname')}>
-              <Image
-                source={require('@/assets/icons/edit_pen.png')}
-                style={styles.profileEditIcon}
-                resizeMode="contain"
+              <View style={styles.profileInfoBox}>
+                <View style={styles.profileInfo}>
+                  <Text style={styles.profileName}>{profile?.nickname} 님</Text>
+                  <TouchableOpacity onPress={() => router.push('/my/change-nickname')}>
+                    <Image
+                      source={require('@/assets/icons/edit_pen.png')}
+                      style={styles.profileEditIcon}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.winRateContainer}>
+                  <Text style={styles.winRateLabel}>승요력</Text>
+                  <Text style={styles.winRateValue}>{profile?.predict_ratio}%</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.teamCard}>
+              <View style={styles.teamInfo}>
+                <Image
+                  // image 연결해줘야 함 어떻게 ?
+                  // 로고 url을 넣을 것인가?
+                  source={profile.my_team?.logo}
+                  style={styles.teamLogo}
+                  resizeMode="contain"
+                />
+                <Text style={styles.teamName}>{profile.my_team?.name}</Text>
+              </View>
+
+              <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push('/my/change-team')}>
+                <Image source={require('../../assets/icons/gear.png')} style={styles.teamSettingsIcon} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.statsContainer}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.statItem, styles.statBox]}
+                onPress={() => {
+                  router.push('/my/followers')
+                }}>
+                <View style={{gap: 10}}>
+                  <Text style={styles.statLabel}>팔로워</Text>
+                  <Text style={styles.statValue}>{profile?.followers}</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.statItem, styles.statBox]}
+                onPress={() => {
+                  router.push('/my/followings')
+                }}>
+                <View style={{gap: 10}}>
+                  <Text style={styles.statLabel}>팔로잉</Text>
+                  <Text style={styles.statValue}>{profile?.followings}</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[styles.statItem, styles.statBox]}
+                onPress={onPasteInviteCode}>
+                <View style={{gap: 10}}>
+                  <Text style={styles.statLabel}>초대코드</Text>
+                  <Image source={require('../../assets/icons/invitation.png')} style={styles.inviteCodeIcon} />
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.inviteCodeInputBox}>
+              <TextInput
+                placeholder="초대코드를 입력해주세요"
+                style={styles.inviteCodeInput}
+                value={inviteCode}
+                onChangeText={setInviteCode}
+                placeholderTextColor="#95938B"
+                ref={inputRef}
               />
+              <TouchableOpacity
+                style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: '#D0CEC7'}]} //
+                disabled={!inviteCode}
+                onPress={() =>
+                  inviteCode &&
+                  addFriend(inviteCode).finally(() => {
+                    setInviteCode(undefined)
+                    inputRef.current?.blur()
+                  })
+                }>
+                <Text style={[styles.inviteCodeInputButtonText, !inviteCode && {color: '#77756C'}]}>확인</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.menuContainer}>
+            <TouchableOpacity style={styles.menuItem} onPress={logout}>
+              <Text style={styles.menuText}>로그아웃</Text>
+              <Ionicons name="chevron-forward" size={24} color="gray" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.menuItem} onPress={withdrawUser}>
+              <Text style={styles.menuText}>회원탈퇴</Text>
+              <Ionicons name="chevron-forward" size={24} color="gray" />
             </TouchableOpacity>
           </View>
-          <View style={styles.winRateContainer}>
-            <Text style={styles.winRateLabel}>승요력</Text>
-            <Text style={styles.winRateValue}>{profile?.predict_ratio}%</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.teamCard}>
-        <View style={styles.teamInfo}>
-          <Image
-            // image 연결해줘야 함 어떻게 ?
-            // 로고 url을 넣을 것인가?
-            source={profile.my_team?.logo}
-            style={styles.teamLogo}
-            resizeMode="contain"
-          />
-          <Text style={styles.teamName}>{profile.my_team?.name}</Text>
-        </View>
-
-        <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push('/my/change-team')}>
-          <Image source={require('../../assets/icons/gear.png')} style={styles.teamSettingsIcon} />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.statsContainer}>
-        <TouchableOpacity
-          activeOpacity={0.9}
-          style={[styles.statItem, styles.statBox]}
-          onPress={() => {
-            router.push('/my/followers')
-          }}>
-          <View style={{gap: 10}}>
-            <Text style={styles.statLabel}>팔로워</Text>
-            <Text style={styles.statValue}>{profile?.followers}</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.9}
-          style={[styles.statItem, styles.statBox]}
-          onPress={() => {
-            router.push('/my/followings')
-          }}>
-          <View style={{gap: 10}}>
-            <Text style={styles.statLabel}>팔로잉</Text>
-            <Text style={styles.statValue}>{profile?.followings}</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity activeOpacity={0.9} style={[styles.statItem, styles.statBox]} onPress={onPasteInviteCode}>
-          <View style={{gap: 10}}>
-            <Text style={styles.statLabel}>초대코드</Text>
-            <Image source={require('../../assets/icons/invitation.png')} style={styles.inviteCodeIcon} />
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.inviteCodeInputBox}>
-        <TextInput
-          placeholder="초대코드를 입력해주세요"
-          style={styles.inviteCodeInput}
-          value={inviteCode}
-          onChangeText={setInviteCode}
-          placeholderTextColor="#95938B"
-          ref={inputRef}
-        />
-        <TouchableOpacity
-          style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: '#D0CEC7'}]} //
-          disabled={!inviteCode}
-          onPress={() =>
-            inviteCode &&
-            addFriend(inviteCode).finally(() => {
-              setInviteCode(undefined)
-              inputRef.current?.blur()
-            })
-          }>
-          <Text style={[styles.inviteCodeInputButtonText, !inviteCode && {color: '#77756C'}]}>확인</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.menuContainer}>
-        <TouchableOpacity style={styles.menuItem} onPress={logout}>
-          <Text style={styles.menuText}>로그아웃</Text>
-          <Ionicons name="chevron-forward" size={24} color="gray" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.menuItem} onPress={withdrawUser}>
-          <Text style={styles.menuText}>회원탈퇴</Text>
-          <Ionicons name="chevron-forward" size={24} color="gray" />
-        </TouchableOpacity>
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }
@@ -131,12 +154,14 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.backgroundPrimary,
+    // backgroundColor: theme.colors.backgroundPrimary,
+    backgroundColor: 'white',
   },
   profileHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
+    paddingBottom: 0,
   },
   profileInfo: {
     flexDirection: 'row',
@@ -247,7 +272,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
     padding: 15,
-    marginTop: 20,
   },
   menuItem: {
     flexDirection: 'row',
