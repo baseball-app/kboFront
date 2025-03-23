@@ -12,6 +12,7 @@ import useProfile from '@/hooks/my/useProfile'
 import {useEffect} from 'react'
 import useNotification from '@/hooks/notification/useNotification'
 import useFriends from '@/hooks/my/useFriends'
+import Skeleton from '@/components/skeleton/Skeleton'
 
 const CalendarScreen = () => {
   const router = useRouter()

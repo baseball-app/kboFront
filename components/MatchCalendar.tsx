@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     lineHeight: 25.2,
     fontWeight: '500',
     minWidth: 20,
+    textAlign: 'center',
   },
   inactiveDay: {
     opacity: 0.5,

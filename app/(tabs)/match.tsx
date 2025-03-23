@@ -7,15 +7,27 @@ import {useState} from 'react'
 import EmptyMatchView from '@/components/match/EmptyMatchView'
 import useMatch, {Match} from '@/hooks/match/useMatch'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
-import {format} from 'date-fns'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import dayjs from 'dayjs'
 import useProfile from '@/hooks/my/useProfile'
 import {usePopup} from '@/slice/commonSlice'
+import Skeleton from '@/components/skeleton/Skeleton'
+import React from 'react'
+
+const LoadingMatchView = () => {
+  return (
+    <>
+      <Skeleton width="100%" height={100} />
+      <Skeleton width="100%" height={100} />
+      <Skeleton width="100%" height={100} />
+      <Skeleton width="100%" height={100} />
+    </>
+  )
+}
 
 const MatchScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const {matchingList, prefetchMatchList} = useMatch({selectedDate})
+  const {matchingList, prefetchMatchList, isPending} = useMatch({selectedDate})
   const {moveToWriteTicket} = useWriteTicket()
   const {openCommonPopup} = usePopup()
 
@@ -37,13 +49,14 @@ const MatchScreen = () => {
       <FlatList
         contentContainerStyle={styles.flatList}
         data={matchingList}
-        ListEmptyComponent={<EmptyMatchView onClick={onClickMatch} />}
+        ListEmptyComponent={isPending ? <LoadingMatchView /> : <EmptyMatchView onClick={onClickMatch} />}
         scrollEnabled
         ListHeaderComponent={
           <MatchCalendar //
             value={selectedDate}
             onChange={date => {
-              prefetchMatchList(format(date, 'yyyy-MM-dd')).finally(() => setSelectedDate(date))
+              setSelectedDate(date)
+              // prefetchMatchList(format(date, 'yyyy-MM-dd')).finally(() => setSelectedDate(date))
             }}
           />
         }
