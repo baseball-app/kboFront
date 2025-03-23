@@ -3,13 +3,14 @@ import useTeam from '@/hooks/match/useTeam'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {format} from 'date-fns'
 import {useLocalSearchParams, useRootNavigationState, useRouter} from 'expo-router'
-import React, {useEffect, useRef, useState} from 'react'
-import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, ImageBackground} from 'react-native'
+import React, {useRef, useState} from 'react'
+import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
 import Svg, {Path} from 'react-native-svg'
 import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
+import Ellipse from '@/components/common/Ellipse'
 
 export default function GameCard() {
   const router = useRouter()
@@ -213,7 +214,10 @@ export default function GameCard() {
                       {hometeam?.short_name}
                     </Text>
                   </View>
-                  <Image source={require('@/assets/icons/matchDot.png')} resizeMode="contain" style={styles.matchDot} />
+                  <View style={{gap: 6}}>
+                    <Ellipse size={5} />
+                    <Ellipse size={5} />
+                  </View>
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_opponent}</Text>
                     <Text style={[styles.teamText, {backgroundColor: `${awayteam?.color}4D`}]}>
@@ -312,7 +316,7 @@ export default function GameCard() {
           {reactionList.map(reaction => (
             <TouchableOpacity
               key={reaction.key}
-              style={[styles.emojiButton, reaction.isPressed && {borderColor: '#1E5EF4'}]}
+              style={[styles.emojiButton, reaction.isPressed && {borderColor: '#1E5EF4', borderWidth: 2}]}
               onPress={() => toggleReaction(reaction.key)}>
               <Text>{reaction.title}</Text>
               <Text>{reaction.count}</Text>
@@ -555,11 +559,11 @@ const styles = StyleSheet.create({
   },
   emojiButton: {
     flexDirection: 'row',
-    gap: 4,
+    gap: 5,
     borderWidth: 1,
     borderColor: '#95938B',
     borderRadius: 40,
-    paddingHorizontal: 8,
+    paddingHorizontal: 12.5,
     paddingVertical: 4,
   },
   thoughtsBox: {
