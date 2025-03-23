@@ -56,7 +56,7 @@ const Footer = () => {
   const currentPath = `/${segments.join('/')}`
 
   return (
-    <SafeAreaView edges={['bottom']} style={styles.footerContainer}>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.footerContainer}>
       <View style={styles.container}>
         <View style={styles.wrapper}>
           {footerList.map(item => {
@@ -89,14 +89,14 @@ const styles = StyleSheet.create({
   container: {
     height: 68,
     backgroundColor: '#fff',
-    paddingHorizontal: 24,
+    paddingHorizontal: 12,
+    width: '100%',
   },
   wrapper: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 18,
   },
   tabButton: {
     flexDirection: 'column',
