@@ -453,7 +453,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     backgroundColor: '#202020',
-    marginTop: -1,
+    marginTop: 2,
+    gap: 2.5,
   },
   resultImgBox: {
     flex: 1,

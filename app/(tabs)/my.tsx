@@ -29,11 +29,11 @@ const ProfileScreen = () => {
   const {addFriend} = useMakeFriend()
   const inputRef = useRef<TextInput>(null)
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {flex: 1}]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
-        keyboardVerticalOffset={100}>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}>
         <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
           <View style={{flex: 1, backgroundColor: theme.colors.backgroundPrimary, paddingBottom: 20}}>
             <View style={styles.profileHeader}>
@@ -122,13 +122,13 @@ const ProfileScreen = () => {
               <TouchableOpacity
                 style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: '#D0CEC7'}]} //
                 disabled={!inviteCode}
-                onPress={() =>
+                onPress={() => {
+                  inputRef.current?.blur()
                   inviteCode &&
-                  addFriend(inviteCode).finally(() => {
-                    setInviteCode(undefined)
-                    inputRef.current?.blur()
-                  })
-                }>
+                    addFriend(inviteCode).finally(() => {
+                      setInviteCode(undefined)
+                    })
+                }}>
                 <Text style={[styles.inviteCodeInputButtonText, !inviteCode && {color: '#77756C'}]}>확인</Text>
               </TouchableOpacity>
             </View>
@@ -153,7 +153,6 @@ const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     // backgroundColor: theme.colors.backgroundPrimary,
     backgroundColor: 'white',
   },

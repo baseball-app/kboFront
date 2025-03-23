@@ -75,9 +75,10 @@ const useTicketDetail = (id: number | string, targetId: number) => {
 
   const initializeTicketInfo = () => {
     queryClient.invalidateQueries({queryKey: ['ticket', id, targetId]})
+    refetch()
   }
 
-  const {data, isSuccess} = useQuery({
+  const {data, isSuccess, refetch} = useQuery({
     queryKey: ['ticket', id, targetId],
     queryFn: () => {
       return ApiClient.get<TicketDetail[]>(

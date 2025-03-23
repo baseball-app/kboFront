@@ -51,7 +51,9 @@ const useMakeFriend = () => {
 
         // 이미 친구라면 진행하지 않음
         if (checkIsFriend(Number(user_id)) || checkIsMe(Number(user_id))) {
-          showToast('이미 추가된 친구입니다')
+          setTimeout(() => {
+            showToast('이미 추가된 친구입니다')
+          }, 200)
           return targetCode
         }
 
@@ -60,11 +62,15 @@ const useMakeFriend = () => {
           target_id: Number(user_id),
         })
 
-        showToast('친구가 추가 되었습니다')
+        setTimeout(() => {
+          showToast('친구가 추가 되었습니다')
+        }, 200)
 
         return targetCode
       } catch (error) {
-        showToast('코드가 잘못 입력되었습니다')
+        setTimeout(() => {
+          showToast('코드가 잘못 입력되었습니다')
+        }, 200)
         return targetCode
       }
     },
