@@ -21,7 +21,7 @@ const MatchCalendarHeader = ({prevMonth, nextMonth, currentDate}: MatchCalendarH
       <TouchableOpacity onPress={prevMonth} style={styles.headerTextContainer}>
         <Ionicons name="chevron-back" size={24} color="black" />
       </TouchableOpacity>
-      <View style={styles.headerTextContainer}>
+      <View style={[styles.headerTextContainer, {width: 100}]}>
         <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
       </View>
       <TouchableOpacity onPress={nextMonth} style={styles.headerTextContainer}>
@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginRight: 8,
   },
   navButton: {
     fontSize: 24,
