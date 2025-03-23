@@ -11,6 +11,7 @@ import useDiary from '@/hooks/diary/useDiary'
 import useProfile from '@/hooks/my/useProfile'
 import {useEffect} from 'react'
 import useNotification from '@/hooks/notification/useNotification'
+import useFriends from '@/hooks/my/useFriends'
 
 const CalendarScreen = () => {
   const router = useRouter()
@@ -25,6 +26,16 @@ const CalendarScreen = () => {
     setCurrentDate,
     currentDate, //
   } = useDiary()
+  const {friend_status} = useFriends()
+
+  const selectedUserName = (() => {
+    const nickname = friend_status?.friends.find(friend => friend.id === userId)?.nickname
+
+    if (nickname) return nickname.length > 5 ? nickname.slice(0, 5) + '...' : nickname
+    // 내 닉네임이라는 뜻
+    return ''
+  })()
+
   const {profile} = useProfile()
   const {} = useNotification()
 
@@ -68,7 +79,7 @@ const CalendarScreen = () => {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FriendList setUserId={setUserId} userId={userId} />
       <ScrollView style={styles.scollContainer}>
-        <GameContainer />
+        <GameContainer selectedUserName={selectedUserName} />
         <View style={{marginBottom: 70}}>
           <Calendar
             isMyDiary={isMyDiary}

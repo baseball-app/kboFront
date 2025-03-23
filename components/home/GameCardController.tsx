@@ -1,10 +1,10 @@
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 
-const GameCardController = () => {
+const GameCardController = ({selectedUserName}: {selectedUserName: string}) => {
   return (
     <View style={styles.tabMenu}>
-      <Text style={styles.todayText}>오늘의 야구</Text>
+      <Text style={styles.todayText}>{selectedUserName ? `${selectedUserName}님의 야구 캘린더` : '오늘의 야구'}</Text>
     </View>
   )
 }

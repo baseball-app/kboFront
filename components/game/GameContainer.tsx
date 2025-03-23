@@ -3,10 +3,10 @@ import React from 'react'
 import GameCardController from '../home/GameCardController'
 import GameInfoCard from '../home/GameInfoCard'
 
-const GameContainer = () => {
+const GameContainer = ({selectedUserName}: {selectedUserName: string}) => {
   return (
     <GameProvider>
-      <GameCardController />
+      <GameCardController selectedUserName={selectedUserName} />
       <GameInfoCard />
     </GameProvider>
   )
