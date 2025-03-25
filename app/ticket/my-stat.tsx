@@ -22,16 +22,16 @@ export default function MyStatScreen() {
           <StatBox
             title="직관"
             value={data?.winSitePercent}
-            win={data.winRateCalculation.win_count}
-            draw={data.winRateCalculation.draw_count}
-            lose={data.winRateCalculation.loss_count}
+            win={data.ballparkWinRateCalculation.win_count}
+            draw={data.ballparkWinRateCalculation.draw_count}
+            lose={data.ballparkWinRateCalculation.loss_count}
           />
           <StatBox
             title="집관"
             value={data?.winHomePercent}
-            win={data.winRateCalculation.win_count}
-            draw={data.winRateCalculation.draw_count}
-            lose={data.winRateCalculation.loss_count}
+            win={data.notBallparkWinRateCalculation.win_count}
+            draw={data.notBallparkWinRateCalculation.draw_count}
+            lose={data.notBallparkWinRateCalculation.loss_count}
           />
         </View>
         <View style={styles.summaryContainer}>

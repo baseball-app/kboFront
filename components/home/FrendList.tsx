@@ -1,25 +1,46 @@
 import useFriends from '@/hooks/my/useFriends'
 import React from 'react'
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native'
+import {View, StyleSheet, FlatList} from 'react-native'
 import FriendStatusProfile from './FriendStatusProfile'
 import useProfile from '@/hooks/my/useProfile'
 import {useRouter} from 'expo-router'
+import Skeleton from '../skeleton/Skeleton'
 
 const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; userId: number | null}) => {
-  const {friend_status} = useFriends()
+  const {friend_status, isLoadingFriendStatus} = useFriends()
   const {profile} = useProfile()
   const router = useRouter()
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={friend_status?.friends || []}
+        data={friend_status?.friends}
+        ListEmptyComponent={
+          isLoadingFriendStatus ? (
+            <View style={{flexDirection: 'row', gap: 20, marginLeft: 20}}>
+              <View style={{gap: 10}}>
+                <Skeleton height={50} width={50} type="circle" />
+                <Skeleton height={15} width={50} />
+              </View>
+              <View style={{gap: 10}}>
+                <Skeleton height={50} width={50} type="circle" />
+                <Skeleton height={15} width={50} />
+              </View>
+              <View style={{gap: 10}}>
+                <Skeleton height={50} width={50} type="circle" />
+                <Skeleton height={15} width={50} />
+              </View>
+              <View style={{gap: 10}}>
+                <Skeleton height={50} width={50} type="circle" />
+                <Skeleton height={15} width={50} />
+              </View>
+            </View>
+          ) : null
+        }
         renderItem={({item}) => (
           <View style={styles.friendItem}>
             <FriendStatusProfile
-              choice={{
-                id: userId || profile.id!,
-              }}
+              choice={{id: userId || profile.id!}}
               friendStatus={item}
               onClick={() => {
                 // game id 가 있으면 오늘의 티켓

@@ -1,8 +1,9 @@
 import ProfileImageBox from '@/components/common/ProfileImageBox'
+import Skeleton from '@/components/skeleton/Skeleton'
 import Tag from '@/components/Tag'
-import useTeam from '@/hooks/match/useTeam'
-import useTicketListByTeam from '@/hooks/match/useTicketListByTeam'
-import useProfile from '@/hooks/my/useProfile'
+import useTeam, {Team} from '@/hooks/match/useTeam'
+import useTicketListByTeam, {TicketListByTeam} from '@/hooks/match/useTicketListByTeam'
+import useProfile, {Profile} from '@/hooks/my/useProfile'
 import {format} from 'date-fns'
 import {router} from 'expo-router'
 import React from 'react'
@@ -10,7 +11,7 @@ import {View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native
 
 const MyTicketBoxScreen = () => {
   const {profile} = useProfile()
-  const {ticketList, onChangeTeam, selectedTeamId} = useTicketListByTeam()
+  const {ticketList, onChangeTeam, selectedTeamId, isLoading} = useTicketListByTeam()
   const {findTeamById, teams} = useTeam()
   const myTeam = findTeamById(profile.my_team?.id)
 
@@ -22,7 +23,7 @@ const MyTicketBoxScreen = () => {
           <View>
             <Text style={styles.name}>{profile.nickname} 님</Text>
             <Text style={styles.team}>
-              {profile.my_team?.name} 팬 · 승요력 {profile.predict_ratio}%
+              {profile.my_team?.name} 팬 · 승요력 <Text style={{color: '#2D68FF'}}>{profile.predict_ratio}%</Text>
             </Text>
           </View>
         </View>
@@ -48,56 +49,95 @@ const MyTicketBoxScreen = () => {
       </View>
 
       <View style={styles.likeBoxContainer}>
-        {ticketList?.length ? (
-          ticketList?.map(ticket => {
-            const homeTeam = findTeamById(Number(ticket.hometeam_id))
-            const awayTeam = findTeamById(Number(ticket.awayteam_id))
-
+        {(() => {
+          if (isLoading) {
             return (
-              <View key={ticket.id} style={styles.teamCard}>
-                <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 12}}>
-                  <View style={[styles.teamLabel, {backgroundColor: homeTeam?.color}]} />
-                  <View style={{gap: 4, paddingVertical: 8}}>
-                    <View style={styles.teamInfo}>
-                      <Text style={styles.teamName}>{homeTeam?.short_name}</Text>
-                      <Text style={styles.teamSub}>{` VS `}</Text>
-                      <Text style={styles.teamName}>{awayTeam?.short_name}</Text>
-                    </View>
-                    <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
-                    <Text style={styles.date}>{format(ticket.date, 'yyyy.MM.dd')}</Text>
-                  </View>
-                </View>
-                <View>
-                  <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() =>
-                      router.push({
-                        pathname: '/write/todayTicketCard',
-                        params: {
-                          id: ticket.id,
-                          target_id: profile.id,
-                          from_ticket_box: 'true',
-                        },
-                      })
-                    }
-                    style={{
-                      backgroundColor: '#1E5EF4',
-                      padding: 8,
-                      borderRadius: 30,
-                    }}>
-                    <Text style={{color: 'white', fontSize: 13, fontWeight: 500}}>티켓보기</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+              <>
+                <Skeleton height={100} width="100%" />
+                <Skeleton height={100} width="100%" />
+                <Skeleton height={100} width="100%" />
+              </>
             )
-          })
-        ) : (
-          <View style={{alignItems: 'center', justifyContent: 'center', height: 100}}>
-            <Text style={{fontSize: 14, fontWeight: 400, color: '#171716'}}>해당 경기 티켓이 없어요.</Text>
-          </View>
-        )}
+          }
+
+          return (
+            <>
+              {ticketList?.length ? (
+                ticketList?.map(ticket => {
+                  const homeTeam = findTeamById(Number(ticket.hometeam_id))
+                  const awayTeam = findTeamById(Number(ticket.awayteam_id))
+
+                  return (
+                    <TicketCard
+                      key={ticket.id}
+                      ticket={ticket}
+                      homeTeam={homeTeam}
+                      awayTeam={awayTeam}
+                      onClick={() =>
+                        router.push({
+                          pathname: '/write/todayTicketCard',
+                          params: {id: ticket.id, target_id: profile.id, from_ticket_box: 'true'},
+                        })
+                      }
+                    />
+                  )
+                })
+              ) : (
+                <View style={{alignItems: 'center', justifyContent: 'center', height: 100}}>
+                  <Text style={{fontSize: 14, fontWeight: 400, color: '#171716'}}>해당 경기 티켓이 없어요.</Text>
+                </View>
+              )}
+            </>
+          )
+        })()}
       </View>
     </ScrollView>
+  )
+}
+
+type TicketTeam = {
+  id: number
+  logo: any
+  name: any
+  short_name: any
+  color: any
+}
+
+type TicketCardProps = {
+  ticket: TicketListByTeam
+  homeTeam?: TicketTeam
+  awayTeam?: TicketTeam
+  onClick: () => void
+}
+
+const TicketCard = ({ticket, homeTeam, awayTeam, onClick}: TicketCardProps) => {
+  return (
+    <View style={styles.teamCard}>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 12}}>
+        <View style={[styles.teamLabel, {backgroundColor: homeTeam?.color}]} />
+        <View style={{gap: 4, paddingVertical: 8}}>
+          <View style={styles.teamInfo}>
+            <Text style={styles.teamName}>{homeTeam?.short_name}</Text>
+            <Text style={styles.teamSub}>{` VS `}</Text>
+            <Text style={styles.teamName}>{awayTeam?.short_name}</Text>
+          </View>
+          <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
+          <Text style={styles.date}>{format(ticket.date, 'yyyy.MM.dd')}</Text>
+        </View>
+      </View>
+      <View>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onClick}
+          style={{
+            backgroundColor: '#1E5EF4',
+            padding: 8,
+            borderRadius: 30,
+          }}>
+          <Text style={{color: 'white', fontSize: 13, fontWeight: 500}}>티켓보기</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 

@@ -151,7 +151,7 @@ const TicketPage = () => {
 
   const onSubmit = async () => {
     if (isPending) return
-
+    setIsPending(true)
     const resizedImage = await ImageResizer.createResizedImage(
       writeData.todayImg?.uri || '', // 원본 이미지
       800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
@@ -163,7 +163,68 @@ const TicketPage = () => {
       false, // 메타데이터 유지 여부
     )
 
-    setIsPending(true)
+    const formData = new FormData()
+
+    formData.append('image', {
+      uri: resizedImage?.uri, // 리사이징된 이미지 URI 사용
+      type: writeData.todayImg?.type, // 원본 이미지의 MIME 타입 유지
+      name: 'image.png',
+    } as any)
+
+    formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
+    formData.append('game', String(writeStore.selectedMatch?.id || ''))
+    formData.append('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
+    formData.append('weather', writeStore.selectedWeather)
+    formData.append('is_ballpark', JSON.stringify(tabMenu === '직관'))
+
+    formData.append('score_our', writeData.todayScore.our)
+    formData.append('score_opponent', writeData.todayScore.opponent)
+
+    // 선발선수
+    formData.append('starting_pitchers', writeData.matchPlayer)
+
+    // 경기구단
+    formData.append('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
+
+    // 직관푸드
+    formData.append('food', writeData.todayFood)
+
+    // 오늘의 소감
+    formData.append('memo', writeData.todayThoughts)
+    formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
+
+    //나만보기
+    formData.append('only_me', JSON.stringify(writeData.onlyMeCheck))
+    formData.append('is_double', JSON.stringify(isDirectWrite))
+
+    // hometeam_id
+    formData.append('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
+    formData.append('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
+    formData.append('direct_yn', JSON.stringify(isDirectWrite))
+    formData.append('is_cheer', JSON.stringify(isCheer))
+
+    registerTicket(formData)
+      .then(() => {
+        console.log('티켓 발급 성공')
+        setIsPending(false)
+      })
+      .catch(async () => {
+        console.log('티켓 발급 실패')
+        await onSaveDataWhenFailedSubmit()
+      })
+  }
+
+  const onSaveDataWhenFailedSubmit = async () => {
+    const resizedImage = await ImageResizer.createResizedImage(
+      writeData.todayImg?.uri || '', // 원본 이미지
+      800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
+      800, // 리사이즈할 세로 크기
+      'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
+      100, // 품질 (0 ~ 100)
+      0, // 회전 (0 = 그대로)
+      undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
+      false, // 메타데이터 유지 여부
+    )
 
     await FileSystem.uploadAsync(`${process.env.EXPO_PUBLIC_API_URL}/tickets/ticket_add/`, resizedImage.uri, {
       fieldName: 'image',
@@ -216,71 +277,6 @@ const TicketPage = () => {
       .finally(() => {
         setIsPending(false)
       })
-
-    // console.log('📏 리사이징된 이미지:', resizedImage.uri)
-
-    // // formData.append('image', writeData.todayImg as any)
-
-    // formData.append('image', {
-    //   uri: resizedImage.uri, // 리사이징된 이미지 URI 사용
-    //   type: writeData.todayImg?.type, // 원본 이미지의 MIME 타입 유지
-    //   name: 'image.png',
-    // } as any)
-
-    // // const base64 = await getBase64(resizedImage.uri)
-    // // formData.append('image', `data:image/png;base64,${base64}`)
-
-    // formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
-    // console.log('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
-    // formData.append('game', String(writeStore.selectedMatch?.id || ''))
-    // console.log('game', String(writeStore.selectedMatch?.id || ''))
-    // formData.append('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
-    // console.log('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
-    // formData.append('weather', writeStore.selectedWeather)
-    // console.log('weather', writeStore.selectedWeather)
-    // formData.append('is_ballpark', JSON.stringify(tabMenu === '직관'))
-    // console.log('is_ballpark', JSON.stringify(tabMenu === '직관'))
-
-    // formData.append('score_our', writeData.todayScore.our)
-    // console.log('score_our', writeData.todayScore.our)
-    // formData.append('score_opponent', writeData.todayScore.opponent)
-    // console.log('score_opponent', writeData.todayScore.opponent)
-
-    // // 선발선수
-    // formData.append('starting_pitchers', writeData.matchPlayer)
-    // console.log('starting_pitchers', writeData.matchPlayer)
-
-    // // 경기구단
-    // formData.append('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
-    // console.log('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
-
-    // // 직관푸드
-    // formData.append('food', writeData.todayFood)
-    // console.log('food', writeData.todayFood)
-
-    // // 오늘의 소감
-    // formData.append('memo', writeData.todayThoughts)
-    // console.log('memo', writeData.todayThoughts)
-    // formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
-    // console.log('is_homeballpark', JSON.stringify(tabMenu === '집관'))
-
-    // //나만보기
-    // formData.append('only_me', JSON.stringify(writeData.onlyMeCheck))
-    // console.log('only_me', JSON.stringify(writeData.onlyMeCheck))
-    // formData.append('is_double', JSON.stringify(isDirectWrite))
-    // console.log('is_double', JSON.stringify(isDirectWrite))
-
-    // // hometeam_id
-    // formData.append('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
-    // console.log('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
-    // formData.append('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
-    // console.log('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
-    // formData.append('direct_yn', JSON.stringify(isDirectWrite))
-    // console.log('direct_yn', JSON.stringify(isDirectWrite))
-    // formData.append('is_cheer', JSON.stringify(isCheer))
-    // console.log('is_cheer', JSON.stringify(isCheer))
-
-    // registerTicket(formData)
   }
 
   const uploadPhoto = async () => {

@@ -3,6 +3,16 @@ import {useQueries} from '@tanstack/react-query'
 import {useLogin} from '../auth/useLogin'
 import {DAYS_OF_WEEK} from '@/constants/day'
 
+type TicketResult = Record<
+  'is_ballpark_win_rate' | 'is_not_ballpark_win_rate',
+  {
+    win_count: number
+    loss_count: number
+    draw_count: number
+    cancel_count: number
+  }
+>
+
 const useMyStat = () => {
   const {user} = useLogin()
 
@@ -13,8 +23,8 @@ const useMyStat = () => {
         staleTime: 1000 * 20,
         // 직관승률
         queryFn: () =>
-          ApiClient.get<number>('/tickets/win_percnet/', {
-            ballpark_gbn: true,
+          ApiClient.get<{win_percent: number}>('/tickets/win_percnet/', {
+            is_ballpark: true,
           }),
       },
       {
@@ -22,8 +32,8 @@ const useMyStat = () => {
         staleTime: 1000 * 20,
         // 집관승률
         queryFn: () =>
-          ApiClient.get<number>('/tickets/win_percnet/', {
-            ballpark_gbn: false,
+          ApiClient.get<{win_percent: number}>('/tickets/win_percnet/', {
+            is_ballpark: false,
           }),
       },
       {
@@ -68,13 +78,7 @@ const useMyStat = () => {
         staleTime: 1000 * 20,
         // 티켓 경기 결과
         // TODO: API 연동 필요
-        queryFn: () =>
-          ApiClient.get<{
-            win_count: number
-            loss_count: number
-            draw_count: number
-            cancel_count: number
-          }>('/tickets/win_rate_calculation/'),
+        queryFn: () => ApiClient.get<TicketResult>('/tickets/win_rate_calculation/'),
       },
     ],
     combine(result) {
@@ -106,9 +110,9 @@ const useMyStat = () => {
       return {
         data: {
           // 직관승률
-          winSitePercent: winSitePercent?.data ?? 0,
+          winSitePercent: winSitePercent?.data?.win_percent ?? 0,
           // 집관승률
-          winHomePercent: winHomePercent?.data ?? 0,
+          winHomePercent: winHomePercent?.data?.win_percent ?? 0,
           // 나의 승요 요일
           weekdayMostWin: weekdayMostWinDay,
           // 나의 최대 연승
@@ -118,7 +122,13 @@ const useMyStat = () => {
           // 나의 최다 관람 구장
           mostWatchStadium: mostWatchStadium.data?.most_wins_ballpark ?? '-',
           // 티켓 경기 결과
-          winRateCalculation: winRateCalculation?.data ?? {
+          ballparkWinRateCalculation: winRateCalculation?.data?.is_ballpark_win_rate ?? {
+            win_count: 0,
+            loss_count: 0,
+            draw_count: 0,
+            cancel_count: 0,
+          },
+          notBallparkWinRateCalculation: winRateCalculation?.data?.is_not_ballpark_win_rate ?? {
             win_count: 0,
             loss_count: 0,
             draw_count: 0,

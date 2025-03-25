@@ -177,14 +177,14 @@ export const uploadFile = async <T>(url: string, data: FormData): Promise<T> => 
     const response = await axiosInstance.post<T>(url, data, {
       headers: {
         accept: 'application/json',
-        'Content-Type': 'multipart/form-data;boundary="boundary"',
+        'Content-Type': 'multipart/form-data;',
       },
       maxBodyLength: Infinity, // ✅ 큰 파일 허용
     })
 
     return response.data
   } catch (error) {
-    // console.log(JSON.stringify(error))
+    console.log(JSON.stringify(error))
     console.error('Error occurred during upload file:', error)
     console.log((error as any)?.message)
     return Promise.reject(error)

@@ -46,7 +46,11 @@ const useFriends = () => {
     staleTime: 20 * 1000,
   })
 
-  const {data: friend_status, refetch: refetchFriendStatus} = useQuery({
+  const {
+    data: friend_status,
+    refetch: refetchFriendStatus,
+    isLoading: isLoadingFriendStatus,
+  } = useQuery({
     queryKey: ['friend', 'friend_status', user],
     queryFn: () => ApiClient.get<FriendStatusList>('/users/friends/'),
     enabled: Boolean(isLogined),
@@ -69,6 +73,7 @@ const useFriends = () => {
     friend_status: friend_status,
     checkIsFriend,
     reloadFriendList,
+    isLoadingFriendStatus,
   }
 }
 

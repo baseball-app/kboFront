@@ -219,10 +219,17 @@ const EditTicketPage = () => {
       formData.append('is_double', JSON.stringify(isDirectWrite))
       console.log('is_double', JSON.stringify(isDirectWrite))
 
-      updateTicket(formData).finally(() => {
-        setIsPending(false)
-        router.back()
-      })
+      updateTicket(formData)
+        .then(() => {
+          initializeTicketInfo()
+          router.back()
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+        .finally(() => {
+          setIsPending(false)
+        })
     } else {
       const image = writeData?.todayImg
 
@@ -237,7 +244,7 @@ const EditTicketPage = () => {
         false, // 메타데이터 유지 여부
       )
 
-      await FileSystem.uploadAsync(`${process.env.EXPO_PUBLIC_API_URL}/tickets/ticket_upd/`, resizedImage.uri, {
+      await FileSystem.uploadAsync(`${process.env.EXPO_PUBLIC_API_URL}/tickets/ticket_upd/`, resizedImage?.uri || '', {
         fieldName: 'image',
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
         parameters: {

@@ -2,7 +2,7 @@ import ApiClient from '@/api'
 import {useQuery, useQueryClient} from '@tanstack/react-query'
 import React, {useState} from 'react'
 
-type TicketListByTeam = {
+export type TicketListByTeam = {
   id: number
   date: string // '2025-03-22'
   writer_id: number
@@ -21,31 +21,15 @@ type TicketListByTeam = {
 
 const useTicketListByTeam = () => {
   const [teamId, setTeamId] = useState<number>(0)
-  const queryClient = useQueryClient()
 
-  const prefetchTicketListByTeam = async (teamId: number) => {
-    const queryKey = ['ticketListByTeam', teamId]
-    const data = queryClient.getQueryData<TicketListByTeam[]>(queryKey)
-
-    if (data) return
-
-    return queryClient.prefetchQuery({
-      queryKey,
-      queryFn: () =>
-        ApiClient.get<TicketListByTeam[]>(
-          '/tickets/ticket_list/',
-          teamId === 999 ? {is_cheer: false} : teamId ? {team_id: teamId, favorite: false} : {favorite: true},
-        ),
-    })
-  }
-  const {data: ticketList} = useQuery({
+  const {data: ticketList, isLoading} = useQuery({
     queryKey: ['ticketListByTeam', teamId],
     queryFn: () =>
       ApiClient.get<TicketListByTeam[]>(
         '/tickets/ticket_list/',
         teamId === 999
           ? {
-              is_cheer: false,
+              is_cheer: true,
             }
           : teamId
           ? {
@@ -59,15 +43,14 @@ const useTicketListByTeam = () => {
   })
 
   const onChangeTeam = (teamId: number) => {
-    prefetchTicketListByTeam(teamId).finally(() => {
-      setTeamId(teamId)
-    })
+    setTeamId(teamId)
   }
 
   return {
     ticketList,
     onChangeTeam,
     selectedTeamId: teamId,
+    isLoading,
   }
 }
 
