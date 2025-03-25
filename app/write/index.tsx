@@ -237,7 +237,7 @@ const DailyLogWriteScreen = () => {
       <View style={[styles.buttonBox, {paddingBottom: 16 + insets.bottom}]}>
         <TouchableOpacity
           activeOpacity={1}
-          style={nextButtonEnabled ? styles.nextButton : styles.nextDisabledButton}
+          style={[{justifyContent: 'center'}, nextButtonEnabled ? styles.nextButton : styles.nextDisabledButton]}
           onPress={nextButtonClick}
           disabled={!nextButtonEnabled}>
           <Text style={nextButtonEnabled ? styles.buttonText : styles.buttonDisabledText}>
@@ -322,6 +322,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 14,
     borderRadius: 10,
+    height: 50,
   },
   buttonText: {
     color: '#fff',

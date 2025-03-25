@@ -305,6 +305,13 @@ const TicketPage = () => {
     }
   }
 
+  const isEnabled =
+    writeData.todayScore.our &&
+    writeData.todayScore.opponent &&
+    writeData.matchPlayer &&
+    (writeData.matchPlace || writeStore.selectedPlace) &&
+    writeData.todayImg
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.stepHeaderBox}>
@@ -485,7 +492,10 @@ const TicketPage = () => {
       </KeyboardAvoidingView>
 
       <View style={[styles.footerButtonBox, {paddingBottom: 16}]}>
-        <TouchableOpacity style={[styles.footerButton, styles.activeButton]} onPress={onSubmit}>
+        <TouchableOpacity
+          style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
+          disabled={!isEnabled}
+          onPress={onSubmit}>
           {isPending ? (
             <LottieView
               source={require('@/assets/lottie/loading.json')}
@@ -682,7 +692,7 @@ const styles = StyleSheet.create({
   },
   footerButtonBox: {
     width: '100%',
-    marginTop: 32,
+    marginTop: 16,
   },
   footerButton: {
     backgroundColor: '#E4E2DC',
@@ -868,5 +878,11 @@ const styles = StyleSheet.create({
   },
   activeButtonText: {
     color: '#FFFFFF',
+  },
+  disabledButton: {
+    backgroundColor: '#D0CEC7',
+  },
+  disabledButtonText: {
+    color: '#171716',
   },
 })

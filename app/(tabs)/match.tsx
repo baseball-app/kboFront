@@ -3,7 +3,7 @@ import {View} from 'react-native'
 import MatchTeamBox from '@/components/MatchTeamBox'
 import MatchCalendar from '@/components/MatchCalendar'
 import MatchTopNotificationComponent from '@/app/match/components/MatchTopNotificationComponent'
-import {useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import EmptyMatchView from '@/components/match/EmptyMatchView'
 import useMatch, {Match} from '@/hooks/match/useMatch'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
@@ -13,6 +13,7 @@ import useProfile from '@/hooks/my/useProfile'
 import {usePopup} from '@/slice/commonSlice'
 import Skeleton from '@/components/skeleton/Skeleton'
 import React from 'react'
+import {useSegments} from 'expo-router'
 
 const LoadingMatchView = () => {
   return (
@@ -43,10 +44,17 @@ const MatchScreen = () => {
     moveToWriteTicket(selectedDate, match)
   }
 
+  const segments = useSegments()
+  const ref = useRef<FlatList>(null)
+  useEffect(() => {
+    ref.current?.scrollToOffset({offset: 0})
+  }, [segments])
+
   return (
     <View style={styles.container}>
       <MatchTopNotificationComponent />
       <FlatList
+        ref={ref}
         contentContainerStyle={styles.flatList}
         data={matchingList}
         ListEmptyComponent={isPending ? <LoadingMatchView /> : <EmptyMatchView onClick={onClickMatch} />}

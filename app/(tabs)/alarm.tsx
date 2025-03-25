@@ -1,16 +1,26 @@
-import {StyleSheet, View, FlatList} from 'react-native'
+import {StyleSheet, View, FlatList, ScrollView} from 'react-native'
 
 import useNotification from '@/hooks/notification/useNotification'
 import NotificationCard from '@/components/alarm/NotificationCard'
 import dayjs from 'dayjs'
 import EmptyNotificationView from '@/components/alarm/EmptyNotificationView'
+import {useRef} from 'react'
+import {useEffect} from 'react'
+import {useSegments} from 'expo-router'
 
 const AlarmScreen = () => {
   const {notificationList, onClickNotification, fetchNextPage} = useNotification()
 
+  const segments = useSegments()
+  const ref = useRef<FlatList>(null)
+  useEffect(() => {
+    ref.current?.scrollToOffset({offset: 0})
+  }, [segments])
+
   return (
     <View style={styles.wrapper}>
       <FlatList
+        ref={ref}
         data={notificationList} //  || notificationList
         keyExtractor={_ => String(_.id)}
         ListEmptyComponent={<EmptyNotificationView />}

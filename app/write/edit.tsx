@@ -278,6 +278,7 @@ const EditTicketPage = () => {
           console.log('err', err)
         })
         .finally(() => {
+          initializeTicketInfo()
           setIsPending(false)
           router.back()
         })
@@ -308,6 +309,9 @@ const EditTicketPage = () => {
       [key]: value,
     }))
   }
+
+  const isEnabled =
+    writeData.homeTeam.score && writeData.awayTeam.score && writeData.player && writeData.place && writeData.todayImg
 
   return (
     <SafeAreaView style={styles.container}>
@@ -484,7 +488,10 @@ const EditTicketPage = () => {
       </KeyboardAvoidingView>
 
       <View style={[styles.footerButtonBox, {paddingBottom: 16}]}>
-        <TouchableOpacity style={[styles.footerButton, styles.activeButton]} onPress={onSubmit}>
+        <TouchableOpacity
+          style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
+          onPress={onSubmit}
+          disabled={!isEnabled}>
           {isPending ? (
             <LottieView
               source={require('@/assets/lottie/loading.json')}
@@ -493,7 +500,9 @@ const EditTicketPage = () => {
               style={{width: 100, height: 100}}
             />
           ) : (
-            <Text style={[styles.footerButtonText, styles.activeButtonText]}>오늘의 티켓 발급하기</Text>
+            <Text style={[styles.footerButtonText, isEnabled ? styles.activeButtonText : styles.disabledButtonText]}>
+              오늘의 티켓 발급하기
+            </Text>
           )}
         </TouchableOpacity>
       </View>
@@ -685,7 +694,7 @@ const styles = StyleSheet.create({
   },
   footerButtonBox: {
     width: '100%',
-    marginTop: 32,
+    marginTop: 16,
   },
   footerButton: {
     backgroundColor: '#E4E2DC',
@@ -693,6 +702,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  disabledButton: {
+    backgroundColor: '#E4E2DC',
+  },
+  disabledButtonText: {
+    color: '#77756C',
   },
   footerButtonText: {
     color: '#77756C',

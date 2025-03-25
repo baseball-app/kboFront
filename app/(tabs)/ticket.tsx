@@ -5,9 +5,9 @@ import useTeam, {Team} from '@/hooks/match/useTeam'
 import useTicketListByTeam, {TicketListByTeam} from '@/hooks/match/useTicketListByTeam'
 import useProfile, {Profile} from '@/hooks/my/useProfile'
 import {format} from 'date-fns'
-import {router} from 'expo-router'
-import React from 'react'
-import {View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native'
+import {router, useSegments} from 'expo-router'
+import React, {useEffect, useRef} from 'react'
+import {View, Text, TouchableOpacity, ScrollView, StyleSheet, FlatList} from 'react-native'
 
 const MyTicketBoxScreen = () => {
   const {profile} = useProfile()
@@ -15,8 +15,14 @@ const MyTicketBoxScreen = () => {
   const {findTeamById, teams} = useTeam()
   const myTeam = findTeamById(profile.my_team?.id)
 
+  const segments = useSegments()
+  const ref = useRef<ScrollView>(null)
+  useEffect(() => {
+    ref.current?.scrollTo({y: 0})
+  }, [segments])
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} ref={ref}>
       <View style={styles.infoBox}>
         <View style={styles.profileCard}>
           <ProfileImageBox source={profile.profile_image} />

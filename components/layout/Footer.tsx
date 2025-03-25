@@ -51,7 +51,6 @@ const footerList = [
 const Footer = () => {
   const router = useRouter()
   const segments = useSegments()
-  const {ticketList} = useTicketListByTeam()
 
   const currentPath = `/${segments.join('/')}`
 
@@ -64,7 +63,12 @@ const Footer = () => {
               <TouchableOpacity
                 key={item.name}
                 onPress={() => {
-                  router.push(item.path)
+                  if (currentPath === item.path) {
+                    // 현재 경로와 탭 경로가 같으면 스크롤을 맨 위로 이동
+                  } else {
+                    // 다른 탭으로 이동
+                    router.navigate(item.path)
+                  }
                 }}
                 style={styles.tabButton}>
                 <Image

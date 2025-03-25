@@ -2,17 +2,18 @@ import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react
 import Calendar from '@/components/home/Calendar'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
-import {usePathname, useRouter} from 'expo-router'
+import {usePathname, useRouter, useSegments} from 'expo-router'
 import GameContainer from '@/components/game/GameContainer'
 import useMatch from '@/hooks/match/useMatch'
 import dayjs from 'dayjs'
 import {usePopup} from '@/slice/commonSlice'
 import useDiary from '@/hooks/diary/useDiary'
 import useProfile from '@/hooks/my/useProfile'
-import {useEffect} from 'react'
+import {useEffect, useRef} from 'react'
 import useNotification from '@/hooks/notification/useNotification'
 import useFriends from '@/hooks/my/useFriends'
 import Skeleton from '@/components/skeleton/Skeleton'
+import {useScrollToTop} from '@react-navigation/native'
 
 const CalendarScreen = () => {
   const router = useRouter()
@@ -76,10 +77,16 @@ const CalendarScreen = () => {
     })
   }
 
+  const segments = useSegments()
+  const ref = useRef<ScrollView>(null)
+  useEffect(() => {
+    ref.current?.scrollTo({y: 0})
+  }, [segments])
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FriendList setUserId={setUserId} userId={userId} />
-      <ScrollView style={styles.scollContainer}>
+      <ScrollView style={styles.scollContainer} ref={ref}>
         <GameContainer selectedUserName={selectedUserName} />
         <View style={{marginBottom: 70}}>
           <Calendar
