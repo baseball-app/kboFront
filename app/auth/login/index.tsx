@@ -94,7 +94,7 @@ export default function LoginScreen() {
               <TouchableOpacity style={styles.appleButton} onPress={handleSignInApple}>
                 <Image
                   source={require('@/assets/icons/apple.png')}
-                  style={[styles.loginIcon, {height: 18, marginBottom: 3}]}
+                  style={[styles.loginIcon, {height: 18, marginBottom: 2}]}
                 />
                 <Text style={styles.appleButtonText}>Apple로 시작하기</Text>
               </TouchableOpacity>
@@ -203,10 +203,9 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   loginIcon: {
-    marginRight: 5,
+    marginRight: 4,
     width: 14,
     height: 14,
-    // aspectRatio: 12 / 12, // This maintains the 327:50 ratio
   },
   naverButton: {
     backgroundColor: '#03C75A',
