@@ -32,10 +32,10 @@ const AlarmScreen = () => {
         renderItem={({item}) => (
           <View style={{marginInline: 24}}>
             <NotificationCard
-              type={item.type}
-              userName={item.user_info.nickname}
-              isRead={item.is_read}
-              date={dayjs(item.created_at).format('YY.MM.DD')}
+              type={item?.type}
+              userName={item?.user_info?.nickname}
+              isRead={item?.is_read}
+              date={dayjs(item?.created_at).format('YY.MM.DD')}
               onClick={() => onClickNotification(item)}
             />
           </View>

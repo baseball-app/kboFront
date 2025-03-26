@@ -31,7 +31,7 @@ const NotificationCard = ({type, userName, isRead, date, onClick}: Props) => {
       <View style={styles.titleSection}>
         <View style={styles.title}>
           <View style={[styles.status, notificationCard.style.bg]} />
-          <Text style={[styles.title, notificationCard.style.color]}>{notificationCard.info.title}</Text>
+          <Text style={[styles.title, notificationCard.style.color]}>{notificationCard?.info?.title}</Text>
         </View>
         <Text style={styles.date}>{date}</Text>
       </View>

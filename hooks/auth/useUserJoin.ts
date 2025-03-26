@@ -65,11 +65,11 @@ const useUserJoin = () => {
   const moveToNextStep = () => {
     try {
       const nextStep = getNextStep(currentStep)
-
       if (!nextStep) {
+        router.dismissAll()
         signUp()
       } else {
-        router.push(nextStep)
+        router.navigate(nextStep)
       }
     } catch (error) {
       // 경로 잘못 설정했을 때, 발생하는 에러

@@ -36,7 +36,8 @@ const useWriteTicket = () => {
     writeStore.clearState()
     queryClient.invalidateQueries({queryKey: ['tickets']})
 
-    router.push({
+    router.dismiss()
+    router.navigate({
       pathname: '/write/todayTicketCard', //
       params: {id: id, target_id: profile.id},
     })

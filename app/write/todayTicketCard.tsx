@@ -17,9 +17,6 @@ export default function GameCard() {
   const {id, date, target_id, from_ticket_box} = useLocalSearchParams()
   const {findTeamById} = useTeam()
 
-  const navigationState = useRootNavigationState()
-  const previousRoute = navigationState.routes.at(-1)?.name || ''
-
   const {
     ticketDetail, //
     onChangeTicket,
@@ -42,9 +39,6 @@ export default function GameCard() {
     : require('@/assets/icons/heart.png')
 
   const onBackButtonClick = () => {
-    if (previousRoute.includes('write')) {
-      router.dismiss(2)
-    }
     router.back()
   }
 
