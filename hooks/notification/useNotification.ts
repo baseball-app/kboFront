@@ -1,8 +1,9 @@
 import ApiClient from '@/api'
 import {Pagination} from '@/types/generic'
-import {InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
+import {InfiniteData, useInfiniteQuery, useMutation, useQueryClient} from '@tanstack/react-query'
 import {router} from 'expo-router'
 import {useRef} from 'react'
+import useProfile from '../my/useProfile'
 
 type NotificationType = 'FRIEND_FEEDBACK' | 'FRIEND_UPDATE'
 
@@ -25,8 +26,9 @@ type InfiniteNotificationData = InfiniteData<Pagination<Notification>, unknown> 
 
 const useNotification = () => {
   const queryClient = useQueryClient()
+  const {profile} = useProfile()
 
-  const {data, fetchNextPage, hasNextPage} = useInfiniteQuery({
+  const {data, fetchNextPage, hasNextPage, refetch} = useInfiniteQuery({
     queryKey: ['notification'],
     queryFn: ({pageParam}) => ApiClient.get<Pagination<Notification>>('/notifications/', {page: pageParam}),
     getNextPageParam: ({last_page}, allPages, lastPageParam, allPageParams) =>
@@ -53,6 +55,8 @@ const useNotification = () => {
         ...notification,
         pages: updatedPagesData,
       })
+
+      refetch()
     }
   }
 
@@ -84,14 +88,16 @@ const useNotification = () => {
    */
   const onClickNotification = (notification: Notification) => {
     if (!notification.is_read) {
-      onUpdateNotificationStatus({id: notification.ticket, is_read: true})
+      onUpdateNotificationStatus({id: notification.id, is_read: true})
     }
+
+    const targetId = notification.type === 'FRIEND_FEEDBACK' ? profile.id : notification.user_info.id
 
     router.push({
       pathname: '/write/todayTicketCard',
       params: {
         id: notification.ticket,
-        target_id: notification.user_info.id,
+        target_id: targetId,
       },
     })
   }
