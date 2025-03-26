@@ -49,6 +49,8 @@ export type TicketDetail = {
   favorite: boolean
 } & Reaction
 
+type UpdateReactionParam = {reaction_pos: 'add' | 'del'; reaction_type: ReactionType}
+
 const reactionTypeList: {key: ReactionType; title: string; count: number}[] = [
   {key: 'laugh', title: '😁', count: 0},
   {key: 'wink', title: '🤣', count: 0},
@@ -76,6 +78,29 @@ const useTicketDetail = (id: number | string, targetId: number) => {
   const initializeTicketInfo = () => {
     queryClient.invalidateQueries({queryKey: ['ticket', id, targetId]})
     refetch()
+  }
+
+  /**
+   * 직관일기 반응 추가 시 최적화 업데이트
+   * @param param0
+   */
+  const optimisticUpdateReaction = ({reaction_pos, reaction_type}: UpdateReactionParam) => {
+    queryClient.setQueryData(['ticket', id, targetId], (old: TicketDetail[]) =>
+      old.map(ticket =>
+        ticket.id === ticketDetail?.id
+          ? {
+              ...ticket,
+              [reaction_type]: reaction_pos === 'add' ? ticket[reaction_type] + 1 : ticket[reaction_type] - 1,
+            }
+          : ticket,
+      ),
+    )
+    queryClient.setQueryData(['ticket', id, 'reaction'], (old: Reaction) => {
+      return {
+        ...old,
+        [reaction_type]: reaction_pos === 'add' ? old[reaction_type] + 1 : old[reaction_type] - 1,
+      }
+    })
   }
 
   const {data, isSuccess, refetch} = useQuery({
@@ -119,8 +144,9 @@ const useTicketDetail = (id: number | string, targetId: number) => {
 
   // 직관일기 반응 추가
   const {mutateAsync: addReaction} = useMutation({
-    mutationFn: (data: {reaction_pos: 'add' | 'del'; reaction_type: ReactionType}) =>
+    mutationFn: (data: UpdateReactionParam) =>
       ApiClient.post(`/tickets/ticket_reaction/`, {...data, id: Number(ticketDetail?.id)}),
+    onMutate: optimisticUpdateReaction,
     onSuccess: () => {
       initializeTicketInfo()
       queryClient.invalidateQueries({queryKey: ['ticket', id, 'reaction']})
