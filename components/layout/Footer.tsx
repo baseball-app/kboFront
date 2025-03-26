@@ -30,7 +30,7 @@ const footerList = [
     },
   },
   {
-    name: '알람',
+    name: '알림',
     path: router_address.TAB.ALARM,
     icon: {
       active: require('@/assets/icons/tabMenu/alarmMenuActive.png'),
