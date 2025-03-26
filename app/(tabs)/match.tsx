@@ -28,7 +28,7 @@ const LoadingMatchView = () => {
 
 const MatchScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const {matchingList, prefetchMatchList, isPending} = useMatch({selectedDate})
+  const {matchingList, isPending} = useMatch({selectedDate})
   const {moveToWriteTicket} = useWriteTicket()
   const {openCommonPopup} = usePopup()
 

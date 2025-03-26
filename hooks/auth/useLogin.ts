@@ -47,11 +47,13 @@ export const useLogin = () => {
     })
   }
 
-  const login = async (channel: Channel, code: string) => {
+  const login = async (channel: Channel, code: string, id_token?: string) => {
     try {
       const data = await ApiClient.post<LoginServerResponse>(`/auths/${channel}/`, {
         code,
         state: 'string',
+        id_token: id_token || '',
+        native: channel === 'apple',
       })
 
       resetToken(data)

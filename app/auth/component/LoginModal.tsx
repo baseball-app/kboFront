@@ -51,9 +51,7 @@ const LoginModal = ({
           source={{uri: url}}
           onNavigationStateChange={navState => {
             // onNavigationStateChange 함수가 loading 중일 때와 아닐 때 두번 호출되어 에러 발생하는 현상 방지
-            console.log('navState', navState)
             if (navState.loading || isAlreadyRequest.current) return
-            console.log('navState', navState)
 
             const code = (navState as NavState).url?.split('code=')[1]?.split('&')[0]
 
