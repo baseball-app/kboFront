@@ -76,8 +76,8 @@ const useTicketDetail = (id: number | string, targetId: number) => {
   }
 
   const initializeTicketInfo = () => {
-    queryClient.invalidateQueries({queryKey: ['ticket', id, targetId]})
-    refetch()
+    queryClient.invalidateQueries({queryKey: ['ticket']})
+    return refetch()
   }
 
   /**

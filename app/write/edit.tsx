@@ -168,7 +168,7 @@ const EditTicketPage = () => {
     const formData = new FormData()
 
     if (typeof writeData?.todayImg === 'string') {
-      formData.append('image', writeData?.todayImg)
+      // formData.append('image', writeData?.todayImg)
 
       formData.append('id', String(ticketDetail?.id))
       console.log('id', String(ticketDetail?.id))
@@ -221,8 +221,7 @@ const EditTicketPage = () => {
 
       updateTicket(formData)
         .then(() => {
-          initializeTicketInfo()
-          router.back()
+          initializeTicketInfo().finally(() => router.back())
         })
         .catch(err => {
           console.log('err', err)
