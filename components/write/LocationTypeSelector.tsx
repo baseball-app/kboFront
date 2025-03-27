@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
-import {Image, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Modal} from '@/components/common/Modal'
 
 type Props = {
   value: string

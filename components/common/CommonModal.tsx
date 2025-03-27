@@ -1,7 +1,7 @@
 import {useCommonSlice} from '@/slice/commonSlice'
 import React from 'react'
-import {Modal, View, Text, TouchableOpacity, StyleSheet} from 'react-native'
-
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import {Modal} from '@/components/common/Modal'
 const CommonModal = () => {
   const {currentModal, modal} = useCommonSlice()
 
@@ -11,7 +11,7 @@ const CommonModal = () => {
     <Modal //
       transparent
       visible={!!currentModal}
-      animationType="fade"
+      animationType="none"
       onRequestClose={modal.hide}
       onDismiss={modal.hide}>
       <View style={styles.overlay}>

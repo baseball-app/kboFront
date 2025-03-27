@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet, Modal} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 import {format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
 import {useRouter} from 'expo-router'
@@ -10,7 +10,7 @@ import ApiClient from '@/api'
 import {TicketDetail} from '@/hooks/match/useTicketDetail'
 import {Match} from '@/hooks/match/useMatch'
 import WheelPicker from '../WheelPicker'
-
+import {Modal} from '@/components/common/Modal'
 export type TicketCalendarLog = {
   id: number // 5
   date: string // '2025-03-22'

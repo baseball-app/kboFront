@@ -8,10 +8,10 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
-  Modal,
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
+import {Modal} from '@/components/common/Modal'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import React from 'react'

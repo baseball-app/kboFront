@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
-import {View, Text, StyleSheet, Modal, TouchableOpacity, Image} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
 import {modal} from '../write/LocationTypeSelector'
+import {Modal} from '@/components/common/Modal'
 
 type Props = {
   title: string

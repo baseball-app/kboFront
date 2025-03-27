@@ -8,10 +8,10 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
-  Modal,
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
+import {Modal} from '@/components/common/Modal'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
@@ -25,7 +25,6 @@ import useProfile from '@/hooks/my/useProfile'
 import useTeam, {Team} from '@/hooks/match/useTeam'
 import SelectBox from '@/components/common/SelectBox'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
-import useTicketDetail from '@/hooks/match/useTicketDetail'
 import LottieView from 'lottie-react-native'
 
 import * as FileSystem from 'expo-file-system'

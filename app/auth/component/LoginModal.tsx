@@ -1,7 +1,7 @@
-import {Modal} from 'react-native'
 import WebView, {WebViewMessageEvent} from 'react-native-webview'
 import {SafeAreaView, StyleSheet} from 'react-native'
 import {useRef} from 'react'
+import {Modal} from '@/components/common/Modal'
 
 interface LoginModalProps {
   showWebView: boolean
