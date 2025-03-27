@@ -414,6 +414,7 @@ const EditTicketPage = () => {
                   value={writeData?.place}
                   onChangeText={value => onChangeValue('place', value)}
                   placeholder="집관 장소를 기록해주세요"
+                  maxLength={20}
                 />
               ) : (
                 <>
@@ -439,6 +440,7 @@ const EditTicketPage = () => {
                 value={writeData?.player} //
                 onChangeText={value => onChangeValue('player', value)}
                 placeholder="선수 이름을 기록해주세요"
+                maxLength={20}
               />
 
               <Input
@@ -446,6 +448,7 @@ const EditTicketPage = () => {
                 value={writeData?.food} //
                 onChangeText={value => onChangeValue('food', value)}
                 placeholder="오늘 먹은 직관푸드를 기록해주세요"
+                maxLength={25}
               />
 
               <Input
@@ -477,6 +480,7 @@ const EditTicketPage = () => {
                 value={writeData?.memo} //
                 onChangeText={value => onChangeValue('memo', value)}
                 placeholder="오늘의 소감을 기록해주세요"
+                maxLength={200}
                 multiline={true}
                 numberOfLines={6}
                 style={{height: 125, textAlign: 'left'}}

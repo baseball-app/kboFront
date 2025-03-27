@@ -419,6 +419,7 @@ const TicketPage = () => {
                   value={writeData.matchPlace}
                   onChangeText={value => handleInputChange('matchPlace', value)}
                   placeholder="집관 장소를 기록해주세요"
+                  maxLength={20}
                 />
               ) : (
                 <>
@@ -444,6 +445,7 @@ const TicketPage = () => {
                 value={writeData.matchPlayer} //
                 onChangeText={value => handleInputChange('matchPlayer', value)}
                 placeholder="선수 이름을 기록해주세요"
+                maxLength={20}
               />
 
               <Input
@@ -451,6 +453,7 @@ const TicketPage = () => {
                 value={writeData.todayFood} //
                 onChangeText={value => handleInputChange('todayFood', value)}
                 placeholder="오늘 먹은 직관푸드를 기록해주세요"
+                maxLength={25}
               />
 
               <Input
@@ -484,6 +487,7 @@ const TicketPage = () => {
                 placeholder="오늘의 소감을 기록해주세요"
                 multiline={true}
                 numberOfLines={6}
+                maxLength={200}
                 style={{height: 125, textAlign: 'left'}}
               />
             </View>

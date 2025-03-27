@@ -227,16 +227,30 @@ export default function GameCard() {
                     </Text>
                   </View>
                   <View style={styles.infoBox}>
-                    <Text style={styles.infoLabel}>오늘의 집관장소</Text>
-                    <Text style={styles.infoValue}>{ticketDetail?.gip_place}</Text>
+                    <Text style={styles.infoLabel}>
+                      {ticketDetail?.is_ballpark ? '오늘의 경기구장' : '오늘의 집관장소'}
+                    </Text>
+                    <View style={{flex: 1}}>
+                      <Text style={[styles.infoValue, {lineHeight: 17}]} numberOfLines={2}>
+                        {ticketDetail?.gip_place}
+                      </Text>
+                    </View>
                   </View>
                   <View style={styles.infoBox}>
                     <Text style={styles.infoLabel}>오늘의 선발선수</Text>
-                    <Text style={styles.infoValue}>{ticketDetail?.starting_pitchers}</Text>
+                    <View style={{flex: 1}}>
+                      <Text style={[styles.infoValue, {lineHeight: 17}]} numberOfLines={2}>
+                        {ticketDetail?.starting_pitchers}
+                      </Text>
+                    </View>
                   </View>
                   <View style={styles.infoBox}>
                     <Text style={styles.infoLabel}>오늘의 직관푸드</Text>
-                    <Text style={styles.infoValue}>{ticketDetail?.food}</Text>
+                    <View style={{flex: 1}}>
+                      <Text style={[styles.infoValue, {lineHeight: 17}]} numberOfLines={2}>
+                        {ticketDetail?.food}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -521,7 +535,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     width: '100%',
-    paddingVertical: 8,
+    // paddingVertical: 8,
     paddingHorizontal: 22,
     alignItems: 'center',
     gap: 30,
@@ -530,6 +544,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 19.6,
+    width: 90,
   },
   infoValue: {
     fontWeight: '500',
