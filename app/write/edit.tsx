@@ -500,7 +500,7 @@ const EditTicketPage = () => {
             />
           ) : (
             <Text style={[styles.footerButtonText, isEnabled ? styles.activeButtonText : styles.disabledButtonText]}>
-              오늘의 티켓 발급하기
+              티켓 정보 변경하기
             </Text>
           )}
         </TouchableOpacity>
