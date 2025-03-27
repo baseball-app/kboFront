@@ -2,21 +2,23 @@ import Header from '@/components/common/Header'
 import Input from '@/components/common/Input'
 import MyStat from '@/components/ticket/MyStat'
 import StatBox from '@/components/ticket/StatBox'
+import useProfile from '@/hooks/my/useProfile'
 import useMyStat from '@/hooks/stat/useMyStat'
 import {router} from 'expo-router'
 import React from 'react'
-import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Image, ScrollView, StyleSheet, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
 export default function MyStatScreen() {
   const {data} = useMyStat()
+  const {profile} = useProfile()
 
   return (
     <SafeAreaView style={styles.container}>
       <Header title="나의 승요력" variants="transparent" />
       <ScrollView>
         <View style={styles.section}>
-          <MyStat percentage={(data?.winSitePercent + data?.winHomePercent) / 2} />
+          <MyStat percentage={profile?.predict_ratio || 0} />
         </View>
         <View style={styles.row}>
           <StatBox
