@@ -29,7 +29,7 @@ const useTicketListByTeam = () => {
         '/tickets/ticket_list/',
         teamId === 999
           ? {
-              is_cheer: true,
+              is_cheer: false,
             }
           : teamId
           ? {
@@ -37,6 +37,7 @@ const useTicketListByTeam = () => {
               favorite: false,
             }
           : {
+              is_cheer: true,
               favorite: true,
             },
       ),
