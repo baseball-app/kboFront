@@ -34,7 +34,7 @@ const useTicketListByTeam = () => {
           : teamId
           ? {
               team_id: teamId,
-              favorite: false,
+              is_cheer: false,
             }
           : {
               is_cheer: true,
