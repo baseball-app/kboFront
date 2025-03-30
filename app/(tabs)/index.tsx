@@ -1,4 +1,4 @@
-import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react-native'
+import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View, Platform} from 'react-native'
 import Calendar from '@/components/home/Calendar'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
@@ -141,11 +141,14 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 8, // Android shadow
-    shadowColor: '#000', // iOS shadow
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
+
+    elevation: 4, // Android shadow
+
+    // iOS shadow
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 3},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
 })
 
