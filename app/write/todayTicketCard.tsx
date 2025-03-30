@@ -115,16 +115,16 @@ export default function GameCard() {
               <View style={{position: 'relative', width: '100%'}}>
                 <MaskedView
                   style={{
-                    aspectRatio: 307 / 220,
+                    aspectRatio: 307 / 270,
                   }}
                   maskElement={
-                    <Svg height="100%" width="100%" viewBox="0 0 307 220">
+                    <Svg height="100%" width="100%" viewBox="0 0 307 270">
                       <Path
                         fill="white"
                         d={`
                           M0 0 
                           H307 
-                          V220 
+                          V270 
                           H0 
                           Z
                           
@@ -146,15 +146,15 @@ export default function GameCard() {
                     source={{
                       uri: ticketDetail?.image,
                     }}
-                    style={{width: '100%', height: 260}}
+                    style={{width: '100%', aspectRatio: 307 / 270}}
                     resizeMode="cover"
                   />
-                  <Svg height="100%" width="100%" viewBox="0 0 307 220" style={{position: 'absolute', top: 0, left: 0}}>
+                  <Svg height="100%" width="100%" viewBox="0 0 307 270" style={{position: 'absolute', top: 0, left: 0}}>
                     <Path
                       d={`
                           M0 0 
                           H307 
-                          V220 
+                          V270 
                           H0 
                           Z
                           
@@ -305,7 +305,9 @@ export default function GameCard() {
                                 <Text style={styles.onlyMeText}>나만보기</Text>
                               </View>
                               <View style={styles.thoughtsTextBox}>
-                                <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
+                                <Text style={styles.thoughtsText} numberOfLines={9}>
+                                  {ticketDetail?.memo}
+                                </Text>
                               </View>
                             </>
                           )

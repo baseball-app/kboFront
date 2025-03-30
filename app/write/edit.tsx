@@ -293,7 +293,7 @@ const EditTicketPage = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
-      aspect: [307, 220],
+      aspect: [307, 270],
       selectionLimit: 1,
     } as ImagePicker.ImagePickerOptions)
 
@@ -646,7 +646,7 @@ const styles = StyleSheet.create({
   },
   imageUploadBox: {
     width: '100%',
-    aspectRatio: 307 / 220,
+    aspectRatio: 307 / 270,
     backgroundColor: '#F3F2EE',
     borderRadius: 10,
     alignItems: 'center',
