@@ -38,7 +38,21 @@ const WheelPicker: React.FC<Props> = ({items, onItemChange, itemHeight, initValu
   useEffect(() => {
     const list = ['', ...items, '']
     setModifiedItems(list)
-    flatListRef.current?.scrollToIndex({index: initValueIndex >= 0 ? initValueIndex : 1})
+
+    console.log(initValueIndex, list, list[list.length - 2])
+
+    try {
+      if (initValueIndex >= 0) {
+        flatListRef.current?.scrollToIndex({index: initValueIndex})
+      } else {
+        if (!list[list.length - 2]) return
+
+        onItemChange?.(list[list.length - 2])
+        flatListRef.current?.scrollToIndex({index: list.length - 2})
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }, [items])
 
   const renderItem = ({item, index}: ListRenderItemInfo<string>) => {

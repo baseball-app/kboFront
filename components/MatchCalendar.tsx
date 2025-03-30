@@ -3,6 +3,9 @@ import {View, Text, TouchableOpacity, StyleSheet, Platform} from 'react-native'
 import {format, startOfWeek, addDays, isSameDay, isToday, addWeeks} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
 import {DAYS_OF_WEEK} from '@/constants/day'
+import {Modal} from './common/Modal'
+import WheelPicker from './WheelPicker'
+import dayjs from 'dayjs'
 
 type Props = {
   onChange: (date: Date) => void
@@ -13,21 +16,82 @@ type MatchCalendarHeaderProps = {
   prevMonth: () => void
   nextMonth: () => void
   currentDate: Date
+  setCurrentDate: (date: Date) => void
 }
 
-const MatchCalendarHeader = ({prevMonth, nextMonth, currentDate}: MatchCalendarHeaderProps) => {
+const MatchCalendarHeader = ({setCurrentDate, prevMonth, nextMonth, currentDate}: MatchCalendarHeaderProps) => {
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
+  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
+  const [selectedDay, setSelectedDay] = useState(currentDate.getDate())
+
+  const handleMonthYearChange = () => {
+    setIsModalVisible(prev => !prev)
+  }
+
+  const selectedDayjs = dayjs(`${selectedYear}-${selectedMonth}-01`)
+  const dayList = Array.from({length: selectedDayjs.daysInMonth()}, (_, i) => `${i + 1}일`)
+
   return (
-    <View style={styles.header}>
-      <TouchableOpacity onPress={prevMonth} style={styles.headerTextContainer}>
-        <Ionicons name="chevron-back" size={24} color="black" />
-      </TouchableOpacity>
-      <View style={[styles.headerTextContainer, {width: 100}]}>
-        <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
+    <>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={prevMonth} style={styles.headerTextContainer}>
+          <Ionicons name="chevron-back" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.headerTextContainer, {width: 100}]} onPress={handleMonthYearChange}>
+          <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={nextMonth} style={styles.headerTextContainer}>
+          <Ionicons name="chevron-forward" size={24} color="black" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={nextMonth} style={styles.headerTextContainer}>
-        <Ionicons name="chevron-forward" size={24} color="black" />
-      </TouchableOpacity>
-    </View>
+      {isModalVisible && (
+        <Modal key={JSON.stringify(isModalVisible)} visible={isModalVisible} transparent={true} animationType="slide">
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
+              <View style={styles.datePickerContainer}>
+                <WheelPicker
+                  items={Array.from({length: 10}, (_, i) => `${2020 + i}년`)}
+                  itemHeight={42}
+                  initValue={`${selectedYear}년`}
+                  onItemChange={item => setSelectedYear(Number(item.replaceAll(/\D/g, '')))}
+                  containerStyle={{width: '30%'}}
+                />
+                <WheelPicker
+                  items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
+                  itemHeight={42}
+                  initValue={`${selectedMonth}월`}
+                  onItemChange={item => setSelectedMonth(Number(item.replaceAll(/\D/g, '')))}
+                  containerStyle={{width: '30%'}}
+                />
+                <WheelPicker
+                  items={dayList}
+                  itemHeight={42}
+                  initValue={`${selectedDay}일`}
+                  onItemChange={item => setSelectedDay(Number(item.replaceAll(/\D/g, '')))}
+                  containerStyle={{width: '30%'}}
+                />
+              </View>
+              <View style={styles.buttonBox}>
+                <TouchableOpacity style={styles.cancelButton} onPress={() => setIsModalVisible(false)}>
+                  <Text style={styles.cancelText}>취소</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.confirmButton}
+                  onPress={() => {
+                    setCurrentDate(dayjs(`${selectedYear}-${selectedMonth}-${selectedDay}`).toDate())
+                    setIsModalVisible(false)
+                  }}>
+                  <Text style={styles.confirmText}>완료</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      )}
+    </>
   )
 }
 
@@ -88,7 +152,15 @@ const MatchCalendar = ({onChange, value}: Props) => {
 
   return (
     <View style={styles.container}>
-      <MatchCalendarHeader prevMonth={prevMonth} nextMonth={nextMonth} currentDate={currentDate} />
+      <MatchCalendarHeader
+        setCurrentDate={date => {
+          setCurrentDate(date)
+          onChange(date)
+        }}
+        prevMonth={prevMonth}
+        nextMonth={nextMonth}
+        currentDate={currentDate}
+      />
       <MatchCalendarBody
         currentDate={currentDate}
         selectedDate={value}
@@ -174,6 +246,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 134,
     overflow: 'hidden',
+    justifyContent: 'space-between',
   },
   picker: {
     flex: 1,
