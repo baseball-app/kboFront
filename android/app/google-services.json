@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "610413259926",
+    "project_id": "kboapp-fae76",
+    "storage_bucket": "kboapp-fae76.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610413259926:android:d81440a3a21a805432e6b7",
+        "android_client_info": {
+          "package_name": "xyz.kboapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSSQMXA9CWxBuS1lgLfbthrJIZnXb4u1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
