@@ -28,15 +28,21 @@ const useTicketListByTeam = () => {
       ApiClient.get<TicketListByTeam[]>(
         '/tickets/ticket_list/',
         teamId === 999
-          ? {
+          ? // 타구단
+            {
               is_cheer: false,
             }
           : teamId
-          ? {
+          ? // 팀 선택
+            // team_id 팀 아이디를 드림
+            // 1. 나의 전체 티켓에서 내 팀 아이디로 필터링
+            // 2. 제가 드린 team_id로 필터링
+            {
               team_id: teamId,
-              is_cheer: false,
+              is_cheer: true,
             }
-          : {
+          : // 최애경기
+            {
               is_cheer: true,
               favorite: true,
             },
