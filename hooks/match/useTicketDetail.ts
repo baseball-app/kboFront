@@ -178,6 +178,9 @@ const useTicketDetail = (id: number | string, targetId: number) => {
         old.map((ticket, index) => (index === ticketIndex ? {...ticket, favorite} : ticket)),
       )
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['ticketListByTeam']})
+    },
   })
 
   const toggleFavorite = () => {
