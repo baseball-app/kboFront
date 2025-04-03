@@ -30,6 +30,8 @@ import LottieView from 'lottie-react-native'
 import * as FileSystem from 'expo-file-system'
 import {useLogin} from '@/hooks/auth/useLogin'
 import Toast from 'react-native-toast-message'
+import {logEvent} from '@/analytics/func'
+import {EVENTS, useAnalyticsStore} from '@/analytics/event'
 const getBase64 = async (uri: string) => {
   const base64 = await FileSystem.readAsStringAsync(uri, {
     encoding: FileSystem.EncodingType.Base64,
@@ -68,6 +70,7 @@ const TicketPage = () => {
   const {profile} = useProfile()
   const {user} = useLogin()
   const [isPending, setIsPending] = useState(false)
+  const {diary_create, screen_name} = useAnalyticsStore()
 
   const {findTeamById, teams} = useTeam()
 
@@ -204,6 +207,11 @@ const TicketPage = () => {
 
     registerTicket(formData)
       .then(() => {
+        logEvent(EVENTS.DIARY_CREATE, {
+          method: diary_create, //
+          screen_name,
+          type: tabMenu,
+        })
         console.log('티켓 발급 성공')
         setIsPending(false)
       })
