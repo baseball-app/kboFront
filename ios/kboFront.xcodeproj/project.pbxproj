@@ -13,6 +13,7 @@
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		44E654A30CA0472A9A681229 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F472115C8544C1B0AFA004 /* noop-file.swift */; };
 		4D32FB8149F8D1625FAC5A18 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 84921E8C6D322D9774AE147B /* PrivacyInfo.xcprivacy */; };
+		632E20622D9D6FCB00EEDF06 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 632E20612D9D6FCB00EEDF06 /* GoogleService-Info.plist */; };
 		75553523B607DC527ADAE9EF /* Pods_kboFront.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E37DE4593026F34A666807E /* Pods_kboFront.framework */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
@@ -25,6 +26,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = kboFront/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = kboFront/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = kboFront/main.m; sourceTree = "<group>"; };
+		632E20612D9D6FCB00EEDF06 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-kboFront.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kboFront.debug.xcconfig"; path = "Target Support Files/Pods-kboFront/Pods-kboFront.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-kboFront.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kboFront.release.xcconfig"; path = "Target Support Files/Pods-kboFront/Pods-kboFront.release.xcconfig"; sourceTree = "<group>"; };
 		84921E8C6D322D9774AE147B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = kboFront/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 				B5F472115C8544C1B0AFA004 /* noop-file.swift */,
 				8EC0A7C51E6E447A8237AF31 /* kboFront-Bridging-Header.h */,
 				84921E8C6D322D9774AE147B /* PrivacyInfo.xcprivacy */,
+				632E20612D9D6FCB00EEDF06 /* GoogleService-Info.plist */,
 			);
 			name = kboFront;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 			files = (
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				632E20622D9D6FCB00EEDF06 /* GoogleService-Info.plist in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				4D32FB8149F8D1625FAC5A18 /* PrivacyInfo.xcprivacy in Resources */,
 			);

@@ -14,7 +14,7 @@ import useNotification from '@/hooks/notification/useNotification'
 import useFriends from '@/hooks/my/useFriends'
 import Skeleton from '@/components/skeleton/Skeleton'
 import {useScrollToTop} from '@react-navigation/native'
-
+import {useAnalyticsStore} from '@/analytics/event'
 const CalendarScreen = () => {
   const router = useRouter()
   const {openCommonPopup} = usePopup()
@@ -28,6 +28,7 @@ const CalendarScreen = () => {
     setCurrentDate,
     currentDate, //
   } = useDiary()
+  const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const {friend_status} = useFriends()
 
   const selectedUserName = (() => {
@@ -67,6 +68,11 @@ const CalendarScreen = () => {
       openCommonPopup(`오늘의 야구 티켓은 최대 2번까지만\n작성하실 수 있어요!`)
       return
     }
+
+    // ga 데이터 수집용도
+    setScreenName(pathname)
+    setDiaryCreate('메인 버튼')
+    // ga 데이터 수집용도
 
     // 오늘 날짜로 이동
     router.push({

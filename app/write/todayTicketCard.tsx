@@ -2,7 +2,7 @@ import {findMatchResultImage, findWeatherImage} from '@/constants/match'
 import useTeam from '@/hooks/match/useTeam'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {format} from 'date-fns'
-import {useLocalSearchParams, useRootNavigationState, useRouter} from 'expo-router'
+import {useLocalSearchParams, usePathname, useRootNavigationState, useRouter} from 'expo-router'
 import React, {useRef, useState} from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -11,6 +11,7 @@ import Svg, {Path} from 'react-native-svg'
 import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
 import Ellipse from '@/components/common/Ellipse'
+import {useAnalyticsStore} from '@/analytics/event'
 
 export default function GameCard() {
   const router = useRouter()
@@ -26,6 +27,8 @@ export default function GameCard() {
     reactionList,
     toggleReaction,
   } = useTicketDetail(Number(id) || (date as string), Number(target_id))
+  const {setScreenName, setDiaryCreate} = useAnalyticsStore()
+  const pathname = usePathname()
 
   const {profile} = useProfile()
 
@@ -339,6 +342,10 @@ export default function GameCard() {
             {Number(data?.length) <= 1 && isMyTicket && (
               <TouchableOpacity
                 onPress={() => {
+                  // ga 데이터 수집용도
+                  setScreenName(pathname)
+                  setDiaryCreate('메인 버튼')
+                  // ga 데이터 수집용도
                   router.push({pathname: '/write', params: {date: ticketDetail?.date}})
                 }}
                 style={{

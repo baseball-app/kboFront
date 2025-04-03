@@ -28,6 +28,8 @@ import useTicketDetail from '@/hooks/match/useTicketDetail'
 import LottieView from 'lottie-react-native'
 import * as FileSystem from 'expo-file-system'
 import {useLogin} from '@/hooks/auth/useLogin'
+import {logEvent} from '@/analytics/func'
+import {EVENTS} from '@/analytics/event'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined | string
   matchTeam: Team | null
@@ -270,6 +272,7 @@ const EditTicketPage = () => {
         },
       })
         .then((res: any) => {
+          logEvent(EVENTS.DIARY_EDIT, {entry_id: ticketDetail?.id})
           initializeTicketInfo()
           console.log('res', res)
         })
