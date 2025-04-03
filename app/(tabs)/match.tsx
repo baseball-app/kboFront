@@ -13,8 +13,8 @@ import useProfile from '@/hooks/my/useProfile'
 import {usePopup} from '@/slice/commonSlice'
 import Skeleton from '@/components/skeleton/Skeleton'
 import React from 'react'
-import {useSegments} from 'expo-router'
-
+import {usePathname, useSegments} from 'expo-router'
+import {useAnalyticsStore} from '@/analytics/event'
 const LoadingMatchView = () => {
   return (
     <>
@@ -31,6 +31,8 @@ const MatchScreen = () => {
   const {matchingList, isPending} = useMatch({selectedDate})
   const {moveToWriteTicket} = useWriteTicket()
   const {openCommonPopup} = usePopup()
+  const {setScreenName, setDiaryCreate} = useAnalyticsStore()
+  const pathname = usePathname()
 
   const {profile} = useProfile()
   const {data, isSuccess} = useTicketDetail(dayjs(selectedDate).format('YYYY-MM-DD'), Number(profile?.id))
@@ -71,7 +73,11 @@ const MatchScreen = () => {
         renderItem={({item: match}) => (
           <MatchTeamBox
             match={match} //
-            onClick={() => onClickMatch(match)}
+            onClick={() => {
+              setScreenName(pathname)
+              setDiaryCreate('경기 일정')
+              onClickMatch(match)
+            }}
           />
         )}
         ListFooterComponent={
