@@ -553,7 +553,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 19.6,
-    width: 90,
+    width: 95,
   },
   infoValue: {
     fontWeight: '500',
