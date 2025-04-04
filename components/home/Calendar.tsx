@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 import {format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
-import {useRouter} from 'expo-router'
+import {usePathname, useRouter} from 'expo-router'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import MatchResultCell from '../MatchResultCell'
 import {useQueryClient} from '@tanstack/react-query'
@@ -11,6 +11,7 @@ import {TicketDetail} from '@/hooks/match/useTicketDetail'
 import {Match} from '@/hooks/match/useMatch'
 import WheelPicker from '../WheelPicker'
 import {Modal} from '@/components/common/Modal'
+import {useAnalyticsStore} from '@/analytics/event'
 export type TicketCalendarLog = {
   id: number // 5
   date: string // '2025-03-22'
@@ -47,7 +48,9 @@ const Calendar = ({
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
+  const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const router = useRouter()
+  const pathname = usePathname()
 
   const renderHeader = () => {
     return (
@@ -96,6 +99,10 @@ const Calendar = ({
       if (isMyDiary) {
         // 해당 날짜 경기 일정 prefetch
         prefetchMatchList(targetDate).finally(() => {
+          // ga 데이터 수집용도
+          setScreenName(pathname)
+          setDiaryCreate('메인 버튼')
+          // ga 데이터 수집용도
           router.push({pathname: '/write', params: {date: targetDate}})
         })
       }

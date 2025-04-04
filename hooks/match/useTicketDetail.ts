@@ -1,9 +1,10 @@
 import ApiClient, {uploadFile} from '@/api'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import {RegisterTicket} from './useWriteTicket'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import useProfile from '../my/useProfile'
 import {usePopup} from '@/slice/commonSlice'
+import {logEvent} from '@/analytics/func'
+import {EVENTS} from '@/analytics/event'
 
 //
 export type ReactionType =
@@ -147,8 +148,14 @@ const useTicketDetail = (id: number | string, targetId: number) => {
     mutationFn: (data: UpdateReactionParam) =>
       ApiClient.post(`/tickets/ticket_reaction/`, {...data, id: Number(ticketDetail?.id)}),
     onMutate: optimisticUpdateReaction,
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       initializeTicketInfo()
+      if (variables.reaction_pos === 'add') {
+        logEvent(EVENTS.TICKET_REACTION, {
+          ticket_id: ticketDetail?.id, //
+          reaction_type: variables.reaction_type,
+        })
+      }
       queryClient.invalidateQueries({queryKey: ['ticket', id, 'reaction']})
     },
     onError: (error, variables, context) => {
