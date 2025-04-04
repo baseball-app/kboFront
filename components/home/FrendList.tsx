@@ -3,13 +3,16 @@ import React from 'react'
 import {View, StyleSheet, FlatList} from 'react-native'
 import FriendStatusProfile from './FriendStatusProfile'
 import useProfile from '@/hooks/my/useProfile'
-import {useRouter} from 'expo-router'
+import {usePathname, useRouter} from 'expo-router'
 import Skeleton from '../skeleton/Skeleton'
+import {logEvent} from '@/analytics/func'
+import {EVENTS} from '@/analytics/event'
 
 const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; userId: number | null}) => {
   const {friend_status, isLoadingFriendStatus} = useFriends()
   const {profile} = useProfile()
   const router = useRouter()
+  const pathname = usePathname()
 
   return (
     <View style={styles.container}>
@@ -45,6 +48,7 @@ const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; u
               onClick={() => {
                 // game id 가 있으면 오늘의 티켓
                 // 없으면 친구의 달력
+                logEvent(EVENTS.FRIEND_PROFILE_VIEW, {friend_id: item.id, screen_name: pathname})
                 if (item.ticket_info?.id) {
                   router.push({
                     pathname: '/write/todayTicketCard', //

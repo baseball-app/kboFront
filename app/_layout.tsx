@@ -1,11 +1,9 @@
 import 'react-native-gesture-handler'
 import 'react-native-reanimated'
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
 import {Stack, usePathname} from 'expo-router'
 import {useFonts} from 'expo-font'
-
 import * as SplashScreen from 'expo-splash-screen'
-
 import {enableScreens} from 'react-native-screens'
 import QueryProvider from '@/components/provider/QueryProvider'
 import CommonModal from '@/components/common/CommonModal'
@@ -13,6 +11,8 @@ import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
 import {Text, View, TextInput} from 'react-native'
 import DeepLinkProvider from '@/components/provider/DeepLinkProvider'
 import Toast, {ToastConfig} from 'react-native-toast-message'
+import {EVENTS} from '@/analytics/event'
+import {logEvent} from '@/analytics/func'
 
 interface TextWithDefaultProps extends Text {
   defaultProps?: {allowFontScaling?: boolean}
@@ -42,7 +42,6 @@ const toastConfig: ToastConfig = {
 }
 
 enableScreens(false)
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 
 SplashScreen.preventAutoHideAsync()
 
@@ -58,11 +57,9 @@ export default function RootLayout() {
     // pathname이 write가 아닌 다른 페이지의 경우 전역상태 값을 초기화 시킴
     // TODO: 전역상태kbo로 굳이 관리할 필요 없을 것 같음 -> 직관일기 작성 페이지 리팩터링 후 수정 예정
     if (!pathname.includes('/write')) dailyWriteStore.clearState()
-  }, [pathname])
 
-  // useEffect(() => {
-  //   if (loaded) SplashScreen.hideAsync()
-  // }, [loaded])
+    logEvent(EVENTS.SCREEN_VIEW, {screen_name: pathname})
+  }, [pathname])
 
   if (!loaded) return null
 

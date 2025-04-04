@@ -41,9 +41,8 @@ const useTicketListByTeam = () => {
               team_id: teamId,
               is_cheer: true,
             }
-          : // 최애경기
-            {
-              is_cheer: true,
+          : {
+              // is_cheer: true,
               favorite: true,
             },
       ),

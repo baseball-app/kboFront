@@ -1,3 +1,5 @@
+import {EVENTS} from '@/analytics/event'
+import {logEvent} from '@/analytics/func'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
 import Skeleton from '@/components/skeleton/Skeleton'
 import Tag from '@/components/Tag'
@@ -5,7 +7,7 @@ import useTeam, {Team} from '@/hooks/match/useTeam'
 import useTicketListByTeam, {TicketListByTeam} from '@/hooks/match/useTicketListByTeam'
 import useProfile, {Profile} from '@/hooks/my/useProfile'
 import {format} from 'date-fns'
-import {router, useSegments} from 'expo-router'
+import {router, useSegments, usePathname} from 'expo-router'
 import React, {useEffect, useRef} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, StyleSheet, FlatList} from 'react-native'
 
@@ -14,6 +16,7 @@ const MyTicketBoxScreen = () => {
   const {ticketList, onChangeTeam, selectedTeamId, isLoading} = useTicketListByTeam()
   const {findTeamById, teams} = useTeam()
   const myTeam = findTeamById(profile.my_team?.id)
+  const pathname = usePathname()
 
   const segments = useSegments()
   const ref = useRef<ScrollView>(null)
@@ -33,7 +36,12 @@ const MyTicketBoxScreen = () => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.button} onPress={() => router.push('/ticket/my-stat')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: pathname})
+            router.push('/ticket/my-stat')
+          }}>
           <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
         </TouchableOpacity>
       </View>
