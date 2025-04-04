@@ -164,7 +164,7 @@ const EditTicketPage = () => {
 
   const onSubmit = async () => {
     if (isPending) return
-
+    logEvent(EVENTS.DIARY_EDIT, {entry_id: ticketDetail?.id})
     setIsPending(true)
 
     const formData = new FormData()
@@ -272,7 +272,6 @@ const EditTicketPage = () => {
         },
       })
         .then((res: any) => {
-          logEvent(EVENTS.DIARY_EDIT, {entry_id: ticketDetail?.id})
           initializeTicketInfo()
           console.log('res', res)
         })
