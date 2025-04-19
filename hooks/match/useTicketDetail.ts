@@ -186,6 +186,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
       )
     },
     onSuccess: () => {
+      queryClient.removeQueries({queryKey: ['ticketListByTeam']})
       queryClient.invalidateQueries({queryKey: ['ticketListByTeam']})
     },
   })
