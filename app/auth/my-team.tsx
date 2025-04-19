@@ -23,8 +23,8 @@ export default function MyTeamScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>마이팀을{'\n'}선택해주세요</Text>
-        <Text style={styles.subtitle}>마이팀은 내가 응원하고 싶은{'\n'}최애 야구 구단을 뜻해요.</Text>
+        <Text style={styles.title}>마이팀 선택하기</Text>
+        <Text style={styles.subtitle}>내가 응원하고 싶은 마이팀을 선택해주세요</Text>
         <View style={styles.teamsGrid}>
           {teams?.map(team => (
             <TouchableOpacity
