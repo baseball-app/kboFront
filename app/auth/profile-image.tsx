@@ -39,8 +39,9 @@ export default function ProfileImageScreen() {
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
+          disabled={!profile}
           style={[styles.nextButton, Boolean(profile) && styles.nextButtonActive]}
-          onPress={moveToNextStep}>
+          onPress={() => Boolean(profile) && moveToNextStep()}>
           <Text style={[styles.nextButtonText, Boolean(profile) && styles.nextButtonTextActive]}>시작하기</Text>
         </TouchableOpacity>
       </View>
