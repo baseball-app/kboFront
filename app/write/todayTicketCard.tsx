@@ -12,11 +12,42 @@ import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
 import Ellipse from '@/components/common/Ellipse'
 import {useAnalyticsStore} from '@/analytics/event'
+import {captureRef} from 'react-native-view-shot'
+
+import * as MediaLibrary from 'expo-media-library'
+import * as FileSystem from 'expo-file-system'
 
 export default function GameCard() {
   const router = useRouter()
   const {id, date, target_id, from_ticket_box} = useLocalSearchParams()
   const {findTeamById} = useTeam()
+
+  // 티켓 카드 캡쳐
+  const viewRef = useRef(null)
+
+  const saveToGallery = async (uri: string) => {
+    const {status} = await MediaLibrary.requestPermissionsAsync()
+    if (status !== 'granted') {
+      console.log('권한이 거부됨')
+      return
+    }
+
+    try {
+      const asset = await MediaLibrary.createAssetAsync(uri)
+      await MediaLibrary.createAlbumAsync('MyApp', asset, false)
+      console.log('저장 완료!')
+    } catch (error) {
+      console.log('저장 실패:', error)
+    }
+  }
+
+  const onCapture = async () => {
+    const uri = await captureRef(viewRef, {
+      format: 'png',
+      quality: 1,
+    })
+    await saveToGallery(uri)
+  }
 
   const {
     ticketDetail, //
@@ -72,6 +103,9 @@ export default function GameCard() {
         }}
       />
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
+        <TouchableOpacity onPress={onCapture}>
+          <Text>저장하기</Text>
+        </TouchableOpacity>
         {isMyTicket && (
           <View style={styles.iconBox}>
             <TouchableOpacity onPress={toggleFavorite}>
@@ -99,7 +133,7 @@ export default function GameCard() {
             ))}
           </View>
         ) : null}
-        <View style={styles.ticketBox}>
+        <View ref={viewRef} collapsable={false} style={styles.ticketBox}>
           {Array.from({length: 10}).map((_, index) => (
             <View
               ref={dotRef}
