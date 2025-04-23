@@ -81,12 +81,18 @@ const MyTicketBoxScreen = () => {
                   const homeTeam = findTeamById(Number(ticket.hometeam_id))
                   const awayTeam = findTeamById(Number(ticket.awayteam_id))
 
+                  const opponentTeam = (() => {
+                    if (profile.my_team?.id === homeTeam?.id) return awayTeam
+                    if (profile.my_team?.id === awayTeam?.id) return homeTeam
+                  })()
+
                   return (
                     <TicketCard
                       key={ticket.id}
                       ticket={ticket}
                       homeTeam={homeTeam}
                       awayTeam={awayTeam}
+                      opponentTeam={opponentTeam}
                       onClick={() =>
                         router.push({
                           pathname: '/write/todayTicketCard',
@@ -121,14 +127,15 @@ type TicketCardProps = {
   ticket: TicketListByTeam
   homeTeam?: TicketTeam
   awayTeam?: TicketTeam
+  opponentTeam?: TicketTeam
   onClick: () => void
 }
 
-const TicketCard = ({ticket, homeTeam, awayTeam, onClick}: TicketCardProps) => {
+const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketCardProps) => {
   return (
     <View style={styles.teamCard}>
       <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 12}}>
-        <View style={[styles.teamLabel, {backgroundColor: homeTeam?.color}]} />
+        <View style={[styles.teamLabel, {backgroundColor: opponentTeam?.color ?? 'white'}]} />
         <View style={{gap: 4, paddingVertical: 8}}>
           <View style={styles.teamInfo}>
             <Text style={styles.teamName}>{homeTeam?.short_name}</Text>
