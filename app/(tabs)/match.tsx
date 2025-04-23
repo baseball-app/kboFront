@@ -52,6 +52,11 @@ const MatchScreen = () => {
     ref.current?.scrollToOffset({offset: 0})
   }, [segments])
 
+  // 페이지 이동 시, 날짜 초기화
+  useEffect(() => {
+    if (pathname !== '/match' && !pathname.includes('write')) setSelectedDate(new Date())
+  }, [pathname])
+
   return (
     <View style={styles.container}>
       <MatchTopNotificationComponent />
