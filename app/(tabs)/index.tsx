@@ -1,4 +1,4 @@
-import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View, Platform} from 'react-native'
+import {StyleSheet, ScrollView, Image, TouchableOpacity, View} from 'react-native'
 import Calendar from '@/components/home/Calendar'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
@@ -12,8 +12,6 @@ import useProfile from '@/hooks/my/useProfile'
 import {useEffect, useRef} from 'react'
 import useNotification from '@/hooks/notification/useNotification'
 import useFriends from '@/hooks/my/useFriends'
-import Skeleton from '@/components/skeleton/Skeleton'
-import {useScrollToTop} from '@react-navigation/native'
 import {useAnalyticsStore} from '@/analytics/event'
 const CalendarScreen = () => {
   const router = useRouter()
