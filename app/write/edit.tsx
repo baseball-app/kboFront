@@ -1,5 +1,5 @@
 import {useLocalSearchParams, useRouter} from 'expo-router'
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -314,6 +314,9 @@ const EditTicketPage = () => {
   const isEnabled =
     writeData.homeTeam.score && writeData.awayTeam.score && writeData.player && writeData.place && writeData.todayImg
 
+  const inputListRef = useRef<Record<string, TextInput>>({})
+  const scrollRef = useRef<ScrollView>(null)
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.stepHeaderBox}>
@@ -323,7 +326,7 @@ const EditTicketPage = () => {
         <Text style={styles.dateText}>{title}</Text>
       </View>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
           <View style={styles.tabMenuContainer}>
             <View style={styles.tabMenu}>
               {/* 직관, 집관 선택 컴포넌트 */}
@@ -348,6 +351,9 @@ const EditTicketPage = () => {
                         score: Number(value.replaceAll(/\D/g, '')),
                       })
                     }
+                    ref={ref => {
+                      if (ref) inputListRef.current['our'] = ref
+                    }}
                   />
                   <View style={styles.ellipseBox}>
                     <Ellipse />
@@ -366,6 +372,9 @@ const EditTicketPage = () => {
                         score: Number(value.replaceAll(/\D/g, '')),
                       })
                     }
+                    ref={ref => {
+                      if (ref) inputListRef.current['opponent'] = ref
+                    }}
                   />
                 </View>
                 <View style={styles.teamNmBox}>
@@ -417,6 +426,12 @@ const EditTicketPage = () => {
                   onChangeText={value => onChangeValue('place', value)}
                   placeholder="집관 장소를 기록해주세요"
                   maxLength={20}
+                  ref={ref => {
+                    if (ref) inputListRef.current['gip-place'] = ref
+                  }}
+                  returnKeyType="next"
+                  submitBehavior="newline"
+                  onSubmitEditing={() => inputListRef.current['player'].focus()}
                 />
               ) : (
                 <>
@@ -443,6 +458,12 @@ const EditTicketPage = () => {
                 onChangeText={value => onChangeValue('player', value)}
                 placeholder="선수 이름을 기록해주세요"
                 maxLength={20}
+                ref={ref => {
+                  if (ref) inputListRef.current['player'] = ref
+                }}
+                returnKeyType="next"
+                submitBehavior="newline"
+                onSubmitEditing={() => inputListRef.current['food'].focus()}
               />
 
               <Input
@@ -451,6 +472,15 @@ const EditTicketPage = () => {
                 onChangeText={value => onChangeValue('food', value)}
                 placeholder="오늘 먹은 직관푸드를 기록해주세요"
                 maxLength={25}
+                ref={ref => {
+                  if (ref) inputListRef.current['food'] = ref
+                }}
+                returnKeyType="next"
+                submitBehavior="submit"
+                onSubmitEditing={() => {
+                  inputListRef.current['thoughts'].focus()
+                  scrollRef.current?.scrollToEnd()
+                }}
               />
 
               <Input
@@ -486,6 +516,9 @@ const EditTicketPage = () => {
                 multiline={true}
                 numberOfLines={6}
                 style={{height: 125, textAlign: 'left'}}
+                ref={ref => {
+                  if (ref) inputListRef.current['thoughts'] = ref
+                }}
               />
             </View>
           </View>
