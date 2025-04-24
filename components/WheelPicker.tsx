@@ -1,15 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {
-  Animated,
-  FlatList,
-  ListRenderItemInfo,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  Platform,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from 'react-native'
+import {Animated, FlatList, ListRenderItemInfo, Platform, TouchableOpacity, View, ViewStyle} from 'react-native'
 
 interface Props {
   items: string[]
@@ -21,6 +11,7 @@ interface Props {
 
 const WheelPicker: React.FC<Props> = ({items, onItemChange, itemHeight, initValue, containerStyle}) => {
   const initValueIndex = initValue ? items.indexOf(initValue) : -1
+  // const [initValueIndex] = useState(initValue ? items.indexOf(initValue) : -1)
   const scrollY = useRef(new Animated.Value(initValueIndex >= 0 ? initValueIndex * itemHeight : 0)).current
   const [selectedIndex, setSelectedIndex] = useState(initValueIndex >= 0 ? initValueIndex : 0)
   const [isTrigger, setIsTrigger] = useState(false)
@@ -38,8 +29,6 @@ const WheelPicker: React.FC<Props> = ({items, onItemChange, itemHeight, initValu
   useEffect(() => {
     const list = ['', ...items, '']
     setModifiedItems(list)
-
-    console.log(initValueIndex, list, list[list.length - 2])
 
     try {
       if (initValueIndex >= 0) {
@@ -76,7 +65,7 @@ const WheelPicker: React.FC<Props> = ({items, onItemChange, itemHeight, initValu
     })
 
     return (
-      <TouchableOpacity activeOpacity={0.95}>
+      <TouchableOpacity activeOpacity={0.95} style={{height: itemHeight}}>
         <Animated.View
           style={{
             height: itemHeight,
@@ -92,21 +81,13 @@ const WheelPicker: React.FC<Props> = ({items, onItemChange, itemHeight, initValu
     )
   }
 
-  const onMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const y = event.nativeEvent.contentOffset.y
-    const index = Math.round(y / itemHeight)
-    console.log('here', index)
-
-    if (index !== selectedIndex) {
-      setSelectedIndex(index)
-    }
-  }
-
   useEffect(() => {
     if (selectedIndex >= 0 && selectedIndex < items.length) {
       onItemChange?.(items[selectedIndex])
     }
   }, [selectedIndex])
+
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
   return (
     <View style={[{height: itemHeight * 3}, containerStyle]}>
@@ -117,10 +98,23 @@ const WheelPicker: React.FC<Props> = ({items, onItemChange, itemHeight, initValu
         keyExtractor={(_, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         snapToInterval={itemHeight}
-        onMomentumScrollEnd={onMomentumScrollEnd}
         scrollEventThrottle={16}
+        decelerationRate="fast"
         onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
           useNativeDriver: true,
+          listener: event => {
+            if (debounceRef.current) {
+              clearTimeout(debounceRef.current)
+            }
+            const y = (event.nativeEvent as any)?.contentOffset?.y
+            debounceRef.current = setTimeout(() => {
+              const index = Math.round(y / itemHeight)
+              setSelectedIndex(index)
+              if (y && y % itemHeight !== 0) {
+                flatListRef.current?.scrollToOffset({offset: index * itemHeight, animated: true})
+              }
+            }, 150)
+          },
         })}
         getItemLayout={(_, index) => ({
           length: itemHeight,
