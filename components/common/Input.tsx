@@ -6,20 +6,23 @@ interface InputProps extends TextInputProps {
   label?: string | React.ReactNode
 }
 
-const Input = ({variant = 'default', editable = true, style, label, ...props}: InputProps) => {
-  return (
-    <View style={styles.container}>
-      {label && typeof label === 'string' ? <Text style={styles.label}>{label}</Text> : null}
-      {label && typeof label !== 'string' ? label : null}
-      <TextInput
-        style={[styles.base, style, !editable && styles.editable]}
-        editable={editable}
-        placeholderTextColor="#D0CEC7"
-        {...props}
-      />
-    </View>
-  )
-}
+const Input = React.forwardRef<TextInput, InputProps>(
+  ({variant = 'default', editable = true, style, label, ...props}, ref) => {
+    return (
+      <View style={styles.container}>
+        {label && typeof label === 'string' ? <Text style={styles.label}>{label}</Text> : null}
+        {label && typeof label !== 'string' ? label : null}
+        <TextInput
+          ref={ref}
+          style={[styles.base, style, !editable && styles.editable]}
+          editable={editable}
+          placeholderTextColor="#D0CEC7"
+          {...props}
+        />
+      </View>
+    )
+  },
+)
 
 export default Input
 
