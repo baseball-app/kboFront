@@ -117,9 +117,10 @@ export default function GameCard() {
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
           <View style={styles.iconBox}>
-            <TouchableOpacity onPress={onSaveTicketImage}>
+            {/* TODO: 잠시 비활성화 */}
+            {/* <TouchableOpacity onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={toggleFavorite}>
               <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
