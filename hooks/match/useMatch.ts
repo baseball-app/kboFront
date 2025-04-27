@@ -75,3 +75,41 @@ const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
 }
 
 export default useMatch
+
+// const a = [
+//   {
+//     ballpark_info: {id: 2, name: '잠실 종합운동장 야구장', team_info: [Object]},
+//     game_date: '2025-04-27T14:00:00+09:00',
+//     id: 836,
+//     team_away_info: {id: 7, logo_url: 'https://image.com/', name: '롯데 자이언츠'},
+//     team_home_info: {id: 4, logo_url: 'https://image.com/', name: '두산 베어스'},
+//   },
+//   {
+//     ballpark_info: {id: 4, name: '인천 SSG 랜더스필드', team_info: [Object]},
+//     game_date: '2025-04-27T14:00:00+09:00',
+//     id: 837,
+//     team_away_info: {id: 10, logo_url: 'https://image.com/', name: '키움 히어로즈'},
+//     team_home_info: {id: 6, logo_url: 'https://image.com/', name: 'SSG 랜더스'},
+//   },
+//   {
+//     ballpark_info: {id: 7, name: '대구 삼성 라이온즈 파크', team_info: [Object]},
+//     game_date: '2025-04-27T14:00:00+09:00',
+//     id: 838,
+//     team_away_info: {id: 9, logo_url: 'https://image.com/', name: 'NC 다이노스'},
+//     team_home_info: {id: 2, logo_url: 'https://image.com/', name: '삼성 라이온즈'},
+//   },
+//   {
+//     ballpark_info: {id: 8, name: '광주 기아 챔피언스 필드', team_info: [Object]},
+//     game_date: '2025-04-27T14:00:00+09:00',
+//     id: 839,
+//     team_away_info: {id: 3, logo_url: 'https://image.com/', name: 'LG 트윈스'},
+//     team_home_info: {id: 1, logo_url: 'https://image.com/', name: 'KIA 타이거즈'},
+//   },
+//   {
+//     ballpark_info: {id: 6, name: '대전 한화생명 볼파크', team_info: [Object]},
+//     game_date: '2025-04-27T14:00:00+09:00',
+//     id: 840,
+//     team_away_info: {id: 5, logo_url: 'https://image.com/', name: 'KT 위즈'},
+//     team_home_info: {id: 8, logo_url: 'https://image.com/', name: '한화 이글스'},
+//   },
+// ]
