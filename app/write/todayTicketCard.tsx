@@ -5,13 +5,16 @@ import {format} from 'date-fns'
 import {useLocalSearchParams, usePathname, useRootNavigationState, useRouter} from 'expo-router'
 import React, {useRef, useState} from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
 import Svg, {Path} from 'react-native-svg'
 import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
 import Ellipse from '@/components/common/Ellipse'
 import {useAnalyticsStore} from '@/analytics/event'
+import ViewShot from 'react-native-view-shot'
+import * as MediaLibrary from 'expo-media-library'
+import Toast from 'react-native-toast-message'
 
 export default function GameCard() {
   const router = useRouter()
@@ -61,6 +64,46 @@ export default function GameCard() {
 
   getRefWidth()
 
+  const ref = useRef<any>(null)
+
+  const insets = useSafeAreaInsets()
+
+  const showToast = (text: string) => {
+    Toast.show({
+      type: 'info',
+      text1: text,
+      visibilityTime: 2000,
+      autoHide: true,
+      position: 'bottom',
+      bottomOffset: insets.bottom + 24,
+    })
+  }
+
+  const onSaveTicketImage = () => {
+    if (ref.current) {
+      ref.current
+        ?.capture()
+        .then(async (uri: any) => {
+          // 저장 권한 요청
+          const {status, accessPrivileges} = await MediaLibrary.requestPermissionsAsync()
+
+          console.log('status', status)
+          console.log('accessPrivileges', accessPrivileges)
+
+          if (status !== 'granted') {
+            console.log('Permission not granted')
+            return
+          }
+
+          // 저장
+          const asset = await MediaLibrary.createAssetAsync(uri)
+          await MediaLibrary.createAlbumAsync('오늘의야구', asset, false)
+        })
+        .then(() => showToast('이미지가 저장되었습니다'))
+        .catch((err: any) => console.log(err))
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -74,6 +117,9 @@ export default function GameCard() {
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
           <View style={styles.iconBox}>
+            <TouchableOpacity onPress={onSaveTicketImage}>
+              <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
+            </TouchableOpacity>
             <TouchableOpacity onPress={toggleFavorite}>
               <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
@@ -99,7 +145,11 @@ export default function GameCard() {
             ))}
           </View>
         ) : null}
-        <View style={styles.ticketBox}>
+
+        <ViewShot
+          style={styles.ticketBox}
+          ref={ref}
+          options={{fileName: 'Your-File-Name', format: 'jpg', quality: 0.9}}>
           {Array.from({length: 10}).map((_, index) => (
             <View
               ref={dotRef}
@@ -324,7 +374,7 @@ export default function GameCard() {
               </View>
             </View>
           </View>
-        </View>
+        </ViewShot>
         <View style={styles.emojiBox}>
           {reactionList.map(reaction => (
             <TouchableOpacity
