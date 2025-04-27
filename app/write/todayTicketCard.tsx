@@ -226,7 +226,7 @@ export default function GameCard() {
                   <View style={styles.infoBox}>
                     <Text style={styles.infoLabel}>오늘의 경기일정</Text>
                     <Text style={styles.infoValue}>
-                      {ticketDetail?.date ? format(ticketDetail?.date, 'yyyy-MM-dd HH:mm') : ''}
+                      {ticketDetail?.date ? format(ticketDetail?.date, 'yyyy-MM-dd') : ''}
                     </Text>
                   </View>
                   <View style={styles.infoBox}>
