@@ -399,6 +399,7 @@ const styles = StyleSheet.create({
   doubleHeaderBox: {
     alignItems: 'center',
     marginTop: 20,
+    marginBottom: 40,
   },
   noMatchText: {
     fontSize: 16,
