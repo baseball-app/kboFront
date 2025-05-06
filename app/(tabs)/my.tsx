@@ -135,6 +135,11 @@ const ProfileScreen = () => {
           </View>
 
           <View style={styles.menuContainer}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/my/inquiry')}>
+              <Text style={styles.menuText}>문의하기</Text>
+              <Ionicons name="chevron-forward" size={24} color="gray" />
+            </TouchableOpacity>
+
             <TouchableOpacity style={styles.menuItem} onPress={logout}>
               <Text style={styles.menuText}>로그아웃</Text>
               <Ionicons name="chevron-forward" size={24} color="gray" />
