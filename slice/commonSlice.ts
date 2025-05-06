@@ -38,14 +38,17 @@ export const useCommonSlice = create<ICommonSlice>(commonSlice)
 export const usePopup = () => {
   const commonSlice = useCommonSlice()
 
-  const openCommonPopup = (content: string) => {
+  const openCommonPopup = (content: string, onSuccess?: () => void) => {
     commonSlice.modal.open({
       header: '안내',
       content: content,
       button: [
         {
           text: '확인',
-          onPress: commonSlice.modal.hide,
+          onPress: () => {
+            commonSlice.modal.hide()
+            onSuccess?.()
+          },
           buttonStyle: {
             width: '100%',
             borderRadius: 10,
