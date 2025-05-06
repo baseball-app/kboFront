@@ -4,7 +4,7 @@ import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {format} from 'date-fns'
 import {useLocalSearchParams, usePathname, useRootNavigationState, useRouter} from 'expo-router'
 import React, {useRef, useState} from 'react'
-import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
+import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform, Linking} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
 import Svg, {Path} from 'react-native-svg'
@@ -15,6 +15,13 @@ import {useAnalyticsStore} from '@/analytics/event'
 import ViewShot from 'react-native-view-shot'
 import * as MediaLibrary from 'expo-media-library'
 import Toast from 'react-native-toast-message'
+
+class NoPermissionError extends Error {
+  constructor(message?: string) {
+    super(message)
+    this.name = 'NO_PERMISSION_ERROR'
+  }
+}
 
 export default function GameCard() {
   const router = useRouter()
@@ -91,16 +98,39 @@ export default function GameCard() {
           console.log('accessPrivileges', accessPrivileges)
 
           if (status !== 'granted') {
-            console.log('Permission not granted')
-            return
+            Alert.alert('권한이 없어요', '앱 설정으로 가서 액세스 권한을 수정할 수 있어요. 이동하시겠어요?', [
+              {
+                text: '취소',
+                style: 'cancel',
+              },
+              {
+                text: '설정하기',
+                onPress: () => {
+                  Linking.openSettings()
+                },
+              },
+            ])
+
+            throw new NoPermissionError()
           }
 
           // 저장
           const asset = await MediaLibrary.createAssetAsync(uri)
+          if (Platform.OS === 'ios' && accessPrivileges === 'limited') {
+            console.log('앨범 생성은 안 함')
+            return
+          }
+          // accessPrivileges === 'all'이거나, Platform.OS === 'android'일 때만 앨범 생성
           await MediaLibrary.createAlbumAsync('오늘의야구', asset, false)
         })
         .then(() => showToast('이미지가 저장되었습니다'))
-        .catch((err: any) => console.log(err))
+        .catch((err: any) => {
+          if (err instanceof NoPermissionError) {
+            // console.log(err.message)
+          } else {
+            showToast('잠시 후 다시 시도해 주세요')
+          }
+        })
     }
   }
 
@@ -117,10 +147,9 @@ export default function GameCard() {
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
           <View style={styles.iconBox}>
-            {/* TODO: 잠시 비활성화 */}
-            {/* <TouchableOpacity onPress={onSaveTicketImage}>
+            <TouchableOpacity onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity onPress={toggleFavorite}>
               <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
