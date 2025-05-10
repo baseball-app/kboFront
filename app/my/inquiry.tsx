@@ -96,6 +96,7 @@ export default function NicknameScreen() {
             borderColor: '#D0CEC7',
             marginBottom: 14,
           }}
+          maxLength={50}
         />
         <TextInput
           placeholder="답변 받으실 이메일 주소를 적어주세요"
@@ -111,6 +112,7 @@ export default function NicknameScreen() {
             borderWidth: 1,
             borderColor: '#D0CEC7',
           }}
+          maxLength={500}
         />
       </KeyboardAvoidingView>
       <View style={styles.buttonContainer}>
