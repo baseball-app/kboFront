@@ -340,14 +340,11 @@ const TicketPage = () => {
                     placeholder="0"
                     autoFocus
                     placeholderTextColor="#ddd"
-                    keyboardType="number-pad"
-                    onChangeText={value => handleScoreChange('our', value)}
-                    // returnKeyType="next"
-                    // submitBehavior="newline"
-                    // onSubmitEditing={() => {
-                    //   console.log('제출?')
-                    //   inputListRef.current['opponent'].focus()
-                    // }}
+                    keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'number-pad'}
+                    onChangeText={value => handleScoreChange('our', value.replaceAll(/\D/g, ''))}
+                    returnKeyType="next"
+                    submitBehavior="newline"
+                    onSubmitEditing={() => inputListRef.current['opponent'].focus()}
                     ref={ref => {
                       if (ref) inputListRef.current['our'] = ref
                     }}
@@ -361,8 +358,15 @@ const TicketPage = () => {
                     maxLength={2}
                     placeholder="0"
                     placeholderTextColor="#ddd"
-                    keyboardType="number-pad"
-                    onChangeText={value => handleScoreChange('opponent', value)}
+                    keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'number-pad'}
+                    onChangeText={value => handleScoreChange('opponent', value.replaceAll(/\D/g, ''))}
+                    returnKeyType="done"
+                    // submitBehavior="newline"
+                    onSubmitEditing={() => {
+                      // console.log('제출?')
+                      // inputListRef.current['player'].focus()
+                      // uploadPhoto()
+                    }}
                     // returnKeyType="done"
                     // submitBehavior="newline"
                     ref={ref => {

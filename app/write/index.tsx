@@ -71,20 +71,33 @@ const DailyLogWriteScreen = () => {
 
   /** 현재 단계를 나타내는 상태 */
   const [currentStep, setCurrentStep] = useState(Number(params?.step) || 1)
+
+  /** 자동 다음 버튼 클릭 여부 */
+  const [autoSkipToNext, setAutoSkipToNext] = useState<Record<number, boolean>>({})
+  const skipToNextStep = (currentStep: number) => {
+    if (!autoSkipToNext[currentStep]) {
+      nextButtonClick()
+      setAutoSkipToNext({...autoSkipToNext, [currentStep]: true})
+    }
+  }
+
   /** 경기 결과 이미지를 클릭하는 함수 */
   const onMatchResultClick = (pR: string) => {
     setSelectedMatchResult(pR)
+    if (selectedWeather) skipToNextStep(currentStep)
   }
 
   /** 오늘의 날씨 이미지를 클릭하는 함수 */
   const onWeatherClick = (pW: string) => {
     setSelectedWeather(pW)
+    if (selectedMatchResult) skipToNextStep(currentStep)
   }
 
   /** 경기를 본 장소를 클릭하는 함수 */
   const onPlaceClick = (pP: string) => {
     setSelectedPlace(pP)
   }
+
   /** 다음 버튼을 제어하는 변수 */
   const nextButtonEnabled = useMemo(() => {
     if (currentStep === 1) {
@@ -157,7 +170,10 @@ const DailyLogWriteScreen = () => {
                     key={index} //
                     isSelected={selectedMatch?.id === match.id}
                     match={match}
-                    onClick={() => setSelectedMatch(match)}
+                    onClick={() => {
+                      setSelectedMatch(match)
+                      skipToNextStep(currentStep)
+                    }}
                   />
                 ))}
                 <View style={styles.doubleHeaderBox}>
@@ -235,17 +251,19 @@ const DailyLogWriteScreen = () => {
           </TouchableOpacity>
         </View>
       )}
-      <View style={[styles.buttonBox, {paddingBottom: 16 + insets.bottom}]}>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={[{justifyContent: 'center'}, nextButtonEnabled ? styles.nextButton : styles.nextDisabledButton]}
-          onPress={nextButtonClick}
-          disabled={!nextButtonEnabled}>
-          <Text style={nextButtonEnabled ? styles.buttonText : styles.buttonDisabledText}>
-            {currentStep !== 3 ? '다음' : '오늘의 티켓 만들기'}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      {currentStep === 3 || autoSkipToNext[currentStep] ? (
+        <View style={[styles.buttonBox, {paddingBottom: 16 + insets.bottom}]}>
+          <TouchableOpacity
+            activeOpacity={1}
+            style={[{justifyContent: 'center'}, nextButtonEnabled ? styles.nextButton : styles.nextDisabledButton]}
+            onPress={nextButtonClick}
+            disabled={!nextButtonEnabled}>
+            <Text style={nextButtonEnabled ? styles.buttonText : styles.buttonDisabledText}>
+              {currentStep !== 3 ? '다음' : '오늘의 티켓 만들기'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </SafeAreaView>
   )
 }
