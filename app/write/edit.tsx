@@ -325,7 +325,10 @@ const EditTicketPage = () => {
         </TouchableOpacity>
         <Text style={styles.dateText}>{title}</Text>
       </View>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={30}>
         <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
           <View style={styles.tabMenuContainer}>
             <View style={styles.tabMenu}>
@@ -519,7 +522,7 @@ const EditTicketPage = () => {
                 maxLength={200}
                 multiline={true}
                 numberOfLines={6}
-                style={{height: 125, textAlign: 'left'}}
+                style={{height: 125, textAlign: 'left', textAlignVertical: 'top'}}
                 ref={ref => {
                   if (ref) inputListRef.current['thoughts'] = ref
                 }}
