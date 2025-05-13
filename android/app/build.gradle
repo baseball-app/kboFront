@@ -92,7 +92,7 @@ android {
         applicationId 'xyz.kboapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 40
+        versionCode 43
         versionName "1.0.6"
     }
     signingConfigs {
