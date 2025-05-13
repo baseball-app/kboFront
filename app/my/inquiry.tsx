@@ -98,7 +98,7 @@ export default function NicknameScreen() {
           maxLength={50}
         />
         <TextInput
-          placeholder="답변 받으실 이메일 주소를 적어주세요"
+          placeholder={`소중한 의견을 기다리고 있습니다! 비방, 욕설, 부적절한 내용이 포함될 경우 답변이 제한될 수 있고, 앱 이용이 제한될 수 있습니다.`}
           value={inquiry.content} //
           onChangeText={text => setInquiry({...inquiry, content: text})}
           multiline
@@ -110,6 +110,7 @@ export default function NicknameScreen() {
             borderRadius: 10,
             borderWidth: 1,
             borderColor: '#D0CEC7',
+            textAlignVertical: 'top',
           }}
           maxLength={500}
         />
