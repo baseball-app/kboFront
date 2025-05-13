@@ -172,7 +172,8 @@ const DailyLogWriteScreen = () => {
                     match={match}
                     onClick={() => {
                       setSelectedMatch(match)
-                      skipToNextStep(currentStep)
+                      nextButtonClick()
+                      // skipToNextStep(currentStep)
                     }}
                   />
                 ))}
