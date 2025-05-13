@@ -342,9 +342,12 @@ const EditTicketPage = () => {
                     style={styles.scoreInput}
                     maxLength={2}
                     placeholder="0"
-                    value={writeData.homeTeam.score.toString()}
+                    value={String(writeData.homeTeam.score).replaceAll(/\D/g, '')}
                     placeholderTextColor="#ddd"
-                    keyboardType="number-pad"
+                    keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'number-pad'}
+                    returnKeyType="next"
+                    submitBehavior="newline"
+                    onSubmitEditing={() => inputListRef.current['opponent'].focus()}
                     onChangeText={value =>
                       onChangeValue('homeTeam', {
                         ...writeData.homeTeam,
@@ -362,10 +365,11 @@ const EditTicketPage = () => {
                   <TextInput
                     style={styles.scoreInput}
                     maxLength={2}
-                    value={writeData.awayTeam.score.toString()}
+                    value={String(writeData.awayTeam.score).replaceAll(/\D/g, '')}
                     placeholder="0"
                     placeholderTextColor="#ddd"
-                    keyboardType="number-pad"
+                    keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'number-pad'}
+                    returnKeyType="done"
                     onChangeText={value =>
                       onChangeValue('awayTeam', {
                         ...writeData.awayTeam,

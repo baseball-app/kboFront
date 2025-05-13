@@ -176,10 +176,7 @@ export default function GameCard() {
           </View>
         ) : null}
 
-        <ViewShot
-          style={styles.ticketBox}
-          ref={ref}
-          options={{fileName: 'Your-File-Name', format: 'jpg', quality: 0.9}}>
+        <ViewShot style={styles.ticketBox} ref={ref} options={{fileName: 'todaybaseball', format: 'jpg', quality: 0.9}}>
           {Array.from({length: 10}).map((_, index) => (
             <View
               ref={dotRef}
