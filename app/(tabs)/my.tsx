@@ -135,11 +135,10 @@ const ProfileScreen = () => {
           </View>
 
           <View style={styles.menuContainer}>
-            {/* TODO: 문의하기 기능 추가 시 주석 해제 */}
-            {/* <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/my/inquiry')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/my/inquiry')}>
               <Text style={styles.menuText}>문의하기</Text>
               <Ionicons name="chevron-forward" size={24} color="gray" />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.menuItem} onPress={logout}>
               <Text style={styles.menuText}>로그아웃</Text>
