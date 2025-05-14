@@ -147,10 +147,9 @@ export default function GameCard() {
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
           <View style={styles.iconBox}>
-            {/* TODO: 안드로이드 > 권한 설정 테스트 후 배포 예정 */}
-            {/* <TouchableOpacity onPress={onSaveTicketImage}>
+            <TouchableOpacity onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity onPress={toggleFavorite}>
               <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>

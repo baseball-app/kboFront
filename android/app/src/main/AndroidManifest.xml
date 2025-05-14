@@ -7,7 +7,7 @@
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
   <!-- Expo > MediaLibrary > 사용하지 않는 권한 제거 -->
-  <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:node="remove"/>
+  <!-- <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:node="remove"/> -->
   <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" tools:node="remove"/>
 
   <queries>
