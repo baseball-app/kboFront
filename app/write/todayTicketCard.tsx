@@ -15,6 +15,7 @@ import {useAnalyticsStore} from '@/analytics/event'
 import ViewShot from 'react-native-view-shot'
 import * as MediaLibrary from 'expo-media-library'
 import Toast from 'react-native-toast-message'
+import {PermissionsAndroid} from 'react-native'
 
 class NoPermissionError extends Error {
   constructor(message?: string) {
@@ -86,37 +87,32 @@ export default function GameCard() {
     })
   }
 
+  const [premissionResponse, requestPermission] = MediaLibrary.usePermissions()
+
   const onSaveTicketImage = () => {
     if (ref.current) {
       ref.current
         ?.capture()
         .then(async (uri: any) => {
           // 저장 권한 요청
-          const {status, accessPrivileges} = await MediaLibrary.requestPermissionsAsync()
-
-          console.log('status', status)
-          console.log('accessPrivileges', accessPrivileges)
-
-          if (status !== 'granted') {
-            Alert.alert('권한이 없어요', '앱 설정으로 가서 액세스 권한을 수정할 수 있어요. 이동하시겠어요?', [
-              {
-                text: '취소',
-                style: 'cancel',
-              },
-              {
-                text: '설정하기',
-                onPress: () => {
-                  Linking.openSettings()
-                },
-              },
-            ])
-
-            throw new NoPermissionError()
+          // TODO: 권한 요청 분리 및 첫 진입 시 요청 필요
+          if (Platform.OS === 'ios' && premissionResponse?.status !== 'granted') {
+            const result = await requestPermission()
+            if (result.status !== 'granted') throw new NoPermissionError()
           }
+
+          if (Platform.OS === 'android' && premissionResponse?.status !== 'granted') {
+            const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES)
+            const isNotGranted = granted !== PermissionsAndroid.RESULTS.GRANTED
+            if (isNotGranted) throw new NoPermissionError()
+          }
+
+          console.log('status', premissionResponse?.status)
+          console.log('accessPrivileges', premissionResponse?.accessPrivileges)
 
           // 저장
           const asset = await MediaLibrary.createAssetAsync(uri)
-          if (Platform.OS === 'ios' && accessPrivileges === 'limited') {
+          if (Platform.OS === 'ios' && premissionResponse?.accessPrivileges === 'limited') {
             console.log('앨범 생성은 안 함')
             return
           }
@@ -126,7 +122,16 @@ export default function GameCard() {
         .then(() => showToast('이미지가 저장되었습니다'))
         .catch((err: any) => {
           if (err instanceof NoPermissionError) {
-            // console.log(err.message)
+            Alert.alert('권한이 없어요', '앱 설정으로 가서 액세스 권한을 수정할 수 있어요. 이동하시겠어요?', [
+              {
+                text: '취소',
+                style: 'cancel',
+              },
+              {
+                text: '설정하기',
+                onPress: () => Linking.openSettings(),
+              },
+            ])
           } else {
             showToast('잠시 후 다시 시도해 주세요')
           }
