@@ -94,7 +94,21 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 45
         versionName "1.0.7"
+        manifestPlaceholders = [applicationLabel: "@string/app_name"]
     }
+
+    flavorDimensions.add("environment")
+    productFlavors {
+        dev {
+            dimension "environment"
+            applicationIdSuffix ".staging"
+            manifestPlaceholders = [applicationLabel: "DEV_오늘의야구"]
+        }
+        production {
+            dimension "environment"
+        }
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
