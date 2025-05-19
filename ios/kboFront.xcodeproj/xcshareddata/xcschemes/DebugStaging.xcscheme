@@ -66,6 +66,13 @@
             ReferencedContainer = "container:kboFront.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "ENVFILE"
+            value = ".env.dev"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "DebugStaging"
@@ -85,10 +92,10 @@
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "ReleaseProduction">
+      buildConfiguration = "DebugStaging">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "DebugStaging"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

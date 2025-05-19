@@ -23,7 +23,7 @@
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "DebugStaging"
+      buildConfiguration = "ReleaseProduction"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "NO">
@@ -47,7 +47,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "DebugStaging"
+      buildConfiguration = "ReleaseProduction"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -66,9 +66,16 @@
             ReferencedContainer = "container:kboFront.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "ENVFILE"
+            value = ".env.production"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "DebugStaging"
+      buildConfiguration = "ReleaseProduction"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -88,7 +95,7 @@
       buildConfiguration = "ReleaseProduction">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "ReleaseProduction"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
