@@ -5,12 +5,16 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo run:android",
+    "android:dev": "expo run:android --variant devDebug",
+    "android:production": "expo run:android --variant productionDebug",
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "build:android": "cd android && ./gradlew bundleRelease"
+    "build:android": "cd android && ./gradlew bundleRelease",
+    "build:android:dev": "cd android && ./gradlew bundleDevRelease",
+    "build:android:production": "cd android && ./gradlew bundleProductionRelease",
+    "android": "expo run:android"
   },
   "jest": {
     "preset": "jest-expo"
