@@ -32,6 +32,7 @@ import {useLogin} from '@/hooks/auth/useLogin'
 import Toast from 'react-native-toast-message'
 import {logEvent} from '@/analytics/func'
 import {EVENTS, useAnalyticsStore} from '@/analytics/event'
+import {Config} from '@/config/Config'
 
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
@@ -227,7 +228,7 @@ const TicketPage = () => {
       false, // 메타데이터 유지 여부
     )
 
-    await FileSystem.uploadAsync(`${process.env.EXPO_PUBLIC_API_URL}/tickets/ticket_add/`, resizedImage.uri, {
+    await FileSystem.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage.uri, {
       fieldName: 'image',
       uploadType: FileSystem.FileSystemUploadType.MULTIPART,
       parameters: {
@@ -256,9 +257,7 @@ const TicketPage = () => {
     })
       .then((res: any) => {
         try {
-          console.log('res', res.body)
-          console.log('res', typeof res.body)
-          console.log('res', JSON.parse(res.body).id)
+          console.log('res', JSON.parse(res.body))
           initializeTicket(JSON.parse(res.body).id)
         } catch (error) {
           Toast.show({

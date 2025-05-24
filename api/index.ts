@@ -1,3 +1,4 @@
+import {Config} from '@/config/Config'
 import {LoginServerResponse, TUser} from '@/hooks/auth/useLogin'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import {getItem, setItem} from '@/store/mmkv-store/mmkvStore'
@@ -5,7 +6,7 @@ import axios, {AxiosError, AxiosInstance, AxiosRequestHeaders, AxiosResponse, In
 
 const axiosInstance: AxiosInstance = axios.create({
   /** Api Server url 적용  */
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: Config.API_URL,
 })
 
 /** 모든 Api 요청에 자동으로 헤더에 토큰을 추가하는 요청 인터셉터 */
@@ -34,6 +35,8 @@ axiosInstance.interceptors.response.use(
     return res
   },
   async (err: AxiosError) => {
+    console.error('err', err.response?.data)
+
     const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
     if (err.status == 403 && token?.accessToken && token?.refreshToken && !lock) {
       lock = true

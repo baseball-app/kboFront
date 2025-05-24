@@ -30,19 +30,7 @@ import * as FileSystem from 'expo-file-system'
 import {useLogin} from '@/hooks/auth/useLogin'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
-interface IWriteDataInterface {
-  todayImg: ImagePicker.ImagePickerAsset | undefined | string
-  matchTeam: Team | null
-  matchPlace: string
-  matchPlayer: string
-  todayFood: string
-  todayThoughts: string
-  onlyMeCheck: boolean
-  todayScore: {
-    our: string
-    opponent: string
-  }
-}
+import {Config} from '@/config/Config'
 
 interface ITicketEditData {
   homeTeam: {
@@ -245,7 +233,7 @@ const EditTicketPage = () => {
         false, // 메타데이터 유지 여부
       )
 
-      await FileSystem.uploadAsync(`${process.env.EXPO_PUBLIC_API_URL}/tickets/ticket_upd/`, resizedImage?.uri || '', {
+      await FileSystem.uploadAsync(`${Config.API_URL}/tickets/ticket_upd/`, resizedImage?.uri || '', {
         fieldName: 'image',
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
         parameters: {

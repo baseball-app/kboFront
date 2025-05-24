@@ -1,5 +1,7 @@
-const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_LOGIN_CLIENT_ID
-const KAKAO_REDIRECT_URI = process.env.EXPO_PUBLIC_KAKAO_LOGIN_REDIRECT_URI
+import {Config} from '@/config/Config'
+
+const KAKAO_CLIENT_ID = Config.KAKAO_LOGIN_CLIENT_ID
+const KAKAO_REDIRECT_URI = Config.KAKAO_LOGIN_REDIRECT_URI
 const KAKAO_AUTH_URL = [
   'https://kauth.kakao.com/oauth/authorize?',
   `client_id=${KAKAO_CLIENT_ID}`,
@@ -7,8 +9,12 @@ const KAKAO_AUTH_URL = [
   'response_type=code',
 ].join('&')
 
-const NAVER_CLIENT_ID = process.env.EXPO_PUBLIC_NAVER_LOGIN_CLIENT_ID
-const NAVER_REDIRECT_URI = process.env.EXPO_PUBLIC_NAVER_LOGIN_REDIRECT_URI
+console.log('KAKAO_CLIENT_ID', KAKAO_CLIENT_ID)
+console.log('KAKAO_REDIRECT_URI', KAKAO_REDIRECT_URI)
+console.log('KAKAO_AUTH_URL', KAKAO_AUTH_URL)
+
+const NAVER_CLIENT_ID = Config.NAVER_LOGIN_CLIENT_ID
+const NAVER_REDIRECT_URI = Config.NAVER_LOGIN_REDIRECT_URI
 
 const NAVER_AUTH_URL = [
   'https://nid.naver.com/oauth2.0/authorize?',
@@ -17,8 +23,8 @@ const NAVER_AUTH_URL = [
   'response_type=code',
 ].join('&')
 
-const APPLE_CLIENT_ID = process.env.EXPO_PUBLIC_APPLE_LOGIN_CLIENT_ID
-const APPLE_REDIRECT_URI = process.env.EXPO_PUBLIC_APPLE_LOGIN_REDIRECT_URI
+const APPLE_CLIENT_ID = Config.APPLE_LOGIN_CLIENT_ID
+const APPLE_REDIRECT_URI = Config.APPLE_LOGIN_REDIRECT_URI
 
 const APPLE_AUTH_URL =
   'https://appleid.apple.com/auth/authorize?' +
