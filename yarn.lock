@@ -7423,6 +7423,11 @@ react-native-circular-progress@^1.4.1:
   dependencies:
     prop-types "^15.8.1"
 
+react-native-config@^1.5.5:
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.5.5.tgz#5977db58ff20b6fe9dd6fb28c815a9ba43d018d2"
+  integrity sha512-dGdLnBU0cd5xL5bF0ROTmHYbsstZnQKOEPfglvZi1vStvAjpld14X25K6mY3KGPTMWAzx6TbjKeq5dR+ILuMMA==
+
 react-native-gesture-handler@^2.21.2:
   version "2.25.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.25.0.tgz#3a5a8912ea4f5e68ab211a9fa5a191c08ad50883"
