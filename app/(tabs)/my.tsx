@@ -10,6 +10,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
+  Pressable,
 } from 'react-native'
 import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
 import {theme} from '@/constants/Colors'
@@ -35,7 +36,29 @@ const ProfileScreen = () => {
         style={styles.container}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}>
         <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
-          <View style={{flex: 1, backgroundColor: theme.colors.backgroundPrimary, paddingBottom: 20}}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: theme.colors.backgroundPrimary,
+              paddingBottom: 20,
+              paddingTop: 12,
+              position: 'relative',
+            }}>
+            <Pressable
+              onPress={() => router.push('/my/alarm')}
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                paddingHorizontal: 24,
+                paddingTop: 10,
+                paddingBottom: 0,
+                position: 'absolute',
+                right: 0,
+                top: 0,
+              }}>
+              <Image source={require('@/assets/icons/tabMenu/alarmMenuActive.png')} style={{width: 24, height: 24}} />
+            </Pressable>
             <View style={styles.profileHeader}>
               <ProfileImageBox source={profile.profile_image} />
 
