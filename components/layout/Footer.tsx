@@ -3,7 +3,6 @@ import {useRouter, useSegments} from 'expo-router'
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import useTicketListByTeam from '@/hooks/match/useTicketListByTeam'
 const footerList = [
   {
     name: '캘린더',
@@ -30,11 +29,11 @@ const footerList = [
     },
   },
   {
-    name: '알림',
-    path: router_address.TAB.ALARM,
+    name: '아구정보',
+    path: router_address.TAB.RANK,
     icon: {
-      active: require('@/assets/icons/tabMenu/alarmMenuActive.png'),
-      inactive: require('@/assets/icons/tabMenu/alarmMenu.png'),
+      active: require('@/assets/icons/tabMenu/rankMenuActive.png'),
+      inactive: require('@/assets/icons/tabMenu/rankMenu.png'),
     },
   },
   {

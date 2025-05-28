@@ -43,8 +43,8 @@ export default function TabLayout() {
       />
       {/* 알림 탭 화면 */}
       <Tabs.Screen
-        name="alarm"
-        options={{header: () => <Header title="알림" hasBackButton={false} topInset={top} />}}
+        name="rank"
+        options={{header: () => <Header title="아구 정보" hasBackButton={false} topInset={top} />}}
       />
       {/* 마이 페이지 탭 화면 */}
       <Tabs.Screen name="my" options={{headerShown: false}} />
