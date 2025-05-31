@@ -4,11 +4,11 @@ import {PropsWithChildren} from 'react'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 0,
+      retry: 1,
       // placeholderData: keepPreviousData,
     },
     mutations: {
-      retry: 0,
+      retry: 1,
     },
   },
 })
