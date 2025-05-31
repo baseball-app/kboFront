@@ -1,17 +1,12 @@
 import React from 'react'
-import {View, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView} from 'react-native'
-import {Ionicons} from '@expo/vector-icons'
-import {router} from 'expo-router'
+import {ScrollView, StyleSheet, SafeAreaView} from 'react-native'
 import Service from '@/components/term/Service'
+import Header from '@/components/common/Header'
 
 const PrivacyPolicyScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      <Header variants="transparent" />
       <ScrollView style={styles.content}>
         {/* 이용약관 */}
         <Service />

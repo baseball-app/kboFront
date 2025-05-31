@@ -303,14 +303,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'white',
-    padding: 15,
   },
   menuItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
-    padding: 15,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     marginVertical: 1,
   },
   menuText: {
