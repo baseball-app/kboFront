@@ -1,13 +1,10 @@
 import React from 'react'
-import {View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView} from 'react-native'
+import {View, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {router} from 'expo-router'
-import useConsent from '@/hooks/auth/useConsent'
 import Service from '@/components/term/Service'
 
 const PrivacyPolicyScreen = () => {
-  const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent()
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -15,26 +12,10 @@ const PrivacyPolicyScreen = () => {
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <ScrollView
-        ref={scrollViewRef} //
-        style={styles.content}
-        onScroll={handleScroll}
-        scrollEventThrottle={400}>
+      <ScrollView style={styles.content}>
         {/* 이용약관 */}
         <Service />
       </ScrollView>
-      <TouchableOpacity
-        style={styles.agreeButton}
-        onPress={() => {
-          if (isScrolledToBottom) {
-            agreeConsent('terms-of-service')
-            router.back()
-          } else {
-            ;(scrollViewRef.current as any)?.scrollToEnd({animated: true})
-          }
-        }}>
-        <Text style={styles.agreeButtonText}>{isScrolledToBottom ? '동의하기' : '아래로 스크롤하기'}</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   )
 }

@@ -29,7 +29,11 @@ export default function LoginScreen() {
     try {
       const data = await login(channel, code, identityToken)
 
+      console.log('data', data)
+
       const profile = await ApiClient.get<Profile>('/users/me/')
+
+      console.log('profile', profile)
 
       const myTeamId = profile?.my_team?.id
 
