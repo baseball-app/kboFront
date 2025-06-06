@@ -4,6 +4,7 @@ interface ITabRoutes {
   CALENDAR: Href
   MATCH: Href
   TICKET: Href
+  ALARM: Href
   RANK: Href
   MY: Href
 }
@@ -13,6 +14,7 @@ export const router_address: {TAB: ITabRoutes} = {
     CALENDAR: '/(tabs)',
     MATCH: '/(tabs)/match',
     TICKET: '/(tabs)/ticket',
+    ALARM: '/(tabs)/alarm',
     RANK: '/(tabs)/rank',
     MY: '/(tabs)/my',
   },
