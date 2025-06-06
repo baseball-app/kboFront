@@ -44,7 +44,7 @@ const ProfileScreen = () => {
               paddingTop: 12,
               position: 'relative',
             }}>
-            <Pressable
+            {/* <Pressable
               onPress={() => router.push('/my/alarm')}
               style={{
                 flexDirection: 'row',
@@ -58,7 +58,7 @@ const ProfileScreen = () => {
                 top: 0,
               }}>
               <Image source={require('@/assets/icons/tabMenu/alarmMenuActive.png')} style={{width: 24, height: 24}} />
-            </Pressable>
+            </Pressable> */}
             <View style={styles.profileHeader}>
               <ProfileImageBox source={profile.profile_image} />
 

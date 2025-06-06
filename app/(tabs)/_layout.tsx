@@ -42,10 +42,11 @@ export default function TabLayout() {
         options={{header: () => <Header title="나의 티켓박스" hasBackButton={false} topInset={top} />}}
       />
       {/* 알림 탭 화면 */}
-      <Tabs.Screen
+      <Tabs.Screen name="alarm" options={{headerShown: false}} />
+      {/* <Tabs.Screen
         name="rank"
         options={{header: () => <Header title="아구 정보" hasBackButton={false} topInset={top} />}}
-      />
+      /> */}
       {/* 마이 페이지 탭 화면 */}
       <Tabs.Screen name="my" options={{headerShown: false}} />
     </Tabs>
