@@ -1,5 +1,5 @@
 import {useLocalSearchParams, useRouter} from 'expo-router'
-import {useEffect, useRef, useState} from 'react'
+import {PropsWithChildren, useRef, useState} from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -59,6 +59,15 @@ const placeOption = [
   {label: '창원 NC파크', value: '창원 NC파크'},
   {label: '광주 기아 챔피언스 필드', value: '광주 기아 챔피언스 필드'},
 ]
+
+const Optional = ({label}: {label: string}) => {
+  return (
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <Text style={{fontSize: 14, color: '#171716', fontWeight: '500', lineHeight: 19.6}}>{label}</Text>
+      <Text style={{fontSize: 14, color: '#95938B', fontWeight: '500', lineHeight: 19.6}}> (선택)</Text>
+    </View>
+  )
+}
 
 const TicketPage = () => {
   const {registerTicket, initializeTicket, ...writeStore} = useWriteTicket()
@@ -149,24 +158,26 @@ const TicketPage = () => {
   const onSubmit = async () => {
     if (isPending) return
     setIsPending(true)
-    const resizedImage = await ImageResizer.createResizedImage(
-      writeData.todayImg?.uri || '', // 원본 이미지
-      800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
-      800, // 리사이즈할 세로 크기
-      'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
-      100, // 품질 (0 ~ 100)
-      0, // 회전 (0 = 그대로)
-      undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
-      false, // 메타데이터 유지 여부
-    )
 
     const formData = new FormData()
 
-    formData.append('image', {
-      uri: resizedImage?.uri, // 리사이징된 이미지 URI 사용
-      type: writeData.todayImg?.type, // 원본 이미지의 MIME 타입 유지
-      name: 'image.png',
-    } as any)
+    if (writeData.todayImg?.uri) {
+      const resizedImage = await ImageResizer.createResizedImage(
+        writeData.todayImg?.uri || '', // 원본 이미지
+        800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
+        800, // 리사이즈할 세로 크기
+        'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
+        100, // 품질 (0 ~ 100)
+        0, // 회전 (0 = 그대로)
+        undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
+        false, // 메타데이터 유지 여부
+      )
+      formData.append('image', {
+        uri: resizedImage?.uri, // 리사이징된 이미지 URI 사용
+        type: writeData.todayImg?.type, // 원본 이미지의 MIME 타입 유지
+        name: 'image.png',
+      } as any)
+    }
 
     formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
     formData.append('game', String(writeStore.selectedMatch?.id || ''))
@@ -178,16 +189,19 @@ const TicketPage = () => {
     formData.append('score_opponent', writeData.todayScore.opponent)
 
     // 선발선수
-    formData.append('starting_pitchers', writeData.matchPlayer)
+    formData.append('starting_pitchers', writeData.matchPlayer || '')
 
     // 경기구단
-    formData.append('gip_place', tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace)
+    formData.append(
+      'gip_place',
+      tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace || '',
+    )
 
     // 직관푸드
-    formData.append('food', writeData.todayFood)
+    formData.append('food', writeData.todayFood || '')
 
     // 오늘의 소감
-    formData.append('memo', writeData.todayThoughts)
+    formData.append('memo', writeData.todayThoughts || '')
     formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
 
     //나만보기
@@ -217,66 +231,78 @@ const TicketPage = () => {
   }
 
   const onSaveDataWhenFailedSubmit = async () => {
-    const resizedImage = await ImageResizer.createResizedImage(
-      writeData.todayImg?.uri || '', // 원본 이미지
-      800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
-      800, // 리사이즈할 세로 크기
-      'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
-      100, // 품질 (0 ~ 100)
-      0, // 회전 (0 = 그대로)
-      undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
-      false, // 메타데이터 유지 여부
-    )
+    if (writeData.todayImg?.uri) {
+      const resizedImage = await ImageResizer.createResizedImage(
+        writeData.todayImg?.uri || '', // 원본 이미지
+        800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
+        800, // 리사이즈할 세로 크기
+        'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
+        100, // 품질 (0 ~ 100)
+        0, // 회전 (0 = 그대로)
+        undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
+        false, // 메타데이터 유지 여부
+      )
 
-    await FileSystem.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage.uri, {
-      fieldName: 'image',
-      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-      parameters: {
-        date: dayjs(writeStore.selectedDate).format('YYYY-MM-DD'),
-        game: String(writeStore.selectedMatch?.id || ''),
-        result: writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult,
-        weather: writeStore.selectedWeather,
-        is_ballpark: JSON.stringify(tabMenu === '직관'),
-        score_our: writeData.todayScore.our,
-        score_opponent: writeData.todayScore.opponent,
-        starting_pitchers: writeData.matchPlayer,
-        gip_place: tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace,
-        food: writeData.todayFood,
-        memo: writeData.todayThoughts,
-        is_homeballpark: JSON.stringify(tabMenu === '집관'),
-        only_me: JSON.stringify(writeData.onlyMeCheck),
-        is_double: JSON.stringify(isDirectWrite),
-        hometeam_id: String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id),
-        awayteam_id: String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id),
-        direct_yn: JSON.stringify(isDirectWrite),
-        is_cheer: JSON.stringify(isCheer),
-      },
-      headers: {
-        'X-KBOAPP-TOKEN': user?.accessToken || '',
-      },
-    })
-      .then((res: any) => {
-        try {
-          console.log('res', JSON.parse(res.body))
-          initializeTicket(JSON.parse(res.body).id)
-        } catch (error) {
-          Toast.show({
-            type: 'info',
-            text1: '티켓 발급에 실패했어요',
-            visibilityTime: 2000,
-            autoHide: true,
-            position: 'bottom',
-            bottomOffset: insets.bottom + 92,
-          })
-        }
-        // console.log('res')
+      await FileSystem.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage.uri, {
+        fieldName: 'image',
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        parameters: {
+          date: dayjs(writeStore.selectedDate).format('YYYY-MM-DD'),
+          game: String(writeStore.selectedMatch?.id || ''),
+          result: writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult,
+          weather: writeStore.selectedWeather,
+          is_ballpark: JSON.stringify(tabMenu === '직관'),
+          score_our: writeData.todayScore.our,
+          score_opponent: writeData.todayScore.opponent,
+          starting_pitchers: writeData.matchPlayer,
+          gip_place: tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace,
+          food: writeData.todayFood,
+          memo: writeData.todayThoughts,
+          is_homeballpark: JSON.stringify(tabMenu === '집관'),
+          only_me: JSON.stringify(writeData.onlyMeCheck),
+          is_double: JSON.stringify(isDirectWrite),
+          hometeam_id: String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id),
+          awayteam_id: String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id),
+          direct_yn: JSON.stringify(isDirectWrite),
+          is_cheer: JSON.stringify(isCheer),
+        },
+        headers: {
+          'X-KBOAPP-TOKEN': user?.accessToken || '',
+        },
       })
-      .catch(err => {
-        console.log('err', err)
+        .then((res: any) => {
+          try {
+            console.log('res', JSON.parse(res.body))
+            initializeTicket(JSON.parse(res.body).id)
+          } catch (error) {
+            Toast.show({
+              type: 'info',
+              text1: '티켓 발급에 실패했어요',
+              visibilityTime: 2000,
+              autoHide: true,
+              position: 'bottom',
+              bottomOffset: insets.bottom + 92,
+            })
+          }
+          // console.log('res')
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+        .finally(() => {
+          setIsPending(false)
+        })
+    } else {
+      Toast.show({
+        type: 'info',
+        text1: '티켓 발급에 실패했어요',
+        visibilityTime: 2000,
+        autoHide: true,
+        position: 'bottom',
+        bottomOffset: insets.bottom + 92,
       })
-      .finally(() => {
-        setIsPending(false)
-      })
+      setIsPending(false)
+    }
   }
 
   const uploadPhoto = async () => {
@@ -308,9 +334,7 @@ const TicketPage = () => {
   const isEnabled =
     writeData.todayScore.our &&
     writeData.todayScore.opponent &&
-    writeData.matchPlayer &&
-    (writeData.matchPlace || writeStore.selectedPlace) &&
-    writeData.todayImg
+    ((tabMenu === '직관' && writeData.matchPlace) || (tabMenu === '직관' && ballparkInfo?.name) || tabMenu === '집관')
 
   const inputListRef = useRef<Record<string, TextInput>>({})
   const scrollRef = useRef<ScrollView>(null)
@@ -393,6 +417,15 @@ const TicketPage = () => {
                   <>
                     <Image source={require('@/assets/icons/add_image.png')} style={styles.addImage} />
                     <Text style={styles.uploadText}>오늘의 사진을 넣어주세요</Text>
+                    <Text
+                      style={{
+                        fontWeight: '400',
+                        fontSize: 12,
+                        color: '#8A8A8A',
+                        lineHeight: 16.8,
+                      }}>
+                      * 사진 미등록 시, 기본 사진으로 자동 설정됩니다
+                    </Text>
                   </>
                 )}
               </TouchableOpacity>
@@ -419,28 +452,9 @@ const TicketPage = () => {
                 )
               })()}
 
-              {/* {isCheer ? (
-                <>
-                  {!isDirectWrite ? (
-                    <Input
-                      label="오늘의 상대구단"
-                      value={opponentTeam?.name} //
-                      editable={false}
-                    />
-                  ) : (
-                    <SelectBox
-                      label={'오늘의 상대구단'}
-                      placeholder={'상대구단을 선택해주세요'}
-                      value={writeData.matchTeam?.name}
-                      onPress={() => setTeamModalVisible(true)}
-                    />
-                  )}
-                </>
-              ) : null} */}
-
               {tabMenu === '집관' ? (
                 <Input
-                  label="오늘의 집관장소"
+                  label={<Optional label="오늘의 집관장소" />}
                   value={writeData.matchPlace}
                   onChangeText={value => handleInputChange('matchPlace', value)}
                   placeholder="집관 장소를 기록해주세요"
@@ -478,7 +492,7 @@ const TicketPage = () => {
               )}
 
               <Input
-                label="오늘의 선발선수"
+                label={<Optional label="오늘의 선발선수" />}
                 value={writeData.matchPlayer} //
                 onChangeText={value => handleInputChange('matchPlayer', value)}
                 placeholder="선수 이름을 기록해주세요"
@@ -492,7 +506,7 @@ const TicketPage = () => {
               />
 
               <Input
-                label="오늘의 직관푸드"
+                label={<Optional label="오늘의 직관푸드" />}
                 value={writeData.todayFood} //
                 onChangeText={value => handleInputChange('todayFood', value)}
                 placeholder="오늘 먹은 직관푸드를 기록해주세요"
@@ -711,7 +725,9 @@ const styles = StyleSheet.create({
   },
   uploadText: {
     fontSize: 14,
-    color: '#999',
+    color: '#95938B',
+    lineHeight: 19.6,
+    fontWeight: '500',
     marginTop: 8,
   },
   inputContainer: {

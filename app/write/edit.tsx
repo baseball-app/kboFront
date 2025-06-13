@@ -67,6 +67,15 @@ const placeOption = [
   {label: '광주 기아 챔피언스 필드', value: '광주 기아 챔피언스 필드'},
 ]
 
+const Optional = ({label}: {label: string}) => {
+  return (
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <Text style={{fontSize: 14, color: '#171716', fontWeight: '500', lineHeight: 19.6}}>{label}</Text>
+      <Text style={{fontSize: 14, color: '#95938B', fontWeight: '500', lineHeight: 19.6}}> (선택)</Text>
+    </View>
+  )
+}
+
 const EditTicketPage = () => {
   const {id} = useLocalSearchParams()
 
@@ -157,7 +166,7 @@ const EditTicketPage = () => {
 
     const formData = new FormData()
 
-    if (typeof writeData?.todayImg === 'string') {
+    if (typeof writeData?.todayImg === 'string' || !writeData?.todayImg) {
       // formData.append('image', writeData?.todayImg)
 
       formData.append('id', String(ticketDetail?.id))
@@ -299,8 +308,7 @@ const EditTicketPage = () => {
     }))
   }
 
-  const isEnabled =
-    writeData.homeTeam.score && writeData.awayTeam.score && writeData.player && writeData.place && writeData.todayImg
+  const isEnabled = writeData.homeTeam.score && writeData.awayTeam.score
 
   const inputListRef = useRef<Record<string, TextInput>>({})
   const scrollRef = useRef<ScrollView>(null)
@@ -416,7 +424,7 @@ const EditTicketPage = () => {
 
               {writeData.placeType === '집관' ? (
                 <Input
-                  label="오늘의 집관장소"
+                  label={<Optional label="오늘의 집관장소" />}
                   value={writeData?.place}
                   onChangeText={value => onChangeValue('place', value)}
                   placeholder="집관 장소를 기록해주세요"
@@ -448,7 +456,7 @@ const EditTicketPage = () => {
               )}
 
               <Input
-                label="오늘의 선발선수"
+                label={<Optional label="오늘의 선발선수" />}
                 value={writeData?.player} //
                 onChangeText={value => onChangeValue('player', value)}
                 placeholder="선수 이름을 기록해주세요"
@@ -462,7 +470,7 @@ const EditTicketPage = () => {
               />
 
               <Input
-                label="오늘의 직관푸드"
+                label={<Optional label="오늘의 직관푸드" />}
                 value={writeData?.food} //
                 onChangeText={value => onChangeValue('food', value)}
                 placeholder="오늘 먹은 직관푸드를 기록해주세요"
