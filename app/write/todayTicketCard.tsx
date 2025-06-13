@@ -373,7 +373,9 @@ export default function GameCard() {
                         if (!ticketDetail?.only_me) {
                           return (
                             <View style={styles.thoughtsTextBox}>
-                              <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
+                              <ScrollView>
+                                <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
+                              </ScrollView>
                             </View>
                           )
                         }
@@ -390,9 +392,9 @@ export default function GameCard() {
                                 <Text style={styles.onlyMeText}>나만보기</Text>
                               </View>
                               <View style={styles.thoughtsTextBox}>
-                                <Text style={styles.thoughtsText} numberOfLines={9}>
-                                  {ticketDetail?.memo}
-                                </Text>
+                                <ScrollView>
+                                  <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
+                                </ScrollView>
                               </View>
                             </>
                           )

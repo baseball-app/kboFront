@@ -553,7 +553,7 @@ const TicketPage = () => {
                 placeholder="오늘의 소감을 기록해주세요"
                 multiline={true}
                 numberOfLines={6}
-                maxLength={200}
+                maxLength={500}
                 style={{height: 125, textAlign: 'left', textAlignVertical: 'top'}}
                 ref={ref => {
                   if (ref) inputListRef.current['thoughts'] = ref
