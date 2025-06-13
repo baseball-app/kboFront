@@ -515,7 +515,7 @@ const EditTicketPage = () => {
                 value={writeData?.memo} //
                 onChangeText={value => onChangeValue('memo', value)}
                 placeholder="오늘의 소감을 기록해주세요"
-                maxLength={200}
+                maxLength={500}
                 multiline={true}
                 numberOfLines={6}
                 style={{height: 125, textAlign: 'left', textAlignVertical: 'top'}}
