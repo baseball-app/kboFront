@@ -1,15 +1,16 @@
 import {EVENTS} from '@/analytics/event'
 import {logEvent} from '@/analytics/func'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
+import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import Skeleton from '@/components/skeleton/Skeleton'
 import Tag from '@/components/Tag'
-import useTeam, {Team} from '@/hooks/match/useTeam'
+import useTeam from '@/hooks/match/useTeam'
 import useTicketListByTeam, {TicketListByTeam} from '@/hooks/match/useTicketListByTeam'
-import useProfile, {Profile} from '@/hooks/my/useProfile'
+import useProfile from '@/hooks/my/useProfile'
 import {format} from 'date-fns'
-import {router, useSegments, usePathname} from 'expo-router'
-import React, {useEffect, useRef} from 'react'
-import {View, Text, TouchableOpacity, ScrollView, StyleSheet, FlatList} from 'react-native'
+import {router, usePathname} from 'expo-router'
+import React from 'react'
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 
 const MyTicketBoxScreen = () => {
   const {profile} = useProfile()
@@ -18,14 +19,8 @@ const MyTicketBoxScreen = () => {
   const myTeam = findTeamById(profile.my_team?.id)
   const pathname = usePathname()
 
-  const segments = useSegments()
-  const ref = useRef<ScrollView>(null)
-  useEffect(() => {
-    ref.current?.scrollTo({y: 0})
-  }, [segments])
-
   return (
-    <ScrollView style={styles.container} ref={ref}>
+    <InitScrollProvider style={styles.container}>
       <View style={styles.infoBox}>
         <View style={styles.profileCard}>
           <ProfileImageBox source={profile.profile_image} />
@@ -111,7 +106,7 @@ const MyTicketBoxScreen = () => {
           )
         })()}
       </View>
-    </ScrollView>
+    </InitScrollProvider>
   )
 }
 
