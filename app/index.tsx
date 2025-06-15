@@ -18,7 +18,6 @@ export default function Index() {
         router.replace('/auth/login')
       }
     } catch (error) {
-      console.log('error', error)
       router.replace('/auth/login')
     } finally {
       SplashScreen.hideAsync()

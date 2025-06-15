@@ -18,7 +18,7 @@ const RankScreen = () => {
   ] as const
 
   return (
-    <InitScrollProvider>
+    <InitScrollProvider style={{backgroundColor: '#F3F2EE'}}>
       <FlatList
         ListHeaderComponent={<RankHeader standardDate="25.04.27" />}
         ListFooterComponent={<View style={{height: 24}}></View>}
