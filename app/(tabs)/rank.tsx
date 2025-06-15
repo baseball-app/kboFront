@@ -19,7 +19,14 @@ const RankScreen = () => {
 
   return (
     <InitScrollProvider style={{backgroundColor: '#F3F2EE'}}>
-      <FlatList
+      <RankHeader standardDate="25.04.27" />
+      <View style={{gap: 10}}>
+        {data.map(item => (
+          <TeamCard key={item.id} {...item} />
+        ))}
+      </View>
+      <View style={{height: 24}}></View>
+      {/* <FlatList
         ListHeaderComponent={<RankHeader standardDate="25.04.27" />}
         ListFooterComponent={<View style={{height: 24}}></View>}
         data={data}
@@ -27,7 +34,7 @@ const RankScreen = () => {
         keyExtractor={item => item.id.toString()}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{gap: 10}}
-      />
+      /> */}
     </InitScrollProvider>
   )
 }
