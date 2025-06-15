@@ -35,33 +35,33 @@ axiosInstance.interceptors.response.use(
     return res
   },
   async (err: AxiosError) => {
-    console.error('err', err.response?.data)
+    // console.error('err', err.response?.data)
 
-    const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
-    if (err.status == 403 && token?.accessToken && token?.refreshToken && !lock) {
-      lock = true
-      try {
-        const data = await ApiClient.post<LoginServerResponse>('/auths/token/refresh/', {
-          refresh_token: token.refreshToken,
-        })
+    // const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
+    // if (err.status == 403 && token?.accessToken && token?.refreshToken && !lock) {
+    //   lock = true
+    //   try {
+    //     const data = await ApiClient.post<LoginServerResponse>('/auths/token/refresh/', {
+    //       refresh_token: token.refreshToken,
+    //     })
 
-        setItem(MmkvStoreKeys.USER_LOGIN, {
-          accessToken: data.access_token,
-          refreshToken: data.refresh_token,
-        })
+    //     setItem(MmkvStoreKeys.USER_LOGIN, {
+    //       accessToken: data.access_token,
+    //       refreshToken: data.refresh_token,
+    //     })
 
-        if (err.config) {
-          return axiosInstance(err.config)
-        }
-      } catch (error) {
-        console.log('토큰 업데이트 실패 !! interceptor > /auths/token/refresh/')
-        setItem(MmkvStoreKeys.USER_LOGIN, undefined)
-      } finally {
-        lock = false
-      }
+    //     if (err.config) {
+    //       return axiosInstance(err.config)
+    //     }
+    //   } catch (error) {
+    //     console.log('토큰 업데이트 실패 !! interceptor > /auths/token/refresh/')
+    //     setItem(MmkvStoreKeys.USER_LOGIN, undefined)
+    //   } finally {
+    //     lock = false
+    //   }
 
-      // 토큰 만료시 처리 로직
-    }
+    // 토큰 만료시 처리 로직
+    // }
 
     return Promise.reject(err)
   },

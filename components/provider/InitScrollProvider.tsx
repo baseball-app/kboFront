@@ -10,7 +10,7 @@ const InitScrollProvider = ({children, style}: {children: React.ReactNode; style
   }, [segments])
 
   return (
-    <ScrollView ref={ref} style={[{flex: 1, backgroundColor: '#fff'}, style]}>
+    <ScrollView ref={ref} style={[{flex: 1, backgroundColor: '#fff'}, style]} showsVerticalScrollIndicator={false}>
       {children}
     </ScrollView>
   )
