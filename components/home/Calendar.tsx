@@ -1,17 +1,23 @@
-import React, {useState} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import React, {useEffect, useRef, useState} from 'react'
+import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native'
 import {format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
 import {usePathname, useRouter} from 'expo-router'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import MatchResultCell from '../MatchResultCell'
-import {useQueryClient} from '@tanstack/react-query'
+import {useQuery, useQueryClient} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {TicketDetail} from '@/hooks/match/useTicketDetail'
 import {Match} from '@/hooks/match/useMatch'
 import WheelPicker from '../WheelPicker'
 import {Modal} from '@/components/common/Modal'
 import {useAnalyticsStore} from '@/analytics/event'
+import SwiperFlatList from 'react-native-swiper-flatlist'
+import dayjs from 'dayjs'
+import {Calendar as CalendarComponent} from 'react-native-calendars'
+import useProfile from '@/hooks/my/useProfile'
+import {groupBy} from '@/utils/groupBy'
+
 export type TicketCalendarLog = {
   id: number // 5
   date: string // '2025-03-22'
@@ -27,6 +33,79 @@ export type TicketCalendarLog = {
     name: string // '잠실야구장'
     team_id: number // 3
   }
+}
+const dimensions = Dimensions.get('window')
+const width = dimensions.width - 48
+
+const RenderDays = ({
+  currentDate,
+  selectedDate,
+  dayClick,
+  ticketList,
+  isLoading,
+  userId,
+}: {
+  currentDate: Date
+  ticketList: Record<string, TicketCalendarLog[]> | null
+  selectedDate: Date | null
+  dayClick: (day: Date) => void
+  isLoading: boolean
+  userId: number
+}) => {
+  const {profile} = useProfile()
+  const currentYearMonth = format(currentDate, 'yyyy-MM')
+  // const {data: ticketList} = useQuery({
+  //   queryKey: ['tickets', currentYearMonth, userId],
+  //   queryFn: () => {
+  //     return ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
+  //       date: currentYearMonth,
+  //       user_id: userId || profile?.id,
+  //     })
+  //   },
+  //   enabled: Boolean(currentYearMonth),
+  //   select(data) {
+  //     return groupBy(data, item => item.date)
+  //   },
+  // })
+
+  const days = []
+  const startDate = startOfWeek(startOfMonth(currentDate))
+  const endDate = endOfWeek(endOfMonth(currentDate))
+  const today = new Date()
+
+  let day = startDate
+  while (day <= endDate) {
+    days.push(day)
+    day = addDays(day, 1)
+  }
+
+  return (
+    <View style={[styles.daysContainer, {width: width}]}>
+      {days.map(day => {
+        const ticketsGroupByDate = ticketList?.[format(day, 'yyyy-MM-dd')] || []
+        // const ticketsGroupByDate = ticketList?.[format(day, 'yyyy-MM-dd')] || []
+
+        return (
+          <View
+            key={dayjs(day).format('YYYY-MM-DD')}
+            style={[
+              styles.day,
+              !isSameMonth(day, currentDate) && styles.inactiveDay,
+              Boolean(selectedDate) && isSameDay(day, selectedDate!) && styles.selectedDay,
+              // styles.selectedDay,
+              {height: 80},
+            ]}>
+            <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text>
+            <MatchResultCell
+              isLoading={isLoading}
+              onPress={() => dayClick(day)}
+              data={ticketsGroupByDate} //
+            />
+          </View>
+        )
+      })}
+    </View>
+  )
 }
 
 const Calendar = ({
@@ -51,17 +130,6 @@ const Calendar = ({
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const router = useRouter()
   const pathname = usePathname()
-
-  const renderHeader = () => {
-    return (
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.headerTextContainer} onPress={() => setIsModalVisible(true)}>
-          <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
-          <Ionicons name="chevron-down" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-    )
-  }
 
   const prefetchTicket = async (date: string) => {
     const queryKey = ['ticket', date, targetId]
@@ -95,79 +163,27 @@ const Calendar = ({
     const targetDate = format(pDay, 'yyyy-MM-dd')
     const ticketsGroupByDate = ticketList?.[targetDate] || []
 
-    if (!ticketsGroupByDate?.length) {
-      if (isMyDiary) {
-        // 해당 날짜 경기 일정 prefetch
-        prefetchMatchList(targetDate).finally(() => {
-          // ga 데이터 수집용도
-          setScreenName(pathname)
-          setDiaryCreate('메인 버튼')
-          // ga 데이터 수집용도
-          router.push({pathname: '/write', params: {date: targetDate}})
+    if (ticketsGroupByDate?.length) {
+      // 해당 날짜 직관일기 prefetch
+      prefetchTicket(targetDate).finally(() => {
+        router.push({
+          pathname: '/write/todayTicketCard', //
+          params: {date: targetDate, target_id: targetId},
         })
-      }
-
+      })
       return
     }
 
-    // 해당 날짜 직관일기 prefetch
-    prefetchTicket(targetDate).finally(() => {
-      router.push({
-        pathname: '/write/todayTicketCard', //
-        params: {date: targetDate, target_id: targetId},
+    if (isMyDiary) {
+      // 해당 날짜 경기 일정 prefetch
+      prefetchMatchList(targetDate).finally(() => {
+        // ga 데이터 수집용도
+        setScreenName(pathname)
+        setDiaryCreate('메인 버튼')
+        // ga 데이터 수집용도
+        router.push({pathname: '/write', params: {date: targetDate}})
       })
-    })
-  }
-
-  const renderDaysOfWeek = () => {
-    return (
-      <View style={styles.daysOfWeekContainer}>
-        {DAYS_OF_WEEK.map((day, index) => (
-          <Text key={index} style={styles.dayOfWeekText}>
-            {day}
-          </Text>
-        ))}
-      </View>
-    )
-  }
-
-  const renderDays = () => {
-    const days = []
-    const startDate = startOfWeek(startOfMonth(currentDate))
-    const endDate = endOfWeek(endOfMonth(currentDate))
-    const today = new Date()
-
-    let day = startDate
-    while (day <= endDate) {
-      days.push(day)
-      day = addDays(day, 1)
     }
-
-    return (
-      <View style={styles.daysContainer}>
-        {days.map((day, index) => {
-          const ticketsGroupByDate = ticketList?.[format(day, 'yyyy-MM-dd')] || []
-
-          return (
-            <View
-              key={index}
-              style={[
-                styles.day,
-                !isSameMonth(day, currentDate) && styles.inactiveDay,
-                Boolean(selectedDate) && isSameDay(day, selectedDate!) && styles.selectedDay,
-                // styles.selectedDay,
-                {height: 80},
-              ]}>
-              <Text style={[styles.dayText, isSameDay(day, today) && styles.today]}>{format(day, 'd')}</Text>
-              <MatchResultCell
-                onPress={() => dayClick(day)}
-                data={ticketsGroupByDate} //
-              />
-            </View>
-          )
-        })}
-      </View>
-    )
   }
 
   const handleMonthYearChange = () => {
@@ -176,11 +192,65 @@ const Calendar = ({
     setIsModalVisible(false)
   }
 
+  const [isLoading, setIsLoading] = useState(false)
+  useEffect(() => {
+    setIsLoading(false)
+  }, [currentDate.getMonth()])
+
   return (
     <View style={styles.container}>
-      {renderHeader()}
-      {renderDaysOfWeek()}
-      {renderDays()}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.headerTextContainer} onPress={() => setIsModalVisible(true)}>
+          <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
+          <Ionicons name="chevron-down" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.daysOfWeekContainer}>
+        {DAYS_OF_WEEK.map((day, index) => (
+          <Text
+            key={index}
+            style={[styles.dayOfWeekText, index === 0 && {color: '#FF0000'}, index === 6 && {color: '#1E5EF4'}]}>
+            {day}
+          </Text>
+        ))}
+      </View>
+      <View style={{width: width}}>
+        <SwiperFlatList
+          data={Array.from({length: 101}, (_, i) => i - 50)}
+          initialNumToRender={3}
+          index={50}
+          onChangeIndex={({index}) => {
+            setCurrentDate(
+              dayjs()
+                .add(index - 50, 'month')
+                .toDate(),
+            )
+          }}
+          getItemLayout={(_, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          // key={dayjs(currentDate).format('YYYY-MM')}
+          renderItem={({item}) => {
+            return (
+              <View style={{width: width}}>
+                <RenderDays
+                  isLoading={isLoading}
+                  currentDate={dayjs().add(item, 'month').toDate()}
+                  ticketList={ticketList}
+                  selectedDate={selectedDate}
+                  dayClick={dayClick}
+                  userId={targetId}
+                />
+              </View>
+            )
+          }}
+          keyExtractor={(item, index) => item.toString()}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
 
       {isModalVisible && (
         <Modal key={JSON.stringify(isModalVisible)} visible={isModalVisible} transparent={true} animationType="slide">
@@ -258,7 +328,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   day: {
-    width: '14.28%',
+    width: width / 7,
     borderWidth: 1,
     borderRadius: 10,
     justifyContent: 'flex-start',
