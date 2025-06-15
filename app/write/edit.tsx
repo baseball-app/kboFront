@@ -170,53 +170,44 @@ const EditTicketPage = () => {
       // formData.append('image', writeData?.todayImg)
 
       formData.append('id', String(ticketDetail?.id))
-      console.log('id', String(ticketDetail?.id))
+
       formData.append('result', writeData?.result === '경기 취소' ? '취소' : writeData?.result || '')
-      console.log('result', writeData?.result === '경기 취소' ? '취소' : writeData?.result || '')
+
       formData.append('weather', writeData?.weather || '')
-      console.log('weather', writeData?.weather || '')
+
       formData.append('is_ballpark', JSON.stringify(writeData?.placeType === '직관'))
-      console.log('is_ballpark', JSON.stringify(writeData?.placeType === '직관'))
+
       formData.append('score_our', String(writeData?.homeTeam.score))
-      console.log('score_our', String(writeData?.homeTeam.score))
+
       formData.append('score_opponent', String(writeData?.awayTeam.score))
-      console.log('score_opponent', String(writeData?.awayTeam.score))
+
       // 선발선수
       formData.append('starting_pitchers', writeData?.player || '')
-      console.log('starting_pitchers', writeData?.player || '')
+
       // 관람장소
       formData.append('gip_place', String(writeData?.place || ''))
-      console.log('gip_place', String(writeData?.place || ''))
 
       // 직관푸드
       formData.append('food', writeData?.food || '')
-      console.log('food', writeData?.food || '')
 
       // 오늘의 소감
       formData.append('memo', writeData?.memo || '')
-      console.log('memo', writeData?.memo || '')
 
       formData.append('is_homeballpark', JSON.stringify(writeData?.placeType === '직관'))
-      console.log('is_homeballpark', JSON.stringify(writeData?.placeType === '직관'))
 
       //나만보기
       formData.append('only_me', JSON.stringify(writeData?.onlyMe))
-      console.log('only_me', JSON.stringify(writeData?.onlyMe))
 
       formData.append('direct_yn', JSON.stringify(isDirectWrite))
-      console.log('direct_yn', JSON.stringify(isDirectWrite))
 
       // hometeam_id
       formData.append('hometeam_id', String(writeData?.homeTeam.id))
-      console.log('hometeam_id', String(writeData?.homeTeam.id))
+
       formData.append('awayteam_id', String(writeData?.awayTeam.id))
-      console.log('awayteam_id', String(writeData?.awayTeam.id))
 
       formData.append('is_cheer', JSON.stringify(isCheer))
-      console.log('is_cheer', JSON.stringify(isCheer))
 
       formData.append('is_double', JSON.stringify(isDirectWrite))
-      console.log('is_double', JSON.stringify(isDirectWrite))
 
       updateTicket(formData)
         .then(() => {

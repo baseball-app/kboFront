@@ -14,6 +14,7 @@ import useNotification from '@/hooks/notification/useNotification'
 import useFriends from '@/hooks/my/useFriends'
 import {useAnalyticsStore} from '@/analytics/event'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
+import {CalendarContainer} from '@/components/home/Calendar/CalendarContainer'
 const CalendarScreen = () => {
   const router = useRouter()
   const {openCommonPopup} = usePopup()
@@ -88,15 +89,7 @@ const CalendarScreen = () => {
       <InitScrollProvider style={styles.scollContainer}>
         <GameContainer selectedUserName={selectedUserName} />
         <View style={{marginBottom: 70}}>
-          <Calendar
-            isMyDiary={isMyDiary}
-            targetId={userId || profile.id!}
-            currentDate={currentDate}
-            setCurrentDate={newDate => {
-              if (dayjs(newDate).month() !== dayjs(currentDate).month()) setCurrentDate(newDate)
-            }}
-            ticketList={ticketList || {}}
-          />
+          <CalendarContainer targetId={userId || profile.id!} />
         </View>
       </InitScrollProvider>
 

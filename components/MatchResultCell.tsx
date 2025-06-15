@@ -3,14 +3,27 @@ import {StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native'
 import {TicketCalendarLog} from './home/Calendar'
 import {findMatchResultImage} from '@/constants/match'
 import useTeam from '@/hooks/match/useTeam'
+import Skeleton from './skeleton/Skeleton'
 
 //TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
-const MatchResultCell = ({data, onPress}: {data: TicketCalendarLog[]; onPress: () => void}) => {
+const MatchResultCell = ({
+  data,
+  onPress,
+  isLoading,
+}: {
+  data: TicketCalendarLog[]
+  onPress: () => void
+  isLoading: boolean
+}) => {
   const {findTeamById, teams} = useTeam()
 
   const matchResult = data[0]?.result
   const opponent = findTeamById(data[0]?.opponent?.id)
   const myTeam = findTeamById(data[0]?.ballpark?.team_id)
+
+  // if (isLoading) {
+  //   return <Skeleton type="rect" width={28} height={28} />
+  // }
 
   return (
     <TouchableOpacity style={{alignItems: 'center'}} onPress={onPress}>
