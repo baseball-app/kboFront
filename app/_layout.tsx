@@ -8,11 +8,14 @@ import {enableScreens} from 'react-native-screens'
 import QueryProvider from '@/components/provider/QueryProvider'
 import CommonModal from '@/components/common/CommonModal'
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
-import {Text, View, TextInput} from 'react-native'
+import {Text, View, TextInput, Platform} from 'react-native'
 import DeepLinkProvider from '@/components/provider/DeepLinkProvider'
 import Toast, {ToastConfig} from 'react-native-toast-message'
 import {EVENTS} from '@/analytics/event'
 import {logEvent} from '@/analytics/func'
+import {usePushMessage} from '@/hooks/usePushMessage'
+import messaging from '@react-native-firebase/messaging'
+import notifee from '@notifee/react-native'
 
 interface TextWithDefaultProps extends Text {
   defaultProps?: {allowFontScaling?: boolean}
@@ -45,7 +48,25 @@ enableScreens(false)
 
 SplashScreen.preventAutoHideAsync()
 
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  if (Platform.OS === 'android') {
+    console.log('📡 Background Push 수신됨:', remoteMessage)
+    await notifee.displayNotification({
+      title: remoteMessage.notification?.title ?? '새로운 알림',
+      body: remoteMessage.notification?.body ?? '내용을 확인하세요',
+      android: {
+        channelId: 'default',
+        smallIcon: 'ic_launcher', // drawable에 있는 아이콘
+      },
+    })
+  }
+})
+
 export default function RootLayout() {
+  const {deviceToken} = usePushMessage(async remoteMessage => {})
+  // TODO: 푸시 토큰 서버 전송 필요
+  console.log('deviceToken :: ', deviceToken)
+
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   })
