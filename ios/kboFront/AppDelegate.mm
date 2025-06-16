@@ -10,7 +10,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [FIRApp configure]; // ✅ Firebase 초기화
-
+  [application registerForRemoteNotifications];
 
   self.moduleName = @"main";
 
