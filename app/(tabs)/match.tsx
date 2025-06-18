@@ -3,7 +3,7 @@ import {View} from 'react-native'
 import MatchTeamBox from '@/components/MatchTeamBox'
 import MatchCalendar from '@/components/MatchCalendar'
 import MatchTopNotificationComponent from '@/app/match/components/MatchTopNotificationComponent'
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useState} from 'react'
 import EmptyMatchView from '@/components/match/EmptyMatchView'
 import useMatch, {Match} from '@/hooks/match/useMatch'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
@@ -13,8 +13,9 @@ import useProfile from '@/hooks/my/useProfile'
 import {usePopup} from '@/slice/commonSlice'
 import Skeleton from '@/components/skeleton/Skeleton'
 import React from 'react'
-import {usePathname, useSegments} from 'expo-router'
+import {usePathname} from 'expo-router'
 import {useAnalyticsStore} from '@/analytics/event'
+import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 const LoadingMatchView = () => {
   return (
     <>
@@ -46,22 +47,15 @@ const MatchScreen = () => {
     moveToWriteTicket(selectedDate, match)
   }
 
-  const segments = useSegments()
-  const ref = useRef<FlatList>(null)
-  useEffect(() => {
-    ref.current?.scrollToOffset({offset: 0})
-  }, [segments])
-
   // 페이지 이동 시, 날짜 초기화
   useEffect(() => {
     if (pathname !== '/match' && !pathname.includes('write')) setSelectedDate(new Date())
   }, [pathname])
 
   return (
-    <View style={styles.container}>
+    <InitScrollProvider style={styles.container}>
       <MatchTopNotificationComponent />
       <FlatList
-        ref={ref}
         contentContainerStyle={styles.flatList}
         data={matchingList}
         ListEmptyComponent={isPending ? <LoadingMatchView /> : <EmptyMatchView onClick={onClickMatch} />}
@@ -96,7 +90,7 @@ const MatchScreen = () => {
         }
         keyExtractor={item => `${item.id}`}
       />
-    </View>
+    </InitScrollProvider>
   )
 }
 

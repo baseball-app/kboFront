@@ -1,3 +1,4 @@
+import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import useTeam from '@/hooks/match/useTeam'
 import React from 'react'
 import {View, Text, Image, FlatList} from 'react-native'
@@ -17,7 +18,7 @@ const RankScreen = () => {
   ] as const
 
   return (
-    <View>
+    <InitScrollProvider>
       <FlatList
         ListHeaderComponent={<RankHeader standardDate="25.04.27" />}
         ListFooterComponent={<View style={{height: 24}}></View>}
@@ -27,7 +28,7 @@ const RankScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{gap: 10}}
       />
-    </View>
+    </InitScrollProvider>
   )
 }
 
