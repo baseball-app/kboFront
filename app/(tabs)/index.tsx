@@ -1,5 +1,4 @@
 import {StyleSheet, Image, TouchableOpacity, View} from 'react-native'
-import Calendar from '@/components/home/Calendar'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
 import {usePathname, useRouter} from 'expo-router'
@@ -20,14 +19,7 @@ const CalendarScreen = () => {
   const {openCommonPopup} = usePopup()
 
   const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()})
-  const {
-    ticketList,
-    isMyDiary,
-    setUserId,
-    userId,
-    setCurrentDate,
-    currentDate, //
-  } = useDiary()
+  const {ticketList, isMyDiary, setUserId, userId} = useDiary()
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const {friend_status} = useFriends()
 

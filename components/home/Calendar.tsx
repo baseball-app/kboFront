@@ -14,9 +14,7 @@ import {Modal} from '@/components/common/Modal'
 import {useAnalyticsStore} from '@/analytics/event'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import dayjs from 'dayjs'
-import {Calendar as CalendarComponent} from 'react-native-calendars'
 import useProfile from '@/hooks/my/useProfile'
-import {groupBy} from '@/utils/groupBy'
 
 export type TicketCalendarLog = {
   id: number // 5
