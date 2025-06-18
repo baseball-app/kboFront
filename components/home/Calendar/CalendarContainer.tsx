@@ -74,8 +74,7 @@ const CalendarContainer = ({targetId}: Props) => {
 
   const dayClick = (pDay: Date) => {
     const targetDate = dayjs(pDay).format('YYYY-MM-DD')
-    const ticketsGroupByDate = []
-    // ticketList?.[targetDate] || []
+    const ticketsGroupByDate = getTicketList(dayjs(pDay).format('YYYY-MM'))?.[targetDate] || []
 
     if (ticketsGroupByDate?.length) {
       // 해당 날짜 직관일기 prefetch
@@ -221,7 +220,7 @@ const CalendarContainer = ({targetId}: Props) => {
           return ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
             date: yearMonth,
             user_id: targetId,
-          })
+          }).then(data => groupBy(data, item => item.date))
         },
       })
     }

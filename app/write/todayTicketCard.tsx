@@ -16,6 +16,11 @@ import ViewShot from 'react-native-view-shot'
 import * as MediaLibrary from 'expo-media-library'
 import Toast from 'react-native-toast-message'
 import {PermissionsAndroid} from 'react-native'
+import {useCommonSlice} from '@/slice/commonSlice'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import ApiClient from '@/api'
+import dayjs from 'dayjs'
+import {TicketCalendarLog} from '@/components/home/Calendar/type'
 
 class NoPermissionError extends Error {
   constructor(message?: string) {
@@ -83,7 +88,7 @@ export default function GameCard() {
       visibilityTime: 2000,
       autoHide: true,
       position: 'bottom',
-      bottomOffset: insets.bottom + 24,
+      bottomOffset: insets.bottom + 92,
     })
   }
 
@@ -139,6 +144,33 @@ export default function GameCard() {
     }
   }
 
+  const {modal} = useCommonSlice()
+  const queryClient = useQueryClient()
+
+  const {mutate: deleteTicket} = useMutation({
+    mutationFn: (id: number) => ApiClient.post(`/tickets/ticket_del/`, {id}),
+    onSuccess: (_, variables) => {
+      router.back()
+      showToast('삭제되었습니다.')
+      const queryKey = ['tickets', dayjs(ticketDetail?.date).format('YYYY-MM'), Number(target_id)]
+      const data = queryClient.getQueryData<Record<string, TicketCalendarLog[]>>(queryKey)
+
+      // if (data) {
+      //   data[dayjs(ticketDetail?.date).format('YYYY-MM-DD')] = data[
+      //     dayjs(ticketDetail?.date).format('YYYY-MM-DD')
+      //   ].filter(item => item.id !== variables)
+      //   queryClient.setQueryData(queryKey, JSON.parse(JSON.stringify(data)))
+      //   // queryClient.refetchQueries({queryKey: ['tickets', dayjs(ticketDetail?.date).format('YYYY-MM'), target_id]})
+      // }
+      queryClient.invalidateQueries({queryKey: ['tickets']})
+      queryClient.invalidateQueries({queryKey: ['ticket']})
+    },
+    onError: () => {
+      showToast('잠시 후 다시 시도해 주세요')
+    },
+    onSettled: modal.hide,
+  })
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -148,6 +180,39 @@ export default function GameCard() {
           onPress: onBackButtonClick,
           content: <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />,
         }}
+        rightButton={
+          isMyTicket
+            ? {
+                onPress: () => {
+                  modal.open({
+                    header: '안내',
+                    content: '해당 티켓을 삭제할까요?',
+                    button: [
+                      {
+                        text: '취소',
+                        onPress: modal.hide,
+                        buttonStyle: {
+                          backgroundColor: '#D0CEC7',
+                        },
+                      },
+                      {
+                        text: '삭제',
+                        onPress: () => ticketDetail?.id && deleteTicket(ticketDetail?.id),
+                        buttonStyle: {
+                          backgroundColor: '#1E5EF4',
+                        },
+                        buttonTextStyle: {
+                          color: '#fff',
+                        },
+                      },
+                    ],
+                  })
+                  // router.push({pathname: '/write/edit', params: {id: ticketDetail?.id}})
+                },
+                content: <Text style={{color: '#1E5EF4', fontSize: 16, fontWeight: '500'}}>삭제</Text>,
+              }
+            : undefined
+        }
       />
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
