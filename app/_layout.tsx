@@ -64,8 +64,6 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 
 export default function RootLayout() {
   const {deviceToken} = usePushMessage(async remoteMessage => {})
-  // TODO: 푸시 토큰 서버 전송 필요
-  console.log('deviceToken :: ', deviceToken)
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),

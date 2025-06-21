@@ -20,15 +20,28 @@ import useMyInfo from '@/hooks/my/useMyInfo'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
 import useTeam from '@/hooks/match/useTeam'
 import useMakeFriend from '@/hooks/my/useMakeFriend'
+import {usePushMessage} from '@/hooks/usePushMessage'
+import Clipboard from '@react-native-clipboard/clipboard'
+import {usePopup} from '@/slice/commonSlice'
+import {Config} from '@/config/Config'
 
 const ProfileScreen = () => {
   const {logout} = useLogin()
   const {profile, onPasteInviteCode, withdrawUser} = useMyInfo()
+  const {openCommonPopup} = usePopup()
   const {} = useTeam()
 
   const [inviteCode, setInviteCode] = useState<string | undefined>(undefined)
   const {addFriend} = useMakeFriend()
   const inputRef = useRef<TextInput>(null)
+
+  const {deviceToken} = usePushMessage()
+
+  const copyDeviceToken = () => {
+    Clipboard.setString(deviceToken)
+    openCommonPopup(`토큰이 복사되었습니다.`)
+  }
+
   return (
     <SafeAreaView style={[styles.container, {flex: 1}]}>
       <KeyboardAvoidingView
@@ -177,6 +190,13 @@ const ProfileScreen = () => {
               <Text style={styles.menuText}>회원탈퇴</Text>
               <Ionicons name="chevron-forward" size={24} color="gray" />
             </TouchableOpacity>
+
+            {Config.MODE === 'dev' ? (
+              <TouchableOpacity style={styles.menuItem} onPress={copyDeviceToken}>
+                <Text style={styles.menuText}>디바이스 토큰 복사</Text>
+                <Ionicons name="chevron-forward" size={24} color="gray" />
+              </TouchableOpacity>
+            ) : null}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
