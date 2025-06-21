@@ -148,12 +148,14 @@ export default function GameCard() {
   const {mutate: deleteTicket} = useMutation({
     mutationFn: (id: number) => ApiClient.post(`/tickets/ticket_del/`, {id}),
     onSuccess: (_, variables) => {
-      router.back()
+      setTimeout(() => {
+        router.back()
+      }, 500)
       showToast('삭제되었습니다.')
 
-      queryClient.invalidateQueries({queryKey: ['tickets']})
-      queryClient.invalidateQueries({queryKey: ['ticket']})
-      queryClient.invalidateQueries({queryKey: ['ticketListByTeam']})
+      queryClient.refetchQueries({queryKey: ['tickets']})
+      queryClient.refetchQueries({queryKey: ['ticket']})
+      queryClient.refetchQueries({queryKey: ['ticketListByTeam']})
     },
     onError: () => {
       showToast('잠시 후 다시 시도해 주세요')

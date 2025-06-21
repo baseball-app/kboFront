@@ -21,6 +21,9 @@ const MatchResultCell = ({
   const opponent = findTeamById(data[0]?.opponent?.id)
   const myTeam = findTeamById(data[0]?.ballpark?.team_id)
 
+  // if (data?.length > 1) {
+  //   console.log('🏝️ data', data)
+  // }
   // if (isLoading) {
   //   return <Skeleton type="rect" width={28} height={28} />
   // }

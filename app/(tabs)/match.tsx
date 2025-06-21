@@ -53,7 +53,7 @@ const MatchScreen = () => {
   }, [pathname])
 
   return (
-    <InitScrollProvider style={styles.container}>
+    <View style={styles.container}>
       <MatchTopNotificationComponent />
       <FlatList
         contentContainerStyle={styles.flatList}
@@ -90,7 +90,7 @@ const MatchScreen = () => {
         }
         keyExtractor={item => `${item.id}`}
       />
-    </InitScrollProvider>
+    </View>
   )
 }
 

@@ -7,20 +7,57 @@ import React, {useState} from 'react'
 import {Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {TicketCalendarLog} from './type'
 import {END_DATE, START_DATE} from './CalendarContainer'
+import {useQuery} from '@tanstack/react-query'
+import ApiClient from '@/api'
+import {groupBy} from '@/utils/groupBy'
+import LottieView from 'lottie-react-native'
 
 type Props = {
   date: Date
   setDate: (date: Date) => void
-  isLoading: boolean
-  ticketList: Record<string, TicketCalendarLog[]> | null | undefined
   onClick: (day: Date) => void
+  targetId: number
+  isLoading?: boolean
 }
 
-const CalendarView = ({date, setDate, isLoading, ticketList, onClick}: Props) => {
+const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+
+  const currentYearMonth = dayjs(date).format('YYYY-MM')
+
+  const {data: ticketList, isLoading: isTicketListLoading} = useQuery({
+    queryKey: ['tickets', currentYearMonth, targetId],
+    queryFn: async () => {
+      return ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
+        date: currentYearMonth,
+        user_id: targetId,
+      }).then(data => groupBy(data, item => item.date))
+    },
+    enabled: Boolean(currentYearMonth && targetId),
+  })
+
+  // const loading = true
+  const loading = isLoading || isTicketListLoading
 
   return (
     <View style={styles.container}>
+      {loading && (
+        <LottieView
+          source={require('@/assets/lottie/calendar_loading.json')}
+          autoPlay
+          loop
+          style={{
+            width: 100,
+            height: 100,
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: [{translateX: -50}, {translateY: -50}],
+            zIndex: 1000,
+            margin: 'auto',
+          }}
+        />
+      )}
       <View style={styles.header}>
         <TouchableOpacity style={styles.headerTextContainer} onPress={() => setIsModalVisible(true)}>
           <Text style={styles.headerText}>{dayjs(date).format('YYYY.MM')}</Text>
@@ -39,7 +76,7 @@ const CalendarView = ({date, setDate, isLoading, ticketList, onClick}: Props) =>
       <View style={{width: width}}>
         <View style={{width: width}}>
           <RenderDays
-            isLoading={isLoading} //
+            isLoading={!ticketList} //
             date={dayjs(date).toDate()}
             ticketList={ticketList}
             dayClick={onClick}
@@ -182,6 +219,7 @@ export {CalendarView}
 const styles = StyleSheet.create({
   container: {
     width: width,
+    position: 'relative',
   },
   header: {
     flexDirection: 'row',
