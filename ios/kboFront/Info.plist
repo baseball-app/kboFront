@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.9</string>
+	<string>1.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -34,16 +34,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>53</string>
+	<string>54</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
-	<key>NSUserNotificationUsageDescription</key>
-	<string>이 앱은 알림을 위해 푸시 권한을 요청합니다.</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
-		<string>fetch</string>
-	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSMinimumSystemVersion</key>
@@ -69,6 +62,8 @@
 	<array>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
 	</array>
+	<key>NSUserNotificationUsageDescription</key>
+	<string>이 앱은 알림을 위해 푸시 권한을 요청합니다.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
