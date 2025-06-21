@@ -19,8 +19,6 @@ import {PermissionsAndroid} from 'react-native'
 import {useCommonSlice} from '@/slice/commonSlice'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import ApiClient from '@/api'
-import dayjs from 'dayjs'
-import {TicketCalendarLog} from '@/components/home/Calendar/type'
 
 class NoPermissionError extends Error {
   constructor(message?: string) {
@@ -152,18 +150,10 @@ export default function GameCard() {
     onSuccess: (_, variables) => {
       router.back()
       showToast('삭제되었습니다.')
-      const queryKey = ['tickets', dayjs(ticketDetail?.date).format('YYYY-MM'), Number(target_id)]
-      const data = queryClient.getQueryData<Record<string, TicketCalendarLog[]>>(queryKey)
 
-      // if (data) {
-      //   data[dayjs(ticketDetail?.date).format('YYYY-MM-DD')] = data[
-      //     dayjs(ticketDetail?.date).format('YYYY-MM-DD')
-      //   ].filter(item => item.id !== variables)
-      //   queryClient.setQueryData(queryKey, JSON.parse(JSON.stringify(data)))
-      //   // queryClient.refetchQueries({queryKey: ['tickets', dayjs(ticketDetail?.date).format('YYYY-MM'), target_id]})
-      // }
       queryClient.invalidateQueries({queryKey: ['tickets']})
       queryClient.invalidateQueries({queryKey: ['ticket']})
+      queryClient.invalidateQueries({queryKey: ['ticketListByTeam']})
     },
     onError: () => {
       showToast('잠시 후 다시 시도해 주세요')
