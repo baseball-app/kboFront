@@ -34,7 +34,7 @@ const useWriteTicket = () => {
 
   const initializeTicket = (id: number) => {
     writeStore.clearState()
-    queryClient.invalidateQueries({queryKey: ['tickets']})
+    queryClient.refetchQueries({queryKey: ['tickets']})
 
     router.dismiss()
     router.navigate({

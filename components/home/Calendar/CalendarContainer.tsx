@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {CalendarView} from './CalendarView'
 import {TicketCalendarLog} from './type'
 import dayjs from 'dayjs'
-import {usePathname, useRouter} from 'expo-router'
+import {usePathname, useRouter, useSegments} from 'expo-router'
 import {useQuery, useQueryClient} from '@tanstack/react-query'
 import {TicketDetail} from '@/hooks/match/useTicketDetail'
 import ApiClient from '@/api'
@@ -10,7 +10,7 @@ import {Match} from '@/hooks/match/useMatch'
 import {useAnalyticsStore} from '@/analytics/event'
 import useProfile from '@/hooks/my/useProfile'
 import {groupBy} from '@/utils/groupBy'
-import {Dimensions, FlatList, View} from 'react-native'
+import {Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, View} from 'react-native'
 
 type Props = {
   targetId: number
@@ -32,19 +32,6 @@ const CalendarContainer = ({targetId}: Props) => {
   const pathname = usePathname()
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
-
-  const currentYearMonth = dayjs(selectedDate).format('YYYY-MM')
-
-  const {} = useQuery({
-    queryKey: ['tickets', currentYearMonth, targetId],
-    queryFn: async () => {
-      return ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
-        date: currentYearMonth,
-        user_id: targetId,
-      }).then(data => groupBy(data, item => item.date))
-    },
-    enabled: Boolean(currentYearMonth && targetId),
-  })
 
   const prefetchTicket = async (date: string) => {
     const queryKey = ['ticket', date, targetId]
@@ -209,81 +196,97 @@ const CalendarContainer = ({targetId}: Props) => {
     return queryClient.getQueryData<Record<string, TicketCalendarLog[]>>(['tickets', yearMonth, targetId])
   }
 
-  const prefetchTicketList = (date: Date) => {
-    console.log('prefetchTicketList', date)
-    const yearMonth = dayjs(date).format('YYYY-MM')
-    const ticketList = getTicketList(yearMonth)
-    if (!ticketList) {
-      queryClient.prefetchQuery({
-        queryKey: ['tickets', yearMonth, targetId],
-        queryFn: () => {
-          return ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
-            date: yearMonth,
-            user_id: targetId,
-          }).then(data => groupBy(data, item => item.date))
-        },
-      })
-    }
-  }
+  const [hideCalendar, setHideCalendar] = useState(false)
+  const segments = useSegments()
+
   useEffect(() => {
-    list.forEach(item => {
-      const yearMonth = dayjs(item).format('YYYY-MM')
-      const ticketList = getTicketList(yearMonth)
-      if (!ticketList) {
-        prefetchTicketList(item)
-      }
-    })
-  }, [list])
+    if (segments.join('') !== '(tabs)') {
+      setHideCalendar(true)
+    } else {
+      setHideCalendar(false)
+    }
+  }, [segments])
+
+  const renderCalendar = useCallback(
+    ({item}: {item: Date}) => {
+      return (
+        <CalendarView
+          date={item} //
+          setDate={onChangeDateByHeader}
+          targetId={targetId}
+          onClick={dayClick}
+        />
+      )
+    },
+    [hideCalendar],
+  )
+
+  const initialScrollIndex = useMemo(() => {
+    const index = list.findIndex(item => dayjs(item).format('YYYY-MM') === dayjs(selectedDate).format('YYYY-MM'))
+    // console.log('여기가 또 돌아?', index, selectedDate)
+    return index
+  }, [list, selectedDate])
+
+  useEffect(() => {
+    console.log('여기가 또 돌아?', selectedDate)
+  }, [selectedDate])
+
+  const ref = useRef<any>(null)
 
   return (
     <View style={{width: width}}>
-      <FlatList
-        ref={flatListRef}
-        data={list}
-        initialNumToRender={3}
-        snapToInterval={width}
-        decelerationRate="fast"
-        snapToAlignment="center"
-        initialScrollIndex={list.findIndex(
-          item => dayjs(item).format('YYYY-MM') === dayjs(selectedDate).format('YYYY-MM'),
-        )}
-        onStartReached={() => {
-          if (dayjs(list[0]).format('YYYY-MM') === dayjs(START_DATE).format('YYYY-MM')) return
-          onAddFrontDate(dayjs(list[0]).toDate())
-          setIsSync(true)
-        }}
-        onEndReached={() => {
-          if (dayjs(list.at(-1)).format('YYYY-MM') === END_DATE.format('YYYY-MM')) return
-          onAddBackDate(dayjs(list.at(-1)).toDate())
-          setIsSync(true)
-        }}
-        onStartReachedThreshold={0.1}
-        onEndReachedThreshold={0.1}
-        getItemLayout={(_, index) => ({
-          length: width,
-          offset: width * index,
-          index,
-        })}
-        renderItem={({item}) => {
-          const ticketList = getTicketList(dayjs(item).format('YYYY-MM'))
+      {hideCalendar ? (
+        <CalendarView
+          isLoading={true}
+          date={selectedDate} //
+          setDate={onChangeDateByHeader}
+          targetId={targetId}
+          onClick={dayClick}
+        />
+      ) : (
+        <FlatList
+          ref={flatListRef}
+          data={list}
+          initialNumToRender={3}
+          snapToInterval={width}
+          decelerationRate="fast"
+          snapToAlignment="center"
+          initialScrollIndex={initialScrollIndex}
+          onMomentumScrollEnd={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
+            const offsetX = event.nativeEvent.contentOffset.x
+            if (ref.current) clearTimeout(ref.current)
 
-          return (
-            <CalendarView
-              date={item} //
-              setDate={onChangeDateByHeader}
-              isLoading={!ticketList}
-              ticketList={ticketList}
-              onClick={dayClick}
-            />
-          )
-        }}
-        keyExtractor={(item: Date) => item.toString()}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        removeClippedSubviews={true}
-        maxToRenderPerBatch={3}
-        windowSize={3}
-      />
+            ref.current = setTimeout(() => {
+              const index = Math.round(offsetX / width)
+              setSelectedDate(list[index])
+            }, 100)
+          }}
+          onStartReached={() => {
+            if (dayjs(list[0]).format('YYYY-MM') === dayjs(START_DATE).format('YYYY-MM')) return
+            onAddFrontDate(dayjs(list[0]).toDate())
+            setIsSync(true)
+          }}
+          onEndReached={() => {
+            if (dayjs(list.at(-1)).format('YYYY-MM') === END_DATE.format('YYYY-MM')) return
+            onAddBackDate(dayjs(list.at(-1)).toDate())
+            setIsSync(true)
+          }}
+          onStartReachedThreshold={0.1}
+          onEndReachedThreshold={0.1}
+          getItemLayout={(_, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          renderItem={renderCalendar}
+          keyExtractor={(item: Date) => item.toString()}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          removeClippedSubviews={true}
+          maxToRenderPerBatch={3}
+          windowSize={3}
+        />
+      )}
     </View>
   )
 }
