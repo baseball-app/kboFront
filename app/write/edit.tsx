@@ -299,7 +299,21 @@ const EditTicketPage = () => {
     }))
   }
 
-  const isEnabled = writeData.homeTeam.score && writeData.awayTeam.score
+  const isEnabled =
+    writeData.todayImg &&
+    writeData.homeTeam.score &&
+    writeData.awayTeam.score &&
+    ((writeData.placeType === '직관' && writeData.place) ||
+      (writeData.placeType === '직관' && ticketDetail?.gip_place) ||
+      writeData.placeType === '집관')
+
+  // const isEnabled =
+  //   writeData.todayImg &&
+  //   writeData.todayScore.our &&
+  //   writeData.todayScore.opponent &&
+  //   ((tabMenu === '직관' && writeData.matchPlace) ||
+  //     (tabMenu === '직관' && ballparkInfo?.name) ||
+  //     tabMenu === '집관')
 
   const inputListRef = useRef<Record<string, TextInput>>({})
   const scrollRef = useRef<ScrollView>(null)
