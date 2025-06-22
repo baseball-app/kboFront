@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {Modal} from '@/components/common/Modal'
 
@@ -23,6 +23,10 @@ const tabMenuConfig = [
 const LocationTypeSelector = ({value, onChange}: Props) => {
   const [tabMenuModalVisible, setTabMenuModalVisible] = useState(false)
   const [tempValue, setTempValue] = useState(value)
+
+  useEffect(() => {
+    setTempValue(value)
+  }, [value])
 
   return (
     <>
