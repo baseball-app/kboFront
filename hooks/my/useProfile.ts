@@ -24,6 +24,7 @@ export type Profile = {
   followings: number // 32
   profile_type: number // 1
   id: number
+  is_unread: boolean
 }
 
 const useProfile = () => {
@@ -56,6 +57,7 @@ const useProfile = () => {
       followers: 0,
       followings: 0,
       profile_type: Number(joinSlice.profile?.id),
+      is_unread: false,
     })
   }
 
