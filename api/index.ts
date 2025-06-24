@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(
       /** 토큰 처리 로직 */
       const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
       if (token?.accessToken) req.headers['X-KBOAPP-TOKEN'] = `${token.accessToken}`
-      console.log('req.headers', token?.accessToken)
+      // console.log(req.url, token?.accessToken)
       return req
     } catch (error) {
       return Promise.reject(error)

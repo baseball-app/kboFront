@@ -81,19 +81,17 @@ export default function RootLayout() {
 
   return (
     <QueryProvider>
-      <DeepLinkProvider>
-        <Stack>
-          <Stack.Screen name="auth" options={{headerShown: false}} />
-          <Stack.Screen name="(tabs)" options={{headerShown: false}} />
-          <Stack.Screen name="my" options={{headerShown: false}} />
-          <Stack.Screen name="+not-found" />
-          <Stack.Screen name="index" options={{headerShown: false}} />
-          <Stack.Screen name="write" options={{headerShown: false}} />
-          <Stack.Screen name="ticket" options={{headerShown: false}} />
-        </Stack>
-        <CommonModal />
-        <Toast config={toastConfig} />
-      </DeepLinkProvider>
+      <Stack>
+        <Stack.Screen name="auth" options={{headerShown: false}} />
+        <Stack.Screen name="(tabs)" options={{headerShown: false}} />
+        <Stack.Screen name="my" options={{headerShown: false}} />
+        <Stack.Screen name="+not-found" />
+        <Stack.Screen name="index" options={{headerShown: false}} />
+        <Stack.Screen name="write" options={{headerShown: false}} />
+        <Stack.Screen name="ticket" options={{headerShown: false}} />
+      </Stack>
+      <CommonModal />
+      <Toast config={toastConfig} />
     </QueryProvider>
   )
 }
