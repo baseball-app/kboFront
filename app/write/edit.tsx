@@ -300,7 +300,6 @@ const EditTicketPage = () => {
   }
 
   const isEnabled =
-    writeData.todayImg &&
     writeData.homeTeam.score &&
     writeData.awayTeam.score &&
     ((writeData.placeType === '직관' && writeData.place) ||

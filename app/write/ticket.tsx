@@ -331,11 +331,7 @@ const TicketPage = () => {
     }
   }
 
-  const isEnabled =
-    writeData.todayImg &&
-    writeData.todayScore.our &&
-    writeData.todayScore.opponent &&
-    ((tabMenu === '직관' && writeData.matchPlace) || (tabMenu === '직관' && ballparkInfo?.name) || tabMenu === '집관')
+  const isEnabled = writeData.todayScore.our && writeData.todayScore.opponent
 
   const inputListRef = useRef<Record<string, TextInput>>({})
   const scrollRef = useRef<ScrollView>(null)
@@ -418,8 +414,7 @@ const TicketPage = () => {
                   <>
                     <Image source={require('@/assets/icons/add_image.png')} style={styles.addImage} />
                     <Text style={styles.uploadText}>오늘의 사진을 넣어주세요</Text>
-                    {/* TODO: Default image 정해지기 전까지 주석처리 */}
-                    {/* <Text
+                    <Text
                       style={{
                         fontWeight: '400',
                         fontSize: 12,
@@ -427,7 +422,7 @@ const TicketPage = () => {
                         lineHeight: 16.8,
                       }}>
                       * 사진 미등록 시, 기본 사진으로 자동 설정됩니다
-                    </Text> */}
+                    </Text>
                   </>
                 )}
               </TouchableOpacity>
