@@ -1,8 +1,8 @@
 import {Config} from '@/config/Config'
-import {LoginServerResponse, TUser} from '@/hooks/auth/useLogin'
+import {TUser} from '@/hooks/auth/useLogin'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
-import {getItem, setItem} from '@/store/mmkv-store/mmkvStore'
-import axios, {AxiosError, AxiosInstance, AxiosRequestHeaders, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
+import {getItem} from '@/store/mmkv-store/mmkvStore'
+import axios, {AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
 
 const axiosInstance: AxiosInstance = axios.create({
   /** Api Server url 적용  */
@@ -16,6 +16,7 @@ axiosInstance.interceptors.request.use(
       /** 토큰 처리 로직 */
       const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
       if (token?.accessToken) req.headers['X-KBOAPP-TOKEN'] = `${token.accessToken}`
+      console.log('req.headers', token?.accessToken)
       return req
     } catch (error) {
       return Promise.reject(error)
@@ -35,33 +36,13 @@ axiosInstance.interceptors.response.use(
     return res
   },
   async (err: AxiosError) => {
-    // console.error('err', err.response?.data)
-
-    // const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
-    // if (err.status == 403 && token?.accessToken && token?.refreshToken && !lock) {
-    //   lock = true
-    //   try {
-    //     const data = await ApiClient.post<LoginServerResponse>('/auths/token/refresh/', {
-    //       refresh_token: token.refreshToken,
-    //     })
-
-    //     setItem(MmkvStoreKeys.USER_LOGIN, {
-    //       accessToken: data.access_token,
-    //       refreshToken: data.refresh_token,
-    //     })
-
-    //     if (err.config) {
-    //       return axiosInstance(err.config)
-    //     }
-    //   } catch (error) {
-    //     console.log('토큰 업데이트 실패 !! interceptor > /auths/token/refresh/')
-    //     setItem(MmkvStoreKeys.USER_LOGIN, undefined)
-    //   } finally {
-    //     lock = false
-    //   }
-
-    // 토큰 만료시 처리 로직
-    // }
+    console.error(
+      'err',
+      `
+      URL :: ${err.request.responseURL}
+      ERROR :: ${JSON.stringify(err.response?.data)}
+      `,
+    )
 
     return Promise.reject(err)
   },
