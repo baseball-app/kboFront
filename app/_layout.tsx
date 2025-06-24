@@ -13,7 +13,6 @@ import DeepLinkProvider from '@/components/provider/DeepLinkProvider'
 import Toast, {ToastConfig} from 'react-native-toast-message'
 import {EVENTS} from '@/analytics/event'
 import {logEvent} from '@/analytics/func'
-import {usePushMessage} from '@/hooks/usePushMessage'
 import messaging from '@react-native-firebase/messaging'
 import notifee from '@notifee/react-native'
 
@@ -63,8 +62,6 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 })
 
 export default function RootLayout() {
-  const {deviceToken} = usePushMessage(async remoteMessage => {})
-
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   })
