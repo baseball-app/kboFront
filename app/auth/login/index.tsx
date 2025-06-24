@@ -28,13 +28,7 @@ export default function LoginScreen() {
   const handleLoginSuccess = async (channel: Channel, code: string, identityToken?: string) => {
     try {
       const data = await login(channel, code, identityToken)
-
-      console.log('data', data)
-
       const profile = await ApiClient.get<Profile>('/users/me/')
-
-      console.log('profile', profile)
-
       const myTeamId = profile?.my_team?.id
 
       if (!myTeamId) {

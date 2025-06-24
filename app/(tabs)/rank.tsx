@@ -1,35 +1,20 @@
-import ApiClient from '@/api'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
+import Skeleton from '@/components/skeleton/Skeleton'
 import useTeam from '@/hooks/match/useTeam'
-import {useQuery} from '@tanstack/react-query'
-import dayjs from 'dayjs'
+import {Rank, useRank} from '@/hooks/useRank'
 import React from 'react'
 import {View, Text, Image} from 'react-native'
 
-type Rank = {
-  id: number
-  ranking: number
-  ranks: {
-    name: string
-  }
-  compare: 'stay' | 'up' | 'down'
-  updated_at: string
-}
-
 const RankScreen = () => {
-  const today = dayjs().format('YY.MM.DD')
-  const {data} = useQuery<Rank[]>({
-    queryKey: ['rank', today],
-    queryFn: () => ApiClient.get<Rank[]>(`/ranks/rank_list/`),
-  })
+  const {data, standardDate, isLoading} = useRank()
 
   return (
     <InitScrollProvider style={{backgroundColor: '#F3F2EE'}}>
-      <RankHeader standardDate={today} />
+      <RankHeader standardDate={standardDate} />
       <View style={{gap: 10}}>
-        {data?.map(item => (
-          <TeamCard key={item.id} {...item} />
-        ))}
+        {data?.map(item =>
+          isLoading ? <Skeleton key={item.id} width={300} height={60} /> : <TeamCard key={item.id} {...item} />,
+        )}
       </View>
       <View style={{height: 24}} />
     </InitScrollProvider>
