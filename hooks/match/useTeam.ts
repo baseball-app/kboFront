@@ -47,7 +47,11 @@ const useTeam = () => {
     return teams?.find(team => team.id === id)
   }
 
-  return {findTeamById, teams}
+  const findTeamByName = (name?: string) => {
+    return teams?.find(team => team.name === name)
+  }
+
+  return {findTeamById, teams, findTeamByName}
 }
 
 export default useTeam

@@ -1,40 +1,37 @@
+import ApiClient from '@/api'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import useTeam from '@/hooks/match/useTeam'
+import {useQuery} from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import React from 'react'
-import {View, Text, Image, FlatList} from 'react-native'
+import {View, Text, Image} from 'react-native'
+
+type Rank = {
+  id: number
+  ranking: number
+  ranks: {
+    name: string
+  }
+  compare: 'stay' | 'up' | 'down'
+  updated_at: string
+}
 
 const RankScreen = () => {
-  const data = [
-    {rank: 1, id: 1, status: 'up'},
-    {rank: 2, id: 2, status: 'down'},
-    {rank: 3, id: 3, status: 'same'},
-    {rank: 4, id: 4, status: 'down'},
-    {rank: 5, id: 5, status: 'same'},
-    {rank: 6, id: 6, status: 'down'},
-    {rank: 7, id: 7, status: 'same'},
-    {rank: 8, id: 8, status: 'down'},
-    {rank: 9, id: 9, status: 'same'},
-    {rank: 10, id: 10, status: 'down'},
-  ] as const
+  const today = dayjs().format('YY.MM.DD')
+  const {data} = useQuery<Rank[]>({
+    queryKey: ['rank', today],
+    queryFn: () => ApiClient.get<Rank[]>(`/ranks/rank_list/`),
+  })
 
   return (
     <InitScrollProvider style={{backgroundColor: '#F3F2EE'}}>
-      <RankHeader standardDate="25.04.27" />
+      <RankHeader standardDate={today} />
       <View style={{gap: 10}}>
-        {data.map(item => (
+        {data?.map(item => (
           <TeamCard key={item.id} {...item} />
         ))}
       </View>
-      <View style={{height: 24}}></View>
-      {/* <FlatList
-        ListHeaderComponent={<RankHeader standardDate="25.04.27" />}
-        ListFooterComponent={<View style={{height: 24}}></View>}
-        data={data}
-        renderItem={({item}) => <TeamCard {...item} />}
-        keyExtractor={item => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{gap: 10}}
-      /> */}
+      <View style={{height: 24}} />
     </InitScrollProvider>
   )
 }
@@ -56,21 +53,17 @@ const RankHeader = ({standardDate}: {standardDate: string}) => {
   )
 }
 
-type TeamCardProps = {
-  rank: number
-  id: number
-  status: 'up' | 'down' | 'same'
-}
+type TeamCardProps = Rank
 
-const TeamCard = ({rank, id, status}: TeamCardProps) => {
-  const rankColor = rank <= 3 ? '#1E5EF4' : '#171716'
-  const {findTeamById} = useTeam()
-  const team = findTeamById(id)
+const TeamCard = ({ranking, ranks, compare}: TeamCardProps) => {
+  const rankColor = ranking <= 3 ? '#1E5EF4' : '#171716'
+  const {findTeamByName} = useTeam()
+  const team = findTeamByName(ranks.name)
   const statusImage = (status => {
     if (status === 'up') return require('@/assets/icons/rank_up.png')
     if (status === 'down') return require('@/assets/icons/rank_down.png')
     return null
-  })(status)
+  })(compare)
 
   return (
     <View
@@ -85,7 +78,7 @@ const TeamCard = ({rank, id, status}: TeamCardProps) => {
         borderRadius: 16,
       }}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{color: rankColor, width: 26, fontSize: 16, fontWeight: 600}}>{rank}</Text>
+        <Text style={{color: rankColor, width: 26, fontSize: 16, fontWeight: 600}}>{ranking}</Text>
         {team && <Image source={team?.logo} style={{width: 28, height: 28}} />}
         <Text style={{fontSize: 16, fontWeight: 600, marginLeft: 8}}>{team?.name}</Text>
       </View>
