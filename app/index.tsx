@@ -1,8 +1,8 @@
 import {useLogin} from '@/hooks/auth/useLogin'
 import {SplashScreen, useRouter} from 'expo-router'
-import {useEffect} from 'react'
 import ApiClient from '@/api'
 import {Profile} from '@/hooks/my/useProfile'
+import {useEffectOnce} from '@/hooks/useEffectOnce'
 
 export default function Index() {
   const {refreshAccessToken} = useLogin()
@@ -24,9 +24,7 @@ export default function Index() {
     }
   }
 
-  useEffect(() => {
-    checkIsLogined()
-  }, [])
+  useEffectOnce(() => checkIsLogined())
 
   return null
 }

@@ -64,7 +64,6 @@ export const useLogin = () => {
     }
   }
 
-  // TODO: api 확정되면 구현 예정
   const refreshAccessToken = async () => {
     if (!user?.refreshToken) throw new Error('refreshToken이 없습니다.')
 
