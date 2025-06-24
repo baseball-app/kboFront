@@ -1,11 +1,13 @@
 import {Tabs} from 'expo-router'
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs'
 
 import Footer from '@/components/layout/Footer'
-import {TextStyle} from 'react-native'
+import {Platform, TextStyle} from 'react-native'
 import Header from '@/components/common/Header'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import ApiClient from '@/api'
+import {usePushMessage} from '@/hooks/usePushMessage'
 
 const headerStyle: TextStyle = {
   fontWeight: '700',
@@ -27,6 +29,19 @@ export default function TabLayout() {
 
   const {top} = useSafeAreaInsets()
 
+  const {deviceToken} = usePushMessage(async remoteMessage => {})
+  const isAlreadyRequest = useRef(false)
+  useEffect(() => {
+    if (deviceToken && !isAlreadyRequest.current) {
+      isAlreadyRequest.current = true
+      ApiClient.post('/devices/', {
+        token: deviceToken,
+        device_type: Platform.OS.toUpperCase(),
+      }) //
+        .then(res => console.log('토큰 저장 결과 ::', res, deviceToken, Platform.OS.toUpperCase()))
+    }
+  }, [deviceToken])
+
   return (
     <Tabs screenOptions={tabScreenOptions} tabBar={() => <Footer />}>
       {/* 캘린더 탭 화면 */}
@@ -42,8 +57,9 @@ export default function TabLayout() {
         options={{header: () => <Header title="나의 티켓박스" hasBackButton={false} topInset={top} />}}
       />
       {/* 알림 탭 화면 */}
-      <Tabs.Screen name="alarm" options={{headerShown: false}} />
-      {/* <Tabs.Screen
+      {/* <Tabs.Screen name="alarm" options={{headerShown: false}} /> */}
+      {/* 랭킹 탭 화면 */}
+      <Tabs.Screen
         name="rank"
         options={{header: () => <Header title="야구 정보" hasBackButton={false} topInset={top} />}}
       />
