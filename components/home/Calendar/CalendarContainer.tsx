@@ -223,13 +223,8 @@ const CalendarContainer = ({targetId}: Props) => {
 
   const initialScrollIndex = useMemo(() => {
     const index = list.findIndex(item => dayjs(item).format('YYYY-MM') === dayjs(selectedDate).format('YYYY-MM'))
-    // console.log('여기가 또 돌아?', index, selectedDate)
     return index
   }, [list, selectedDate])
-
-  useEffect(() => {
-    console.log('여기가 또 돌아?', selectedDate)
-  }, [selectedDate])
 
   const ref = useRef<any>(null)
 
