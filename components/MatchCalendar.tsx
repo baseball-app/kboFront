@@ -26,6 +26,12 @@ const MatchCalendarHeader = ({setCurrentDate, prevMonth, nextMonth, currentDate}
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
   const [selectedDay, setSelectedDay] = useState(currentDate.getDate())
 
+  useEffect(() => {
+    setSelectedYear(currentDate.getFullYear())
+    setSelectedMonth(currentDate.getMonth() + 1)
+    setSelectedDay(currentDate.getDate())
+  }, [currentDate])
+
   const handleMonthYearChange = () => {
     setIsModalVisible(prev => !prev)
   }
