@@ -32,6 +32,7 @@ export default function TabLayout() {
   const {deviceToken} = usePushMessage(async remoteMessage => {})
   const isAlreadyRequest = useRef(false)
   useEffect(() => {
+    // TODO: deviceToken이 동일할 경우, 백엔드로 아예 전송하지 않도록 수정해야 됨
     if (deviceToken && !isAlreadyRequest.current) {
       isAlreadyRequest.current = true
       ApiClient.post('/devices/', {
