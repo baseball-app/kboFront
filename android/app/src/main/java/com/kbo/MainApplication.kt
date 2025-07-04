@@ -17,6 +17,8 @@ import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
 import com.lugg.RNCConfig.RNCConfigPackage
 
+import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;  // <--- HERE
+
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost = ReactNativeHostWrapper(
@@ -26,6 +28,7 @@ class MainApplication : Application(), ReactApplication {
             val packages = PackageList(this).packages
             // Packages that cannot be autolinked yet can be added manually here, for example:
             packages.add(RNCConfigPackage());
+            packages.add(RNVersionCheckPackage());
             return packages
           }
 

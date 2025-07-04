@@ -75,8 +75,8 @@ const useProfile = () => {
   // 마이팀 변경 페이지에서 사용하는 함수
   const updateProfile = async (info: Partial<{my_team: number; nickname: string}>) => {
     if (!profile) return
-    await ApiClient.post('/users/modify/', info)
-    queryClient.invalidateQueries({queryKey: ['profile', user]})
+    await ApiClient.post('/users/modify/', info).then(res => console.log('res', res))
+    queryClient.clear()
     // refetch()
   }
 
@@ -123,6 +123,7 @@ const useProfile = () => {
   }
 
   useEffect(() => {
+    console.log('data', data)
     if (data) updateProfileCacheData(data)
   }, [data])
 

@@ -24,6 +24,7 @@
     "@bam.tech/react-native-image-resizer": "^3.0.11",
     "@expo/vector-icons": "^14.0.2",
     "@invertase/react-native-apple-authentication": "^2.4.0",
+    "@notifee/react-native": "^9.1.8",
     "@react-native-clipboard/clipboard": "^1.16.1",
     "@react-native-firebase/analytics": "^21.12.3",
     "@react-native-firebase/app": "^21.12.3",
@@ -62,11 +63,11 @@
     "react-native-svg": "^15.11.2",
     "react-native-swiper-flatlist": "^3.2.5",
     "react-native-toast-message": "^2.2.1",
+    "react-native-version-check": "^3.5.0",
     "react-native-view-shot": "^4.0.3",
     "react-native-web": "~0.19.10",
     "react-native-webview": "13.12.5",
-    "zustand": "^5.0.0",
-    "@notifee/react-native": "^9.1.8"
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
