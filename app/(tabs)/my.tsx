@@ -71,7 +71,7 @@ const ProfileScreen = () => {
                 top: 0,
               }}>
               <Image source={require('@/assets/icons/tabMenu/alarmMenuActive.png')} style={{width: 24, height: 24}} />
-              {!profile.is_unread ? (
+              {profile.is_unread ? (
                 <View
                   style={{
                     width: 5,
