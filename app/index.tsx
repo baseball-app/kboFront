@@ -31,7 +31,7 @@ export default function Index() {
       try {
         const result = await VersionCheck.needUpdate({depth: 2, forceUpdate: true})
         if (result.isNeeded) {
-          Alert.alert('버전 업데이트 필요', '최신 버전으로 업데이트 해주세요.', [
+          Alert.alert('업데이트 필요', '최신 버전으로 업데이트 해주세요.', [
             {
               text: '업데이트',
               style: 'default',
