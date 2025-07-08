@@ -14,7 +14,7 @@ import useFriends from '@/hooks/my/useFriends'
 import {useAnalyticsStore} from '@/analytics/event'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import {CalendarContainer} from '@/components/home/Calendar/CalendarContainer'
-import {useRank} from '@/hooks/useRank'
+// import {useRank} from '@/hooks/useRank'
 const CalendarScreen = () => {
   const router = useRouter()
   const {openCommonPopup} = usePopup()
@@ -23,7 +23,7 @@ const CalendarScreen = () => {
   const {ticketList, isMyDiary, setUserId, userId} = useDiary()
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const {friend_status} = useFriends()
-  const {} = useRank()
+  // const {} = useRank()
 
   const selectedUserName = (() => {
     const nickname = friend_status?.friends.find(friend => friend.id === userId)?.nickname
