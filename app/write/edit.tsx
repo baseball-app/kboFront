@@ -532,7 +532,7 @@ const EditTicketPage = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <View style={[styles.footerButtonBox, {paddingBottom: 16 + insets.bottom}]}>
+      <View style={[styles.footerButtonBox, {marginBottom: 16}]}>
         <TouchableOpacity
           style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
           onPress={onSubmit}
