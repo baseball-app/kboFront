@@ -36,7 +36,7 @@ export const useLogin = () => {
       // api 호출 /auths/token/revoke/
       queryClient.clear()
       router.dismissAll()
-      router.navigate('/auth/login')
+      router.replace('/auth/login')
     }
   }
 

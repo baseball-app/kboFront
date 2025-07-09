@@ -15,7 +15,6 @@ import Skeleton from '@/components/skeleton/Skeleton'
 import React from 'react'
 import {usePathname} from 'expo-router'
 import {useAnalyticsStore} from '@/analytics/event'
-import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 const LoadingMatchView = () => {
   return (
     <>
