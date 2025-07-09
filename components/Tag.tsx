@@ -1,18 +1,19 @@
 import React from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity} from 'react-native'
 
 type Props = {
   name: string
   isActive?: boolean
   onClick?: () => void
+  paddingHorizontal: number
 }
 
-const Tag = ({name, isActive, onClick}: Props) => {
+const Tag = ({name, isActive, onClick, paddingHorizontal}: Props) => {
   return (
     <TouchableOpacity
       activeOpacity={1} //
       onPress={onClick}
-      style={[styles.tag, isActive && styles.tagActive]}>
+      style={[styles.tag, isActive && styles.tagActive, {paddingHorizontal: paddingHorizontal}]}>
       <Text style={[styles.text, isActive && styles.textActive]}>{name}</Text>
     </TouchableOpacity>
   )
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     borderColor: '#E4E2DC',
     borderRadius: 999,
     paddingVertical: 4,
-    paddingHorizontal: 12,
+    // paddingHorizontal: 12,
   },
   tagActive: {
     backgroundColor: '#1E5EF41A',

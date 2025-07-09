@@ -9,8 +9,11 @@ import useTicketListByTeam, {TicketListByTeam} from '@/hooks/match/useTicketList
 import useProfile from '@/hooks/my/useProfile'
 import {format} from 'date-fns'
 import {router, usePathname} from 'expo-router'
-import React from 'react'
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import React, {useRef} from 'react'
+import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native'
+const width = Dimensions.get('window').width
+
+// 40 + 12 * 4 = 88
 
 const MyTicketBoxScreen = () => {
   const {profile} = useProfile()
@@ -18,6 +21,25 @@ const MyTicketBoxScreen = () => {
   const {findTeamById, teams} = useTeam()
   const myTeam = findTeamById(profile.my_team?.id)
   const pathname = usePathname()
+
+  const firstLine = useRef<number[]>([0, 0, 0, 0, 0])
+  const secondLine = useRef<number[]>([0, 0, 0, 0, 0])
+
+  console.log(
+    'firstLine :: ',
+    firstLine.current.reduce((acc, curr) => acc + curr, 0),
+    '163',
+  )
+
+  // 88 + 163
+
+  // (width - 251) / 10
+
+  console.log(
+    'secondLine :: ',
+    secondLine.current.reduce((acc, curr) => acc + curr, 0),
+    '133',
+  )
 
   return (
     <InitScrollProvider style={styles.container}>
@@ -46,8 +68,16 @@ const MyTicketBoxScreen = () => {
         <View style={styles.tabContainer}>
           {[{id: 0, short_name: '최애 경기'}, ...(teams || []), {id: 999, short_name: '타구단'}]
             ?.filter(club => club.id !== myTeam?.id) //
-            .map(club => (
+            .map((club, index) => (
               <Tag
+                // getTextWidth={textWidth => {
+                //   if (index < 5) {
+                //     firstLine.current[index] = textWidth
+                //   } else if (index < 10) {
+                //     secondLine.current[index - 5] = textWidth
+                //   }
+                // }}
+                paddingHorizontal={index < 5 ? (width - 251) / 10 : index < 10 ? (width - 221) / 10 : 12}
                 key={club.id}
                 name={club.short_name || ''} //
                 isActive={club.id === selectedTeamId}
@@ -109,6 +139,8 @@ const MyTicketBoxScreen = () => {
     </InitScrollProvider>
   )
 }
+
+// 40, 12
 
 type TicketTeam = {
   id: number
