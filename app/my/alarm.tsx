@@ -1,4 +1,5 @@
-import {StyleSheet, View, FlatList, ScrollView, SafeAreaView} from 'react-native'
+import {StyleSheet, View, FlatList, ScrollView} from 'react-native'
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import useNotification from '@/hooks/notification/useNotification'
 import NotificationCard from '@/components/alarm/NotificationCard'
@@ -8,7 +9,6 @@ import {useRef} from 'react'
 import {useEffect} from 'react'
 import {useSegments} from 'expo-router'
 import Header from '@/components/common/Header'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import React from 'react'
 
 const AlarmScreen = () => {

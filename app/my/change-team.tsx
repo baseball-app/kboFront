@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
-import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image} from 'react-native'
+import {StyleSheet, View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import {useRouter} from 'expo-router'
 import {Ionicons} from '@expo/vector-icons'
 import {moderateScale, verticalScale} from '@/utils/metrics'
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingHorizontal: 24,
-    paddingBottom: 24,
+    paddingBottom: 16,
   },
   nextButton: {
     backgroundColor: '#CCCCCC',

@@ -584,7 +584,7 @@ const TicketPage = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <View style={[styles.footerButtonBox, {paddingBottom: 16}]}>
+      <View style={[styles.footerButtonBox, {paddingBottom: 16 + insets.bottom}]}>
         <TouchableOpacity
           style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
           disabled={!isEnabled}

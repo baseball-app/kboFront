@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   TextInput,
   Platform,
   KeyboardAvoidingView,
@@ -24,6 +23,7 @@ import {usePushMessage} from '@/hooks/usePushMessage'
 import Clipboard from '@react-native-clipboard/clipboard'
 import {usePopup} from '@/slice/commonSlice'
 import {Config} from '@/config/Config'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 const ProfileScreen = () => {
   const {logout} = useLogin()
