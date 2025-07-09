@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
-import {StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image, Platform} from 'react-native'
+import {StyleSheet, View, Text, TouchableOpacity, Image, Platform} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import {router} from 'expo-router'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {Channel, useLogin} from '@/hooks/auth/useLogin'

@@ -1,5 +1,6 @@
 import React from 'react'
-import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {Ionicons} from '@expo/vector-icons'
 import {useRouter} from 'expo-router'

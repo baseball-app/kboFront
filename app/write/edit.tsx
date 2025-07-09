@@ -12,7 +12,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native'
 import {Modal} from '@/components/common/Modal'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import React from 'react'
 import dayjs from 'dayjs'
@@ -78,7 +78,7 @@ const Optional = ({label}: {label: string}) => {
 
 const EditTicketPage = () => {
   const {id} = useLocalSearchParams()
-
+  const insets = useSafeAreaInsets()
   const [isPending, setIsPending] = useState(false)
   const {profile} = useProfile()
   const {ticketDetail, updateTicket, initializeTicketInfo} = useTicketDetail(Number(id), Number(profile?.id))
@@ -532,7 +532,7 @@ const EditTicketPage = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <View style={[styles.footerButtonBox, {paddingBottom: 16}]}>
+      <View style={[styles.footerButtonBox, {paddingBottom: 16 + insets.bottom}]}>
         <TouchableOpacity
           style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
           onPress={onSubmit}

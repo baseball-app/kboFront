@@ -136,7 +136,7 @@ const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarB
             isSelected ? styles.selectedText : isToday(day) ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
             Platform.OS === 'android' ? {paddingLeft: '15%'} : {},
           ]}>
-          {Platform.OS === 'android' ? format(day, 'd').padStart(2, ' ') : format(day, 'd')} {/* 날짜 */}
+          {format(day, 'd')} {/* 날짜 */}
         </Text>
       </TouchableOpacity>,
     )
@@ -228,6 +228,7 @@ const styles = StyleSheet.create({
     lineHeight: 25.2,
     fontWeight: '500',
     minWidth: 20,
+    width: '100%',
     textAlign: 'center',
   },
   inactiveDay: {

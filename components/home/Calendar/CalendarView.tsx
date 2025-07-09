@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   day: {
-    width: width / 7,
+    width: '14.28%',
     borderWidth: 1,
     borderRadius: 10,
     justifyContent: 'flex-start',
