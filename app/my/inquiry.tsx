@@ -1,14 +1,6 @@
 import React, {useState} from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native'
+import {StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import {useRouter} from 'expo-router'
 import {useMutation} from '@tanstack/react-query'

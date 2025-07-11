@@ -360,7 +360,7 @@ const TicketPage = () => {
   const scrollRef = useRef<ScrollView>(null)
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <View style={styles.stepHeaderBox}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
@@ -584,7 +584,7 @@ const TicketPage = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <View style={[styles.footerButtonBox, {marginBottom: 16}]}>
+      <View style={[styles.footerButtonBox, {marginBottom: insets.bottom + 16}]}>
         <TouchableOpacity
           style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
           disabled={!isEnabled}
