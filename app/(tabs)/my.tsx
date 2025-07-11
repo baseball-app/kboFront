@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Pressable,
+  Dimensions,
 } from 'react-native'
 import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
 import {theme} from '@/constants/Colors'
@@ -46,12 +47,11 @@ const ProfileScreen = () => {
     <SafeAreaView style={[styles.container, {flex: 1}]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
+        style={[styles.container]}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}>
         <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
           <View
             style={{
-              flex: 1,
               backgroundColor: theme.colors.backgroundPrimary,
               paddingBottom: 20,
               paddingTop: 12,
@@ -220,7 +220,8 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     // backgroundColor: theme.colors.backgroundPrimary,
-    backgroundColor: 'white',
+    minHeight: Dimensions.get('window').height,
+    backgroundColor: '#FFFCF3',
   },
   profileHeader: {
     flexDirection: 'row',
@@ -334,7 +335,6 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: 'white',
   },
   menuItem: {
