@@ -387,6 +387,7 @@ const TicketPage = () => {
                     autoFocus
                     placeholderTextColor="#ddd"
                     keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'number-pad'}
+                    value={writeData.todayScore.our}
                     onChangeText={value => handleScoreChange('our', value.replaceAll(/\D/g, ''))}
                     returnKeyType="next"
                     submitBehavior="newline"
@@ -405,6 +406,7 @@ const TicketPage = () => {
                     placeholder="0"
                     placeholderTextColor="#ddd"
                     keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'number-pad'}
+                    value={writeData.todayScore.opponent}
                     onChangeText={value => handleScoreChange('opponent', value.replaceAll(/\D/g, ''))}
                     returnKeyType="done"
                     // submitBehavior="newline"
