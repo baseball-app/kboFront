@@ -45,11 +45,11 @@ const ProfileScreen = () => {
 
   return (
     <SafeAreaView style={[styles.container, {flex: 1}]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={[styles.container]}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={[styles.container]}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}>
           <View
             style={{
               backgroundColor: theme.colors.backgroundPrimary,
@@ -211,8 +211,8 @@ const ProfileScreen = () => {
               </TouchableOpacity>
             ) : null}
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
   container: {
     // backgroundColor: theme.colors.backgroundPrimary,
     minHeight: Dimensions.get('window').height,
+    flex: 1,
     backgroundColor: '#FFFCF3',
   },
   profileHeader: {
@@ -255,10 +256,12 @@ const styles = StyleSheet.create({
   winRateLabel: {
     fontSize: 16,
     marginRight: 3,
+    lineHeight: 16 * 1.4,
     color: 'gray',
   },
   winRateValue: {
     fontSize: 16,
+    lineHeight: 16 * 1.4,
     color: '#2D68FF', // Blue color for the percentage
     // fontWeight: "bold",
   },
@@ -336,6 +339,7 @@ const styles = StyleSheet.create({
   menuContainer: {
     flex: 1,
     backgroundColor: 'white',
+    paddingBottom: 70,
   },
   menuItem: {
     flexDirection: 'row',

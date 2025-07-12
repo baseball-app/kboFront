@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>62</string>
+	<string>64</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -57,7 +57,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>캡처한 이미지를 갤러리에 저장하기 위해 사용합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow $(PRODUCT_NAME) to access your photos</string>
+	<string>사용자가 업로드할 사진을 선택할 수 있도록 사진 라이브러리에 접근합니다. 예: 티켓 이미지 등록</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>

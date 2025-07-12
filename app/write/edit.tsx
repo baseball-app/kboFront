@@ -318,7 +318,7 @@ const EditTicketPage = () => {
   const scrollRef = useRef<ScrollView>(null)
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <View style={styles.stepHeaderBox}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
@@ -532,7 +532,7 @@ const EditTicketPage = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <View style={[styles.footerButtonBox, {marginBottom: 16}]}>
+      <View style={[styles.footerButtonBox, {marginBottom: 16 + insets.bottom}]}>
         <TouchableOpacity
           style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
           onPress={onSubmit}
