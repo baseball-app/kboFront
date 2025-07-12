@@ -1,16 +1,8 @@
 import React, {useState} from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native'
+import {StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import useUserJoin from '@/hooks/auth/useUserJoin'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 export default function NicknameScreen() {
   const {nickname, setNickname, moveToNextStep, moveToPrevStep} = useUserJoin()
