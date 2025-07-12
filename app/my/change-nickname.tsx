@@ -5,16 +5,8 @@ import {moderateScale, verticalScale} from '@/utils/metrics'
 import {Ionicons} from '@expo/vector-icons'
 import {useRouter} from 'expo-router'
 import React, {useState} from 'react'
-import {
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import {KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 const ChangeNicknameScreen = () => {
   const {updateProfile, profile} = useProfile()

@@ -33,6 +33,7 @@ import Toast from 'react-native-toast-message'
 import {logEvent} from '@/analytics/func'
 import {EVENTS, useAnalyticsStore} from '@/analytics/event'
 import {Config} from '@/config/Config'
+import {useKeyboard} from '@/hooks/useKeyboard'
 
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
@@ -70,6 +71,8 @@ const Optional = ({label}: {label: string}) => {
 }
 
 const TicketPage = () => {
+  const {isKeyboardVisible} = useKeyboard()
+  console.log('isKeyboardVisible', isKeyboardVisible)
   const {registerTicket, initializeTicket, ...writeStore} = useWriteTicket()
   const {profile} = useProfile()
   const {user} = useLogin()
@@ -360,7 +363,7 @@ const TicketPage = () => {
   const scrollRef = useRef<ScrollView>(null)
 
   return (
-    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.stepHeaderBox}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
@@ -584,25 +587,27 @@ const TicketPage = () => {
             </View>
           </View>
         </ScrollView>
+        {!isKeyboardVisible && (
+          <View style={[styles.footerButtonBox]}>
+            <TouchableOpacity
+              style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
+              disabled={!isEnabled}
+              onPress={onSubmit}>
+              {isPending ? (
+                <LottieView
+                  source={require('@/assets/lottie/loading.json')}
+                  autoPlay
+                  loop
+                  style={{width: 100, height: 100}}
+                />
+              ) : (
+                <Text style={[styles.footerButtonText, styles.activeButtonText]}>오늘의 티켓 발급하기</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        )}
       </KeyboardAvoidingView>
 
-      <View style={[styles.footerButtonBox, {marginBottom: insets.bottom + 16}]}>
-        <TouchableOpacity
-          style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
-          disabled={!isEnabled}
-          onPress={onSubmit}>
-          {isPending ? (
-            <LottieView
-              source={require('@/assets/lottie/loading.json')}
-              autoPlay
-              loop
-              style={{width: 100, height: 100}}
-            />
-          ) : (
-            <Text style={[styles.footerButtonText, styles.activeButtonText]}>오늘의 티켓 발급하기</Text>
-          )}
-        </TouchableOpacity>
-      </View>
       <Modal animationType="slide" transparent={true} visible={teamModalVisible}>
         <View style={styles.modalOverlay}>
           <View style={styles.teamModalContent}>
@@ -790,6 +795,8 @@ const styles = StyleSheet.create({
   footerButtonBox: {
     width: '100%',
     marginTop: 16,
+    position: 'sticky',
+    bottom: 0,
   },
   footerButton: {
     backgroundColor: '#E4E2DC',

@@ -31,6 +31,7 @@ import {useLogin} from '@/hooks/auth/useLogin'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
 import {Config} from '@/config/Config'
+import {useKeyboard} from '@/hooks/useKeyboard'
 
 interface ITicketEditData {
   homeTeam: {
@@ -77,6 +78,7 @@ const Optional = ({label}: {label: string}) => {
 }
 
 const EditTicketPage = () => {
+  const {isKeyboardVisible} = useKeyboard()
   const {id} = useLocalSearchParams()
   const insets = useSafeAreaInsets()
   const [isPending, setIsPending] = useState(false)
@@ -318,7 +320,7 @@ const EditTicketPage = () => {
   const scrollRef = useRef<ScrollView>(null)
 
   return (
-    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.stepHeaderBox}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
@@ -530,27 +532,30 @@ const EditTicketPage = () => {
             </View>
           </View>
         </ScrollView>
+        {!isKeyboardVisible && (
+          <View style={[styles.footerButtonBox]}>
+            <TouchableOpacity
+              style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
+              onPress={onSubmit}
+              disabled={!isEnabled}>
+              {isPending ? (
+                <LottieView
+                  source={require('@/assets/lottie/loading.json')}
+                  autoPlay
+                  loop
+                  style={{width: 100, height: 100}}
+                />
+              ) : (
+                <Text
+                  style={[styles.footerButtonText, isEnabled ? styles.activeButtonText : styles.disabledButtonText]}>
+                  티켓 정보 변경하기
+                </Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        )}
       </KeyboardAvoidingView>
 
-      <View style={[styles.footerButtonBox, {marginBottom: 16 + insets.bottom}]}>
-        <TouchableOpacity
-          style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
-          onPress={onSubmit}
-          disabled={!isEnabled}>
-          {isPending ? (
-            <LottieView
-              source={require('@/assets/lottie/loading.json')}
-              autoPlay
-              loop
-              style={{width: 100, height: 100}}
-            />
-          ) : (
-            <Text style={[styles.footerButtonText, isEnabled ? styles.activeButtonText : styles.disabledButtonText]}>
-              티켓 정보 변경하기
-            </Text>
-          )}
-        </TouchableOpacity>
-      </View>
       <Modal animationType="slide" transparent={true} visible={teamModalVisible}>
         <View style={styles.modalOverlay}>
           <View style={styles.teamModalContent}>
@@ -740,6 +745,8 @@ const styles = StyleSheet.create({
   footerButtonBox: {
     width: '100%',
     marginTop: 16,
+    position: 'sticky',
+    bottom: 0,
   },
   footerButton: {
     backgroundColor: '#E4E2DC',
