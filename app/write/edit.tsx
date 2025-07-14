@@ -301,12 +301,13 @@ const EditTicketPage = () => {
     }))
   }
 
-  const isEnabled =
+  const isEnabled = Boolean(
     writeData.homeTeam.score &&
-    writeData.awayTeam.score &&
-    ((writeData.placeType === '직관' && writeData.place) ||
-      (writeData.placeType === '직관' && ticketDetail?.gip_place) ||
-      writeData.placeType === '집관')
+      writeData.awayTeam.score &&
+      ((writeData.placeType === '직관' && writeData.place) ||
+        (writeData.placeType === '직관' && ticketDetail?.gip_place) ||
+        writeData.placeType === '집관'),
+  )
 
   // const isEnabled =
   //   writeData.todayImg &&
@@ -532,29 +533,11 @@ const EditTicketPage = () => {
             </View>
           </View>
         </ScrollView>
-        {!isKeyboardVisible && (
-          <View style={[styles.footerButtonBox]}>
-            <TouchableOpacity
-              style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
-              onPress={onSubmit}
-              disabled={!isEnabled}>
-              {isPending ? (
-                <LottieView
-                  source={require('@/assets/lottie/loading.json')}
-                  autoPlay
-                  loop
-                  style={{width: 100, height: 100}}
-                />
-              ) : (
-                <Text
-                  style={[styles.footerButtonText, isEnabled ? styles.activeButtonText : styles.disabledButtonText]}>
-                  티켓 정보 변경하기
-                </Text>
-              )}
-            </TouchableOpacity>
-          </View>
+        {!isKeyboardVisible && Platform.OS === 'android' && (
+          <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />
         )}
       </KeyboardAvoidingView>
+      {Platform.OS === 'ios' && <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />}
 
       <Modal animationType="slide" transparent={true} visible={teamModalVisible}>
         <View style={styles.modalOverlay}>
@@ -603,6 +586,38 @@ const EditTicketPage = () => {
         </View>
       </Modal>
     </SafeAreaView>
+  )
+}
+
+const FooterButton = ({
+  isEnabled,
+  isPending,
+  onSubmit,
+}: {
+  isEnabled: boolean
+  isPending: boolean
+  onSubmit: () => void
+}) => {
+  return (
+    <View style={[styles.footerButtonBox]}>
+      <TouchableOpacity
+        style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
+        onPress={onSubmit}
+        disabled={!isEnabled}>
+        {isPending ? (
+          <LottieView
+            source={require('@/assets/lottie/loading.json')}
+            autoPlay
+            loop
+            style={{width: 100, height: 100}}
+          />
+        ) : (
+          <Text style={[styles.footerButtonText, isEnabled ? styles.activeButtonText : styles.disabledButtonText]}>
+            티켓 정보 변경하기
+          </Text>
+        )}
+      </TouchableOpacity>
+    </View>
   )
 }
 

@@ -1,6 +1,7 @@
 import {useMemo} from 'react'
 import {useMMKVObject} from 'react-native-mmkv'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
+import {clearAll} from '@/store/mmkv-store/mmkvStore'
 import ApiClient from '@/api'
 import {useRouter} from 'expo-router'
 import {useQueryClient} from '@tanstack/react-query'
@@ -32,9 +33,18 @@ export const useLogin = () => {
     } catch (error) {
       console.error('토큰 무효화 실패', error)
     } finally {
+      // 사용자 데이터 제거
       setUser(undefined)
-      // api 호출 /auths/token/revoke/
+
+      // React Query 캐시 완전 클리어
+      queryClient.removeQueries()
       queryClient.clear()
+      await queryClient.cancelQueries()
+      queryClient.resetQueries()
+
+      // MMKV 로컬 스토리지 완전 클리어
+      clearAll()
+
       router.dismissAll()
       router.replace('/auth/login')
     }
