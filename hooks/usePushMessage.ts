@@ -1,3 +1,4 @@
+import {Config} from '@/config/Config'
 import messaging, {FirebaseMessagingTypes} from '@react-native-firebase/messaging'
 import {useEffect, useState} from 'react'
 import {create} from 'zustand'
@@ -21,6 +22,8 @@ const usePushMessage = (foregroundMessageHandler?: RemoteMessageCallback) => {
   const {deviceToken, setDeviceToken} = usePushMessageStore()
 
   useEffect(() => {
+    if (Config.MODE === 'production') return
+
     /**
      * FCM 토큰을 받습니다.
      */

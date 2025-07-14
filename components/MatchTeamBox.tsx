@@ -14,7 +14,7 @@ type Props = {
 /** 매치 팀 경기 카드 컴포넌트 */
 const MatchTeamBox = ({match, onClick, isSelected}: Props) => {
   const time = format(match.game_date, 'HH:mm')
-  const {findTeamById, teams} = useTeam()
+  const {findTeamById} = useTeam()
 
   const homeTeam = findTeamById(match.team_home_info.id)
   const awayTeam = findTeamById(match.team_away_info.id)

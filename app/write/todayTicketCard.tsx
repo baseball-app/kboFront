@@ -201,7 +201,9 @@ export default function GameCard() {
                   })
                   // router.push({pathname: '/write/edit', params: {id: ticketDetail?.id}})
                 },
-                content: <Text style={{color: '#1E5EF4', fontSize: 16, fontWeight: '500'}}>삭제</Text>,
+                content: (
+                  <Text style={{color: '#1E5EF4', fontSize: 16, fontWeight: '500', lineHeight: 18 * 1.4}}>삭제</Text>
+                ),
               }
             : undefined
         }
