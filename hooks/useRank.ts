@@ -19,8 +19,9 @@ const useRank = () => {
     queryFn: () => ApiClient.get<Rank[]>(`/ranks/rank_list/`),
     staleTime: 1000 * 60 * 5,
   })
+  const standardDate = dayjs(data?.[0].updated_at).format('YY.MM.DD')
 
-  return {data, standardDate: today, isLoading}
+  return {data, standardDate, isLoading}
 }
 
 export {useRank, type Rank}
