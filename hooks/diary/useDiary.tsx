@@ -37,9 +37,9 @@ const useDiary = () => {
 
   const pathname = usePathname()
 
-  useEffect(() => {
-    if (pathname !== '/') setUserId(null)
-  }, [])
+  // useEffect(() => {
+  //   if (pathname !== '/') setUserId(null)
+  // }, [])
 
   const currentYearMonth = format(currentDate, 'yyyy-MM')
   const {data: ticketList} = useQuery({
