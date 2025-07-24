@@ -29,19 +29,19 @@ export default function TabLayout() {
 
   const {top} = useSafeAreaInsets()
 
-  // const {deviceToken} = usePushMessage(async remoteMessage => {})
-  // const isAlreadyRequest = useRef(false)
-  // useEffect(() => {
-  //   // TODO: deviceToken이 동일할 경우, 백엔드로 아예 전송하지 않도록 수정해야 됨
-  //   if (deviceToken && !isAlreadyRequest.current) {
-  //     isAlreadyRequest.current = true
-  //     ApiClient.post('/devices/', {
-  //       token: deviceToken,
-  //       device_type: Platform.OS.toUpperCase(),
-  //     }) //
-  //       .then(res => console.log('토큰 저장 결과 ::', res, deviceToken, Platform.OS.toUpperCase()))
-  //   }
-  // }, [deviceToken])
+  const {deviceToken} = usePushMessage(async remoteMessage => {})
+  const isAlreadyRequest = useRef(false)
+  useEffect(() => {
+    // TODO: deviceToken이 동일할 경우, 백엔드로 아예 전송하지 않도록 수정해야 됨
+    if (deviceToken && !isAlreadyRequest.current) {
+      isAlreadyRequest.current = true
+      ApiClient.post('/devices/', {
+        token: deviceToken,
+        device_type: Platform.OS.toUpperCase(),
+      }) //
+        .then(res => console.log('토큰 저장 결과 ::', res, deviceToken, Platform.OS.toUpperCase()))
+    }
+  }, [deviceToken])
 
   return (
     <Tabs screenOptions={tabScreenOptions} tabBar={() => <Footer />}>
