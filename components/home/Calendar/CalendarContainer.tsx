@@ -218,7 +218,7 @@ const CalendarContainer = ({targetId}: Props) => {
         />
       )
     },
-    [hideCalendar],
+    [hideCalendar, targetId],
   )
 
   const initialScrollIndex = useMemo(() => {
