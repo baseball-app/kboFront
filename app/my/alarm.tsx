@@ -1,4 +1,4 @@
-import {StyleSheet, View, FlatList, ScrollView} from 'react-native'
+import {StyleSheet, View, FlatList, ScrollView, Platform} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import useNotification from '@/hooks/notification/useNotification'
@@ -22,8 +22,10 @@ const AlarmScreen = () => {
 
   return (
     <>
-      <Header title="알림" topInset={top} />
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView
+        style={styles.container}
+        edges={Platform.OS === 'ios' ? ['top', 'left', 'right'] : ['top', 'bottom', 'left', 'right']}>
+        <Header title="알림" />
         <View style={styles.wrapper}>
           <FlatList
             ref={ref}
@@ -58,10 +60,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    // paddingBottom: 20,
   },
   wrapper: {
     flex: 1,
     backgroundColor: '#F3F2EE',
+    paddingBottom: 40,
   },
   headerTitleBox: {
     width: '100%',
