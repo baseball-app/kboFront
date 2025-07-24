@@ -88,7 +88,12 @@ const useNotification = () => {
    */
   const onClickNotification = (notification: Notification) => {
     if (!notification.is_read) {
-      onUpdateNotificationStatus({id: notification.id, is_read: true})
+      onUpdateNotificationStatus(
+        {id: notification.id, is_read: true},
+        {
+          onSuccess: () => refetch(),
+        },
+      )
     }
 
     const targetId = notification.type === 'FRIEND_FEEDBACK' ? profile.id : notification.user_info.id
