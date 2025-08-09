@@ -1,6 +1,6 @@
-import {useRouter} from 'expo-router'
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native'
+import {useAppRouter} from '@/hooks/common'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 type ButtonType = {
@@ -18,7 +18,7 @@ type Props = {
 }
 
 const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButton, title, topInset = 0}: Props) => {
-  const router = useRouter()
+  const router = useAppRouter()
 
   const onBackButtonClick = () => {
     router.back()

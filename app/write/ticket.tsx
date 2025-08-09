@@ -34,7 +34,7 @@ import {logEvent} from '@/analytics/func'
 import {EVENTS, useAnalyticsStore} from '@/analytics/event'
 import {Config} from '@/config/Config'
 import {useKeyboard} from '@/hooks/useKeyboard'
-
+import {useAppRouter} from '@/hooks/common'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
   matchTeam: Team | null
@@ -123,7 +123,7 @@ const TicketPage = () => {
   const [teamModalVisible, setTeamModalVisible] = useState(false)
   const [placeModalVisible, setPlaceModalVisible] = useState(false)
 
-  const router = useRouter()
+  const router = useAppRouter()
   const handleInputChange = (key: keyof IWriteDataInterface, value: string) => {
     setWriteData(prevData => ({
       ...prevData,

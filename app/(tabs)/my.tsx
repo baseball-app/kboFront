@@ -14,7 +14,6 @@ import {
 } from 'react-native'
 import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
 import {theme} from '@/constants/Colors'
-import {router} from 'expo-router'
 import {useLogin} from '@/hooks/auth/useLogin'
 import useMyInfo from '@/hooks/my/useMyInfo'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
@@ -25,13 +24,14 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import {usePopup} from '@/slice/commonSlice'
 import {Config} from '@/config/Config'
 import {SafeAreaView} from 'react-native-safe-area-context'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 
 const ProfileScreen = () => {
   const {logout} = useLogin()
   const {profile, onPasteInviteCode, withdrawUser} = useMyInfo()
   const {openCommonPopup} = usePopup()
   const {} = useTeam()
-
+  const router = useAppRouter()
   const [inviteCode, setInviteCode] = useState<string | undefined>(undefined)
   const {addFriend} = useMakeFriend()
   const inputRef = useRef<TextInput>(null)
@@ -58,7 +58,7 @@ const ProfileScreen = () => {
               position: 'relative',
             }}>
             <Pressable
-              onPress={() => router.push('/my/alarm')}
+              onPress={() => router.push(ROUTES.MY_ALARM)}
               style={{
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
@@ -91,7 +91,7 @@ const ProfileScreen = () => {
               <View style={styles.profileInfoBox}>
                 <View style={styles.profileInfo}>
                   <Text style={styles.profileName}>{profile?.nickname} 님</Text>
-                  <TouchableOpacity onPress={() => router.push('/my/change-nickname')}>
+                  <TouchableOpacity onPress={() => router.push(ROUTES.MY_CHANGE_NICKNAME)}>
                     <Image
                       source={require('@/assets/icons/edit_pen.png')}
                       style={styles.profileEditIcon}
@@ -118,7 +118,7 @@ const ProfileScreen = () => {
                 <Text style={styles.teamName}>{profile.my_team?.name}</Text>
               </View>
 
-              <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push('/my/change-team')}>
+              <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push(ROUTES.MY_CHANGE_TEAM)}>
                 <Image source={require('../../assets/icons/gear.png')} style={styles.teamSettingsIcon} />
               </TouchableOpacity>
             </View>
@@ -128,7 +128,7 @@ const ProfileScreen = () => {
                 activeOpacity={0.9}
                 style={[styles.statItem, styles.statBox]}
                 onPress={() => {
-                  router.push('/my/followers')
+                  router.push(ROUTES.MY_FOLLOWERS)
                 }}>
                 <View style={{gap: 10}}>
                   <Text style={styles.statLabel}>팔로워</Text>
@@ -140,7 +140,7 @@ const ProfileScreen = () => {
                 activeOpacity={0.9}
                 style={[styles.statItem, styles.statBox]}
                 onPress={() => {
-                  router.push('/my/followings')
+                  router.push(ROUTES.MY_FOLLOWINGS)
                 }}>
                 <View style={{gap: 10}}>
                   <Text style={styles.statLabel}>팔로잉</Text>
@@ -184,12 +184,12 @@ const ProfileScreen = () => {
           </View>
 
           <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/my/terms')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => router.push(ROUTES.MY_TERMS)}>
               <Text style={styles.menuText}>이용약관</Text>
               <Ionicons name="chevron-forward" size={24} color="gray" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/my/inquiry')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => router.push(ROUTES.MY_INQUIRY)}>
               <Text style={styles.menuText}>문의하기</Text>
               <Ionicons name="chevron-forward" size={24} color="gray" />
             </TouchableOpacity>

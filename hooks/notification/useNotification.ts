@@ -1,7 +1,7 @@
 import ApiClient from '@/api'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 import {Pagination} from '@/types/generic'
 import {InfiniteData, useInfiniteQuery, useMutation, useQueryClient} from '@tanstack/react-query'
-import {router} from 'expo-router'
 import {useRef} from 'react'
 import useProfile from '../my/useProfile'
 
@@ -27,7 +27,7 @@ type InfiniteNotificationData = InfiniteData<Pagination<Notification>, unknown> 
 const useNotification = () => {
   const queryClient = useQueryClient()
   const {profile} = useProfile()
-
+  const router = useAppRouter()
   const {data, fetchNextPage, hasNextPage, refetch} = useInfiniteQuery({
     queryKey: ['notification'],
     queryFn: ({pageParam}) => ApiClient.get<Pagination<Notification>>('/notifications/', {page: pageParam}),
@@ -98,12 +98,9 @@ const useNotification = () => {
 
     const targetId = notification.type === 'FRIEND_FEEDBACK' ? profile.id : notification.user_info.id
 
-    router.push({
-      pathname: '/write/todayTicketCard',
-      params: {
-        id: notification.ticket,
-        target_id: targetId,
-      },
+    router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {
+      id: notification.ticket,
+      target_id: targetId,
     })
   }
 

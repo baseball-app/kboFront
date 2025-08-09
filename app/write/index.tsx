@@ -6,10 +6,11 @@ import useMatch from '@/hooks/match/useMatch'
 import useTeam from '@/hooks/match/useTeam'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
 import useProfile from '@/hooks/my/useProfile'
-import {useLocalSearchParams, useRouter} from 'expo-router'
+import {useLocalSearchParams} from 'expo-router'
 import React, {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 
 /** 경기 결과 목업데이터 */
 const matchResult = [
@@ -66,7 +67,7 @@ const DailyLogWriteScreen = () => {
   } = useWriteTicket()
   const insets = useSafeAreaInsets()
 
-  const router = useRouter()
+  const router = useAppRouter()
   const params = useLocalSearchParams()
 
   /** 현재 단계를 나타내는 상태 */
@@ -117,7 +118,7 @@ const DailyLogWriteScreen = () => {
       setCurrentStep(currentStep + 1)
     } else {
       router.dismiss()
-      router.navigate('/write/ticket')
+      router.navigate(ROUTES.WRITE_TICKET)
     }
   }
 

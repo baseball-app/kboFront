@@ -1,26 +1,28 @@
 import {useLogin} from '@/hooks/auth/useLogin'
-import {SplashScreen, useRouter} from 'expo-router'
+import {SplashScreen} from 'expo-router'
 import ApiClient from '@/api'
 import {Profile} from '@/hooks/my/useProfile'
 import {useEffectOnce} from '@/hooks/useEffectOnce'
 import VersionCheck from 'react-native-version-check'
 import {Alert, Linking} from 'react-native'
+import {useAppRouter} from '@/hooks/common'
+import {ROUTES} from '@/hooks/common'
 
 export default function Index() {
   const {refreshAccessToken} = useLogin()
-  const router = useRouter()
+  const router = useAppRouter()
 
   const checkIsLogined = async () => {
     try {
       await refreshAccessToken()
       const profile = await ApiClient.get<Profile>('/users/me/')
       if (profile?.my_team?.id) {
-        router.replace('/(tabs)')
+        router.replace(ROUTES.CALENDAR_TAB)
       } else {
-        router.replace('/auth/login')
+        router.replace(ROUTES.AUTH_LOGIN)
       }
     } catch (error) {
-      router.replace('/auth/login')
+      router.replace(ROUTES.AUTH_LOGIN)
     } finally {
       SplashScreen.hideAsync()
     }

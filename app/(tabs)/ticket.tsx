@@ -4,11 +4,12 @@ import ProfileImageBox from '@/components/common/ProfileImageBox'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import Skeleton from '@/components/skeleton/Skeleton'
 import Tag from '@/components/Tag'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 import useTeam from '@/hooks/match/useTeam'
 import useTicketListByTeam, {TicketListByTeam} from '@/hooks/match/useTicketListByTeam'
 import useProfile from '@/hooks/my/useProfile'
 import {format} from 'date-fns'
-import {router, usePathname} from 'expo-router'
+import {usePathname} from 'expo-router'
 import React, {useRef} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native'
 const width = Dimensions.get('window').width
@@ -16,6 +17,7 @@ const width = Dimensions.get('window').width
 // 40 + 12 * 4 = 88
 
 const MyTicketBoxScreen = () => {
+  const router = useAppRouter()
   const {profile} = useProfile()
   const {ticketList, onChangeTeam, selectedTeamId, isLoading} = useTicketListByTeam()
   const {findTeamById, teams} = useTeam()
@@ -57,7 +59,7 @@ const MyTicketBoxScreen = () => {
           style={styles.button}
           onPress={() => {
             logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: pathname})
-            router.push('/ticket/my-stat')
+            router.push(ROUTES.TICKET_MY_STAT)
           }}>
           <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
         </TouchableOpacity>
@@ -119,9 +121,10 @@ const MyTicketBoxScreen = () => {
                       awayTeam={awayTeam}
                       opponentTeam={opponentTeam}
                       onClick={() =>
-                        router.push({
-                          pathname: '/write/todayTicketCard',
-                          params: {id: ticket.id, target_id: profile.id, from_ticket_box: 'true'},
+                        router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {
+                          id: ticket.id,
+                          target_id: profile.id,
+                          from_ticket_box: 'true',
                         })
                       }
                     />

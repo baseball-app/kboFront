@@ -1,17 +1,24 @@
 import {userJoinSlice} from '@/slice/userJoinSlice'
-import {useRouter, useSegments} from 'expo-router'
+import {useSegments} from 'expo-router'
 import useConsent from './useConsent'
 import useProfile from '../my/useProfile'
+import {ROUTES, useAppRouter} from '../common'
 
 // 유저의 회원가입 프로세스
-const userJoinProcess = ['/auth/term-of-service', '/auth/nickname', '/auth/my-team', '/auth/profile-image'] as const
+const userJoinProcess = [
+  ROUTES.AUTH_TERM_OF_SERVICE,
+  ROUTES.AUTH_NICKNAME,
+  ROUTES.AUTH_TEAM,
+  ROUTES.AUTH_PROFILE,
+] as const
+
 type JoinProcess = (typeof userJoinProcess)[number]
 
 /**
  * 회원가입 화면에서 사용하는 hook
  */
 const useUserJoin = () => {
-  const router = useRouter()
+  const router = useAppRouter()
   const segments = useSegments()
   // 현재 step 경로
   const currentStep = `/${segments.join('/')}` as JoinProcess
@@ -29,7 +36,7 @@ const useUserJoin = () => {
       // 회원가입 로직
       await updateProfileWithSignUp(joinSlice)
 
-      router.navigate('/(tabs)')
+      router.navigate(ROUTES.CALENDAR_TAB)
     } catch (error) {
       console.error('회원가입 정보 수정 오류 :: ', error)
       console.error('data :: ', {
@@ -83,7 +90,7 @@ const useUserJoin = () => {
   const moveToPrevStep = () => {
     // 첫번째 페이지라면 로그인 화면으로 이동해야 함
     if (currentStep === userJoinProcess[0]) {
-      router.navigate('/auth/login')
+      router.navigate(ROUTES.AUTH_LOGIN)
       return
     }
 

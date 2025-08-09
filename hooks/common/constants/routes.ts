@@ -47,6 +47,13 @@ const MY_TERMS = '/my/terms'
 const MY_TERMS_PRIVACY_POLICY = '/my/terms/privacy-policy'
 const MY_TERMS_OF_SERVICE = '/my/terms/terms-of-service'
 
+// MY 팔로워 페이지
+// TODO: 해결방법 찾기 /my/[id] -> 타입 어떻게 되어야 하는지?
+const MY_FOLLOWERS = '/my/followers' as any
+
+// MY 팔로잉 페이지
+const MY_FOLLOWINGS = '/my/followings' as any
+
 // TICKET 페이지들
 const TICKET_MY_STAT = '/ticket/my-stat'
 
@@ -82,4 +89,6 @@ export {
   WRITE_EDIT,
   WRITE_TICKET,
   WRITE_TODAY_TICKET_CARD,
+  MY_FOLLOWERS,
+  MY_FOLLOWINGS,
 }

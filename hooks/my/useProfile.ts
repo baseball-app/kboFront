@@ -7,8 +7,8 @@ import {PROFILE_IMAGES} from '@/constants/join'
 import {useEffect} from 'react'
 import {IUserJoinSlice} from '@/slice/userJoinSlice'
 import {useCommonSlice} from '@/slice/commonSlice'
-import {useRouter} from 'expo-router'
 import useTeam from '../match/useTeam'
+import {useAppRouter} from '../common'
 
 export type Team = {
   id: number // 3
@@ -32,7 +32,7 @@ const useProfile = () => {
   const {user, isLogined} = useLogin()
   const [profile, updateProfileCacheData] = useMMKVObject<Profile>(MmkvStoreKeys.USER_PROFILE)
   const {modal} = useCommonSlice()
-  const router = useRouter()
+  const router = useAppRouter()
 
   const {findTeamById} = useTeam()
 

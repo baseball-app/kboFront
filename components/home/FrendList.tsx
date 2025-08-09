@@ -3,15 +3,16 @@ import React from 'react'
 import {View, StyleSheet, FlatList} from 'react-native'
 import FriendStatusProfile from './FriendStatusProfile'
 import useProfile from '@/hooks/my/useProfile'
-import {usePathname, useRouter} from 'expo-router'
+import {usePathname} from 'expo-router'
 import Skeleton from '../skeleton/Skeleton'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 
 const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; userId: number | null}) => {
   const {friend_status, isLoadingFriendStatus} = useFriends()
   const {profile} = useProfile()
-  const router = useRouter()
+  const router = useAppRouter()
   const pathname = usePathname()
 
   return (
@@ -50,10 +51,7 @@ const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; u
                 // 없으면 친구의 달력
                 logEvent(EVENTS.FRIEND_PROFILE_VIEW, {friend_id: item.id, screen_name: pathname})
                 if (item.ticket_info?.id) {
-                  router.push({
-                    pathname: '/write/todayTicketCard', //
-                    params: {id: item.ticket_info?.id, target_id: item.id},
-                  })
+                  router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {id: item.ticket_info?.id, target_id: item.id})
                 } else {
                   setUserId(item.id)
                 }

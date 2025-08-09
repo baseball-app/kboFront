@@ -1,7 +1,6 @@
 import {userJoinSlice} from '@/slice/userJoinSlice'
-import {router} from 'expo-router'
 import React, {useRef, useState} from 'react'
-
+import {useAppRouter} from '../common'
 const consentList = [
   {
     value: 'terms-of-service',
@@ -16,6 +15,7 @@ const consentList = [
 // TODO: 나중에 선택 동의 항목 추가될 시, 회원가입 flow가 끝날 때까지 끌고가야 할 수 있음
 // 기획 물어보고 추가될 경우 store에 값 보관하는 방식으로 변경
 const useConsent = () => {
+  const router = useAppRouter()
   // 각각의 상태를 개별적으로 구독
   const checkedConsent = userJoinSlice(state => state.checkedConsent)
   const setCheckedConsent = userJoinSlice(state => state.setCheckedConsent)

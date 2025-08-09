@@ -2,12 +2,12 @@ import React, {useState} from 'react'
 import {StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Ionicons from '@expo/vector-icons/Ionicons'
-import {useRouter} from 'expo-router'
 import {useMutation} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import Toast from 'react-native-toast-message'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {usePopup} from '@/slice/commonSlice'
+import {useAppRouter} from '@/hooks/common'
 
 type Inquiry = {
   email: string
@@ -16,7 +16,7 @@ type Inquiry = {
 }
 
 export default function NicknameScreen() {
-  const router = useRouter()
+  const router = useAppRouter()
   const [inquiry, setInquiry] = useState<Inquiry>({
     email: '',
     title: '문의하기',

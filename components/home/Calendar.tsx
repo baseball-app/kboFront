@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native'
 import {format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
-import {usePathname, useRouter} from 'expo-router'
+import {usePathname} from 'expo-router'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import MatchResultCell from '../MatchResultCell'
 import {useQuery, useQueryClient} from '@tanstack/react-query'
@@ -15,6 +15,7 @@ import {useAnalyticsStore} from '@/analytics/event'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import dayjs from 'dayjs'
 import useProfile from '@/hooks/my/useProfile'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 
 export type TicketCalendarLog = {
   id: number // 5
@@ -126,7 +127,7 @@ const Calendar = ({
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
-  const router = useRouter()
+  const router = useAppRouter()
   const pathname = usePathname()
 
   const prefetchTicket = async (date: string) => {
@@ -164,10 +165,7 @@ const Calendar = ({
     if (ticketsGroupByDate?.length) {
       // 해당 날짜 직관일기 prefetch
       prefetchTicket(targetDate).finally(() => {
-        router.push({
-          pathname: '/write/todayTicketCard', //
-          params: {date: targetDate, target_id: targetId},
-        })
+        router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {date: targetDate, target_id: targetId})
       })
       return
     }
@@ -179,7 +177,7 @@ const Calendar = ({
         setScreenName(pathname)
         setDiaryCreate('메인 버튼')
         // ga 데이터 수집용도
-        router.push({pathname: '/write', params: {date: targetDate}})
+        router.push(ROUTES.WRITE, {date: targetDate})
       })
     }
   }

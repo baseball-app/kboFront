@@ -3,10 +3,10 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {Ionicons} from '@expo/vector-icons'
-import {useRouter} from 'expo-router'
+import {useAppRouter} from '@/hooks/common'
 
 const TermsScreen = () => {
-  const router = useRouter()
+  const router = useAppRouter()
   const moveToDetail = (value: 'privacy-policy' | 'terms-of-service') => {
     router.push(`/my/terms/${value}`)
   }

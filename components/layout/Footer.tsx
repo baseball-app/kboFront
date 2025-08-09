@@ -1,12 +1,12 @@
-import {router_address} from '@/constants/router'
-import {useRouter, useSegments} from 'expo-router'
+import {useSegments} from 'expo-router'
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 const footerList = [
   {
     name: '캘린더',
-    path: router_address.TAB.CALENDAR,
+    path: ROUTES.CALENDAR_TAB,
     icon: {
       active: require('@/assets/icons/tabMenu/calendarMenuActive.png'),
       inactive: require('@/assets/icons/tabMenu/calendarMenu.png'),
@@ -14,7 +14,7 @@ const footerList = [
   },
   {
     name: '경기 일정',
-    path: router_address.TAB.MATCH,
+    path: ROUTES.MATCH_TAB,
     icon: {
       active: require('@/assets/icons/tabMenu/gameMatchMenuActive.png'),
       inactive: require('@/assets/icons/tabMenu/gameMatchMenu.png'),
@@ -22,7 +22,7 @@ const footerList = [
   },
   {
     name: '티켓박스',
-    path: router_address.TAB.TICKET,
+    path: ROUTES.TICKET_TAB,
     icon: {
       active: require('@/assets/icons/tabMenu/ticketMenuActive.png'),
       inactive: require('@/assets/icons/tabMenu/ticketMenu.png'),
@@ -38,7 +38,7 @@ const footerList = [
   // },
   {
     name: '아구정보',
-    path: router_address.TAB.RANK,
+    path: ROUTES.RANK_TAB,
     icon: {
       active: require('@/assets/icons/tabMenu/rankMenuActive.png'),
       inactive: require('@/assets/icons/tabMenu/rankMenu.png'),
@@ -46,7 +46,7 @@ const footerList = [
   },
   {
     name: '마이',
-    path: router_address.TAB.MY,
+    path: ROUTES.MY_TAB,
     icon: {
       active: require('@/assets/icons/tabMenu/myMenuActive.png'),
       inactive: require('@/assets/icons/tabMenu/myMenu.png'),
@@ -56,7 +56,7 @@ const footerList = [
 
 /** Footer Tab Menu 컴포넌트 */
 const Footer = () => {
-  const router = useRouter()
+  const router = useAppRouter()
   const segments = useSegments()
 
   const currentPath = `/${segments.join('/')}`
