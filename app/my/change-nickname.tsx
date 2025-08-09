@@ -1,9 +1,7 @@
 import Header from '@/components/common/Header'
-import useUserJoin from '@/hooks/auth/useUserJoin'
+import {useAppRouter} from '@/hooks/common'
 import useProfile from '@/hooks/my/useProfile'
 import {moderateScale, verticalScale} from '@/utils/metrics'
-import {Ionicons} from '@expo/vector-icons'
-import {useRouter} from 'expo-router'
 import React, {useState} from 'react'
 import {KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -11,7 +9,7 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 const ChangeNicknameScreen = () => {
   const {updateProfile, profile} = useProfile()
   const [nickname, setNickname] = useState(profile.nickname)
-  const router = useRouter()
+  const router = useAppRouter()
 
   return (
     <SafeAreaView style={styles.container}>

@@ -1,7 +1,7 @@
 import {StyleSheet, Image, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
-import {usePathname, useRouter} from 'expo-router'
+import {usePathname} from 'expo-router'
 import GameContainer from '@/components/game/GameContainer'
 import useMatch from '@/hooks/match/useMatch'
 import dayjs from 'dayjs'
@@ -14,15 +14,16 @@ import useFriends from '@/hooks/my/useFriends'
 import {useAnalyticsStore} from '@/analytics/event'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import {CalendarContainer} from '@/components/home/Calendar/CalendarContainer'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 // import {useRank} from '@/hooks/useRank'
 const CalendarScreen = () => {
-  const router = useRouter()
   const {openCommonPopup} = usePopup()
 
   const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()})
   const {ticketList, isMyDiary, setUserId, userId} = useDiary()
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const {friend_status} = useFriends()
+  const router = useAppRouter()
   // const {} = useRank()
 
   const selectedUserName = (() => {
@@ -68,11 +69,8 @@ const CalendarScreen = () => {
     // ga 데이터 수집용도
 
     // 오늘 날짜로 이동
-    router.push({
-      pathname: '/write',
-      params: {
-        date: dayjs().format('YYYY-MM-DD'),
-      },
+    router.push(ROUTES.WRITE, {
+      date: dayjs().format('YYYY-MM-DD'),
     })
   }
 

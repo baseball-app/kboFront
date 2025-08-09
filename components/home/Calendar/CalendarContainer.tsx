@@ -2,15 +2,15 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {CalendarView} from './CalendarView'
 import {TicketCalendarLog} from './type'
 import dayjs from 'dayjs'
-import {usePathname, useRouter, useSegments} from 'expo-router'
-import {useQuery, useQueryClient} from '@tanstack/react-query'
+import {usePathname, useSegments} from 'expo-router'
+import {useQueryClient} from '@tanstack/react-query'
 import {TicketDetail} from '@/hooks/match/useTicketDetail'
 import ApiClient from '@/api'
 import {Match} from '@/hooks/match/useMatch'
 import {useAnalyticsStore} from '@/analytics/event'
 import useProfile from '@/hooks/my/useProfile'
-import {groupBy} from '@/utils/groupBy'
 import {Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, View} from 'react-native'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 
 type Props = {
   targetId: number
@@ -28,7 +28,7 @@ const CalendarContainer = ({targetId}: Props) => {
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const queryClient = useQueryClient()
 
-  const router = useRouter()
+  const router = useAppRouter()
   const pathname = usePathname()
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
@@ -66,10 +66,7 @@ const CalendarContainer = ({targetId}: Props) => {
     if (ticketsGroupByDate?.length) {
       // 해당 날짜 직관일기 prefetch
       prefetchTicket(targetDate).finally(() => {
-        router.push({
-          pathname: '/write/todayTicketCard', //
-          params: {date: targetDate, target_id: targetId},
-        })
+        router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {date: targetDate, target_id: targetId})
       })
       return
     }
@@ -82,7 +79,7 @@ const CalendarContainer = ({targetId}: Props) => {
         setScreenName(pathname)
         setDiaryCreate('메인 버튼')
         // ga 데이터 수집용도
-        router.push({pathname: '/write', params: {date: targetDate}})
+        router.push(ROUTES.WRITE, {date: targetDate})
       })
     }
   }

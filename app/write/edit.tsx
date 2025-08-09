@@ -1,4 +1,4 @@
-import {useLocalSearchParams, useRouter} from 'expo-router'
+import {useLocalSearchParams} from 'expo-router'
 import {useEffect, useRef, useState} from 'react'
 import {
   Text,
@@ -32,6 +32,7 @@ import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
 import {Config} from '@/config/Config'
 import {useKeyboard} from '@/hooks/useKeyboard'
+import {useAppRouter} from '@/hooks/common'
 
 interface ITicketEditData {
   homeTeam: {
@@ -157,7 +158,7 @@ const EditTicketPage = () => {
   const [teamModalVisible, setTeamModalVisible] = useState(false)
   const [placeModalVisible, setPlaceModalVisible] = useState(false)
 
-  const router = useRouter()
+  const router = useAppRouter()
 
   const {user} = useLogin()
 

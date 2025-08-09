@@ -2,7 +2,7 @@ import {findMatchResultImage, findWeatherImage} from '@/constants/match'
 import useTeam from '@/hooks/match/useTeam'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {format} from 'date-fns'
-import {useLocalSearchParams, usePathname, useRootNavigationState, useRouter} from 'expo-router'
+import {useLocalSearchParams, usePathname} from 'expo-router'
 import React, {useRef, useState} from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform, Linking} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
@@ -19,6 +19,7 @@ import {PermissionsAndroid} from 'react-native'
 import {useCommonSlice} from '@/slice/commonSlice'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import ApiClient from '@/api'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 
 class NoPermissionError extends Error {
   constructor(message?: string) {
@@ -28,7 +29,7 @@ class NoPermissionError extends Error {
 }
 
 export default function GameCard() {
-  const router = useRouter()
+  const router = useAppRouter()
   const {id, date, target_id, from_ticket_box} = useLocalSearchParams()
   const {findTeamById} = useTeam()
 
@@ -223,7 +224,7 @@ export default function GameCard() {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                router.push({pathname: '/write/edit', params: {id: ticketDetail?.id}})
+                router.push(ROUTES.WRITE_EDIT, {id: ticketDetail?.id})
               }}>
               <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
@@ -493,7 +494,7 @@ export default function GameCard() {
                   setScreenName(pathname)
                   setDiaryCreate('메인 버튼')
                   // ga 데이터 수집용도
-                  router.push({pathname: '/write', params: {date: ticketDetail?.date}})
+                  router.push(ROUTES.WRITE, {date: ticketDetail?.date})
                 }}
                 style={{
                   backgroundColor: '#1E5EF4',

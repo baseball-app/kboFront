@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, Image, Platform} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {router} from 'expo-router'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {Channel, useLogin} from '@/hooks/auth/useLogin'
 import LoginModal from '../component/LoginModal'
@@ -10,6 +9,7 @@ import {appleAuth} from '@invertase/react-native-apple-authentication'
 import {Profile} from '@/hooks/my/useProfile'
 import ApiClient from '@/api'
 import {usePopup} from '@/slice/commonSlice'
+import {ROUTES, useAppRouter} from '@/hooks/common'
 type LoginButtonType = {
   name: string
   type: Channel
@@ -21,6 +21,7 @@ export default function LoginScreen() {
   const {openCommonPopup} = usePopup()
   const {startSignUpProcessWithCode} = useUserJoin()
   const {login} = useLogin()
+  const router = useAppRouter()
 
   const onCloseWebView = () => {
     setLoginWebViewInfo(null)
@@ -35,7 +36,7 @@ export default function LoginScreen() {
       if (!myTeamId) {
         startSignUpProcessWithCode(code)
       } else {
-        router.replace('/(tabs)')
+        router.replace(ROUTES.CALENDAR_TAB)
       }
 
       onCloseWebView()
