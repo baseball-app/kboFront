@@ -9,12 +9,12 @@ import QueryProvider from '@/components/provider/QueryProvider'
 import CommonModal from '@/components/common/CommonModal'
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
 import {Text, View, TextInput, Platform} from 'react-native'
-import DeepLinkProvider from '@/components/provider/DeepLinkProvider'
 import Toast, {ToastConfig} from 'react-native-toast-message'
 import {EVENTS} from '@/analytics/event'
 import {logEvent} from '@/analytics/func'
 import messaging from '@react-native-firebase/messaging'
 import notifee from '@notifee/react-native'
+import {CommonSheet} from '@/components/common/CommonSheet'
 
 interface TextWithDefaultProps extends Text {
   defaultProps?: {allowFontScaling?: boolean}
@@ -91,6 +91,7 @@ export default function RootLayout() {
         <Stack.Screen name="ticket" options={{headerShown: false}} />
       </Stack>
       <CommonModal />
+      <CommonSheet />
       <Toast config={toastConfig} />
     </QueryProvider>
   )
