@@ -22,8 +22,6 @@ const usePushMessage = (foregroundMessageHandler?: RemoteMessageCallback) => {
   const {deviceToken, setDeviceToken} = usePushMessageStore()
 
   useEffect(() => {
-    if (Config.MODE === 'production') return
-
     /**
      * FCM 토큰을 받습니다.
      */
