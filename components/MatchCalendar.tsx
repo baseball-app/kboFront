@@ -148,13 +148,8 @@ const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarB
 const MatchCalendar = ({onChange, value}: Props) => {
   const [currentDate, setCurrentDate] = useState(new Date())
 
-  const prevMonth = () => {
-    setCurrentDate(addWeeks(currentDate, -1))
-  }
-
-  const nextMonth = () => {
-    setCurrentDate(addWeeks(currentDate, 1))
-  }
+  const prevMonth = () => setCurrentDate(addWeeks(currentDate, -1))
+  const nextMonth = () => setCurrentDate(addWeeks(currentDate, 1))
 
   return (
     <View style={styles.container}>

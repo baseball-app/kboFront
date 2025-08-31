@@ -1,12 +1,12 @@
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 
-const EmptyMatchView = ({onClick}: {onClick: () => void}) => {
+const EmptyMatchView = () => {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.text}>경기 일정이 없어요.</Text>
       <View style={styles.doubleHeaderBox}>
-        <TouchableOpacity onPress={onClick} style={styles.doubleHeaderButton}>
+        <TouchableOpacity style={styles.doubleHeaderButton}>
           <Text style={styles.doubleHeaderText}>직접 추가하기</Text>
         </TouchableOpacity>
       </View>
@@ -14,7 +14,7 @@ const EmptyMatchView = ({onClick}: {onClick: () => void}) => {
   )
 }
 
-export default EmptyMatchView
+export {EmptyMatchView}
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -25,10 +25,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingVertical: 40,
-  },
-  image: {
-    width: 22,
-    height: 22,
   },
   text: {
     color: 'black',

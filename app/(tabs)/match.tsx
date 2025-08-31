@@ -1,49 +1,55 @@
-import {StyleSheet, FlatList, ScrollView, TouchableOpacity, Text} from 'react-native'
+import {StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native'
 import {View} from 'react-native'
 import MatchTeamBox from '@/components/MatchTeamBox'
 import MatchCalendar from '@/components/MatchCalendar'
-import MatchTopNotificationComponent from '@/app/match/components/MatchTopNotificationComponent'
 import {useEffect, useState} from 'react'
-import EmptyMatchView from '@/components/match/EmptyMatchView'
 import useMatch, {Match} from '@/hooks/match/useMatch'
-import useWriteTicket from '@/hooks/match/useWriteTicket'
-import useTicketDetail from '@/hooks/match/useTicketDetail'
 import dayjs from 'dayjs'
-import useProfile from '@/hooks/my/useProfile'
 import {usePopup} from '@/slice/commonSlice'
-import Skeleton from '@/components/skeleton/Skeleton'
 import React from 'react'
 import {usePathname} from 'expo-router'
 import {useAnalyticsStore} from '@/analytics/event'
-const LoadingMatchView = () => {
-  return (
-    <>
-      <Skeleton width="100%" height={100} />
-      <Skeleton width="100%" height={100} />
-      <Skeleton width="100%" height={100} />
-      <Skeleton width="100%" height={100} />
-    </>
-  )
-}
+import {EmptyMatchView, LoadingMatchList, MatchNotification} from '@/feature/match/components'
+import {ROUTES, useAppRouter} from '@/hooks/common'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import Toast from 'react-native-toast-message'
+import {clearFalsyValue} from '@/utils/clearFalsyValue'
+import {MatchScreenError, useCheckValidateTicket} from '@/feature/ticket/write/useCheckValidateTicket'
 
 const MatchScreen = () => {
+  const insets = useSafeAreaInsets()
+
+  const showToast = (text: string) => {
+    Toast.show({
+      type: 'info',
+      text1: text,
+      visibilityTime: 2000,
+      autoHide: true,
+      position: 'bottom',
+      bottomOffset: insets.bottom + 24,
+    })
+  }
+
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const targetDate = dayjs(selectedDate).format('YYYY-MM-DD')
+
   const {matchingList, isPending} = useMatch({selectedDate})
-  const {moveToWriteTicket} = useWriteTicket()
-  const {openCommonPopup} = usePopup()
+
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const pathname = usePathname()
 
-  const {profile} = useProfile()
-  const {data, isSuccess} = useTicketDetail(dayjs(selectedDate).format('YYYY-MM-DD'), Number(profile?.id))
+  const {validateTicketCount} = useCheckValidateTicket({selectedDate})
+  const {openCommonPopup} = usePopup()
+  const router = useAppRouter()
 
-  const onClickMatch = (match?: Match) => {
-    if (isSuccess && Number(data?.length) > 1) {
-      openCommonPopup('오늘의 야구 티켓은 최대 2번까지만\n작성하실 수 있어요!')
-      return
-    }
-
-    moveToWriteTicket(selectedDate, match)
+  const onClickMatch = async (match?: Match) => {
+    const params = clearFalsyValue({date: targetDate, step: 2, matchId: match?.id || undefined})
+    validateTicketCount(targetDate)
+      .then(() => router.push(ROUTES.WRITE, params))
+      .catch(error => {
+        if (error instanceof MatchScreenError) return openCommonPopup(error.message)
+        showToast('잠시 후 다시 시도해 주세요.')
+      })
   }
 
   // 페이지 이동 시, 날짜 초기화
@@ -53,19 +59,16 @@ const MatchScreen = () => {
 
   return (
     <View style={styles.container}>
-      <MatchTopNotificationComponent />
+      <MatchNotification />
       <FlatList
         contentContainerStyle={styles.flatList}
         data={matchingList}
-        ListEmptyComponent={isPending ? <LoadingMatchView /> : <EmptyMatchView onClick={onClickMatch} />}
+        ListEmptyComponent={isPending ? <LoadingMatchList /> : <EmptyMatchView />}
         scrollEnabled
         ListHeaderComponent={
           <MatchCalendar //
             value={selectedDate}
-            onChange={date => {
-              setSelectedDate(date)
-              // prefetchMatchList(format(date, 'yyyy-MM-dd')).finally(() => setSelectedDate(date))
-            }}
+            onChange={setSelectedDate}
           />
         }
         renderItem={({item: match}) => (
