@@ -1,16 +1,13 @@
 import Header from '@/components/common/Header'
 import Progress from '@/components/common/Progress'
 import QuestionBox from '@/components/home/QuestionBox'
-import MatchTeamBox from '@/components/MatchTeamBox'
-import useMatch from '@/hooks/match/useMatch'
-import useTeam from '@/hooks/match/useTeam'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
-import useProfile from '@/hooks/my/useProfile'
 import {useLocalSearchParams} from 'expo-router'
 import React, {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import {ROUTES, useAppRouter} from '@/hooks/common'
+import {MatchCard, useMatch} from '@/entities/match'
 
 /** 경기 결과 목업데이터 */
 const matchResult = [
@@ -137,9 +134,6 @@ const DailyLogWriteScreen = () => {
   }
 
   const {matchingList, isSuccess} = useMatch({selectedDate})
-  const {profile} = useProfile()
-  const {findTeamById} = useTeam()
-  const myTeamName = findTeamById(profile.my_team?.id)?.short_name
 
   const date = params?.date
 
@@ -166,15 +160,14 @@ const DailyLogWriteScreen = () => {
           <View style={styles.matchListBox}>
             {matchingList.length > 0 ? (
               <>
-                {matchingList.map((match, index) => (
-                  <MatchTeamBox
-                    key={index} //
+                {matchingList.map(match => (
+                  <MatchCard
+                    key={match.id} //
                     isSelected={selectedMatch?.id === match.id}
                     match={match}
                     onClick={() => {
                       setSelectedMatch(match)
                       nextButtonClick()
-                      // skipToNextStep(currentStep)
                     }}
                   />
                 ))}
@@ -193,12 +186,6 @@ const DailyLogWriteScreen = () => {
               </View>
             )}
           </View>
-          {/* <View style={styles.linkBox}>
-            <Text>더블헤더 작성 시</Text>
-            <TouchableOpacity onPress={() => router.navigate('/')} style={styles.linkTextButton}>
-              <Text style={styles.linkText}> 직접 추가하기</Text>
-            </TouchableOpacity>
-          </View> */}
         </ScrollView>
       )}
       {currentStep === 2 && (

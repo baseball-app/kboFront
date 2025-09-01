@@ -1,12 +1,10 @@
 import appleAuth from '@invertase/react-native-apple-authentication'
 import {LoginHook} from '@/feature/auth/login/hooks/LoginHook'
 import {usePopup} from '@/slice/commonSlice'
-import {useSheet} from '@/slice/sheetSlice'
 import {useAuthentication} from '@/feature/auth/login/hooks/useAuthentication'
 
 const useAppleLogin = (): LoginHook => {
   const channel = 'apple' as const
-  const {sheet} = useSheet()
   const {openCommonPopup} = usePopup()
   const {login} = useAuthentication()
 
@@ -16,7 +14,6 @@ const useAppleLogin = (): LoginHook => {
     } catch (error) {
       openCommonPopup(`로그인에 실패했어요.\n다시 시도해주세요.`)
     } finally {
-      sheet.hide()
     }
   }
 

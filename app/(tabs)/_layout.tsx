@@ -2,12 +2,12 @@ import {Tabs} from 'expo-router'
 import React, {useEffect, useRef} from 'react'
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs'
 
-import Footer from '@/components/layout/Footer'
 import {Platform, TextStyle} from 'react-native'
 import Header from '@/components/common/Header'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import ApiClient from '@/api'
 import {usePushMessage} from '@/hooks/usePushMessage'
+import {Footer} from '@/widgets'
 
 const headerStyle: TextStyle = {
   fontWeight: '700',

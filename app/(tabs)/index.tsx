@@ -2,7 +2,6 @@ import {StyleSheet, Image, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
 import {usePathname} from 'expo-router'
-import GameContainer from '@/components/game/GameContainer'
 import useMatch from '@/hooks/match/useMatch'
 import dayjs from 'dayjs'
 import {usePopup} from '@/slice/commonSlice'
@@ -15,6 +14,8 @@ import {useAnalyticsStore} from '@/analytics/event'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import {CalendarContainer} from '@/components/home/Calendar/CalendarContainer'
 import {ROUTES, useAppRouter} from '@/hooks/common'
+import {TodayMatch} from '@/widgets'
+import {MatchCalendarTitle} from '@/entities/match'
 // import {useRank} from '@/hooks/useRank'
 const CalendarScreen = () => {
   const {openCommonPopup} = usePopup()
@@ -78,7 +79,8 @@ const CalendarScreen = () => {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FriendList setUserId={setUserId} userId={userId} />
       <InitScrollProvider style={styles.scollContainer}>
-        <GameContainer selectedUserName={selectedUserName} />
+        <MatchCalendarTitle selectedUserName={selectedUserName} />
+        <TodayMatch />
         <View style={{marginBottom: 70}}>
           <CalendarContainer targetId={userId || profile.id!} />
         </View>

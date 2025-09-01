@@ -1,7 +1,7 @@
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 
-const GameCardController = ({selectedUserName}: {selectedUserName: string}) => {
+const CalendarTitle = ({selectedUserName}: {selectedUserName: string}) => {
   return (
     <View style={styles.tabMenu}>
       <Text style={styles.todayText}>{selectedUserName ? `${selectedUserName}님의 야구 캘린더` : '오늘의 야구'}</Text>
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default GameCardController
+export default CalendarTitle
