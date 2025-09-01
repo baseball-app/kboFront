@@ -20,6 +20,7 @@ import {useCommonSlice} from '@/slice/commonSlice'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {ROUTES, useAppRouter} from '@/hooks/common'
+import {useShare} from '@/utils/useShare'
 
 class NoPermissionError extends Error {
   constructor(message?: string) {
@@ -32,6 +33,25 @@ export default function GameCard() {
   const router = useAppRouter()
   const {id, date, target_id, from_ticket_box} = useLocalSearchParams()
   const {findTeamById} = useTeam()
+
+  const {shareInstagramStories} = useShare()
+
+  const onShareInstagramStories = async () => {
+    if (!ref.current) return
+    const uri = await ref.current?.capture()
+
+    if (Platform.OS === 'ios' && premissionResponse?.status !== 'granted') {
+      const result = await requestPermission()
+      if (result.status !== 'granted') throw new NoPermissionError()
+    }
+
+    if (Platform.OS === 'android' && premissionResponse?.status !== 'granted') {
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES)
+      const isNotGranted = granted !== PermissionsAndroid.RESULTS.GRANTED
+      if (isNotGranted) throw new NoPermissionError()
+    }
+    shareInstagramStories(uri)
+  }
 
   const {
     ticketDetail, //
@@ -216,6 +236,9 @@ export default function GameCard() {
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
           <View style={styles.iconBox}>
+            <TouchableOpacity onPress={onShareInstagramStories}>
+              <Text>공유하기</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
