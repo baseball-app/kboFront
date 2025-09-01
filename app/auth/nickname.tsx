@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import useUserJoin from '@/hooks/auth/useUserJoin'

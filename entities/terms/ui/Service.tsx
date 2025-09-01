@@ -90,7 +90,7 @@ const Service = () => {
   )
 }
 
-export default Service
+export {Service}
 
 const styles = StyleSheet.create({
   headerTitle: {

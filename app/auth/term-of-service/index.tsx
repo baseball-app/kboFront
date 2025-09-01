@@ -50,7 +50,7 @@ const TermUseScreen = () => {
             style={styles.agreementItem}
             onPress={() => toggleConsent(consent.value)}>
             <View style={[styles.circle, isChecked(consent.value) && styles.checkedCircle]}>
-              <Image source={require('../../../assets/icons/check.png')} style={styles.checkIcon} />
+              <Image source={require('@/assets/icons/check.png')} style={styles.checkIcon} />
             </View>
             <Text style={[styles.agreementText, isChecked(consent.value) && styles.agreementTextActive]}>
               {consent.title}

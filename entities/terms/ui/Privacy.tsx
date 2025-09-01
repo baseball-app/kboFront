@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Privacy
+export {Privacy}

@@ -3,7 +3,7 @@ import {View, Text, ScrollView, TouchableOpacity, StyleSheet} from 'react-native
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {Ionicons} from '@expo/vector-icons'
 import useConsent from '@/hooks/auth/useConsent'
-import Service from '@/components/term/Service'
+import {Service} from '@/entities/terms'
 import {useAppRouter} from '@/hooks/common'
 
 const PrivacyPolicyScreen = () => {
