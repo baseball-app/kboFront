@@ -17,6 +17,8 @@ export type TicketListByTeam = {
   hometeam_id: string
   awayteam_id: string
   direct_yn: boolean
+  score_our: number // 홈팀 점수
+  score_opponent: number // 원정팀 점수
 }
 
 const useTicketListByTeam = () => {
