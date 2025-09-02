@@ -17,7 +17,6 @@ import {theme} from '@/constants/Colors'
 import {useLogin} from '@/hooks/auth/useLogin'
 import useMyInfo from '@/hooks/my/useMyInfo'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
-import useTeam from '@/hooks/match/useTeam'
 import useMakeFriend from '@/hooks/my/useMakeFriend'
 import {usePushMessage} from '@/hooks/usePushMessage'
 import Clipboard from '@react-native-clipboard/clipboard'
@@ -30,7 +29,6 @@ const ProfileScreen = () => {
   const {logout} = useLogin()
   const {profile, onPasteInviteCode, withdrawUser} = useMyInfo()
   const {openCommonPopup} = usePopup()
-  const {} = useTeam()
   const router = useAppRouter()
   const [inviteCode, setInviteCode] = useState<string | undefined>(undefined)
   const {addFriend} = useMakeFriend()
