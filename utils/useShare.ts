@@ -8,9 +8,9 @@ const useShare = () => {
     return Share.shareSingle({
       social: Social.InstagramStories,
       appId: '아무거나',
-      backgroundImage: imageUrl, //'배경으로 지정할 이미지의 URL',
+      // backgroundImage: imageUrl, //'배경으로 지정할 이미지의 URL',
       // backgroundVideo: '배경으로 지정할 동영상의 URL',
-      // stickerImage: 'sticker 형식으로(작게) 공유할 이미지의 URL',
+      stickerImage: imageUrl,
       backgroundBottomColor: '#FFFFFF',
       backgroundTopColor: '#FFFFFF',
     })
