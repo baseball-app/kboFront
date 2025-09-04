@@ -1,7 +1,7 @@
 import React from 'react'
 import {StyleSheet, View, Text, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {AppleLoginButton, KakaoLoginButton, NaverLoginButton} from '@/feature/auth/login/components/LoginButton'
+import {AppleLoginButton, KakaoLoginButton, NaverLoginButton} from '@/features/auth/login'
 
 export default function LoginScreen() {
   return (

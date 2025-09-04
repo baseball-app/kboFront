@@ -4,13 +4,15 @@ import {useQuery} from '@tanstack/react-query'
 import {useLogin} from '@/hooks/auth/useLogin'
 import Clipboard from '@react-native-clipboard/clipboard'
 import useProfile from './useProfile'
+import {useLogout} from '@/features/auth/logout'
 
 type InvitationCode = {
   code: string
 }
 
 const useMyInfo = () => {
-  const {user, isLogined, logout} = useLogin()
+  const {user, isLogined} = useLogin()
+  const {logout} = useLogout()
   const {openCommonPopup, modal} = usePopup()
 
   const {profile} = useProfile()
@@ -46,6 +48,7 @@ const useMyInfo = () => {
   const withdraw = async () => {
     try {
       await ApiClient.post<InvitationCode>('/users/leave/', {})
+      // TODO: logout이 좀 안 맞긴 하는데
       await logout()
     } catch (error) {
       console.error('회원 탈퇴 오류 :: ', error)

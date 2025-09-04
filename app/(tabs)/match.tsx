@@ -1,8 +1,8 @@
 import {StyleSheet} from 'react-native'
 import {View} from 'react-native'
 import React from 'react'
-import {MatchNotification} from '@/feature/match/components'
 import {MatchList} from '@/widgets'
+import {MatchNotification} from '@/entities/match'
 
 const MatchScreen = () => {
   return (

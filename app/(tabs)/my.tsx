@@ -14,7 +14,6 @@ import {
 } from 'react-native'
 import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
 import {theme} from '@/constants/Colors'
-import {useLogin} from '@/hooks/auth/useLogin'
 import useMyInfo from '@/hooks/my/useMyInfo'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
 import useMakeFriend from '@/hooks/my/useMakeFriend'
@@ -24,10 +23,14 @@ import {usePopup} from '@/slice/commonSlice'
 import {Config} from '@/config/Config'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {ROUTES, useAppRouter} from '@/hooks/common'
+import {useLogout} from '@/features/auth/logout'
+import {useWithdraw} from '@/features/auth/withdraw'
+import {AccountMenuWidget} from '@/widgets/account-menu'
 
 const ProfileScreen = () => {
-  const {logout} = useLogin()
-  const {profile, onPasteInviteCode, withdrawUser} = useMyInfo()
+  const {logout} = useLogout()
+  const {profile, onPasteInviteCode} = useMyInfo()
+  const {withdraw} = useWithdraw()
   const {openCommonPopup} = usePopup()
   const router = useAppRouter()
   const [inviteCode, setInviteCode] = useState<string | undefined>(undefined)
@@ -181,34 +184,7 @@ const ProfileScreen = () => {
             </View>
           </View>
 
-          <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => router.push(ROUTES.MY_TERMS)}>
-              <Text style={styles.menuText}>이용약관</Text>
-              <Ionicons name="chevron-forward" size={24} color="gray" />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem} onPress={() => router.push(ROUTES.MY_INQUIRY)}>
-              <Text style={styles.menuText}>문의하기</Text>
-              <Ionicons name="chevron-forward" size={24} color="gray" />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem} onPress={logout}>
-              <Text style={styles.menuText}>로그아웃</Text>
-              <Ionicons name="chevron-forward" size={24} color="gray" />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem} onPress={withdrawUser}>
-              <Text style={styles.menuText}>회원탈퇴</Text>
-              <Ionicons name="chevron-forward" size={24} color="gray" />
-            </TouchableOpacity>
-
-            {Config.MODE === 'dev' ? (
-              <TouchableOpacity style={styles.menuItem} onPress={copyDeviceToken}>
-                <Text style={styles.menuText}>디바이스 토큰 복사</Text>
-                <Ionicons name="chevron-forward" size={24} color="gray" />
-              </TouchableOpacity>
-            ) : null}
-          </View>
+          <AccountMenuWidget />
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
