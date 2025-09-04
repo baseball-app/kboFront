@@ -4,10 +4,9 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import {useMutation} from '@tanstack/react-query'
 import ApiClient from '@/api'
-import Toast from 'react-native-toast-message'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {usePopup} from '@/slice/commonSlice'
 import {useAppRouter} from '@/hooks/common'
+import {showToast} from '@/utils/showToast'
 
 type Inquiry = {
   email: string
@@ -22,19 +21,6 @@ export default function NicknameScreen() {
     title: '문의하기',
     content: '',
   })
-
-  const insets = useSafeAreaInsets()
-
-  const showToast = (text: string) => {
-    Toast.show({
-      type: 'info',
-      text1: text,
-      visibilityTime: 2000,
-      autoHide: true,
-      position: 'bottom',
-      bottomOffset: insets.bottom + 24,
-    })
-  }
 
   const {openCommonPopup} = usePopup()
 

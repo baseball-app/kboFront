@@ -4,8 +4,7 @@ import useProfile from './useProfile'
 import {useMMKVObject} from 'react-native-mmkv'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import useFriends from './useFriends'
-import Toast from 'react-native-toast-message'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import {showToast} from '@/utils/showToast'
 
 /**
  * 친구 추가 플로우
@@ -19,28 +18,6 @@ const useMakeFriend = () => {
   const [friendInvitationCodeList, setFriendInvitationCodeList] = useMMKVObject<string[]>(
     MmkvStoreKeys.FRIEND_INVITATION_CODE,
   )
-
-  const insets = useSafeAreaInsets()
-
-  const showToast = (text: string) => {
-    Toast.show({
-      type: 'info',
-      text1: text,
-      visibilityTime: 2000,
-      autoHide: true,
-      position: 'bottom',
-      bottomOffset: insets.bottom + 92,
-    })
-  }
-
-  const temporarySaveFriendInvitationCode = (code: string) => {
-    // 이미 친구 추가 플로우 완료한 사용자일 경우 저장하지 않음
-    if (friendInvitationCodeList?.includes(code)) return
-    // 처음 친구 추가 플로우 시작한 사용자일 경우 저장
-    if (!friendInvitationCodeList) return setFriendInvitationCodeList([code])
-
-    setFriendInvitationCodeList([...(friendInvitationCodeList || []), code])
-  }
 
   const {mutateAsync: addFriend} = useMutation({
     mutationFn: async (targetCode: string) => {
@@ -83,21 +60,6 @@ const useMakeFriend = () => {
     },
   })
 
-  const {mutateAsync: unfollowFriend} = useMutation({
-    mutationFn: (targetId: number) =>
-      ApiClient.post('/users/unfollow/', {
-        source_id: Number(profile.id),
-        target_id: targetId,
-      }),
-    onError: error => {
-      console.error('친구 추가 실패', error)
-    },
-    onSuccess: () => {
-      reloadFriendList()
-      refetchProfile()
-    },
-  })
-
   const addFriendList = async () => {
     if (!friendInvitationCodeList?.length) return
     const successList: string[] = []
@@ -117,11 +79,9 @@ const useMakeFriend = () => {
   }
 
   return {
-    temporarySaveFriendInvitationCode,
     addFriend,
     friendInvitationCodeList,
     addFriendList,
-    unfollowFriend,
   }
 }
 

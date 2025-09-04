@@ -5,7 +5,7 @@ import {format} from 'date-fns'
 import {useLocalSearchParams, usePathname} from 'expo-router'
 import React, {useRef, useState} from 'react'
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform, Linking} from 'react-native'
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
 import Svg, {Path} from 'react-native-svg'
 import useProfile from '@/hooks/my/useProfile'
@@ -14,12 +14,12 @@ import Ellipse from '@/components/common/Ellipse'
 import {useAnalyticsStore} from '@/analytics/event'
 import ViewShot from 'react-native-view-shot'
 import * as MediaLibrary from 'expo-media-library'
-import Toast from 'react-native-toast-message'
 import {PermissionsAndroid} from 'react-native'
 import {useCommonSlice} from '@/slice/commonSlice'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {ROUTES, useAppRouter} from '@/hooks/common'
+import {showToast} from '@/utils/showToast'
 
 class NoPermissionError extends Error {
   constructor(message?: string) {
@@ -77,19 +77,6 @@ export default function GameCard() {
   getRefWidth()
 
   const ref = useRef<any>(null)
-
-  const insets = useSafeAreaInsets()
-
-  const showToast = (text: string) => {
-    Toast.show({
-      type: 'info',
-      text1: text,
-      visibilityTime: 2000,
-      autoHide: true,
-      position: 'bottom',
-      bottomOffset: insets.bottom + 92,
-    })
-  }
 
   const [premissionResponse, requestPermission] = MediaLibrary.usePermissions()
 
