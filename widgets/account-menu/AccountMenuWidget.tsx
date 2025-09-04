@@ -29,7 +29,7 @@ const AccountMenuWidget = () => {
     {title: '이용약관', onClick: () => router.push(ROUTES.MY_TERMS)},
     {title: '문의하기', onClick: () => router.push(ROUTES.MY_INQUIRY)},
     {title: '로그아웃', onClick: logout},
-    {title: '회원탈퇜', onClick: withdraw},
+    {title: '회원탈퇴', onClick: withdraw},
     Config.MODE === 'dev' && {title: '디바이스 토큰 복사', onClick: copyDeviceToken},
   ].filter(Boolean) as {title: string; onClick: () => void}[]
 

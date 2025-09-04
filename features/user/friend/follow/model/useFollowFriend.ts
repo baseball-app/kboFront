@@ -1,10 +1,9 @@
 import ApiClient from '@/api'
 import {useMutation} from '@tanstack/react-query'
-import useProfile from './useProfile'
-import {useMMKVObject} from 'react-native-mmkv'
-import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
-import useFriends from './useFriends'
+
 import {showToast} from '@/utils/showToast'
+import {useFriends} from '@/entities/friend'
+import useProfile from '@/hooks/my/useProfile'
 
 /**
  * 친구 추가 플로우
@@ -12,11 +11,11 @@ import {showToast} from '@/utils/showToast'
  * 2. 캘린더 페이지로 이동 시, 친구 추가 로직 수행 (이미 친구가 아닐 경우에만 수행)
  * 3. 친구 추가 완료 시, 친구 추가 플로우 완료 후 저장해둔 코드 삭제
  */
-const useMakeFriend = () => {
+const useFollowFriend = () => {
   const {profile, checkIsMe, refetch: refetchProfile} = useProfile()
   const {checkIsFriend, reloadFriendList} = useFriends()
 
-  const {mutateAsync: addFriend} = useMutation({
+  const {mutateAsync: follow} = useMutation({
     mutationFn: async (targetCode: string) => {
       try {
         const {user_id} = await ApiClient.post<{user_id: string}>('/users/apply-invitation/', {
@@ -58,8 +57,8 @@ const useMakeFriend = () => {
   })
 
   return {
-    addFriend,
+    follow,
   }
 }
 
-export default useMakeFriend
+export {useFollowFriend}

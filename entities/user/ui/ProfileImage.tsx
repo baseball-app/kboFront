@@ -1,6 +1,6 @@
 import {Image, StyleSheet, View} from 'react-native'
 
-const ProfileImageBox = ({source}: {source: any}) => {
+const ProfileImage = ({source}: {source: any}) => {
   return (
     <View style={styles.profileImageBox}>
       <Image source={source} style={styles.profileImage} resizeMode="contain" />
@@ -8,7 +8,7 @@ const ProfileImageBox = ({source}: {source: any}) => {
   )
 }
 
-export default ProfileImageBox
+export {ProfileImage}
 
 const styles = StyleSheet.create({
   profileImageBox: {

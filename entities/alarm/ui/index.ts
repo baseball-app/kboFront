@@ -1,0 +1,1 @@
+export {AlarmIcon} from './AlarmIcon'

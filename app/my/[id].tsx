@@ -4,25 +4,18 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import {horizontalScale, moderateScale, verticalScale} from '@/utils/metrics'
 import {theme} from '@/constants/Colors'
 import {useLocalSearchParams} from 'expo-router'
-import useFriends, {Friend, FriendType} from '@/hooks/my/useFriends'
 import {findProfileImageById} from '@/constants/join'
-import useMakeFriend from '@/hooks/my/useMakeFriend'
-import {usePopup} from '@/slice/commonSlice'
 import Header from '@/components/common/Header'
-
-interface Follower {
-  id: string
-  name: string
-  isFollowing: boolean
-}
+import {useFriends, type FriendType} from '@/entities/friend'
+import {useUnfollowFriend} from '@/features/user/friend/unfollow'
 
 const FollowerScreen = () => {
   const {id} = useLocalSearchParams()
-  const [activeTab, setActiveTab] = useState<FriendType>(id as FriendType)
-  const {modal} = usePopup()
-  const {unfollowFriend} = useMakeFriend()
+
+  const {openUnfollowPopup} = useUnfollowFriend()
 
   const {followers, followings} = useFriends()
+  const [activeTab, setActiveTab] = useState<FriendType>(id as FriendType)
 
   const friendList = (() => {
     switch (activeTab) {
@@ -37,32 +30,6 @@ const FollowerScreen = () => {
 
   const handleTabChange = (tab: FriendType) => {
     setActiveTab(tab)
-  }
-
-  const openUnfollowPopup = (friend: Friend) => {
-    modal.open({
-      header: '안내',
-      content: `${friend.nickname}님과 친구를 끊겠습니까?`,
-      button: [
-        {
-          text: '취소',
-          onPress: modal.hide,
-          buttonStyle: {
-            backgroundColor: '#D0CEC7',
-          },
-        },
-        {
-          text: '친구 끊기',
-          onPress: () => unfollowFriend(friend.id).finally(modal.hide),
-          buttonStyle: {
-            backgroundColor: '#1E5EF4',
-          },
-          buttonTextStyle: {
-            color: '#fff',
-          },
-        },
-      ],
-    })
   }
 
   return (
@@ -88,7 +55,6 @@ const FollowerScreen = () => {
         </View>
       </View>
 
-      {/* Follower List */}
       <ScrollView style={styles.scrollView}>
         {friendList?.map(friend => (
           <View key={friend.id} style={styles.followerItem}>

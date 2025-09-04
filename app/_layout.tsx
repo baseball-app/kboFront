@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 import 'react-native-reanimated'
-import {useEffect} from 'react'
+import {useEffect, useMemo} from 'react'
 import {Stack, usePathname} from 'expo-router'
 import {useFonts} from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
@@ -15,6 +15,7 @@ import {logEvent} from '@/analytics/func'
 import messaging from '@react-native-firebase/messaging'
 import notifee from '@notifee/react-native'
 import {CommonSheet} from '@/components/common/CommonSheet'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 interface TextWithDefaultProps extends Text {
   defaultProps?: {allowFontScaling?: boolean}
@@ -31,17 +32,6 @@ interface TextInputWithDefaultProps extends TextInput {
 ;(TextInput as unknown as TextInputWithDefaultProps).defaultProps =
   (TextInput as unknown as TextInputWithDefaultProps).defaultProps || {}
 ;(TextInput as unknown as TextInputWithDefaultProps).defaultProps!.allowFontScaling = false
-
-/*
-  1. Create the config
-*/
-const toastConfig: ToastConfig = {
-  info: ({text1}) => (
-    <View style={{paddingVertical: 8, paddingHorizontal: 16, backgroundColor: '#353430', borderRadius: 999}}>
-      <Text style={{color: '#fff', fontSize: 15}}>{text1}</Text>
-    </View>
-  ),
-}
 
 enableScreens(false)
 
@@ -77,6 +67,31 @@ export default function RootLayout() {
     logEvent(EVENTS.SCREEN_VIEW, {screen_name: pathname})
   }, [pathname])
 
+  const {bottom} = useSafeAreaInsets()
+
+  /*
+  1. Create the config
+*/
+  const toastConfig: ToastConfig = useMemo(
+    () => ({
+      info: (
+        {text1}, //
+      ) => (
+        <View
+          style={{
+            paddingVertical: 8,
+            paddingHorizontal: 16,
+            backgroundColor: '#353430',
+            borderRadius: 999,
+            marginBottom: bottom + 24,
+          }}>
+          <Text style={{color: '#fff', fontSize: 15}}>{text1}</Text>
+        </View>
+      ),
+    }),
+    [bottom],
+  )
+
   if (!loaded) return null
 
   return (
@@ -92,7 +107,7 @@ export default function RootLayout() {
       </Stack>
       <CommonModal />
       <CommonSheet />
-      <Toast config={toastConfig} />
+      <Toast config={{...toastConfig}} />
     </QueryProvider>
   )
 }

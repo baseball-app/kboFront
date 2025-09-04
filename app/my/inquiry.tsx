@@ -1,5 +1,15 @@
 import React, {useState} from 'react'
-import {StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Keyboard,
+} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import {useMutation} from '@tanstack/react-query'
@@ -73,13 +83,15 @@ export default function NicknameScreen() {
             borderColor: '#D0CEC7',
             marginBottom: 14,
           }}
+          placeholderTextColor={'#CCCCCC'}
           maxLength={50}
         />
         <TextInput
-          placeholder={`소중한 의견을 기다리고 있습니다! 비방, 욕설, 부적절한 내용이 포함될 경우 답변이 제한될 수 있고, 앱 이용이 제한될 수 있습니다.`}
+          placeholder={`소중한 의견을 기다리고 있습니다!\n비방, 욕설, 부적절한 내용이 포함될 경우 답변이 제한될 수 있고, 앱 이용이 제한될 수 있습니다.`}
           value={inquiry.content} //
           onChangeText={text => setInquiry({...inquiry, content: text})}
           multiline
+          placeholderTextColor={'#CCCCCC'}
           numberOfLines={20}
           style={{
             padding: 20,

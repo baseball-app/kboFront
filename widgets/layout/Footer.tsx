@@ -28,22 +28,22 @@ const footerList = [
       inactive: require('@/assets/icons/tabMenu/ticketMenu.png'),
     },
   },
-  // {
-  //   name: '알림',
-  //   path: router_address.TAB.ALARM,
-  //   icon: {
-  //     active: require('@/assets/icons/tabMenu/alarmMenuActive.png'),
-  //     inactive: require('@/assets/icons/tabMenu/alarmMenu.png'),
-  //   },
-  // },
   {
-    name: '아구정보',
-    path: ROUTES.RANK_TAB,
+    name: '알림',
+    path: ROUTES.ALARM_TAB,
     icon: {
-      active: require('@/assets/icons/tabMenu/rankMenuActive.png'),
-      inactive: require('@/assets/icons/tabMenu/rankMenu.png'),
+      active: require('@/assets/icons/tabMenu/alarmMenuActive.png'),
+      inactive: require('@/assets/icons/tabMenu/alarmMenu.png'),
     },
   },
+  // {
+  //   name: '아구정보',
+  //   path: ROUTES.RANK_TAB,
+  //   icon: {
+  //     active: require('@/assets/icons/tabMenu/rankMenuActive.png'),
+  //     inactive: require('@/assets/icons/tabMenu/rankMenu.png'),
+  //   },
+  // },
   {
     name: '마이',
     path: ROUTES.MY_TAB,
