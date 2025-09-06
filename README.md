@@ -1,50 +1,180 @@
-# Welcome to your Expo app 👋
+# 오늘의야구 (KBO Front)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> KBO 팬들을 위한 야구 일기 및 커뮤니티 모바일 앱
 
-## Get started
+## 📱 앱 소개
 
-1. Install dependencies
+**오늘의야구**는 KBO(한국야구위원회) 리그를 사랑하는 야구팬들을 위한 모바일 앱입니다. 경기 관람 후기를 일기 형태로 기록하고, 다른 팬들과 소통할 수 있는 야구 전용 커뮤니티 플랫폼입니다.
 
-   ```bash
-   npm install
-   ```
+## ✨ 주요 기능
 
-2. Start the app
+### 🏠 홈 화면 (캘린더)
 
-   ```bash
-    npx expo start
-   ```
+- 월별 캘린더 뷰로 경기 일정 및 나의 관람 기록 확인
+- 친구들의 최근 활동 확인
+- 오늘의 경기 정보 표시
 
-In the output, you'll find options to open the app in a
+### ⚾ 경기 일정
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- KBO 정규시즌 경기 일정 확인
+- 경기별 상세 정보 제공
+- 관심 팀 설정을 통한 맞춤형 경기 정보
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 🎫 나의 티켓박스
 
-## Get a fresh project
+- 관람한 경기의 후기 및 감상 기록
+- 경기 관람 티켓 인증 및 보관
+- 나만의 야구 일기 작성 및 관리
 
-When you're ready, run:
+### 📊 야구 정보
 
-```bash
-npm run reset-project
+- KBO 리그 팀 순위 및 통계
+- 경기 결과 및 주요 기록
+- 야구 관련 최신 정보 제공
+
+### 👤 마이 페이지
+
+- 개인 프로필 및 응원팀 설정
+- 나의 관람 통계 및 활동 기록
+- 친구 관리 및 소셜 기능
+
+## 🛠 기술 스택
+
+### Frontend
+
+- **React Native** (0.76.6) - 크로스 플랫폼 모바일 개발
+- **Expo** (52.0.0) - 개발 환경 및 빌드 도구
+- **Expo Router** - 파일 기반 네비게이션
+- **TypeScript** - 정적 타입 체크
+
+### 상태 관리
+
+- **Zustand** - 전역 상태 관리
+- **TanStack Query** - 서버 상태 관리
+- **React Native MMKV** - 로컬 스토리지
+
+### UI/UX
+
+- **React Native Reanimated** - 애니메이션
+- **React Native Gesture Handler** - 제스처 처리
+- **Lottie React Native** - 벡터 애니메이션
+- **React Native SVG** - SVG 지원
+
+### 백엔드 연동
+
+- **Axios** - HTTP 클라이언트
+- **Firebase** - 푸시 알림, 애널리틱스
+- **React Native Config** - 환경 변수 관리
+
+### 인증 & 소셜
+
+- **Apple Sign In** - iOS 애플 로그인
+- 카카오톡, 네이버 소셜 로그인 지원
+
+### 미디어 & 공유
+
+- **Expo Image Picker** - 이미지 선택
+- **React Native Share** - 콘텐츠 공유
+- **React Native View Shot** - 화면 캡처
+
+## 🏗 프로젝트 구조
+
+```
+kboFront/
+├── app/                    # 라우팅 (Expo Router 기반)
+│   ├── (tabs)/            # 탭 네비게이션
+│   ├── auth/              # 인증 관련
+│   ├── my/                # 마이페이지
+│   ├── write/             # 티켓 작성
+│   └── match/             # 경기 상세
+├── components/            # 재사용 가능한 컴포넌트
+├── hooks/                 # 커스텀 훅
+├── api/                   # API 클라이언트
+├── assets/                # 이미지, 폰트, 애니메이션
+│   ├── team_logo/         # KBO 10개 팀 로고
+│   ├── icons/             # 아이콘
+│   └── lottie/            # 로티 애니메이션
+├── constants/             # 상수 정의
+├── utils/                 # 유틸리티 함수
+├── types/                 # TypeScript 타입 정의
+└── store/                 # 스토어 설정
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🚀 시작하기
 
-## Learn more
+### 환경 요구사항
 
-To learn more about developing your project with Expo, look at the following resources:
+- Node.js 18+
+- Yarn
+- Expo CLI
+- React Native 개발 환경 (Android Studio, Xcode)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 설치 및 실행
 
-## Join the community
+```bash
+# 의존성 설치
+yarn install
 
-Join our community of developers creating universal apps.
+# 개발 서버 시작
+yarn start
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# iOS 시뮬레이터에서 실행
+yarn ios
+
+# Android 에뮬레이터에서 실행
+yarn android
+
+# 웹 브라우저에서 실행
+yarn web
+```
+
+### 환경별 실행
+
+```bash
+# 개발 환경
+yarn start:dev
+yarn android:dev
+
+# 프로덕션 환경
+yarn android:production
+```
+
+## 📦 빌드
+
+### Android
+
+```bash
+# 개발 버전 빌드
+yarn build:android:dev
+
+# 프로덕션 버전 빌드
+yarn build:android:production
+```
+
+## 🎯 지원하는 KBO 팀
+
+- 두산 베어스
+- 한화 이글스
+- KIA 타이거즈
+- 키움 히어로즈
+- KT 위즈
+- LG 트윈스
+- 롯데 자이언츠
+- NC 다이노스
+- 삼성 라이온즈
+- SSG 랜더스
+
+## 🔧 개발 스크립트
+
+- `yarn start` - Expo 개발 서버 시작
+- `yarn test` - Jest 테스트 실행
+- `yarn lint` - ESLint 검사
+- `yarn reset-project` - 프로젝트 초기화
+
+## 📱 플랫폼 지원
+
+- ✅ iOS (iPhone, iPad)
+- ✅ Android
+- ✅ Web (제한적)
+
+---
