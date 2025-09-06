@@ -1,0 +1,25 @@
+name: 이미지 compress
+on:
+  pull_request:
+    types: [ opened, synchronize, ready_for_review ]
+    branches:
+      - main
+    paths:
+      - '**.png'
+      - '**.jpg'
+
+jobs:
+  compress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - uses: namoscato/action-tinify@v1
+        with:
+          api_key: ${{ secrets.TINY_PNG_SECRET }}
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          commit_user_name: 'TINY_PNG'
+          commit_user_email: 'narira0922@gmail.com'
+          commit_message: '이미지 최적화 by TinyPNG'
