@@ -67,7 +67,7 @@ export default function RootLayout() {
     logEvent(EVENTS.SCREEN_VIEW, {screen_name: pathname})
   }, [pathname])
 
-  const {bottom} = useSafeAreaInsets()
+  // const {bottom} = useSafeAreaInsets()
 
   /*
   1. Create the config
@@ -83,13 +83,14 @@ export default function RootLayout() {
             paddingHorizontal: 16,
             backgroundColor: '#353430',
             borderRadius: 999,
-            marginBottom: bottom + 24,
+            marginBottom: 40,
           }}>
           <Text style={{color: '#fff', fontSize: 15}}>{text1}</Text>
         </View>
       ),
     }),
-    [bottom],
+    [],
+    // [bottom],
   )
 
   if (!loaded) return null

@@ -74,53 +74,10 @@ const useProfile = () => {
     // refetch()
   }
 
-  const updateMyTeam = (teamId?: number) => {
-    if (!teamId) return
-
-    modal.open({
-      header: '안내',
-      content: `마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n변경하시겠습니까?`,
-      button: [
-        {
-          text: '취소',
-          onPress: modal.hide,
-          buttonStyle: {
-            borderRadius: 10,
-            backgroundColor: '#EEEEEE',
-          },
-          buttonTextStyle: {
-            color: '#000000',
-          },
-        },
-        {
-          text: '팀 변경',
-          onPress: async () => {
-            try {
-              await updateProfile({my_team: teamId})
-              router.back()
-            } catch (error) {
-              console.error('updateMyTeam error :: ', error)
-            } finally {
-              modal.hide()
-            }
-          },
-          buttonStyle: {
-            backgroundColor: '#1E5EF4',
-            borderRadius: 10,
-          },
-          buttonTextStyle: {
-            color: 'white',
-          },
-        },
-      ],
-    })
-  }
-
   useEffect(() => {
     if (data) updateProfileCacheData(data)
   }, [data])
 
-  const myTeam = findTeamById(data?.my_team.id)
   const myProfileImage = PROFILE_IMAGES.find(image => image.id === data?.profile_type)?.image
 
   const checkIsMe = (id: number) => {
@@ -130,12 +87,10 @@ const useProfile = () => {
   return {
     profile: {
       ...data,
-      my_team: myTeam,
       profile_image: myProfileImage,
       predict_ratio: Math.floor(data?.predict_ratio ?? 0),
     },
     updateProfileWithSignUp,
-    updateMyTeam,
     updateProfile,
     checkIsMe,
     refetch,
