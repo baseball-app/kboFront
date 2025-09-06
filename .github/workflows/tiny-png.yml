@@ -1,7 +1,6 @@
 name: 이미지 compress
 on:
-  pull_request:
-    types: [ opened, synchronize, ready_for_review ]
+  push:
     branches:
       - main
     paths:
