@@ -163,12 +163,10 @@ yarn build:android:production
 - `yarn start` - Expo 개발 서버 시작
 - `yarn test` - Jest 테스트 실행
 - `yarn lint` - ESLint 검사
-- `yarn reset-project` - 프로젝트 초기화
 
 ## 📱 플랫폼 지원
 
 - ✅ iOS (iPhone, iPad)
 - ✅ Android
-- ✅ Web (제한적)
 
 ---
