@@ -81,22 +81,6 @@ export default function GameCard() {
     router.back()
   }
 
-  const dotRef = useRef<View>(null)
-
-  const [halfWidth, setHalfWidth] = useState(0)
-
-  const getRefWidth = () => {
-    if (dotRef.current) {
-      dotRef.current.measure((x, y, width, height, pageX, pageY) => {
-        if (width) {
-          halfWidth !== width / 2 && setHalfWidth(width / 2)
-        }
-      })
-    }
-  }
-
-  getRefWidth()
-
   const ref = useRef<any>(null)
 
   const [premissionResponse, requestPermission] = MediaLibrary.usePermissions()
