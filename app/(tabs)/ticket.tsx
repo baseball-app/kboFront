@@ -1,5 +1,6 @@
 import {EVENTS} from '@/analytics/event'
 import {logEvent} from '@/analytics/func'
+import Ellipse from '@/components/common/Ellipse'
 import ProfileImageBox from '@/components/common/ProfileImageBox'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import Skeleton from '@/components/skeleton/Skeleton'
@@ -140,17 +141,36 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
     <View style={styles.teamCard}>
       <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 12}}>
         <View style={[styles.teamLabel, {backgroundColor: opponentTeam?.color ?? 'white'}]} />
-        <View style={{gap: 4, paddingVertical: 8}}>
-          <View style={styles.teamInfo}>
+        <View style={{display: 'flex', flexDirection: 'row', gap: 20}}>
+          <View style={{display: 'flex', alignItems: 'center', width: 38}}>
             <Text style={styles.teamName}>{homeTeam?.short_name}</Text>
-            <Text style={styles.teamSub}>{` VS `}</Text>
-            <Text style={styles.teamName}>{awayTeam?.short_name}</Text>
+            <Text style={styles.teamScoreText}>{ticket.score_our}</Text>
           </View>
-          <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
-          <Text style={styles.date}>{format(ticket.date, 'yyyy.MM.dd')}</Text>
+          <View style={{display: 'flex', gap: 6, justifyContent: 'center'}}>
+            <Ellipse size={3} />
+            <Ellipse size={3} />
+          </View>
+          <View style={{display: 'flex', alignItems: 'center', width: 38}}>
+            <Text style={styles.teamName}>{awayTeam?.short_name}</Text>
+            <Text style={styles.teamScoreText}>{ticket.score_opponent}</Text>
+          </View>
         </View>
       </View>
-      <View>
+      <View
+        style={{
+          display: 'flex',
+          width: 140,
+          alignItems: 'center',
+          borderWidth: 1,
+          borderColor: '#B9B8B3',
+          borderStyle: 'dashed',
+          justifyContent: 'center',
+          borderRadius: 1,
+          height: 102,
+          marginRight: -2,
+        }}>
+        <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
+        <Text style={[styles.date, {marginBottom: 4}]}>{format(ticket.date, 'yyyy.MM.dd')}</Text>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={onClick}
@@ -158,6 +178,8 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
             backgroundColor: '#1E5EF4',
             padding: 8,
             borderRadius: 30,
+            width: 'auto',
+            alignSelf: 'center',
           }}>
           <Text style={{color: 'white', fontSize: 13, fontWeight: 500}}>티켓보기</Text>
         </TouchableOpacity>
@@ -235,10 +257,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingRight: 16,
     backgroundColor: 'white',
     borderRadius: 10,
     overflow: 'hidden',
+    height: 100,
   },
   teamInfo: {
     flexDirection: 'row',
@@ -253,6 +275,13 @@ const styles = StyleSheet.create({
     color: '#171716',
     fontWeight: 500,
     lineHeight: 24,
+  },
+  teamScoreText: {
+    fontWeight: 700,
+    fontSize: 32,
+    lineHeight: 48,
+    letterSpacing: -2.5,
+    textAlign: 'center',
   },
   teamSub: {
     fontSize: 14,
@@ -271,10 +300,11 @@ const styles = StyleSheet.create({
     lineHeight: 21,
   },
   date: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#95938B',
     fontWeight: 400,
     lineHeight: 19.5,
+    textAlign: 'center',
   },
   teamScore: {
     fontSize: 16,

@@ -72,4 +72,8 @@ buck-out/
 expo-env.d.ts
 # @end expo-cli
 
+# Firebase & Google Services
+**/google-services.json
+**/GoogleService-Info*.plist
+
 my-release-key.keystore

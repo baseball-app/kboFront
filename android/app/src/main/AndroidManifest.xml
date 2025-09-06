@@ -19,6 +19,14 @@
       <data android:scheme="https"/>
     </intent>
   </queries>
+  <!-- 공유하기 -->
+  <queries>
+    <package android:name="com.facebook.katana" />
+    <package android:name="com.instagram.android" />
+    <package android:name="com.twitter.android" />
+    <package android:name="com.zhiliaoapp.musically" />
+  </queries>
+  <!-- 공유하기 -->
   <application 
     android:name=".MainApplication" 
     android:icon="@mipmap/ic_launcher" 

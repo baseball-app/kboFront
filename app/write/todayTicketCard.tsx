@@ -4,6 +4,7 @@ import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {format} from 'date-fns'
 import {useLocalSearchParams, usePathname} from 'expo-router'
 import React, {useRef, useState} from 'react'
+
 import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform, Linking} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import MaskedView from '@react-native-masked-view/masked-view'
@@ -20,6 +21,7 @@ import {useMutation, useQueryClient} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {ROUTES, useAppRouter} from '@/hooks/common'
 import {showToast} from '@/utils/showToast'
+import {useShare} from '@/utils/useShare'
 
 class NoPermissionError extends Error {
   constructor(message?: string) {
@@ -32,6 +34,25 @@ export default function GameCard() {
   const router = useAppRouter()
   const {id, date, target_id, from_ticket_box} = useLocalSearchParams()
   const {findTeamById} = useTeam()
+
+  const {shareInstagramStories} = useShare()
+
+  const onShareInstagramStories = async () => {
+    if (!ref.current) return
+    const uri = await ref.current?.capture()
+
+    if (Platform.OS === 'ios' && premissionResponse?.status !== 'granted') {
+      const result = await requestPermission()
+      if (result.status !== 'granted') throw new NoPermissionError()
+    }
+
+    if (Platform.OS === 'android' && premissionResponse?.status !== 'granted') {
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES)
+      const isNotGranted = granted !== PermissionsAndroid.RESULTS.GRANTED
+      if (isNotGranted) throw new NoPermissionError()
+    }
+    shareInstagramStories(uri)
+  }
 
   const {
     ticketDetail, //
@@ -203,6 +224,9 @@ export default function GameCard() {
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
           <View style={styles.iconBox}>
+            <TouchableOpacity onPress={onShareInstagramStories}>
+              <Text>공유하기</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
@@ -231,21 +255,56 @@ export default function GameCard() {
             ))}
           </View>
         ) : null}
-
-        <ViewShot style={styles.ticketBox} ref={ref} options={{fileName: 'todaybaseball', format: 'jpg', quality: 0.9}}>
-          {Array.from({length: 10}).map((_, index) => (
-            <View
-              ref={dotRef}
-              key={index}
-              style={[styles.ticketBoxDot, {top: halfWidth * -1, left: `${4.76 + index * 4.76 * 2}%`}]}
-            />
-          ))}
-          {Array.from({length: 10}).map((_, index) => (
-            <View
-              key={index}
-              style={[styles.ticketBoxDot, {bottom: halfWidth * -1, left: `${4.76 + index * 4.76 * 2}%`}]}
-            />
-          ))}
+        <ViewShot style={styles.ticketBox} ref={ref} options={{fileName: 'todaybaseball', format: 'png', quality: 0.9}}>
+          <MaskedView
+            style={{
+              aspectRatio: 307 / 12,
+            }}
+            maskElement={
+              <Svg height="100%" width="100%" viewBox="0 0 307 11">
+                {/* 오른쪽 절반만 흰색으로 그리기 */}
+                <Path
+                  fill="white"
+                  d={`
+                          M0 0
+                          H15
+                          M15 0
+                          A10,10 0 0,0 35,0
+                          H47
+                          M47 0
+                          A10,10 0 0,0 67,0
+                          H79
+                          M79 0
+                          A10,10 0 0,0 99,0
+                          H111
+                          M111 0
+                          A10,10 0 0,0 131,0
+                          H143
+                          M143 0
+                          A10,10 0 0,0 163,0
+                          H175
+                          M175 0
+                          A10,10 0 0,0 195,0
+                          H207
+                          M207 0
+                          A10,10 0 0,0 227,0
+                          H239
+                          M239 0
+                          A10,10 0 0,0 259,0
+                          H271
+                          M271 0
+                          A10,10 0 0,0 291,0
+                          H307
+                          V11
+                          H0
+                          V0
+                          Z
+                          `}
+                />
+              </Svg>
+            }>
+            <View style={{width: '100%', height: 100, backgroundColor: '#202020'}} />
+          </MaskedView>
           <View style={styles.ticketBackground}>
             <View style={[styles.ticketContent]}>
               <View style={{position: 'relative', width: '100%'}}>
@@ -459,6 +518,55 @@ export default function GameCard() {
               </View>
             </View>
           </View>
+          <MaskedView
+            style={{
+              aspectRatio: 307 / 12,
+            }}
+            maskElement={
+              <Svg height="100%" width="100%" viewBox="0 0 307 11" style={{transform: [{rotate: '180deg'}]}}>
+                {/* 오른쪽 절반만 흰색으로 그리기 */}
+                <Path
+                  fill="white"
+                  d={`
+                          M0 0
+                          H15
+                          M15 0
+                          A10,10 0 0,0 35,0
+                          H47
+                          M47 0
+                          A10,10 0 0,0 67,0
+                          H79
+                          M79 0
+                          A10,10 0 0,0 99,0
+                          H111
+                          M111 0
+                          A10,10 0 0,0 131,0
+                          H143
+                          M143 0
+                          A10,10 0 0,0 163,0
+                          H175
+                          M175 0
+                          A10,10 0 0,0 195,0
+                          H207
+                          M207 0
+                          A10,10 0 0,0 227,0
+                          H239
+                          M239 0
+                          A10,10 0 0,0 259,0
+                          H271
+                          M271 0
+                          A10,10 0 0,0 291,0
+                          H307
+                          V11
+                          H0
+                          V0
+                          Z
+                          `}
+                />
+              </Svg>
+            }>
+            <View style={{width: '100%', height: 100, backgroundColor: '#202020'}} />
+          </MaskedView>
         </ViewShot>
         <View style={styles.emojiBox}>
           {reactionList.map(reaction => (
@@ -589,9 +697,10 @@ const styles = StyleSheet.create({
   ticketBox: {
     width: '100%',
     marginHorizontal: 'auto',
-    backgroundColor: '#202020',
+    // backgroundColor: '#202020',
     position: 'relative',
     marginBottom: 32,
+    marginTop: 12,
   },
   ticketBoxDot: {
     backgroundColor: '#FFFCF3',
@@ -746,6 +855,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'column',
     paddingVertical: 32,
+    backgroundColor: '#202020',
+    marginTop: -1,
+    marginBottom: -1,
   },
   backgroundImage: {
     resizeMode: 'stretch',
