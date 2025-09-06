@@ -168,5 +168,3 @@ yarn build:android:production
 
 - ✅ iOS (iPhone, iPad)
 - ✅ Android
-
----
