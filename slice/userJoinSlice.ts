@@ -1,5 +1,5 @@
 import {ProfileImage} from '@/constants/join'
-import {Team} from '@/hooks/match/useTeam'
+import {Team} from '@/entities/match'
 import {create, StateCreator} from 'zustand'
 
 export interface IUserJoinSlice {

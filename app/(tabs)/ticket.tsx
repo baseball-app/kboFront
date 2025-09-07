@@ -1,12 +1,12 @@
 import {EVENTS} from '@/analytics/event'
 import {logEvent} from '@/analytics/func'
 import Ellipse from '@/components/common/Ellipse'
-import ProfileImageBox from '@/components/common/ProfileImageBox'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import Skeleton from '@/components/skeleton/Skeleton'
 import Tag from '@/components/Tag'
+import {ProfileImage} from '@/entities/user'
 import {ROUTES, useAppRouter} from '@/hooks/common'
-import useTeam from '@/hooks/match/useTeam'
+import {TeamWithInfo, useTeam} from '@/entities/match'
 import useTicketListByTeam, {TicketListByTeam} from '@/hooks/match/useTicketListByTeam'
 import useProfile from '@/hooks/my/useProfile'
 import {format} from 'date-fns'
@@ -29,7 +29,7 @@ const MyTicketBoxScreen = () => {
     <InitScrollProvider style={styles.container}>
       <View style={styles.infoBox}>
         <View style={styles.profileCard}>
-          <ProfileImageBox source={profile.profile_image} />
+          <ProfileImage source={profile.profile_image} />
           <View>
             <Text style={styles.name}>{profile.nickname} 님</Text>
             <Text style={styles.team}>
@@ -130,9 +130,9 @@ type TicketTeam = {
 
 type TicketCardProps = {
   ticket: TicketListByTeam
-  homeTeam?: TicketTeam
-  awayTeam?: TicketTeam
-  opponentTeam?: TicketTeam
+  homeTeam?: TeamWithInfo
+  awayTeam?: TeamWithInfo
+  opponentTeam?: TeamWithInfo
   onClick: () => void
 }
 

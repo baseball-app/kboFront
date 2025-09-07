@@ -1,9 +1,8 @@
-import {Match} from '@/hooks/match/useMatch'
+import {Match} from '@/entities/match'
 import {format} from 'date-fns'
 import React from 'react'
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import Ellipse from '@/components/common/Ellipse'
-import {TeamWithInfo} from '../types'
 import {useTeam} from '../model'
 
 type Props = {

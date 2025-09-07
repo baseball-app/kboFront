@@ -1,4 +1,4 @@
-import {Match} from '@/hooks/match/useMatch'
+import {Match} from '@/entities/match'
 import {create, StateCreator} from 'zustand'
 
 export interface IDailyLogWrite {

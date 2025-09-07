@@ -1,10 +1,9 @@
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
-import {Match} from './useMatch'
+import {Match} from '@/entities/match'
 import {format} from 'date-fns'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {uploadFile} from '@/api'
 import useProfile from '../my/useProfile'
-import {useLogin} from '../auth/useLogin'
 import {ROUTES, useAppRouter} from '../common'
 
 export type RegisterTicket = {
@@ -30,7 +29,6 @@ const useWriteTicket = () => {
   const writeStore = useDailyWriteStore()
   const queryClient = useQueryClient()
   const {profile} = useProfile()
-  const {user} = useLogin()
 
   const initializeTicket = (id: number) => {
     writeStore.clearState()

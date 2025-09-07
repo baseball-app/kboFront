@@ -1,0 +1,1 @@
+export {useDeleteTicket} from './useDeleteTicket'

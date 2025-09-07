@@ -26,4 +26,47 @@ const TicketCalendarLogReqSchema = z.object({
 
 type TicketCalendarLogReq = z.infer<typeof TicketCalendarLogReqSchema>
 
-export {TicketCalendarLogSchema, type TicketCalendarLog, TicketCalendarLogReqSchema, type TicketCalendarLogReq}
+//
+type ReactionType = 'clap' | 'confused' | 'dislike' | 'good' | 'laugh' | 'petulance' | 'point_up' | 'rage' | 'wink'
+
+type Reaction = Record<ReactionType, number>
+
+type TicketDetail = {
+  id: number
+  date: string // '2024-03-22'
+  result: string // '승리'
+  weather: string // '흐림'
+  is_ballpark: boolean
+  score_our: number
+  score_opponent: number
+  starting_pitchers: string // '고우석'
+  gip_place: string // 'ㅇㅇ'
+  image: string // '/https%3A/kboapp-cdn.s3.amazonaws.com/5/20250303_siPoBDqgSie2V2QRReTZJQ'
+  food: string // 'string'
+  memo: string // 'string'
+  is_homeballpark: boolean
+  created_at: string // '2025-03-03T10:56:30.470226+09:00'
+  updated_at: string // '2025-03-03T10:56:30.892490+09:00'
+  ballpark: number
+  game: number
+  opponent: number
+  writer: number
+
+  hometeam_id: string
+  awayteam_id: string
+
+  only_me: boolean
+  is_double: boolean
+  direct_yn: boolean
+  favorite: boolean
+} & Reaction
+
+export {
+  TicketCalendarLogSchema,
+  type TicketCalendarLog,
+  TicketCalendarLogReqSchema,
+  type TicketCalendarLogReq,
+  type TicketDetail,
+  type Reaction,
+  type ReactionType,
+}

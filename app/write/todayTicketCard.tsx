@@ -1,77 +1,90 @@
-import {findMatchResultImage, findWeatherImage} from '@/constants/match'
-import useTeam from '@/hooks/match/useTeam'
-import useTicketDetail from '@/hooks/match/useTicketDetail'
-import {format} from 'date-fns'
 import {useLocalSearchParams, usePathname} from 'expo-router'
-import React, {useRef, useState} from 'react'
+import React from 'react'
 
-import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform, Linking} from 'react-native'
+import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import MaskedView from '@react-native-masked-view/masked-view'
-import Svg, {Path} from 'react-native-svg'
 import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
-import Ellipse from '@/components/common/Ellipse'
 import {useAnalyticsStore} from '@/analytics/event'
-import ViewShot from 'react-native-view-shot'
 import * as MediaLibrary from 'expo-media-library'
-import {PermissionsAndroid} from 'react-native'
-import {useCommonSlice} from '@/slice/commonSlice'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import ApiClient from '@/api'
 import {ROUTES, useAppRouter} from '@/hooks/common'
 import {showToast} from '@/utils/showToast'
 import {useShare} from '@/utils/useShare'
-
-class NoPermissionError extends Error {
-  constructor(message?: string) {
-    super(message)
-    this.name = 'NO_PERMISSION_ERROR'
-  }
-}
+import {TicketFrame} from '@/widgets/ticket/frame'
+import {NoPermissionError, useMediaPermission} from '@/utils/useMediaPermission'
+import {useCaptureView} from '@/utils/useCaptureView'
+import {TicketDeleteButton} from '@/features/ticket/delete-ticket'
+import useTicketDetail from '@/hooks/match/useTicketDetail'
+// import {useTicketDetail} from '@/entities/ticket'
+import {useTicketReaction} from '@/entities/ticket/model'
 
 export default function GameCard() {
   const router = useAppRouter()
   const {id, date, target_id, from_ticket_box} = useLocalSearchParams()
-  const {findTeamById} = useTeam()
+
+  const {openSettingModal, checkMediaPermission} = useMediaPermission()
+  const {ViewShot, onCaptureView} = useCaptureView()
 
   const {shareInstagramStories} = useShare()
 
+  const onSaveTicketImage = async () => {
+    try {
+      const viewShot = await onCaptureView()
+      if (!viewShot) throw new Error('이미지 캡처에 실패했어요')
+      const {isGranted} = await checkMediaPermission()
+      if (!isGranted) throw new Error('저장 권한이 없어요')
+      const asset = await MediaLibrary.createAssetAsync(viewShot.uri)
+      showToast('이미지가 저장되었습니다')
+    } catch (error) {
+      if (error instanceof NoPermissionError) {
+        openSettingModal()
+      } else {
+        showToast('잠시 후 다시 시도해 주세요')
+      }
+    }
+  }
+
   const onShareInstagramStories = async () => {
-    if (!ref.current) return
-    const uri = await ref.current?.capture()
-
-    if (Platform.OS === 'ios' && premissionResponse?.status !== 'granted') {
-      const result = await requestPermission()
-      if (result.status !== 'granted') throw new NoPermissionError()
+    try {
+      const viewShot = await onCaptureView()
+      if (!viewShot) throw new Error('이미지 캡처에 실패했어요')
+      shareInstagramStories(viewShot.uri)
+    } catch (error) {
+      showToast('잠시 후 다시 시도해 주세요')
     }
-
-    if (Platform.OS === 'android' && premissionResponse?.status !== 'granted') {
-      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES)
-      const isNotGranted = granted !== PermissionsAndroid.RESULTS.GRANTED
-      if (isNotGranted) throw new NoPermissionError()
-    }
-    shareInstagramStories(uri)
   }
 
   const {
-    ticketDetail, //
+    ticketDetail,
     onChangeTicket,
     ticketIndex,
     data,
-    toggleFavorite,
+    toggleFavorite, //
     reactionList,
     toggleReaction,
   } = useTicketDetail(Number(id) || (date as string), Number(target_id))
+  const hasDoubleTicket = (data?.length || 0) > 1
+
+  // const {
+  //   ticketDetail,
+  //   ticketIndex,
+  //   onChangeTicket,
+  //   hasDoubleTicket,
+  //   data: ticketDetailListPerDate,
+  // } = useTicketDetail({
+  //   id: Number(id), //
+  //   date: date as string,
+  //   target_id: Number(target_id),
+  // })
+
+  // const {reactionList} = useTicketReaction({id: Number(id)})
+
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const pathname = usePathname()
 
   const {profile} = useProfile()
 
   const isMyTicket = profile?.id === ticketDetail?.writer
-
-  const hometeam = findTeamById(Number(ticketDetail?.hometeam_id))
-  const awayteam = findTeamById(Number(ticketDetail?.awayteam_id))
 
   const heartIcon = ticketDetail?.favorite
     ? require('@/assets/icons/heart_fill.png')
@@ -80,81 +93,6 @@ export default function GameCard() {
   const onBackButtonClick = () => {
     router.back()
   }
-
-  const ref = useRef<any>(null)
-
-  const [premissionResponse, requestPermission] = MediaLibrary.usePermissions()
-
-  const onSaveTicketImage = () => {
-    if (ref.current) {
-      ref.current
-        ?.capture()
-        .then(async (uri: any) => {
-          // 저장 권한 요청
-          // TODO: 권한 요청 분리 및 첫 진입 시 요청 필요
-          if (Platform.OS === 'ios' && premissionResponse?.status !== 'granted') {
-            const result = await requestPermission()
-            if (result.status !== 'granted') throw new NoPermissionError()
-          }
-
-          if (Platform.OS === 'android' && premissionResponse?.status !== 'granted') {
-            const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES)
-            const isNotGranted = granted !== PermissionsAndroid.RESULTS.GRANTED
-            if (isNotGranted) throw new NoPermissionError()
-          }
-
-          console.log('status', premissionResponse?.status)
-          console.log('accessPrivileges', premissionResponse?.accessPrivileges)
-
-          // 저장
-          const asset = await MediaLibrary.createAssetAsync(uri)
-          if (Platform.OS === 'ios' && premissionResponse?.accessPrivileges === 'limited') {
-            console.log('앨범 생성은 안 함')
-            return
-          }
-          // accessPrivileges === 'all'이거나, Platform.OS === 'android'일 때만 앨범 생성
-          await MediaLibrary.createAlbumAsync('오늘의야구', asset, false)
-        })
-        .then(() => showToast('이미지가 저장되었습니다'))
-        .catch((err: any) => {
-          if (err instanceof NoPermissionError) {
-            Alert.alert('권한이 없어요', '앱 설정으로 가서 액세스 권한을 수정할 수 있어요. 이동하시겠어요?', [
-              {
-                text: '취소',
-                style: 'cancel',
-              },
-              {
-                text: '설정하기',
-                onPress: () => Linking.openSettings(),
-              },
-            ])
-          } else {
-            showToast('잠시 후 다시 시도해 주세요')
-          }
-        })
-    }
-  }
-
-  const {modal} = useCommonSlice()
-  const queryClient = useQueryClient()
-
-  const {mutate: deleteTicket} = useMutation({
-    mutationFn: (id: number) => ApiClient.post(`/tickets/ticket_del/`, {id}),
-    onSuccess: (_, variables) => {
-      setTimeout(() => {
-        router.back()
-      }, 500)
-      showToast('삭제되었습니다.')
-
-      queryClient.refetchQueries({queryKey: ['tickets']})
-      queryClient.refetchQueries({queryKey: ['ticket']})
-      queryClient.refetchQueries({queryKey: ['ticketListByTeam']})
-    },
-    onError: () => {
-      showToast('잠시 후 다시 시도해 주세요')
-    },
-    onSettled: modal.hide,
-  })
 
   return (
     <SafeAreaView style={styles.container}>
@@ -169,41 +107,9 @@ export default function GameCard() {
             </View>
           ),
         }}
-        rightButton={
-          isMyTicket
-            ? {
-                onPress: () => {
-                  modal.open({
-                    header: '안내',
-                    content: '해당 티켓을 삭제할까요?',
-                    button: [
-                      {
-                        text: '취소',
-                        onPress: modal.hide,
-                        buttonStyle: {
-                          backgroundColor: '#D0CEC7',
-                        },
-                      },
-                      {
-                        text: '삭제',
-                        onPress: () => ticketDetail?.id && deleteTicket(ticketDetail?.id),
-                        buttonStyle: {
-                          backgroundColor: '#1E5EF4',
-                        },
-                        buttonTextStyle: {
-                          color: '#fff',
-                        },
-                      },
-                    ],
-                  })
-                  // router.push({pathname: '/write/edit', params: {id: ticketDetail?.id}})
-                },
-                content: (
-                  <Text style={{color: '#1E5EF4', fontSize: 16, fontWeight: '500', lineHeight: 20 * 1.4}}>삭제</Text>
-                ),
-              }
-            : undefined
-        }
+        rightButton={{
+          content: <TicketDeleteButton ticketId={ticketDetail?.id || 0} />,
+        }}
       />
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
@@ -225,7 +131,7 @@ export default function GameCard() {
             </TouchableOpacity>
           </View>
         )}
-        {Number(data?.length) > 1 ? (
+        {hasDoubleTicket ? (
           <View style={styles.matchButtonBox}>
             {data?.map((_, index) => (
               <TouchableOpacity
@@ -239,318 +145,11 @@ export default function GameCard() {
             ))}
           </View>
         ) : null}
-        <ViewShot style={styles.ticketBox} ref={ref} options={{fileName: 'todaybaseball', format: 'png', quality: 0.9}}>
-          <MaskedView
-            style={{
-              aspectRatio: 307 / 12,
-            }}
-            maskElement={
-              <Svg height="100%" width="100%" viewBox="0 0 307 11">
-                {/* 오른쪽 절반만 흰색으로 그리기 */}
-                <Path
-                  fill="white"
-                  d={`
-                          M0 0
-                          H15
-                          M15 0
-                          A10,10 0 0,0 35,0
-                          H47
-                          M47 0
-                          A10,10 0 0,0 67,0
-                          H79
-                          M79 0
-                          A10,10 0 0,0 99,0
-                          H111
-                          M111 0
-                          A10,10 0 0,0 131,0
-                          H143
-                          M143 0
-                          A10,10 0 0,0 163,0
-                          H175
-                          M175 0
-                          A10,10 0 0,0 195,0
-                          H207
-                          M207 0
-                          A10,10 0 0,0 227,0
-                          H239
-                          M239 0
-                          A10,10 0 0,0 259,0
-                          H271
-                          M271 0
-                          A10,10 0 0,0 291,0
-                          H307
-                          V11
-                          H0
-                          V0
-                          Z
-                          `}
-                />
-              </Svg>
-            }>
-            <View style={{width: '100%', height: 100, backgroundColor: '#202020'}} />
-          </MaskedView>
-          <View style={styles.ticketBackground}>
-            <View style={[styles.ticketContent]}>
-              <View style={{position: 'relative', width: '100%'}}>
-                <MaskedView
-                  style={{
-                    aspectRatio: 307 / 270,
-                  }}
-                  maskElement={
-                    <Svg height="100%" width="100%" viewBox="0 0 307 270">
-                      <Path
-                        fill="white"
-                        d={`
-                          M0 0 
-                          H307 
-                          V270 
-                          H0 
-                          Z
-                          
-                          M0 0 
-                          V0 20
-                          C0 20, 20 20, 20 0 
-                          Z
-                          
-                          M287 0
-                          C287 20, 307 20, 307 20
-                          V307 0
-                          Z
-                          `}
-                      />
-                    </Svg>
-                  }>
-                  {/* 마스킹된 부분에 이미지 표시 */}
-                  <Image
-                    source={{
-                      uri: ticketDetail?.image,
-                    }}
-                    style={{width: '100%', aspectRatio: 307 / 270}}
-                    resizeMode="cover"
-                  />
-                  <Svg height="100%" width="100%" viewBox="0 0 307 270" style={{position: 'absolute', top: 0, left: 0}}>
-                    <Path
-                      d={`
-                          M0 0 
-                          H307 
-                          V270 
-                          H0 
-                          Z
-                          
-                          M0 0 
-                          V0 20
-                          C0 20, 20 20, 20 0 
-                          Z
-                          
-                          M287 0
-                          C287 20, 307 20, 307 20
-                          V307 0
-                          Z
-                          `}
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="6"
-                    />
-                  </Svg>
-                </MaskedView>
-              </View>
 
-              {/* <View style={styles.imgViewBox}>
-                <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
-              </View> */}
-              <View style={[styles.resultBox]}>
-                <View style={styles.resultImgBox}>
-                  <Image
-                    source={findMatchResultImage(ticketDetail?.result)}
-                    resizeMode="contain"
-                    style={styles.editIcon}
-                  />
-                  <Text style={styles.resultText}>
-                    {ticketDetail?.result === '취소' ? '경기 취소' : ticketDetail?.result}
-                  </Text>
-                </View>
-                <View style={styles.resultImgBox}>
-                  <Image
-                    source={findWeatherImage(ticketDetail?.weather)}
-                    resizeMode="contain"
-                    style={styles.resultIcon}
-                  />
-                  <Text style={styles.resultText}>{ticketDetail?.weather}</Text>
-                </View>
-              </View>
-
-              <View style={styles.matchInfoBox}>
-                <View style={styles.scoreBox}>
-                  <View style={styles.teamScoreBox}>
-                    <Text style={styles.scoreText}>{ticketDetail?.score_our}</Text>
-                    <Text style={[styles.teamText, {backgroundColor: `${hometeam?.color}4D`}]}>
-                      {hometeam?.short_name}
-                    </Text>
-                  </View>
-                  <View style={{gap: 6}}>
-                    <Ellipse size={5} />
-                    <Ellipse size={5} />
-                  </View>
-                  <View style={styles.teamScoreBox}>
-                    <Text style={styles.scoreText}>{ticketDetail?.score_opponent}</Text>
-                    <Text style={[styles.teamText, {backgroundColor: `${awayteam?.color}4D`}]}>
-                      {awayteam?.short_name}
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.matchBox}>
-                  <View style={styles.infoBox}>
-                    <Text style={styles.infoLabel}>오늘의 경기일정</Text>
-                    <Text style={styles.infoValue}>
-                      {ticketDetail?.date ? format(ticketDetail?.date, 'yyyy-MM-dd') : ''}
-                    </Text>
-                  </View>
-                  <View style={styles.infoBox}>
-                    <Text style={styles.infoLabel}>
-                      {ticketDetail?.is_ballpark ? '오늘의 경기구장' : '오늘의 집관장소'}
-                    </Text>
-                    <View style={{flex: 1}}>
-                      <Text style={[styles.infoValue, {lineHeight: 17}]} numberOfLines={2}>
-                        {ticketDetail?.gip_place}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.infoBox}>
-                    <Text style={styles.infoLabel}>오늘의 선발선수</Text>
-                    <View style={{flex: 1}}>
-                      <Text style={[styles.infoValue, {lineHeight: 17}]} numberOfLines={2}>
-                        {ticketDetail?.starting_pitchers}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.infoBox}>
-                    <Text style={styles.infoLabel}>오늘의 직관푸드</Text>
-                    <View style={{flex: 1}}>
-                      <Text style={[styles.infoValue, {lineHeight: 17}]} numberOfLines={2}>
-                        {ticketDetail?.food}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View style={{position: 'relative', width: '100%'}}>
-                <MaskedView
-                  style={{aspectRatio: 307 / 220}}
-                  maskElement={
-                    <Svg height="100%" width="100%" viewBox="0 0 307 220">
-                      <Path
-                        fill="red"
-                        d={`
-                          M0 0 
-                          H307 
-                          V220 
-                          H0 
-                          Z
-                          
-                          M307 220 
-                          V307 200
-                          C307 200, 287 200, 287 220 
-                          Z
-
-                          M20 220
-                          C20 220, 20 200, 0 200
-                          V0 220
-                          Z
-                          `}
-                      />
-                    </Svg>
-                  }>
-                  {/* 마스크로 보여질 영역 */}
-                  <View style={{width: '100%', height: '100%', backgroundColor: 'white', padding: 10}}>
-                    <View style={styles.thoughtsBox}>
-                      {(() => {
-                        if (!ticketDetail?.only_me) {
-                          return (
-                            <View style={styles.thoughtsTextBox}>
-                              <ScrollView>
-                                <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
-                              </ScrollView>
-                            </View>
-                          )
-                        }
-
-                        if (ticketDetail?.only_me && profile.id === ticketDetail.writer) {
-                          return (
-                            <>
-                              <View style={styles.onlyMeButtonBox}>
-                                <Image
-                                  source={require('@/assets/icons/lock.png')}
-                                  style={styles.lockButton}
-                                  resizeMode="contain"
-                                />
-                                <Text style={styles.onlyMeText}>나만보기</Text>
-                              </View>
-                              <View style={styles.thoughtsTextBox}>
-                                <ScrollView>
-                                  <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
-                                </ScrollView>
-                              </View>
-                            </>
-                          )
-                        }
-
-                        return null
-                      })()}
-                    </View>
-                  </View>
-                </MaskedView>
-              </View>
-            </View>
-          </View>
-          <MaskedView
-            style={{
-              aspectRatio: 307 / 12,
-            }}
-            maskElement={
-              <Svg height="100%" width="100%" viewBox="0 0 307 11" style={{transform: [{rotate: '180deg'}]}}>
-                {/* 오른쪽 절반만 흰색으로 그리기 */}
-                <Path
-                  fill="white"
-                  d={`
-                          M0 0
-                          H15
-                          M15 0
-                          A10,10 0 0,0 35,0
-                          H47
-                          M47 0
-                          A10,10 0 0,0 67,0
-                          H79
-                          M79 0
-                          A10,10 0 0,0 99,0
-                          H111
-                          M111 0
-                          A10,10 0 0,0 131,0
-                          H143
-                          M143 0
-                          A10,10 0 0,0 163,0
-                          H175
-                          M175 0
-                          A10,10 0 0,0 195,0
-                          H207
-                          M207 0
-                          A10,10 0 0,0 227,0
-                          H239
-                          M239 0
-                          A10,10 0 0,0 259,0
-                          H271
-                          M271 0
-                          A10,10 0 0,0 291,0
-                          H307
-                          V11
-                          H0
-                          V0
-                          Z
-                          `}
-                />
-              </Svg>
-            }>
-            <View style={{width: '100%', height: 100, backgroundColor: '#202020'}} />
-          </MaskedView>
+        <ViewShot
+          //
+          style={styles.ticketBox}>
+          {ticketDetail && <TicketFrame ticketDetail={ticketDetail} />}
         </ViewShot>
         <View style={styles.emojiBox}>
           {reactionList.map(reaction => (
@@ -566,7 +165,7 @@ export default function GameCard() {
 
         {from_ticket_box ? null : (
           <>
-            {Number(data?.length) <= 1 && isMyTicket && (
+            {!hasDoubleTicket && isMyTicket && (
               <TouchableOpacity
                 onPress={() => {
                   // ga 데이터 수집용도
@@ -603,36 +202,9 @@ export default function GameCard() {
 }
 
 const styles = StyleSheet.create({
-  maskContainer: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    width: 200,
-    height: 200,
-  },
   container: {
     flex: 1,
     backgroundColor: '#fffcf3',
-  },
-  headerBox: {
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: '600',
-    lineHeight: 25.2,
-    color: '#000',
-  },
-  backButton: {
-    position: 'absolute',
-    left: 24,
   },
   scrollBox: {
     marginTop: 14,
@@ -681,7 +253,6 @@ const styles = StyleSheet.create({
   ticketBox: {
     width: '100%',
     marginHorizontal: 'auto',
-    // backgroundColor: '#202020',
     position: 'relative',
     marginBottom: 32,
     marginTop: 12,
@@ -692,11 +263,6 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 100,
     position: 'absolute',
-  },
-  imgViewBox: {
-    width: '100%',
-    height: 220,
-    backgroundColor: '#fff',
   },
   resultBox: {
     width: '100%',
@@ -714,87 +280,6 @@ const styles = StyleSheet.create({
     height: 44,
     gap: 8,
   },
-  resultIcon: {
-    width: 27,
-    height: 28,
-  },
-  resultText: {
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 22.4,
-  },
-  matchInfoBox: {
-    width: '100%',
-    backgroundColor: '#fff',
-    flexDirection: 'column',
-    marginVertical: 2,
-  },
-  scoreBox: {
-    width: '100%',
-    height: 90,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  teamScoreBox: {
-    flex: 1,
-    flexDirection: 'column',
-    gap: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  matchDot: {
-    width: 6,
-    height: 16,
-  },
-  scoreText: {
-    color: '#000000',
-    fontWeight: '600',
-    fontSize: 24,
-    lineHeight: 33.4,
-  },
-  teamText: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 19.6,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-    backgroundColor: '#FDD484',
-    borderRadius: 4,
-  },
-  matchBox: {
-    width: '100%',
-    height: 150,
-    flexDirection: 'column',
-    paddingBottom: 10,
-  },
-  infoBox: {
-    flex: 1,
-    flexDirection: 'row',
-    width: '100%',
-    // paddingVertical: 8,
-    paddingHorizontal: 22,
-    alignItems: 'center',
-    gap: 30,
-  },
-  infoLabel: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 19.6,
-    width: 95,
-  },
-  infoValue: {
-    fontWeight: '500',
-    fontSize: 15,
-    lineHeight: 21,
-    color: '#353430',
-  },
-  onlyMeText: {
-    fontWeight: '700',
-    fontSize: 15,
-    lineHeight: 21,
-    color: '#171716',
-  },
   emojiBox: {
     backgroundColor: '#fffcf3',
     flexDirection: 'row',
@@ -811,46 +296,6 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     paddingHorizontal: 12.5,
     paddingVertical: 4,
-  },
-  thoughtsBox: {
-    width: '100%',
-  },
-  onlyMeButtonBox: {
-    width: '100%',
-    flexDirection: 'row',
-    gap: 5,
-    alignItems: 'center',
-  },
-  lockButton: {
-    width: 24,
-    height: 24,
-  },
-  thoughtsTextBox: {
-    marginTop: 2,
-  },
-  thoughtsText: {
-    color: '#353430',
-    fontSize: 15,
-    fontWeight: 400,
-    lineHeight: 21,
-  },
-  ticketBackground: {
-    width: '100%',
-    justifyContent: 'flex-start',
-    flexDirection: 'column',
-    paddingVertical: 32,
-    backgroundColor: '#202020',
-    marginTop: -1,
-    marginBottom: -1,
-  },
-  backgroundImage: {
-    resizeMode: 'stretch',
-  },
-  ticketContent: {
-    width: '100%',
-    alignItems: 'center',
-    flexDirection: 'column',
-    paddingHorizontal: 10,
   },
   backImage: {
     width: 16,

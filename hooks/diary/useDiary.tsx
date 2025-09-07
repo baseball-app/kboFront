@@ -9,21 +9,21 @@ import useProfile from '../my/useProfile'
 import {useEffect, useState} from 'react'
 import {usePathname} from 'expo-router'
 
-export interface IDiarySlice {
+interface IDiarySlice {
   currentDate: Date
   setCurrentDate: (date: Date) => void
   userId: number
   setUserId: (userId: number) => void
 }
 
-export const diarySlice: StateCreator<IDiarySlice> = set => ({
+const diarySlice: StateCreator<IDiarySlice> = set => ({
   currentDate: new Date(),
   setCurrentDate: date => set({currentDate: date}),
   userId: 0,
   setUserId: userId => set({userId}),
 })
 
-export const useDiaryStore = create<IDiarySlice>(diarySlice)
+const useDiaryStore = create<IDiarySlice>(diarySlice)
 
 const useDiary = () => {
   const {currentDate, setCurrentDate} = useDiaryStore()
@@ -34,12 +34,6 @@ const useDiary = () => {
   useEffect(() => {
     if (!userId && profile.id) setUserId(profile.id)
   }, [userId, profile.id])
-
-  const pathname = usePathname()
-
-  // useEffect(() => {
-  //   if (pathname !== '/') setUserId(null)
-  // }, [])
 
   const currentYearMonth = format(currentDate, 'yyyy-MM')
   const {data: ticketList} = useQuery({

@@ -2,7 +2,6 @@ import {StyleSheet, Image, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
 import {usePathname} from 'expo-router'
-import useMatch from '@/hooks/match/useMatch'
 import dayjs from 'dayjs'
 import {usePopup} from '@/slice/commonSlice'
 import useDiary from '@/hooks/diary/useDiary'
@@ -15,12 +14,13 @@ import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import {CalendarContainer} from '@/components/home/Calendar/CalendarContainer'
 import {ROUTES, useAppRouter} from '@/hooks/common'
 import {TodayMatch} from '@/widgets'
-import {MatchCalendarTitle} from '@/entities/match'
+import {MatchCalendarTitle, useMatch} from '@/entities/match'
 // import {useRank} from '@/hooks/useRank'
 const CalendarScreen = () => {
   const {openCommonPopup} = usePopup()
 
   const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()})
+
   const {ticketList, isMyDiary, setUserId, userId} = useDiary()
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
   const {friend_status} = useFriends()

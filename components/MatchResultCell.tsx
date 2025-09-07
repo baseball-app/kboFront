@@ -2,8 +2,7 @@ import React from 'react'
 import {StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native'
 import {TicketCalendarLog} from './home/Calendar'
 import {findMatchResultImage} from '@/constants/match'
-import useTeam from '@/hooks/match/useTeam'
-import Skeleton from './skeleton/Skeleton'
+import {useTeam} from '@/entities/match'
 
 //TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
 const MatchResultCell = ({
