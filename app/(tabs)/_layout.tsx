@@ -2,23 +2,12 @@ import {Tabs} from 'expo-router'
 import React, {useEffect, useRef} from 'react'
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs'
 
-import {Platform, TextStyle} from 'react-native'
+import {Platform} from 'react-native'
 import Header from '@/components/common/Header'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import ApiClient from '@/api'
 import {usePushMessage} from '@/hooks/usePushMessage'
 import {Footer} from '@/widgets'
-
-const headerStyle: TextStyle = {
-  fontWeight: '700',
-  fontSize: 18,
-  lineHeight: 18 * 1.4,
-}
-
-const headerOptions: BottomTabNavigationOptions = {
-  headerTitleAlign: 'center',
-  headerTitleStyle: headerStyle,
-}
 
 export default function TabLayout() {
   const tabScreenOptions: BottomTabNavigationOptions = {

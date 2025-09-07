@@ -1,10 +1,8 @@
 import ApiClient from '@/api'
 import {usePopup} from '@/slice/commonSlice'
 import {useQuery} from '@tanstack/react-query'
-import {useLogin} from '@/hooks/auth/useLogin'
 import Clipboard from '@react-native-clipboard/clipboard'
 import useProfile from './useProfile'
-import {useLogout} from '@/features/auth/logout'
 
 type InvitationCode = {
   code: string

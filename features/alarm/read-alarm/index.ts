@@ -1,0 +1,1 @@
+export {useReadAlarm} from './model'

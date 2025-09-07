@@ -10,7 +10,7 @@ const EmptyNotificationView = () => {
   )
 }
 
-export default EmptyNotificationView
+export {EmptyNotificationView}
 
 const styles = StyleSheet.create({
   wrapper: {

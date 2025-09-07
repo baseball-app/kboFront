@@ -7,7 +7,6 @@ import {usePopup} from '@/slice/commonSlice'
 import useDiary from '@/hooks/diary/useDiary'
 import useProfile from '@/hooks/my/useProfile'
 import {useEffect} from 'react'
-import useNotification from '@/hooks/notification/useNotification'
 import useFriends from '@/hooks/my/useFriends'
 import {useAnalyticsStore} from '@/analytics/event'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
@@ -36,7 +35,6 @@ const CalendarScreen = () => {
   })()
 
   const {profile} = useProfile()
-  const {} = useNotification()
 
   const pathname = usePathname()
 

@@ -1,8 +1,6 @@
 import ApiClient from '@/api'
 import {useMutation} from '@tanstack/react-query'
 import useProfile from './useProfile'
-import {useMMKVObject} from 'react-native-mmkv'
-import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import useFriends from './useFriends'
 import {showToast} from '@/utils/showToast'
 

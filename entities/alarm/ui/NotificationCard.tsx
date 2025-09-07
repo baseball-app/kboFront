@@ -1,4 +1,4 @@
-import {Notification} from '@/hooks/notification/useNotification'
+import {Notification} from '../types'
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 
@@ -43,7 +43,7 @@ const NotificationCard = ({type, userName, isRead, date, onClick}: Props) => {
   )
 }
 
-export default NotificationCard
+export {NotificationCard}
 
 const styles = StyleSheet.create({
   card: {

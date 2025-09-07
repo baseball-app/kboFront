@@ -16,7 +16,7 @@ export interface IUserJoinSlice {
   setMyTeam: (team: Omit<Team, 'logo_url'>) => void
 }
 
-export const joinSlice: StateCreator<IUserJoinSlice> = set => ({
+const joinSlice: StateCreator<IUserJoinSlice> = set => ({
   id: 0,
   profile: null,
   nickname: '',
