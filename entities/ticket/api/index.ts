@@ -36,3 +36,16 @@ export const findTicketDetailByDate = async ({date, target_id}: {date: string; t
 export const findTicketReaction = async ({id}: {id: number}) => {
   return ApiClient.get<Reaction>(`/tickets/ticket_reaction_view/`, {id})
 }
+
+export const findTicketListByTeam = async ({teamId}: {teamId: number}) => {
+  const params = (() => {
+    // 타구단
+    if (teamId === 999) return {is_cheer: false}
+    // 팀 선택
+    if (teamId) return {team_id: teamId, is_cheer: true}
+    // 최애 경기
+    return {favorite: true}
+  })()
+
+  return ApiClient.get<schema.TicketListByTeam[]>('/tickets/ticket_list/', params)
+}

@@ -1,2 +1,2 @@
-export {useMonthlyTicket, useCheckValidateTicket, useTicketDetail} from './model'
-export {TicketDetail, ReactionType, Reaction} from './types'
+export {useMonthlyTicket, useCheckValidateTicket, useTicketDetail, useTicketListByTeam} from './model'
+export {TicketDetail, ReactionType, Reaction, TicketListByTeam} from './types'

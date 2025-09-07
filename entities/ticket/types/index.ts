@@ -61,6 +61,25 @@ type TicketDetail = {
   favorite: boolean
 } & Reaction
 
+type TicketListByTeam = {
+  id: number
+  date: string // '2025-03-22'
+  writer_id: number
+  game_id: number
+  opponent_id: number
+  ballpark: {
+    id: number
+    name: string
+    team_id: number
+  }
+  favorite: boolean
+  hometeam_id: string
+  awayteam_id: string
+  direct_yn: boolean
+  score_our: number // 홈팀 점수
+  score_opponent: number // 원정팀 점수
+}
+
 export {
   TicketCalendarLogSchema,
   type TicketCalendarLog,
@@ -69,4 +88,5 @@ export {
   type TicketDetail,
   type Reaction,
   type ReactionType,
+  type TicketListByTeam,
 }

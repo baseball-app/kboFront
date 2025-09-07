@@ -1,28 +1,22 @@
 import {EVENTS} from '@/analytics/event'
 import {logEvent} from '@/analytics/func'
-import Ellipse from '@/components/common/Ellipse'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
-import Skeleton from '@/components/skeleton/Skeleton'
-import Tag from '@/components/Tag'
 import {ProfileImage} from '@/entities/user'
 import {ROUTES, useAppRouter} from '@/hooks/common'
-import {TeamWithInfo, useTeam} from '@/entities/match'
-import useTicketListByTeam, {TicketListByTeam} from '@/hooks/match/useTicketListByTeam'
+import {TeamTag, useTeam} from '@/entities/match'
+import {useTicketListByTeam} from '@/entities/ticket'
 import useProfile from '@/hooks/my/useProfile'
-import {format} from 'date-fns'
 import {usePathname} from 'expo-router'
 import React from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native'
+import {MyTicketList} from '@/widgets/ticket/my-ticket-list'
 const width = Dimensions.get('window').width
-
-// 40 + 12 * 4 = 88
 
 const MyTicketBoxScreen = () => {
   const router = useAppRouter()
   const {profile} = useProfile()
   const {ticketList, onChangeTeam, selectedTeamId, isLoading} = useTicketListByTeam()
-  const {findTeamById, teams} = useTeam()
-  const myTeam = findTeamById(profile.my_team?.id)
+  const {teams} = useTeam()
   const pathname = usePathname()
 
   return (
@@ -51,9 +45,9 @@ const MyTicketBoxScreen = () => {
         <Text style={styles.ticketTitle}>상대 구단별 경기티켓</Text>
         <View style={styles.tabContainer}>
           {[{id: 0, short_name: '최애 경기'}, ...(teams || []), {id: 999, short_name: '타구단'}]
-            ?.filter(club => club.id !== myTeam?.id) //
+            ?.filter(club => club.id !== profile.my_team?.id) //
             .map((club, index) => (
-              <Tag
+              <TeamTag
                 paddingHorizontal={index < 5 ? (width - 251) / 10 : index < 10 ? (width - 221) / 10 : 12}
                 key={club.id}
                 name={club.short_name || ''} //
@@ -64,127 +58,8 @@ const MyTicketBoxScreen = () => {
         </View>
       </View>
 
-      <View style={styles.likeBoxContainer}>
-        {(() => {
-          if (isLoading) {
-            return (
-              <>
-                <Skeleton height={100} width="100%" />
-                <Skeleton height={100} width="100%" />
-                <Skeleton height={100} width="100%" />
-              </>
-            )
-          }
-
-          return (
-            <>
-              {ticketList?.length ? (
-                ticketList?.map(ticket => {
-                  const homeTeam = findTeamById(Number(ticket.hometeam_id))
-                  const awayTeam = findTeamById(Number(ticket.awayteam_id))
-
-                  const opponentTeam = (() => {
-                    if (profile.my_team?.id === homeTeam?.id) return awayTeam
-                    if (profile.my_team?.id === awayTeam?.id) return homeTeam
-                  })()
-
-                  return (
-                    <TicketCard
-                      key={ticket.id}
-                      ticket={ticket}
-                      homeTeam={homeTeam}
-                      awayTeam={awayTeam}
-                      opponentTeam={opponentTeam}
-                      onClick={() =>
-                        router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {
-                          id: ticket.id,
-                          target_id: profile.id,
-                          from_ticket_box: 'true',
-                        })
-                      }
-                    />
-                  )
-                })
-              ) : (
-                <View style={{alignItems: 'center', justifyContent: 'center', height: 100}}>
-                  <Text style={{fontSize: 14, fontWeight: 400, color: '#171716'}}>해당 경기 티켓이 없어요.</Text>
-                </View>
-              )}
-            </>
-          )
-        })()}
-      </View>
+      <MyTicketList isLoading={isLoading} ticketList={ticketList} />
     </InitScrollProvider>
-  )
-}
-
-// 40, 12
-
-type TicketTeam = {
-  id: number
-  logo: any
-  name: any
-  short_name: any
-  color: any
-}
-
-type TicketCardProps = {
-  ticket: TicketListByTeam
-  homeTeam?: TeamWithInfo
-  awayTeam?: TeamWithInfo
-  opponentTeam?: TeamWithInfo
-  onClick: () => void
-}
-
-const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketCardProps) => {
-  return (
-    <View style={styles.teamCard}>
-      <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 12}}>
-        <View style={[styles.teamLabel, {backgroundColor: opponentTeam?.color ?? 'white'}]} />
-        <View style={{display: 'flex', flexDirection: 'row', gap: 20}}>
-          <View style={{display: 'flex', alignItems: 'center', width: 38}}>
-            <Text style={styles.teamName}>{homeTeam?.short_name}</Text>
-            <Text style={styles.teamScoreText}>{ticket.score_our}</Text>
-          </View>
-          <View style={{display: 'flex', gap: 6, justifyContent: 'center'}}>
-            <Ellipse size={3} />
-            <Ellipse size={3} />
-          </View>
-          <View style={{display: 'flex', alignItems: 'center', width: 38}}>
-            <Text style={styles.teamName}>{awayTeam?.short_name}</Text>
-            <Text style={styles.teamScoreText}>{ticket.score_opponent}</Text>
-          </View>
-        </View>
-      </View>
-      <View
-        style={{
-          display: 'flex',
-          width: 140,
-          alignItems: 'center',
-          borderWidth: 1,
-          borderColor: '#B9B8B3',
-          borderStyle: 'dashed',
-          justifyContent: 'center',
-          borderRadius: 1,
-          height: 102,
-          marginRight: -2,
-        }}>
-        <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
-        <Text style={[styles.date, {marginBottom: 4}]}>{format(ticket.date, 'yyyy.MM.dd')}</Text>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={onClick}
-          style={{
-            backgroundColor: '#1E5EF4',
-            padding: 8,
-            borderRadius: 30,
-            width: 'auto',
-            alignSelf: 'center',
-          }}>
-          <Text style={{color: 'white', fontSize: 13, fontWeight: 500}}>티켓보기</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
   )
 }
 
@@ -192,11 +67,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFCF3',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
   infoBox: {
     padding: 20,
@@ -220,12 +90,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 15,
-  },
   name: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -246,77 +110,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     lineHeight: 22.4,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  teamCard: {
-    gap: 12,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    overflow: 'hidden',
-    height: 100,
-  },
-  teamInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  teamIcon: {
-    marginRight: 10,
-    fontSize: 20,
-  },
-  teamName: {
-    fontSize: 16,
-    color: '#171716',
-    fontWeight: 500,
-    lineHeight: 24,
-  },
-  teamScoreText: {
-    fontWeight: 700,
-    fontSize: 32,
-    lineHeight: 48,
-    letterSpacing: -2.5,
-    textAlign: 'center',
-  },
-  teamSub: {
-    fontSize: 14,
-    color: '#171716',
-    fontWeight: 500,
-    lineHeight: 21,
-  },
-  teamLabel: {
-    width: 8,
-    height: 100,
-  },
-  parkName: {
-    fontSize: 14,
-    color: '#171716',
-    fontWeight: 400,
-    lineHeight: 21,
-  },
-  date: {
-    fontSize: 13,
-    color: '#95938B',
-    fontWeight: 400,
-    lineHeight: 19.5,
-    textAlign: 'center',
-  },
-  teamScore: {
-    fontSize: 16,
-    color: '#3498db',
-  },
-  likeBoxContainer: {
-    backgroundColor: '#F3F2EE',
-    padding: 16,
-    marginHorizontal: 20,
-    borderRadius: 10,
-    gap: 12,
-    marginBottom: 20,
   },
   tabContainer: {
     flexDirection: 'row',
