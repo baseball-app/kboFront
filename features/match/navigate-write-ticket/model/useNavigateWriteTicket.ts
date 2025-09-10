@@ -11,12 +11,13 @@ const useNavigateWriteTicket = () => {
   const {isCanNotWriteTicket} = useCheckValidateTicket()
   const {openCommonPopup} = usePopup()
 
-  const moveToWriteTicket = async (params: {date: string; step: number; matchId?: number}) => {
+  const moveToWriteTicket = async (params: {date: string; step: number; matchId?: number}, onSuccess?: () => void) => {
     const yearMonth = dayjs(params.date).format('YYYY-MM')
     const tickets = await getCachedTicketsByDate(yearMonth)
     if (isCanNotWriteTicket(tickets || [], params.date)) {
       openCommonPopup('오늘의 야구 티켓은 최대 2번까지만\n작성하실 수 있어요!')
     } else {
+      onSuccess?.()
       router.push(ROUTES.WRITE, params)
     }
   }
@@ -40,6 +41,7 @@ const useNavigateWriteTicket = () => {
   return {
     moveToDoubleHeaderWriteTicket,
     moveToMatchWriteTicket,
+    moveToWriteTicket,
   }
 }
 
