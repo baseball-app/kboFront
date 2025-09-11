@@ -2,7 +2,7 @@ import {useSegments} from 'expo-router'
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 const footerList = [
   {
     name: '캘린더',

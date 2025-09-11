@@ -1,5 +1,5 @@
 import {useCheckValidateTicket, useMonthlyTicket} from '@/entities/ticket'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import {usePopup} from '@/slice/commonSlice'
 import dayjs from 'dayjs'

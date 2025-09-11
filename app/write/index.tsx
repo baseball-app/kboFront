@@ -6,7 +6,7 @@ import {useLocalSearchParams} from 'expo-router'
 import React, {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 import {MatchCard, useMatch} from '@/entities/match'
 
 /** 경기 결과 목업데이터 */

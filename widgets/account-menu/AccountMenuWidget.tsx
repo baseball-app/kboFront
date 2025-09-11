@@ -1,13 +1,12 @@
 import React from 'react'
 import {View, TouchableOpacity, Text, StyleSheet, Dimensions} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
-import {ROUTES} from '@/hooks/common/constants'
-import {useAppRouter} from '@/hooks/common'
+import {useAppRouter, ROUTES} from '@/shared'
 import {useLogout} from '@/features/auth/logout'
 import {useWithdraw} from '@/features/auth/withdraw'
 import {Config} from '@/config/Config'
 import Clipboard from '@react-native-clipboard/clipboard'
-import {usePushMessage} from '@/hooks/usePushMessage'
+import {usePushMessage} from '@/shared'
 import {usePopup} from '@/slice/commonSlice'
 
 const AccountMenuWidget = () => {

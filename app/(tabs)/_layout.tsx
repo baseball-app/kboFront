@@ -6,7 +6,7 @@ import {Platform} from 'react-native'
 import Header from '@/components/common/Header'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import ApiClient from '@/api'
-import {usePushMessage} from '@/hooks/usePushMessage'
+import {usePushMessage} from '@/shared'
 import {Footer} from '@/widgets'
 
 export default function TabLayout() {

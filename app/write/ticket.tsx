@@ -33,8 +33,8 @@ import Toast from 'react-native-toast-message'
 import {logEvent} from '@/analytics/func'
 import {EVENTS, useAnalyticsStore} from '@/analytics/event'
 import {Config} from '@/config/Config'
-import {useKeyboard} from '@/hooks/useKeyboard'
-import {useAppRouter} from '@/hooks/common'
+import {useAppRouter} from '@/shared'
+import {useKeyboard} from '@/shared'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
   matchTeam: Team | null

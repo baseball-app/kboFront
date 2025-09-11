@@ -3,7 +3,7 @@ import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import {usePathname} from 'expo-router'
 

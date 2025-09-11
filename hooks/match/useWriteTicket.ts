@@ -4,7 +4,7 @@ import {format} from 'date-fns'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {uploadFile} from '@/api'
 import useProfile from '../my/useProfile'
-import {ROUTES, useAppRouter} from '../common'
+import {ROUTES, useAppRouter} from '@/shared'
 
 export type RegisterTicket = {
   starting_pitchers: string

@@ -1,5 +1,5 @@
 import * as schemas from '../types'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 import * as api from '../api'
 import {useAuthStore} from './useAuthStore'
 

@@ -1,6 +1,6 @@
 import {useAlarmList, Notification, EmptyNotificationView, NotificationCard} from '@/entities/alarm'
 import {useReadAlarm} from '@/features/alarm/read-alarm'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import dayjs from 'dayjs'
 import {useSegments} from 'expo-router'

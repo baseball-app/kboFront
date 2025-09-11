@@ -15,7 +15,7 @@ import {useAnalyticsStore} from '@/analytics/event'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import dayjs from 'dayjs'
 import useProfile from '@/hooks/my/useProfile'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 
 export type TicketCalendarLog = {
   id: number // 5

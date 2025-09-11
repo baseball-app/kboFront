@@ -31,8 +31,8 @@ import {useLogin} from '@/hooks/auth/useLogin'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
 import {Config} from '@/config/Config'
-import {useKeyboard} from '@/hooks/useKeyboard'
-import {useAppRouter} from '@/hooks/common'
+import {useKeyboard} from '@/shared'
+import {useAppRouter} from '@/shared'
 
 interface ITicketEditData {
   homeTeam: {

@@ -1,11 +1,11 @@
 import {useLogin} from '@/hooks/auth/useLogin'
 import {SplashScreen} from 'expo-router'
-import {useEffectOnce} from '@/hooks/useEffectOnce'
 import VersionCheck from 'react-native-version-check'
 import {Alert, Linking} from 'react-native'
-import {useAppRouter} from '@/hooks/common'
-import {ROUTES} from '@/hooks/common'
+import {useAppRouter} from '@/shared'
+import {ROUTES} from '@/shared'
 import {checkIsMember} from '@/features/auth/login'
+import {useEffectOnce} from '@/shared'
 
 export default function Index() {
   const {refreshAccessToken} = useLogin()

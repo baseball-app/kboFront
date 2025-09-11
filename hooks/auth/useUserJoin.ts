@@ -2,7 +2,7 @@ import {userJoinSlice} from '@/slice/userJoinSlice'
 import {useSegments} from 'expo-router'
 import useConsent from './useConsent'
 import useProfile from '../my/useProfile'
-import {ROUTES, useAppRouter} from '../common'
+import {ROUTES, useAppRouter} from '@/shared'
 
 // 유저의 회원가입 프로세스
 const userJoinProcess = [

@@ -14,7 +14,7 @@ import {theme} from '@/constants/Colors'
 import useMyInfo from '@/hooks/my/useMyInfo'
 
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 
 import {AccountMenuWidget} from '@/widgets/account-menu'
 import {ProfileBox, TeamBox} from '@/widgets/my-info'

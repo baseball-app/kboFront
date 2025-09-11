@@ -1,4 +1,4 @@
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 import * as api from '../api'
 import {useAuthStore} from '@/entities/auth'
 import {LoginRequest} from '../types'

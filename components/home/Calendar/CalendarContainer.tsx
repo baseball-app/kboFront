@@ -10,7 +10,7 @@ import {Match} from '@/entities/match'
 import {useAnalyticsStore} from '@/analytics/event'
 import useProfile from '@/hooks/my/useProfile'
 import {Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, View} from 'react-native'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 
 type Props = {
   targetId: number

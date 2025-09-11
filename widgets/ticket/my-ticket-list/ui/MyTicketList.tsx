@@ -1,6 +1,6 @@
 import Skeleton from '@/components/skeleton/Skeleton'
 import {TicketCard, useTeam} from '@/entities/match'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 import {TicketListByTeam} from '@/entities/ticket'
 import useProfile from '@/hooks/my/useProfile'
 import React from 'react'

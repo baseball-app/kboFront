@@ -8,7 +8,7 @@ import {useEffect} from 'react'
 import {IUserJoinSlice} from '@/slice/userJoinSlice'
 import {useCommonSlice} from '@/slice/commonSlice'
 import {useTeam} from '@/entities/match'
-import {useAppRouter} from '../common'
+import {useAppRouter} from '@/shared'
 import {hashKey} from '@/utils/hashKey'
 
 export type Team = {

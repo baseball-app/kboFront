@@ -1,7 +1,7 @@
 import {usePopup} from '@/slice/commonSlice'
 import * as api from '../api'
 import {useAuthStore} from '@/entities/auth'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 
 const useWithdraw = () => {
   const {clear} = useAuthStore()

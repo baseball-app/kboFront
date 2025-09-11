@@ -1,5 +1,5 @@
 import {ProfileImage} from '@/entities/user'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import React from 'react'
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'

@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import {Ionicons} from '@expo/vector-icons'
 import useConsent from '@/hooks/auth/useConsent'
 import {Privacy} from '@/entities/terms'
-import {useAppRouter} from '@/hooks/common'
+import {useAppRouter} from '@/shared'
 const PrivacyPolicyScreen = () => {
   const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent()
   const router = useAppRouter()

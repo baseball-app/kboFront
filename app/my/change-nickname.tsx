@@ -1,5 +1,5 @@
 import Header from '@/components/common/Header'
-import {useAppRouter} from '@/hooks/common'
+import {useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import {moderateScale, verticalScale} from '@/utils/metrics'
 import React, {useState} from 'react'

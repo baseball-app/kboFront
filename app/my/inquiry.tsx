@@ -15,7 +15,7 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import {useMutation} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {usePopup} from '@/slice/commonSlice'
-import {useAppRouter} from '@/hooks/common'
+import {useAppRouter} from '@/shared'
 import {showToast} from '@/utils/showToast'
 
 type Inquiry = {

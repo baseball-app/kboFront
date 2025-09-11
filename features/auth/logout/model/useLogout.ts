@@ -1,6 +1,5 @@
 import {useAuthStore} from '@/entities/auth'
-import {useAppRouter} from '@/hooks/common/useAppRouter'
-import {ROUTES} from '@/hooks/common/constants'
+import {useAppRouter, ROUTES} from '@/shared'
 import * as api from '../api'
 
 const useLogout = () => {

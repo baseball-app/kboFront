@@ -1,6 +1,6 @@
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native'
-import {useAppRouter} from '@/hooks/common'
+import {useAppRouter} from '@/shared'
 
 type ButtonType = {
   onPress?: () => void

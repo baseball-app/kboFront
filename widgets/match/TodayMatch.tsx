@@ -2,7 +2,7 @@ import {DAYS_OF_WEEK} from '@/constants/day'
 import dayjs from 'dayjs'
 import React from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 import {TeamWithInfo, useMatch, useTeam} from '@/entities/match'
 import useProfile from '@/hooks/my/useProfile'
 
