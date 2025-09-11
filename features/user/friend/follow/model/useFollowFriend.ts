@@ -1,7 +1,7 @@
 import ApiClient from '@/api'
 import {useMutation} from '@tanstack/react-query'
 
-import {showToast} from '@/utils/showToast'
+import {showToast} from '@/shared'
 import {useFriends} from '@/entities/friend'
 import useProfile from '@/hooks/my/useProfile'
 

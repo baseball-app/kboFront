@@ -1,4 +1,4 @@
-import {groupBy} from '@/utils/groupBy'
+import {groupBy} from '@/shared'
 import {TicketCalendarLog} from '../types'
 
 class MatchScreenError extends Error {

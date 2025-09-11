@@ -8,15 +8,10 @@ import Header from '@/components/common/Header'
 import {useAnalyticsStore} from '@/analytics/event'
 import * as MediaLibrary from 'expo-media-library'
 import {ROUTES, useAppRouter} from '@/shared'
-import {showToast} from '@/utils/showToast'
-import {useShare} from '@/utils/useShare'
 import {TicketFrame} from '@/widgets/ticket/frame'
-import {NoPermissionError, useMediaPermission} from '@/utils/useMediaPermission'
-import {useCaptureView} from '@/utils/useCaptureView'
+import {NoPermissionError, useCaptureView, useShare, useMediaPermission, showToast} from '@/shared'
 import {TicketDeleteButton} from '@/features/ticket/delete-ticket'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
-// import {useTicketDetail} from '@/entities/ticket'
-import {useTicketReaction} from '@/entities/ticket/model'
 
 export default function GameCard() {
   const router = useAppRouter()

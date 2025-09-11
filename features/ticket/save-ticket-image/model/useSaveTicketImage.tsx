@@ -1,7 +1,5 @@
 import * as MediaLibrary from 'expo-media-library'
-import {showToast} from '@/utils/showToast'
-import {NoPermissionError, useMediaPermission} from '@/utils/useMediaPermission'
-import {useCaptureView} from '@/utils/useCaptureView'
+import {showToast} from '@/shared'
 
 const useSaveTicketImage = () => {
   const onSaveTicketImage = async (uri: string) => {

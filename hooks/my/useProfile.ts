@@ -9,7 +9,7 @@ import {IUserJoinSlice} from '@/slice/userJoinSlice'
 import {useCommonSlice} from '@/slice/commonSlice'
 import {useTeam} from '@/entities/match'
 import {useAppRouter} from '@/shared'
-import {hashKey} from '@/utils/hashKey'
+import {hashKey} from '@/shared'
 
 export type Team = {
   id: number // 3

@@ -2,7 +2,7 @@ import ApiClient from '@/api'
 import {useMutation} from '@tanstack/react-query'
 import useProfile from './useProfile'
 import useFriends from './useFriends'
-import {showToast} from '@/utils/showToast'
+import {showToast} from '@/shared'
 
 /**
  * 친구 추가 플로우

@@ -16,7 +16,7 @@ import {useMutation} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {usePopup} from '@/slice/commonSlice'
 import {useAppRouter} from '@/shared'
-import {showToast} from '@/utils/showToast'
+import {showToast} from '@/shared'
 
 type Inquiry = {
   email: string

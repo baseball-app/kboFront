@@ -9,7 +9,7 @@ import {TicketCalendarLog} from './type'
 import {END_DATE, START_DATE} from './CalendarContainer'
 import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
-import {groupBy} from '@/utils/groupBy'
+import {groupBy} from '@/shared'
 import LottieView from 'lottie-react-native'
 
 type Props = {

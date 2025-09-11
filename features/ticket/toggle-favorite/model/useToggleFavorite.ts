@@ -1,6 +1,3 @@
-import {useAppRouter} from '@/shared'
-import {useCommonSlice} from '@/slice/commonSlice'
-import {showToast} from '@/utils/showToast'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import React from 'react'
 import * as api from '../api'
