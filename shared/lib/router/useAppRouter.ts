@@ -1,4 +1,4 @@
-import {router, UnknownInputParams} from 'expo-router'
+import {useRouter, UnknownInputParams} from 'expo-router'
 import {RouterAddress} from './constants'
 
 // 라우터 함수 타입 정의
@@ -13,6 +13,7 @@ class RouterError extends Error {
 }
 
 const useAppRouter = () => {
+  const router = useRouter()
   // 뒤로 갈 수 있는지 확인
   const canGoBack = router.canGoBack
 

@@ -1,6 +1,5 @@
-import {Config} from '@/config/Config'
 import messaging, {FirebaseMessagingTypes} from '@react-native-firebase/messaging'
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
 import {create} from 'zustand'
 
 type RemoteMessageCallback = (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => Promise<void>

@@ -1,0 +1,1 @@
+export {useUpdateDeviceToken} from './model'

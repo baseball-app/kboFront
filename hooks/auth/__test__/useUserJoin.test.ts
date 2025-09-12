@@ -4,12 +4,6 @@ import useUserJoin from '../useUserJoin'
 import useProfile from '../../my/useProfile'
 import {useAppRouter} from '@/shared'
 
-// Mocking dependencies
-jest.mock('expo-router', () => ({
-  useRouter: jest.fn(),
-  useSegments: jest.fn(),
-}))
-
 jest.mock('../../my/useProfile', () => ({
   __esModule: true,
   default: jest.fn(),

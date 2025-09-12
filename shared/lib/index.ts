@@ -9,3 +9,5 @@ export {useCaptureView} from './useCaptureView'
 export {showToast} from './showToast'
 export {groupBy} from './groupBy'
 export {hashKey} from './hashKey'
+
+export * from './test'

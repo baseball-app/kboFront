@@ -1,6 +1,117 @@
 import * as ReactNative from 'react-native'
 import {jest} from '@jest/globals'
 
+// Mock global NativeUnimoduleProxy
+;(global as any).NativeUnimoduleProxy = {
+  modulesConstants: {},
+  callMethod: jest.fn(),
+  addListener: jest.fn(),
+  removeListeners: jest.fn(),
+}
+
+// Mocking dependencies
+jest.mock('expo-router', () => ({
+  useRouter: jest.fn(),
+  useSegments: jest.fn(),
+}))
+
+// Mock expo-media-library
+jest.mock('expo-media-library', () => ({
+  requestPermissionsAsync: jest.fn(() => Promise.resolve({status: 'granted'})),
+  getPermissionsAsync: jest.fn(() => Promise.resolve({status: 'granted'})),
+  createAssetAsync: jest.fn(() => Promise.resolve({id: 'mock-asset-id'})),
+  getAssetsAsync: jest.fn(() => Promise.resolve({assets: [], hasNextPage: false, endCursor: ''})),
+  getAssetInfoAsync: jest.fn(() => Promise.resolve({id: 'mock-asset-id', filename: 'mock.jpg'})),
+  deleteAssetsAsync: jest.fn(() => Promise.resolve()),
+  MediaType: {
+    photo: 'photo',
+    video: 'video',
+    audio: 'audio',
+    unknown: 'unknown',
+  },
+  SortBy: {
+    default: 'default',
+    id: 'id',
+    mediaType: 'mediaType',
+    width: 'width',
+    height: 'height',
+    creationTime: 'creationTime',
+    modificationTime: 'modificationTime',
+    duration: 'duration',
+  },
+}))
+
+// Mock expo modules
+jest.mock('expo-modules-core', () => ({
+  NativeModulesProxy: {},
+  EventEmitter: jest.fn(),
+  requireNativeViewManager: jest.fn(),
+  UnavailabilityError: jest.fn(),
+}))
+
+// Mock expo constants
+jest.mock('expo-constants', () => ({
+  __esModule: true,
+  default: {
+    appOwnership: 'expo',
+    expoVersion: '50.0.0',
+    installationId: 'mock-installation-id',
+    sessionId: 'mock-session-id',
+    platform: {
+      ios: {
+        platform: 'ios',
+        model: 'iPhone',
+        osVersion: '15.0',
+      },
+      android: {
+        platform: 'android',
+        model: 'Android',
+        osVersion: '11.0',
+      },
+    },
+  },
+}))
+
+// Mock expo-file-system
+jest.mock('expo-file-system', () => ({
+  documentDirectory: 'file:///mock/document/directory/',
+  cacheDirectory: 'file:///mock/cache/directory/',
+  writeAsStringAsync: jest.fn(() => Promise.resolve()),
+  readAsStringAsync: jest.fn(() => Promise.resolve('mock content')),
+  deleteAsync: jest.fn(() => Promise.resolve()),
+  makeDirectoryAsync: jest.fn(() => Promise.resolve()),
+  readDirectoryAsync: jest.fn(() => Promise.resolve([])),
+  getInfoAsync: jest.fn(() => Promise.resolve({exists: true, isDirectory: false})),
+}))
+
+// Mock react-native-view-shot
+jest.mock('react-native-view-shot', () => {
+  const React = require('react')
+  const {View} = require('react-native')
+
+  return {
+    __esModule: true,
+    default: React.forwardRef((props: any, ref: any) => {
+      return React.createElement(View, {...props, ref})
+    }),
+    captureRef: jest.fn(() => Promise.resolve('mock-image-uri')),
+    captureScreen: jest.fn(() => Promise.resolve('mock-image-uri')),
+  }
+})
+
+// Mock react-native-toast-message
+jest.mock('react-native-toast-message', () => ({
+  __esModule: true,
+  default: {
+    show: jest.fn(),
+    hide: jest.fn(),
+  },
+  BaseToast: jest.fn(),
+  ErrorToast: jest.fn(),
+  InfoToast: jest.fn(),
+  SuccessToast: jest.fn(),
+}))
+
 // Mock react-native-share
 jest.mock('react-native-share', () => ({
   open: jest.fn(),
@@ -9,6 +120,51 @@ jest.mock('react-native-share', () => ({
     FACEBOOK: 'facebook',
     TWITTER: 'twitter',
     WHATSAPP: 'whatsapp',
+  },
+}))
+
+// Mock react-native-config
+jest.mock('react-native-config', () => ({
+  __esModule: true,
+  default: {
+    API_URL: 'http://localhost:3000',
+    ENV: 'test',
+  },
+}))
+
+// Mock @react-native-firebase/messaging
+jest.mock('@react-native-firebase/messaging', () => ({
+  __esModule: true,
+  default: () => ({
+    getToken: jest.fn(() => Promise.resolve('mock-token')),
+    requestPermission: jest.fn(() => Promise.resolve(true)),
+    hasPermission: jest.fn(() => Promise.resolve(true)),
+    onMessage: jest.fn(),
+    onNotificationOpenedApp: jest.fn(),
+    getInitialNotification: jest.fn(() => Promise.resolve(null)),
+    setBackgroundMessageHandler: jest.fn(),
+    onTokenRefresh: jest.fn(),
+    deleteToken: jest.fn(() => Promise.resolve()),
+    isDeviceRegisteredForRemoteMessages: jest.fn(() => Promise.resolve(true)),
+    registerDeviceForRemoteMessages: jest.fn(() => Promise.resolve()),
+    unregisterDeviceForRemoteMessages: jest.fn(() => Promise.resolve()),
+    getAPNSToken: jest.fn(() => Promise.resolve('mock-apns-token')),
+    setAPNSToken: jest.fn(() => Promise.resolve()),
+    isAutoInitEnabled: jest.fn(() => true),
+    setAutoInitEnabled: jest.fn(() => Promise.resolve()),
+  }),
+  FirebaseMessagingTypes: {
+    AuthorizationStatus: {
+      NOT_DETERMINED: -1,
+      DENIED: 0,
+      AUTHORIZED: 1,
+      PROVISIONAL: 2,
+    },
+    NotificationType: {
+      UNKNOWN: 0,
+      RECEIVED: 1,
+      OPENED: 2,
+    },
   },
 }))
 
@@ -41,7 +197,11 @@ jest.doMock('react-native', () => {
     {
       Platform: {
         OS: 'android',
-        select: () => {},
+        select: jest.fn((obj: any) => obj.android || obj.default),
+        Version: '1.0.0',
+        isPad: false,
+        isTVOS: false,
+        isTesting: true,
       },
       AppRegistry: {
         registerHeadlessTask: jest.fn(),
@@ -108,6 +268,12 @@ jest.doMock('react-native', () => {
         RNShare: {
           open: jest.fn(),
           shareSingle: jest.fn(),
+        },
+        RNCConfigModule: {
+          getConfig: jest.fn(() => ({
+            API_URL: 'http://localhost:3000',
+            ENV: 'test',
+          })),
         },
       },
     },
