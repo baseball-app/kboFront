@@ -1,7 +1,8 @@
 import {renderHook, act} from '@testing-library/react-hooks'
-import {useRouter, useSegments} from 'expo-router'
+import {useSegments} from 'expo-router'
 import useUserJoin from '../useUserJoin'
 import useProfile from '../../my/useProfile'
+import {useAppRouter} from '@/shared'
 
 // Mocking dependencies
 jest.mock('expo-router', () => ({
@@ -12,6 +13,19 @@ jest.mock('expo-router', () => ({
 jest.mock('../../my/useProfile', () => ({
   __esModule: true,
   default: jest.fn(),
+}))
+
+jest.mock('@/shared', () => ({
+  useAppRouter: jest.fn(),
+  ROUTES: {
+    AUTH_NICKNAME: '/auth/nickname',
+    AUTH_LOGIN: '/auth/login',
+    TABS: '/(tabs)',
+    AUTH_TERM_OF_SERVICE: '/auth/term-of-service',
+    AUTH_PROFILE: '/auth/profile-image',
+    AUTH_TEAM: '/auth/my-team',
+    CALENDAR_TAB: '/(tabs)',
+  },
 }))
 
 jest.mock('@/slice/userJoinSlice', () => ({
@@ -27,6 +41,7 @@ describe('useUserJoin', () => {
     navigate: jest.fn(),
     push: jest.fn(),
     back: jest.fn(),
+    dismissAll: jest.fn(),
   }
 
   const mockUpdateProfileWithSignUp = jest.fn()
@@ -34,7 +49,7 @@ describe('useUserJoin', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
+    ;(useAppRouter as jest.Mock).mockReturnValue(mockRouter)
     ;(useProfile as jest.Mock).mockReturnValue({updateProfileWithSignUp: mockUpdateProfileWithSignUp})
     mockConsoleError.mockClear()
   })
@@ -52,7 +67,7 @@ describe('useUserJoin', () => {
       result.current.moveToNextStep()
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith('/auth/nickname')
+    expect(mockRouter.navigate).toHaveBeenCalledWith('/auth/nickname')
   })
 
   it('should move to previous step correctly', () => {
@@ -85,7 +100,7 @@ describe('useUserJoin', () => {
     const {result} = renderHook(() => useUserJoin())
 
     await act(async () => {
-      result.current.moveToNextStep()
+      await result.current.moveToNextStep()
     })
 
     expect(mockUpdateProfileWithSignUp).toHaveBeenCalled()

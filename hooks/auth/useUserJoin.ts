@@ -69,12 +69,12 @@ const useUserJoin = () => {
    * 다음 step으로 이동
    * 다음 step이 없으면 회원가입 요청
    */
-  const moveToNextStep = () => {
+  const moveToNextStep = async () => {
     try {
       const nextStep = getNextStep(currentStep)
       if (!nextStep) {
         router.dismissAll()
-        signUp()
+        await signUp()
       } else {
         router.navigate(nextStep)
       }

@@ -18,7 +18,10 @@
     "android": "expo run:android"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ]
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.11",
