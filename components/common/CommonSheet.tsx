@@ -1,6 +1,5 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {Modal} from '@/components/common/Modal'
+import {Image, Pressable, StyleSheet, View, Modal} from 'react-native'
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 import {useSheetSlice} from '@/slice/sheetSlice'
 
 const CommonSheet = () => {
@@ -11,16 +10,18 @@ const CommonSheet = () => {
     <Modal
       visible={Boolean(currentSheet)}
       onRequestClose={sheetSlice.sheet.hide}
-      animationType="slide" //
-    >
-      <SafeAreaView edges={['top']} style={styles.webViewContainer}>
-        <View style={{padding: 16, alignItems: 'flex-end'}}>
-          <Pressable onPress={sheetSlice.sheet.hide}>
-            <Image source={require('@/assets/icons/close.png')} style={styles.icon} resizeMode="contain" />
-          </Pressable>
-        </View>
-        {currentSheet?.content}
-      </SafeAreaView>
+      animationType="slide"
+      transparent={false}>
+      <SafeAreaProvider>
+        <SafeAreaView edges={['top']} style={{flex: 1, backgroundColor: 'transparent'}}>
+          <View style={{padding: 16, alignItems: 'flex-end'}}>
+            <Pressable onPress={sheetSlice.sheet.hide}>
+              <Image source={require('@/assets/icons/close.png')} style={styles.icon} resizeMode="contain" />
+            </Pressable>
+          </View>
+          {currentSheet?.content}
+        </SafeAreaView>
+      </SafeAreaProvider>
     </Modal>
   )
 }
