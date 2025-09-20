@@ -1,6 +1,5 @@
 import {findProfileImageById} from '@/constants/join'
 import {FriendStatus} from '@/hooks/my/useFriends'
-import {horizontalScale, verticalScale} from '@/utils/metrics'
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 
 type Props = {
