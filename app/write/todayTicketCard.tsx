@@ -195,6 +195,8 @@ export default function GameCard() {
     onSettled: modal.hide,
   })
 
+  console.log(ticketDetail)
+
   return (
     <SafeAreaView style={styles.container}>
       <Header

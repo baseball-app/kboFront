@@ -25,6 +25,10 @@ const MyTicketBoxScreen = () => {
   const myTeam = findTeamById(profile.my_team?.id)
   const pathname = usePathname()
 
+  ticketList?.forEach(ticket => {
+    console.log(ticket)
+  })
+
   return (
     <InitScrollProvider style={styles.container}>
       <View style={styles.infoBox}>
