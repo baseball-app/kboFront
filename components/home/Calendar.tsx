@@ -32,6 +32,8 @@ export type TicketCalendarLog = {
     name: string // '잠실야구장'
     team_id: number // 3
   }
+  home: string
+  opponent_name: string
 }
 const dimensions = Dimensions.get('window')
 const width = dimensions.width - 48

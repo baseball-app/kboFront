@@ -5,12 +5,20 @@ import {findMatchResultImage} from '@/constants/match'
 import {useTeam} from '@/entities/match'
 
 //TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
-const MatchResultCell = ({data, onPress}: {data: TicketCalendarLog[]; onPress: () => void; isLoading: boolean}) => {
-  const {findTeamById} = useTeam()
+const MatchResultCell = ({
+  data,
+  onPress,
+  isLoading,
+}: {
+  data: TicketCalendarLog[]
+  onPress: () => void
+  isLoading: boolean
+}) => {
+  const {findTeamByName} = useTeam()
 
   const matchResult = data[0]?.result
-  const opponent = findTeamById(data[0]?.opponent?.id)
-  const myTeam = findTeamById(data[0]?.ballpark?.team_id)
+  const opponent = findTeamByName(data[0]?.opponent_name)
+  const myTeam = findTeamByName(data[0]?.home)
 
   return (
     <TouchableOpacity style={{alignItems: 'center'}} onPress={onPress}>

@@ -13,4 +13,6 @@ export type TicketCalendarLog = {
     name: string // '잠실야구장'
     team_id: number // 3
   }
+  home: string
+  opponent_name: string
 }
