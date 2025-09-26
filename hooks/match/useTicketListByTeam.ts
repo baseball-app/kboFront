@@ -19,6 +19,7 @@ export type TicketListByTeam = {
   direct_yn: boolean
   score_our: number // 홈팀 점수
   score_opponent: number // 원정팀 점수
+  gip_place: string //
 }
 
 const useTicketListByTeam = () => {

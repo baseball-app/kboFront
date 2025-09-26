@@ -25,10 +25,6 @@ const MyTicketBoxScreen = () => {
   const myTeam = findTeamById(profile.my_team?.id)
   const pathname = usePathname()
 
-  ticketList?.forEach(ticket => {
-    console.log(ticket)
-  })
-
   return (
     <InitScrollProvider style={styles.container}>
       <View style={styles.infoBox}>
@@ -173,7 +169,9 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
           height: 102,
           marginRight: -2,
         }}>
-        <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
+        <Text style={styles.parkName} numberOfLines={1}>
+          {ticket.gip_place || ticket.ballpark.name}
+        </Text>
         <Text style={[styles.date, {marginBottom: 4}]}>{format(ticket.date, 'yyyy.MM.dd')}</Text>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -300,8 +298,9 @@ const styles = StyleSheet.create({
   parkName: {
     fontSize: 14,
     color: '#171716',
-    fontWeight: 400,
+    fontWeight: '400',
     lineHeight: 21,
+    overflow: 'hidden',
   },
   date: {
     fontSize: 13,
