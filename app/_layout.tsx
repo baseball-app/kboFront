@@ -12,10 +12,9 @@ import {Text, View, TextInput, Platform} from 'react-native'
 import Toast, {ToastConfig} from 'react-native-toast-message'
 import {EVENTS} from '@/analytics/event'
 import {logEvent} from '@/analytics/func'
-import messaging from '@react-native-firebase/messaging'
+import {setBackgroundMessageHandler, getMessaging} from '@react-native-firebase/messaging'
 import notifee from '@notifee/react-native'
 import {CommonSheet} from '@/components/common/CommonSheet'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 interface TextWithDefaultProps extends Text {
   defaultProps?: {allowFontScaling?: boolean}
@@ -37,7 +36,9 @@ enableScreens(false)
 
 SplashScreen.preventAutoHideAsync()
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
+const messaging = getMessaging()
+
+setBackgroundMessageHandler(messaging, async remoteMessage => {
   if (Platform.OS === 'android') {
     console.log('📡 Background Push 수신됨:', remoteMessage)
     await notifee.displayNotification({
@@ -67,11 +68,6 @@ export default function RootLayout() {
     logEvent(EVENTS.SCREEN_VIEW, {screen_name: pathname})
   }, [pathname])
 
-  // const {bottom} = useSafeAreaInsets()
-
-  /*
-  1. Create the config
-*/
   const toastConfig: ToastConfig = useMemo(
     () => ({
       info: (

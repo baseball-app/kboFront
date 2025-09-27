@@ -1,4 +1,11 @@
-import messaging, {FirebaseMessagingTypes} from '@react-native-firebase/messaging'
+import {
+  FirebaseMessagingTypes,
+  getMessaging,
+  getToken,
+  requestPermission,
+  AuthorizationStatus,
+  onMessage,
+} from '@react-native-firebase/messaging'
 import {useEffect} from 'react'
 import {create} from 'zustand'
 
@@ -12,6 +19,8 @@ const usePushMessageStore = create<{
   setDeviceToken: deviceToken => set({deviceToken}),
 }))
 
+const messaging = getMessaging()
+
 /**
  * 푸시 메시지 관리 등록 훅
  * @params foregroundMessageHandler: (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => Promise<void> 포어그라운드 메시지 처리 함수
@@ -21,39 +30,28 @@ const usePushMessage = (foregroundMessageHandler?: RemoteMessageCallback) => {
   const {deviceToken, setDeviceToken} = usePushMessageStore()
 
   useEffect(() => {
-    /**
-     * FCM 토큰을 받습니다.
-     */
     const getFcmToken = async () => {
-      async function requestPermissionAndRegister() {
-        const authStatus = await messaging().requestPermission()
-        const enabled =
-          authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-          authStatus === messaging.AuthorizationStatus.PROVISIONAL
-
-        if (enabled) {
-          console.log('Authorization status:', authStatus)
-          await messaging().registerDeviceForRemoteMessages()
-          const fcmTokenInfo = await messaging().getToken()
-          setDeviceToken(fcmTokenInfo)
-        } else {
-          throw new Error('Push permission denied.')
-        }
-      }
-
       try {
-        await requestPermissionAndRegister()
-        // await messaging().registerDeviceForRemoteMessages();
+        // 권한 요청
+        const authStatus = await requestPermission(messaging)
+        const enabled = authStatus === AuthorizationStatus.AUTHORIZED || authStatus === AuthorizationStatus.PROVISIONAL
+
+        if (!enabled) throw new Error('Push permission denied.')
+
+        const fcmToken = await getToken(messaging)
+        setDeviceToken(fcmToken)
+
+        console.log('FCM Token:', fcmToken)
       } catch (error) {
         console.error('getFcmToken :: ', error)
       }
-      // setFcmToken(fcmTokenInfo);
     }
+
     getFcmToken()
-  }, [])
+  }, [setDeviceToken])
 
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
+    const unsubscribe = onMessage(messaging, async remoteMessage => {
       console.log('📲 Foreground Push 수신됨:', remoteMessage)
       if (foregroundMessageHandler) {
         await foregroundMessageHandler(remoteMessage)

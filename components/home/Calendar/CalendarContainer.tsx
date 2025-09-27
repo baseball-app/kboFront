@@ -11,6 +11,7 @@ import {useAnalyticsStore} from '@/analytics/event'
 import useProfile from '@/hooks/my/useProfile'
 import {Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, View} from 'react-native'
 import {ROUTES, useAppRouter} from '@/shared'
+import {CALENDAR_START_DATE, CALENDAR_END_DATE} from '@/constants/day'
 
 type Props = {
   targetId: number
@@ -18,8 +19,8 @@ type Props = {
 
 const width = Dimensions.get('window').width - 48
 
-export const START_DATE = dayjs('2024-01-01')
-export const END_DATE = dayjs(`${dayjs().year() + 1}-12-31`)
+const START_DATE = CALENDAR_START_DATE
+const END_DATE = CALENDAR_END_DATE
 
 const CalendarContainer = ({targetId}: Props) => {
   const {profile} = useProfile()

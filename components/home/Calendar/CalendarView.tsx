@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import React, {useState} from 'react'
 import {Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {TicketCalendarLog} from './type'
-import {END_DATE, START_DATE} from './CalendarContainer'
+import {CALENDAR_END_DATE, CALENDAR_START_DATE} from '@/constants/day'
 import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {groupBy} from '@/shared'
@@ -113,7 +113,10 @@ const YearMonthPicker = ({
   const [selectedMonth, setSelectedMonth] = useState(Number(initialYearMonth.split('.')[1]))
 
   const [yearList] = useState(
-    Array.from({length: END_DATE.diff(START_DATE, 'year') + 1}, (_, i) => `${START_DATE.year() + i}년`),
+    Array.from(
+      {length: CALENDAR_END_DATE.diff(CALENDAR_START_DATE, 'year') + 1},
+      (_, i) => `${CALENDAR_START_DATE.year() + i}년`,
+    ),
   )
 
   return (
