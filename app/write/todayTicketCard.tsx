@@ -93,7 +93,7 @@ export default function GameCard() {
     <SafeAreaView style={styles.container}>
       <Header
         title="오늘의 티켓"
-        variants="transparent"
+        variants="#F3F2EE"
         leftButton={{
           onPress: onBackButtonClick,
           content: (
@@ -110,7 +110,7 @@ export default function GameCard() {
         {isMyTicket && (
           <View style={styles.iconBox}>
             <TouchableOpacity onPress={onShareInstagramStories}>
-              <Text>공유하기</Text>
+              <Image source={require('@/assets/icons/share.png')} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
             <TouchableOpacity onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
@@ -199,12 +199,12 @@ export default function GameCard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fffcf3',
+    backgroundColor: '#F3F2EE',
   },
   scrollBox: {
     marginTop: 14,
     paddingHorizontal: 24,
-    backgroundColor: '#fffcf3',
+    backgroundColor: '#F3F2EE',
   },
   iconBox: {
     flexDirection: 'row',
@@ -262,7 +262,6 @@ const styles = StyleSheet.create({
   resultBox: {
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: '#202020',
     marginTop: 2,
     gap: 2.5,
   },
@@ -276,7 +275,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   emojiBox: {
-    backgroundColor: '#fffcf3',
+    // backgroundColor: '#fffcf3',
     flexDirection: 'row',
     width: '100%',
     flexWrap: 'wrap',

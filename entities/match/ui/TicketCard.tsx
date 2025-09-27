@@ -11,6 +11,7 @@ type TicketCardProps = {
       name: string
     }
     date: string
+    gip_place: string
   }
   homeTeam?: TeamWithInfo
   awayTeam?: TeamWithInfo
@@ -51,7 +52,9 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
           height: 102,
           marginRight: -2,
         }}>
-        <Text style={styles.parkName}>{ticket.ballpark.name}</Text>
+        <Text style={styles.parkName} numberOfLines={1}>
+          {ticket.gip_place || ticket.ballpark.name}
+        </Text>
         <Text style={[styles.date, {marginBottom: 4}]}>{format(ticket.date, 'yyyy.MM.dd')}</Text>
         <TouchableOpacity
           activeOpacity={0.8}

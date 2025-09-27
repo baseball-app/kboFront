@@ -8,7 +8,7 @@ type ButtonType = {
 }
 
 type Props = {
-  variants?: 'white' | 'transparent'
+  variants?: 'white' | 'transparent' | '#F3F2EE'
   hasBackButton?: boolean
   rightButton?: ButtonType
   leftButton?: ButtonType
@@ -16,6 +16,9 @@ type Props = {
   topInset?: number
 }
 
+/**
+ * TODO: variants 변경해야 함
+ */
 const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButton, title, topInset = 0}: Props) => {
   const router = useAppRouter()
 
@@ -27,7 +30,10 @@ const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButt
     <View
       style={[
         styles.container,
-        {backgroundColor: variants === 'white' ? '#fff' : '#FFFCF3', paddingTop: topInset + 18},
+        {
+          backgroundColor: variants === 'white' ? '#fff' : variants === '#F3F2EE' ? '#F3F2EE' : '#FFFCF3',
+          paddingTop: topInset + 18,
+        },
       ]}>
       {leftButton ? (
         leftButton.onPress ? (
