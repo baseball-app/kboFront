@@ -1,24 +1,11 @@
-import {findMatchResultImage, findWeatherImage} from '@/constants/match'
+import {Svg, Line} from 'react-native-svg'
 import useTeam from '@/hooks/match/useTeam'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {format} from 'date-fns'
 import {useLocalSearchParams, usePathname} from 'expo-router'
 import React, {useRef, useState} from 'react'
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-  Platform,
-  Linking,
-  Dimensions,
-} from 'react-native'
+import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform, Linking} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
-import MaskedView from '@react-native-masked-view/masked-view'
-import Svg, {Path} from 'react-native-svg'
 import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
 import Ellipse from '@/components/common/Ellipse'
@@ -201,7 +188,7 @@ export default function GameCard() {
     <SafeAreaView style={styles.container}>
       <Header
         title="오늘의 티켓"
-        variants="transparent"
+        variants="#F3F2EE"
         leftButton={{
           onPress: onBackButtonClick,
           content: (
@@ -250,7 +237,7 @@ export default function GameCard() {
         {isMyTicket && (
           <View style={styles.iconBox}>
             <TouchableOpacity onPress={onShareInstagramStories}>
-              <Text>공유하기</Text>
+              <Image source={require('@/assets/icons/share.png')} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
             <TouchableOpacity onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
@@ -281,125 +268,18 @@ export default function GameCard() {
           </View>
         ) : null}
         <ViewShot style={styles.ticketBox} ref={ref} options={{fileName: 'todaybaseball', format: 'png', quality: 0.9}}>
-          <MaskedView
-            style={{
-              aspectRatio: 307 / 12,
-            }}
-            maskElement={
-              <Svg height="100%" width="100%" viewBox="0 0 307 11">
-                {/* 오른쪽 절반만 흰색으로 그리기 */}
-                <Path
-                  fill="white"
-                  d={`
-                          M0 0
-                          H15
-                          M15 0
-                          A10,10 0 0,0 35,0
-                          H47
-                          M47 0
-                          A10,10 0 0,0 67,0
-                          H79
-                          M79 0
-                          A10,10 0 0,0 99,0
-                          H111
-                          M111 0
-                          A10,10 0 0,0 131,0
-                          H143
-                          M143 0
-                          A10,10 0 0,0 163,0
-                          H175
-                          M175 0
-                          A10,10 0 0,0 195,0
-                          H207
-                          M207 0
-                          A10,10 0 0,0 227,0
-                          H239
-                          M239 0
-                          A10,10 0 0,0 259,0
-                          H271
-                          M271 0
-                          A10,10 0 0,0 291,0
-                          H307
-                          V11
-                          H0
-                          V0
-                          Z
-                          `}
-                />
-              </Svg>
-            }>
-            <View style={{width: '100%', height: 100, backgroundColor: '#202020'}} />
-          </MaskedView>
           <View style={styles.ticketBackground}>
             <View style={[styles.ticketContent]}>
               <View style={{position: 'relative', width: '100%'}}>
-                <MaskedView
-                  style={{
-                    aspectRatio: 307 / 270,
+                <Image
+                  source={{
+                    uri: ticketDetail?.image,
                   }}
-                  maskElement={
-                    <Svg height="100%" width="100%" viewBox="0 0 307 270">
-                      <Path
-                        fill="white"
-                        d={`
-                          M0 0 
-                          H307 
-                          V270 
-                          H0 
-                          Z
-                          
-                          M0 0 
-                          V0 20
-                          C0 20, 20 20, 20 0 
-                          Z
-                          
-                          M287 0
-                          C287 20, 307 20, 307 20
-                          V307 0
-                          Z
-                          `}
-                      />
-                    </Svg>
-                  }>
-                  {/* 마스킹된 부분에 이미지 표시 */}
-                  <Image
-                    source={{
-                      uri: ticketDetail?.image,
-                    }}
-                    style={{width: '100%', aspectRatio: 307 / 270}}
-                    resizeMode="cover"
-                  />
-                  <Svg height="100%" width="100%" viewBox="0 0 307 270" style={{position: 'absolute', top: 0, left: 0}}>
-                    <Path
-                      d={`
-                          M0 0 
-                          H307 
-                          V270 
-                          H0 
-                          Z
-                          
-                          M0 0 
-                          V0 20
-                          C0 20, 20 20, 20 0 
-                          Z
-                          
-                          M287 0
-                          C287 20, 307 20, 307 20
-                          V307 0
-                          Z
-                          `}
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="6"
-                    />
-                  </Svg>
-                </MaskedView>
+                  style={{width: '100%', aspectRatio: 327 / 287}}
+                  resizeMode="cover"
+                />
               </View>
-
-              {/* <View style={styles.imgViewBox}>
-                <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
-              </View> */}
-              <View style={[styles.resultBox]}>
+              {/* <View style={[styles.resultBox]}>
                 <View style={styles.resultImgBox}>
                   <Image
                     source={findMatchResultImage(ticketDetail?.result)}
@@ -418,15 +298,13 @@ export default function GameCard() {
                   />
                   <Text style={styles.resultText}>{ticketDetail?.weather}</Text>
                 </View>
-              </View>
+              </View> */}
 
               <View style={styles.matchInfoBox}>
                 <View style={styles.scoreBox}>
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_our}</Text>
-                    <Text style={[styles.teamText, {backgroundColor: `${hometeam?.color}4D`}]}>
-                      {hometeam?.short_name}
-                    </Text>
+                    <Text style={[styles.teamText]}>{hometeam?.short_name}</Text>
                   </View>
                   <View style={{gap: 6}}>
                     <Ellipse size={5} />
@@ -434,12 +312,16 @@ export default function GameCard() {
                   </View>
                   <View style={styles.teamScoreBox}>
                     <Text style={styles.scoreText}>{ticketDetail?.score_opponent}</Text>
-                    <Text style={[styles.teamText, {backgroundColor: `${awayteam?.color}4D`}]}>
-                      {awayteam?.short_name}
-                    </Text>
+                    <Text style={[styles.teamText]}>{awayteam?.short_name}</Text>
                   </View>
                 </View>
                 <View style={styles.matchBox}>
+                  <View style={styles.infoBox}>
+                    <Text style={styles.infoLabel}>경기 결과&날씨</Text>
+                    <Text style={styles.infoValue}>
+                      {ticketDetail?.result === '취소' ? '경기 취소' : ticketDetail?.result} / {ticketDetail?.weather}
+                    </Text>
+                  </View>
                   <View style={styles.infoBox}>
                     <Text style={styles.infoLabel}>오늘의 경기일정</Text>
                     <Text style={styles.infoValue}>
@@ -451,7 +333,7 @@ export default function GameCard() {
                       {ticketDetail?.is_ballpark ? '오늘의 경기구장' : '오늘의 집관장소'}
                     </Text>
                     <View style={{flex: 1}}>
-                      <Text style={[styles.infoValue, {lineHeight: 17}]} numberOfLines={2}>
+                      <Text style={[styles.infoValue]} numberOfLines={2}>
                         {ticketDetail?.gip_place}
                       </Text>
                     </View>
@@ -459,7 +341,7 @@ export default function GameCard() {
                   <View style={styles.infoBox}>
                     <Text style={styles.infoLabel}>오늘의 선발선수</Text>
                     <View style={{flex: 1}}>
-                      <Text style={[styles.infoValue, {lineHeight: 17}]} numberOfLines={2}>
+                      <Text style={[styles.infoValue]} numberOfLines={2}>
                         {ticketDetail?.starting_pitchers}
                       </Text>
                     </View>
@@ -467,48 +349,36 @@ export default function GameCard() {
                   <View style={styles.infoBox}>
                     <Text style={styles.infoLabel}>오늘의 직관푸드</Text>
                     <View style={{flex: 1}}>
-                      <Text style={[styles.infoValue, {lineHeight: 17}]} numberOfLines={2}>
+                      <Text style={[styles.infoValue]} numberOfLines={2}>
                         {ticketDetail?.food}
                       </Text>
                     </View>
                   </View>
                 </View>
               </View>
-              <View style={{position: 'relative', width: '100%'}}>
-                <MaskedView
-                  style={{aspectRatio: 307 / 220}}
-                  maskElement={
-                    <Svg height="100%" width="100%" viewBox="0 0 307 220">
-                      <Path
-                        fill="red"
-                        d={`
-                          M0 0 
-                          H307 
-                          V220 
-                          H0 
-                          Z
-                          
-                          M307 220 
-                          V307 200
-                          C307 200, 287 200, 287 220 
-                          Z
-
-                          M20 220
-                          C20 220, 20 200, 0 200
-                          V0 220
-                          Z
-                          `}
-                      />
-                    </Svg>
-                  }>
-                  {/* 마스크로 보여질 영역 */}
-                  <View style={{width: '100%', height: '100%', backgroundColor: 'white', padding: 10}}>
+              {Boolean(ticketDetail?.memo) && (
+                <View
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                  }}>
+                  <Svg height="1" width="100%" style={{width: '100%', backgroundColor: 'white'}}>
+                    <Line x1="0" y1="0" x2="100%" y2="1" stroke="#55524E" strokeWidth="1" strokeDasharray={[4, 4]} />
+                  </Svg>
+                  <View
+                    style={{
+                      width: '100%',
+                      backgroundColor: 'white',
+                      paddingHorizontal: 24,
+                      paddingTop: 28,
+                      paddingBottom: 56,
+                    }}>
                     <View style={styles.thoughtsBox}>
                       {(() => {
                         if (!ticketDetail?.only_me) {
                           return (
                             <View style={styles.thoughtsTextBox}>
-                              <ScrollView>
+                              <ScrollView style={{maxHeight: 140}}>
                                 <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
                               </ScrollView>
                             </View>
@@ -527,7 +397,7 @@ export default function GameCard() {
                                 <Text style={styles.onlyMeText}>나만보기</Text>
                               </View>
                               <View style={styles.thoughtsTextBox}>
-                                <ScrollView>
+                                <ScrollView style={{maxHeight: 140}}>
                                   <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
                                 </ScrollView>
                               </View>
@@ -539,59 +409,10 @@ export default function GameCard() {
                       })()}
                     </View>
                   </View>
-                </MaskedView>
-              </View>
+                </View>
+              )}
             </View>
           </View>
-          <MaskedView
-            style={{
-              aspectRatio: 307 / 12,
-            }}
-            maskElement={
-              <Svg height="100%" width="100%" viewBox="0 0 307 11" style={{transform: [{rotate: '180deg'}]}}>
-                {/* 오른쪽 절반만 흰색으로 그리기 */}
-                <Path
-                  fill="white"
-                  d={`
-                          M0 0
-                          H15
-                          M15 0
-                          A10,10 0 0,0 35,0
-                          H47
-                          M47 0
-                          A10,10 0 0,0 67,0
-                          H79
-                          M79 0
-                          A10,10 0 0,0 99,0
-                          H111
-                          M111 0
-                          A10,10 0 0,0 131,0
-                          H143
-                          M143 0
-                          A10,10 0 0,0 163,0
-                          H175
-                          M175 0
-                          A10,10 0 0,0 195,0
-                          H207
-                          M207 0
-                          A10,10 0 0,0 227,0
-                          H239
-                          M239 0
-                          A10,10 0 0,0 259,0
-                          H271
-                          M271 0
-                          A10,10 0 0,0 291,0
-                          H307
-                          V11
-                          H0
-                          V0
-                          Z
-                          `}
-                />
-              </Svg>
-            }>
-            <View style={{width: '100%', height: 100, backgroundColor: '#202020'}} />
-          </MaskedView>
         </ViewShot>
         <View style={styles.emojiBox}>
           {reactionList.map(reaction => (
@@ -656,7 +477,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fffcf3',
+    backgroundColor: '#F3F2EE',
   },
   headerBox: {
     paddingVertical: 10,
@@ -678,7 +499,7 @@ const styles = StyleSheet.create({
   scrollBox: {
     marginTop: 14,
     paddingHorizontal: 24,
-    backgroundColor: '#fffcf3',
+    backgroundColor: '#F3F2EE',
   },
   iconBox: {
     flexDirection: 'row',
@@ -742,7 +563,6 @@ const styles = StyleSheet.create({
   resultBox: {
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: '#202020',
     marginTop: 2,
     gap: 2.5,
   },
@@ -768,14 +588,14 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff',
     flexDirection: 'column',
-    marginVertical: 2,
   },
   scoreBox: {
     width: '100%',
-    height: 90,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
+    paddingTop: 20,
+    paddingBottom: 24,
   },
   teamScoreBox: {
     flex: 1,
@@ -800,14 +620,13 @@ const styles = StyleSheet.create({
     lineHeight: 19.6,
     paddingHorizontal: 10,
     paddingVertical: 2,
-    backgroundColor: '#FDD484',
     borderRadius: 4,
+    color: '#171716',
   },
   matchBox: {
     width: '100%',
-    height: 150,
     flexDirection: 'column',
-    paddingBottom: 10,
+    paddingBottom: 24,
   },
   infoBox: {
     flex: 1,
@@ -815,8 +634,9 @@ const styles = StyleSheet.create({
     width: '100%',
     // paddingVertical: 8,
     paddingHorizontal: 22,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: 30,
+    paddingVertical: 8,
   },
   infoLabel: {
     fontSize: 14,
@@ -826,8 +646,8 @@ const styles = StyleSheet.create({
   },
   infoValue: {
     fontWeight: '500',
-    fontSize: 15,
-    lineHeight: 21,
+    fontSize: 14,
+    lineHeight: 19.6,
     color: '#353430',
   },
   onlyMeText: {
@@ -837,7 +657,7 @@ const styles = StyleSheet.create({
     color: '#171716',
   },
   emojiBox: {
-    backgroundColor: '#fffcf3',
+    // backgroundColor: '#fffcf3',
     flexDirection: 'row',
     width: '100%',
     flexWrap: 'wrap',
@@ -863,11 +683,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   lockButton: {
-    width: 24,
-    height: 24,
+    width: 20,
+    height: 20,
   },
   thoughtsTextBox: {
-    marginTop: 2,
+    marginTop: 8,
   },
   thoughtsText: {
     color: '#353430',
@@ -879,10 +699,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-start',
     flexDirection: 'column',
-    paddingVertical: 32,
-    backgroundColor: '#202020',
-    marginTop: -1,
-    marginBottom: -1,
+    // backgroundColor: '#202020',
   },
   backgroundImage: {
     resizeMode: 'stretch',
@@ -891,7 +708,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     flexDirection: 'column',
-    paddingHorizontal: 10,
   },
   backImage: {
     width: 16,
