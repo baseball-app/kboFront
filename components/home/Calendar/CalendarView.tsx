@@ -3,7 +3,7 @@ import WheelPicker from '@/components/WheelPicker'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import {Ionicons} from '@expo/vector-icons'
 import dayjs from 'dayjs'
-import React, {useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {Modal} from '@/components/common/Modal'
 import {TicketCalendarLog} from './type'
@@ -12,6 +12,8 @@ import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {groupBy} from '@/shared'
 import LottieView from 'lottie-react-native'
+
+import {Animated} from 'react-native'
 
 type Props = {
   date: Date
@@ -118,40 +120,102 @@ const YearMonthPicker = ({
     ),
   )
 
+  const ANIMATION_DURATION = 150
+
+  const animation = useRef(new Animated.Value(0)).current
+
+  const sheetAnimation = useRef(new Animated.Value(-350)).current
+
+  useEffect(() => {
+    if (open) {
+      Animated.timing(animation, {
+        toValue: 1,
+        duration: ANIMATION_DURATION,
+        useNativeDriver: true,
+      }).start()
+    } else {
+      Animated.timing(animation, {
+        toValue: 0,
+        duration: ANIMATION_DURATION,
+        useNativeDriver: true,
+      }).start()
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (open) {
+      Animated.timing(sheetAnimation, {
+        toValue: 0,
+        duration: ANIMATION_DURATION,
+        useNativeDriver: true,
+      }).start()
+    } else {
+      Animated.timing(sheetAnimation, {
+        toValue: 350,
+        duration: ANIMATION_DURATION,
+        useNativeDriver: true,
+      }).start()
+    }
+  }, [open])
+
+  const [isRealOpen, setIsRealOpen] = useState(open)
+  useEffect(() => {
+    if (open) {
+      setIsRealOpen(true)
+    } else {
+      setTimeout(() => {
+        setIsRealOpen(false)
+      }, ANIMATION_DURATION)
+    }
+  }, [open])
+
   return (
-    <Modal visible={open} transparent={true} animationType="slide" onRequestClose={onCancel}>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
-          <View style={styles.datePickerContainer}>
-            <WheelPicker
-              items={yearList}
-              itemHeight={42}
-              initValue={`${selectedYear}년`}
-              onItemChange={item => setSelectedYear(Number(item.replaceAll(/\D/g, '')))}
-              containerStyle={{width: '49%'}}
-            />
-            <WheelPicker
-              items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
-              itemHeight={42}
-              initValue={`${selectedMonth}월`}
-              onItemChange={item => setSelectedMonth(Number(item.replaceAll(/\D/g, '')))}
-              containerStyle={{width: '49%'}}
-            />
+    <>
+      <Modal visible={isRealOpen} transparent={true} animationType="none" onRequestClose={onCancel}>
+        <Animated.View
+          style={[
+            {
+              flex: 1,
+              position: 'absolute',
+              inset: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            {opacity: animation},
+          ]}
+        />
+        <Animated.View style={[styles.modalContainer, {transform: [{translateY: sheetAnimation}]}]}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
+            <View style={styles.datePickerContainer}>
+              <WheelPicker
+                items={yearList}
+                itemHeight={42}
+                initValue={`${selectedYear}년`}
+                onItemChange={item => setSelectedYear(Number(item.replaceAll(/\D/g, '')))}
+                containerStyle={{width: '49%'}}
+              />
+              <WheelPicker
+                items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
+                itemHeight={42}
+                initValue={`${selectedMonth}월`}
+                onItemChange={item => setSelectedMonth(Number(item.replaceAll(/\D/g, '')))}
+                containerStyle={{width: '49%'}}
+              />
+            </View>
+            <View style={styles.buttonBox}>
+              <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+                <Text style={styles.cancelText}>취소</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={() => onConfirm(new Date(`${selectedYear}-${selectedMonth}-01`))}>
+                <Text style={styles.confirmText}>완료</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.buttonBox}>
-            <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-              <Text style={styles.cancelText}>취소</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => onConfirm(new Date(`${selectedYear}-${selectedMonth}-01`))}>
-              <Text style={styles.confirmText}>완료</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </Modal>
+        </Animated.View>
+      </Modal>
+    </>
   )
 }
 
@@ -317,7 +381,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     width: '100%',
