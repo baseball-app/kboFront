@@ -1,5 +1,5 @@
-import {useLocalSearchParams, useRouter} from 'expo-router'
-import {PropsWithChildren, useRef, useState} from 'react'
+import {useLocalSearchParams} from 'expo-router'
+import {useRef, useState} from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -11,7 +11,6 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
-import {Modal} from '@/components/common/Modal'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
@@ -35,6 +34,7 @@ import {EVENTS, useAnalyticsStore} from '@/analytics/event'
 import {Config} from '@/config/Config'
 import {useAppRouter} from '@/shared'
 import {useKeyboard} from '@/shared'
+import {BottomSheet} from '@/shared/ui'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
   matchTeam: Team | null
@@ -593,48 +593,51 @@ const TicketPage = () => {
       </KeyboardAvoidingView>
       {Platform.OS === 'ios' && <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />}
 
-      <Modal animationType="slide" transparent={true} visible={teamModalVisible}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.teamModalContent}>
-            <Text style={styles.modalTitle}>오늘의 상대구단</Text>
-            <View style={styles.optionsContainer}>
-              {teams?.map(team => (
-                <TouchableOpacity
-                  key={team.id}
-                  style={[styles.optionButton, writeData.matchTeam?.name === team.name && styles.selectedOption]}
-                  activeOpacity={1}
-                  onPress={() => handleSelectTeam(team as any)}>
-                  <Image source={team.logo} style={styles.logoImg} resizeMode="contain" />
-                  <Text
-                    style={[styles.optionText, writeData.matchTeam?.name === team.name && styles.selectedOptionText]}>
-                    {team.name}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+      <BottomSheet
+        isOpen={teamModalVisible}
+        duration={250}
+        height={394}
+        onPressOverlay={() => setTeamModalVisible(false)}>
+        <View style={styles.teamModalContent}>
+          <Text style={styles.modalTitle}>오늘의 상대구단</Text>
+          <View style={styles.optionsContainer}>
+            {teams?.map(team => (
+              <TouchableOpacity
+                key={team.id}
+                style={[styles.optionButton, writeData.matchTeam?.name === team.name && styles.selectedOption]}
+                activeOpacity={1}
+                onPress={() => handleSelectTeam(team as any)}>
+                <Image source={team.logo} style={styles.logoImg} resizeMode="contain" />
+                <Text style={[styles.optionText, writeData.matchTeam?.name === team.name && styles.selectedOptionText]}>
+                  {team.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
-      </Modal>
-      <Modal animationType="slide" transparent={true} visible={placeModalVisible}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.placeModalContent}>
-            <Text style={styles.modalTitle}>오늘의 경기구단</Text>
-            <View style={styles.optionsContainer}>
-              {placeOption.map(option => (
-                <TouchableOpacity
-                  key={option.value}
-                  style={[styles.placeOptionButton, writeData.matchPlace === option.label && styles.selectedOption]}
-                  activeOpacity={1}
-                  onPress={() => handleSelectPlace(option.label)}>
-                  <Text style={[styles.optionText, writeData.matchPlace === option.label && styles.selectedOptionText]}>
-                    {option.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+      </BottomSheet>
+      <BottomSheet
+        isOpen={placeModalVisible}
+        duration={250}
+        height={400}
+        onPressOverlay={() => setPlaceModalVisible(false)}>
+        <View style={styles.placeModalContent}>
+          <Text style={styles.modalTitle}>오늘의 경기구단</Text>
+          <View style={styles.optionsContainer}>
+            {placeOption.map(option => (
+              <TouchableOpacity
+                key={option.value}
+                style={[styles.placeOptionButton, writeData.matchPlace === option.label && styles.selectedOption]}
+                activeOpacity={1}
+                onPress={() => handleSelectPlace(option.label)}>
+                <Text style={[styles.optionText, writeData.matchPlace === option.label && styles.selectedOptionText]}>
+                  {option.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
-      </Modal>
+      </BottomSheet>
     </SafeAreaView>
   )
 }
