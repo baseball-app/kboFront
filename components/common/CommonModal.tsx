@@ -1,27 +1,35 @@
-import {useCommonSlice} from '@/slice/commonSlice'
-import React from 'react'
+import {IModalConfig, useCommonSlice} from '@/slice/commonSlice'
+import React, {useEffect, useState} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
 import {Modal} from '@/components/common/Modal'
 const CommonModal = () => {
   const {currentModal, modal} = useCommonSlice()
-
-  if (!currentModal) return null
+  const [modalState, setModalState] = useState<IModalConfig | null>(null)
+  useEffect(() => {
+    if (currentModal) {
+      setModalState(currentModal)
+    } else {
+      setTimeout(() => {
+        setModalState(null)
+      }, 1000)
+    }
+  }, [currentModal])
 
   return (
     <Modal //
       transparent
-      visible={!!currentModal}
-      animationType="none"
+      visible={Boolean(currentModal)}
+      animationType="fade"
       onRequestClose={modal.hide}
       onDismiss={modal.hide}>
       <View style={styles.overlay}>
         <View style={styles.container}>
-          <Text style={styles.headerTitle}>{currentModal.header}</Text>
+          <Text style={styles.headerTitle}>{modalState?.header}</Text>
           <View>
-            <Text style={styles.headerContentText}>{currentModal.content}</Text>
+            <Text style={styles.headerContentText}>{modalState?.content}</Text>
           </View>
           <View style={styles.buttonBox}>
-            {currentModal.button.map((btn, index) => (
+            {modalState?.button.map((btn, index) => (
               <TouchableOpacity key={index} onPress={btn.onPress} style={[btn.buttonStyle, styles.modalButton]}>
                 <Text style={[styles.modalButtonText, btn.buttonTextStyle]}>{btn.text}</Text>
               </TouchableOpacity>

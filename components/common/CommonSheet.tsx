@@ -1,6 +1,7 @@
-import {Image, Pressable, StyleSheet, View, Modal} from 'react-native'
+import {Image, Pressable, StyleSheet, View} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 import {useSheetSlice} from '@/slice/sheetSlice'
+import {Modal} from '@/components/common/Modal'
 
 const CommonSheet = () => {
   const sheetSlice = useSheetSlice()

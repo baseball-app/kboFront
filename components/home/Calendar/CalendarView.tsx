@@ -4,7 +4,8 @@ import {DAYS_OF_WEEK} from '@/constants/day'
 import {Ionicons} from '@expo/vector-icons'
 import dayjs from 'dayjs'
 import React, {useState} from 'react'
-import {Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Modal} from '@/components/common/Modal'
 import {TicketCalendarLog} from './type'
 import {CALENDAR_END_DATE, CALENDAR_START_DATE} from '@/constants/day'
 import {useQuery} from '@tanstack/react-query'
@@ -83,17 +84,15 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
           />
         </View>
       </View>
-      {isModalVisible && (
-        <YearMonthPicker
-          open={isModalVisible}
-          onCancel={() => setIsModalVisible(false)}
-          onConfirm={date => {
-            setDate(date)
-            setIsModalVisible(false)
-          }}
-          initialYearMonth={dayjs(date).format('YYYY.MM')}
-        />
-      )}
+      <YearMonthPicker
+        open={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        onConfirm={date => {
+          setDate(date)
+          setIsModalVisible(false)
+        }}
+        initialYearMonth={dayjs(date).format('YYYY.MM')}
+      />
     </View>
   )
 }
@@ -120,7 +119,7 @@ const YearMonthPicker = ({
   )
 
   return (
-    <Modal visible={open} transparent={true} animationType="slide">
+    <Modal visible={open} transparent={true} animationType="slide" onRequestClose={onCancel}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
