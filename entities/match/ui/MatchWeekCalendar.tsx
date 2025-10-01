@@ -4,8 +4,8 @@ import {format, startOfWeek, addDays, isSameDay, isToday, addWeeks} from 'date-f
 import {Ionicons} from '@expo/vector-icons'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import dayjs from 'dayjs'
-import WheelPicker from '@/components/WheelPicker'
 import {BottomSheet} from '@/shared/ui'
+import WheelPicker2 from '@/components/WheelPicker2'
 
 type Props = {
   onChange: (date: Date) => void
@@ -56,24 +56,24 @@ const MatchCalendarHeader = ({setCurrentDate, prevMonth, nextMonth, currentDate}
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
           <View style={styles.datePickerContainer}>
-            <WheelPicker
+            <WheelPicker2
               items={Array.from({length: 10}, (_, i) => `${2020 + i}년`)}
-              itemHeight={42}
-              initValue={`${selectedYear}년`}
+              itemHeight={50}
+              initialItem={`${selectedYear}년`}
               onItemChange={item => setSelectedYear(Number(item.replaceAll(/\D/g, '')))}
               containerStyle={{width: '30%'}}
             />
-            <WheelPicker
+            <WheelPicker2
               items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
-              itemHeight={42}
-              initValue={`${selectedMonth}월`}
+              itemHeight={50}
+              initialItem={`${selectedMonth}월`}
               onItemChange={item => setSelectedMonth(Number(item.replaceAll(/\D/g, '')))}
               containerStyle={{width: '30%'}}
             />
-            <WheelPicker
+            <WheelPicker2
               items={dayList}
-              itemHeight={42}
-              initValue={`${selectedDay}일`}
+              itemHeight={50}
+              initialItem={`${selectedDay}일`}
               onItemChange={item => setSelectedDay(Number(item.replaceAll(/\D/g, '')))}
               containerStyle={{width: '30%'}}
             />

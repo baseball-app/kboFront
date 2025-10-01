@@ -14,60 +14,51 @@ type BottomSheetProps = {
 const BottomSheet = ({
   isOpen,
   children,
-  duration = 250,
+  duration = 350,
   height,
   onPressOverlay,
 }: PropsWithChildren<BottomSheetProps>) => {
-  const [isRealOpen, setIsRealOpen] = useState(isOpen)
+  const [isRealOpen, setIsRealOpen] = useState(false)
 
   const animation = useRef(new Animated.Value(0)).current
-
-  const sheetAnimation = useRef(new Animated.Value(-1 * height)).current
-
-  useEffect(() => {
-    if (isOpen) {
-      Animated.timing(animation, {
-        toValue: 1,
-        duration: duration,
-        useNativeDriver: true,
-      }).start()
-    } else {
-      Animated.timing(animation, {
-        toValue: 0,
-        duration: duration,
-        useNativeDriver: true,
-      }).start()
-    }
-  }, [isOpen])
-
-  useEffect(() => {
-    if (isOpen) {
-      Animated.timing(sheetAnimation, {
-        toValue: 0,
-        duration: duration,
-        useNativeDriver: true,
-      }).start()
-    } else {
-      Animated.timing(sheetAnimation, {
-        toValue: height,
-        duration: duration,
-        useNativeDriver: true,
-      }).start()
-    }
-  }, [isOpen])
+  const sheetAnimation = useRef(new Animated.Value(height)).current
 
   useEffect(() => {
     if (isOpen) {
       setIsRealOpen(true)
+
+      Animated.parallel([
+        Animated.timing(animation, {
+          toValue: 1,
+          duration: duration,
+          useNativeDriver: true,
+        }),
+        Animated.timing(sheetAnimation, {
+          toValue: 0,
+          duration: duration,
+          useNativeDriver: true,
+        }),
+      ]).start()
     } else {
-      setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(animation, {
+          toValue: 0,
+          duration: duration,
+          useNativeDriver: true,
+        }),
+        Animated.timing(sheetAnimation, {
+          toValue: height,
+          duration: duration,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
         setIsRealOpen(false)
-      }, duration)
+      })
     }
   }, [isOpen])
 
   return (
-    <Modal visible={isRealOpen} transparent={true} animationType="none">
+    <Modal visible={isOpen ? isOpen : isRealOpen} transparent={true} animationType="none">
       <AnimatedPressable
         style={{flex: 1, position: 'absolute', inset: 0, opacity: animation, backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
         onPress={() => {

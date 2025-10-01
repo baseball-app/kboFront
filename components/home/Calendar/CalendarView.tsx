@@ -1,5 +1,4 @@
 import MatchResultCell from '@/components/MatchResultCell'
-import WheelPicker from '@/components/WheelPicker'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import {Ionicons} from '@expo/vector-icons'
 import dayjs from 'dayjs'
@@ -13,6 +12,7 @@ import {groupBy} from '@/shared'
 import LottieView from 'lottie-react-native'
 
 import {BottomSheet} from '@/shared/ui'
+import WheelPicker2 from '@/components/WheelPicker2'
 
 type Props = {
   date: Date
@@ -120,39 +120,45 @@ const YearMonthPicker = ({
   )
 
   return (
-    <>
-      <BottomSheet isOpen={open} duration={250} height={350}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
-          <View style={styles.datePickerContainer}>
-            <WheelPicker
-              items={yearList}
-              itemHeight={42}
-              initValue={`${selectedYear}년`}
-              onItemChange={item => setSelectedYear(Number(item.replaceAll(/\D/g, '')))}
-              containerStyle={{width: '49%'}}
-            />
-            <WheelPicker
-              items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
-              itemHeight={42}
-              initValue={`${selectedMonth}월`}
-              onItemChange={item => setSelectedMonth(Number(item.replaceAll(/\D/g, '')))}
-              containerStyle={{width: '49%'}}
-            />
-          </View>
-          <View style={styles.buttonBox}>
-            <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-              <Text style={styles.cancelText}>취소</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => onConfirm(new Date(`${selectedYear}-${selectedMonth}-01`))}>
-              <Text style={styles.confirmText}>완료</Text>
-            </TouchableOpacity>
-          </View>
+    <BottomSheet isOpen={open} duration={350} height={350}>
+      <View style={styles.modalContent}>
+        <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
+        <View style={styles.datePickerContainer}>
+          <WheelPicker2
+            itemHeight={50}
+            initialItem={`${selectedYear}년`}
+            onItemChange={item => {
+              setSelectedYear(Number(item.replaceAll(/\D/g, '')))
+            }}
+            items={yearList}
+            containerStyle={{width: '49%'}}
+          />
+          <WheelPicker2
+            items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
+            itemHeight={50}
+            initialItem={`${selectedMonth}월`}
+            onItemChange={item => {
+              console.log(item)
+              setSelectedMonth(Number(item.replaceAll(/\D/g, '')))
+            }}
+            containerStyle={{width: '49%'}}
+          />
         </View>
-      </BottomSheet>
-    </>
+        <View style={styles.buttonBox}>
+          <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+            <Text style={styles.cancelText}>취소</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={() => {
+              console.log(`${selectedYear}-${selectedMonth}-01`)
+              onConfirm(new Date(`${selectedYear}-${selectedMonth}-01`))
+            }}>
+            <Text style={styles.confirmText}>완료</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </BottomSheet>
   )
 }
 
