@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import {Keyboard, KeyboardEvent} from 'react-native'
+import {Keyboard, KeyboardAvoidingView, KeyboardEvent, Platform} from 'react-native'
 
 export const useKeyboard = () => {
   const [keyboardHeight, setKeyboardHeight] = useState(0)
@@ -23,4 +23,15 @@ export const useKeyboard = () => {
   }, [])
 
   return {keyboardHeight, isKeyboardVisible}
+}
+
+export const CustKeyboardAvoidingView = ({children}: {children: React.ReactNode}) => {
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}
+      keyboardVerticalOffset={30}>
+      {children}
+    </KeyboardAvoidingView>
+  )
 }

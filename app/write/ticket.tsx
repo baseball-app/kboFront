@@ -35,6 +35,7 @@ import {Config} from '@/config/Config'
 import {useAppRouter} from '@/shared'
 import {useKeyboard} from '@/shared'
 import {BottomSheet} from '@/shared/ui'
+import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
   matchTeam: Team | null
@@ -370,10 +371,7 @@ const TicketPage = () => {
         </TouchableOpacity>
         <Text style={styles.dateText}>{title}</Text>
       </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
-        keyboardVerticalOffset={30}>
+      <CustKeyboardAvoidingView>
         <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
           <View style={styles.tabMenuContainer}>
             <View style={styles.tabMenu}>
@@ -587,11 +585,11 @@ const TicketPage = () => {
             </View>
           </View>
         </ScrollView>
-        {!isKeyboardVisible && Platform.OS === 'android' && (
-          <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />
-        )}
-      </KeyboardAvoidingView>
-      {Platform.OS === 'ios' && <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />}
+      </CustKeyboardAvoidingView>
+      {isKeyboardVisible && Platform.OS === 'android' ? null : (
+        <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />
+      )}
+      {/* {Platform.OS === 'ios' && <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />} */}
 
       <BottomSheet
         isOpen={teamModalVisible}
@@ -665,7 +663,9 @@ const FooterButton = ({
             style={{width: 100, height: 100}}
           />
         ) : (
-          <Text style={[styles.footerButtonText, styles.activeButtonText]}>오늘의 티켓 발급하기</Text>
+          <Text style={[styles.footerButtonText, isEnabled ? styles.activeButtonText : styles.disabledButtonText]}>
+            오늘의 티켓 발급하기
+          </Text>
         )}
       </TouchableOpacity>
     </View>
@@ -770,9 +770,7 @@ const styles = StyleSheet.create({
   },
   uploadText: {
     fontSize: 14,
-    color: '#95938B',
-    lineHeight: 19.6,
-    fontWeight: '500',
+    color: '#999',
     marginTop: 8,
   },
   inputContainer: {
@@ -812,9 +810,11 @@ const styles = StyleSheet.create({
   },
   footerButtonBox: {
     width: '100%',
-    marginTop: 16,
+    backgroundColor: '#F3F2EE',
+    // marginTop: 16,
+    paddingTop: 16,
     position: 'sticky',
-    bottom: 0,
+    bottom: 16,
   },
   footerButton: {
     backgroundColor: '#E4E2DC',
@@ -822,6 +822,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  disabledButton: {
+    backgroundColor: '#E4E2DC',
+  },
+  disabledButtonText: {
+    color: '#77756C',
   },
   footerButtonText: {
     color: '#77756C',
@@ -1000,11 +1006,5 @@ const styles = StyleSheet.create({
   },
   activeButtonText: {
     color: '#FFFFFF',
-  },
-  disabledButton: {
-    backgroundColor: '#D0CEC7',
-  },
-  disabledButtonText: {
-    color: '#171716',
   },
 })

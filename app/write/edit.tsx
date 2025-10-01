@@ -33,6 +33,7 @@ import {Config} from '@/config/Config'
 import {useKeyboard} from '@/shared'
 import {useAppRouter} from '@/shared'
 import {BottomSheet} from '@/shared/ui'
+import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard'
 
 interface ITicketEditData {
   homeTeam: {
@@ -329,10 +330,7 @@ const EditTicketPage = () => {
         </TouchableOpacity>
         <Text style={styles.dateText}>{title}</Text>
       </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
-        keyboardVerticalOffset={30}>
+      <CustKeyboardAvoidingView>
         <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
           <View style={styles.tabMenuContainer}>
             <View style={styles.tabMenu}>
@@ -534,11 +532,11 @@ const EditTicketPage = () => {
             </View>
           </View>
         </ScrollView>
-        {!isKeyboardVisible && Platform.OS === 'android' && (
-          <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />
-        )}
-      </KeyboardAvoidingView>
-      {Platform.OS === 'ios' && <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />}
+      </CustKeyboardAvoidingView>
+      {isKeyboardVisible && Platform.OS === 'android' ? null : (
+        <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />
+      )}
+      {/* {Platform.OS === 'ios' && <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />} */}
 
       <BottomSheet
         isOpen={teamModalVisible}
