@@ -1,11 +1,9 @@
 import {Tabs} from 'expo-router'
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect} from 'react'
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs'
 
-import {Platform} from 'react-native'
 import Header from '@/components/common/Header'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import ApiClient from '@/api'
 import {usePushMessage} from '@/shared'
 import {Footer} from '@/widgets'
 import {useUpdateDeviceToken} from '@/features/push'

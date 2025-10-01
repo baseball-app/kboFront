@@ -1,9 +1,9 @@
 import {useAnalyticsStore} from '@/analytics/event'
-import {EmptyMatchView, LoadingMatchList, MatchCard, MatchWeekCalendar, useMatch} from '@/entities/match'
+import {EmptyMatchView, LoadingMatchList, Match, MatchCard, MatchWeekCalendar, useMatch} from '@/entities/match'
 import {AddDoubleHeaderTicketButton, useNavigateWriteTicket} from '@/features/match'
 import dayjs from 'dayjs'
 import {usePathname} from 'expo-router'
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {FlatList, StyleSheet} from 'react-native'
 
 const MatchList = () => {
@@ -24,6 +24,22 @@ const MatchList = () => {
     if (pathname !== '/match' && !pathname.includes('write')) setSelectedDate(new Date())
   }, [pathname])
 
+  const renderItem = useCallback(
+    ({item: match}: {item: Match}) => (
+      <MatchCard
+        match={match} //
+        onClick={() => {
+          setScreenName(pathname)
+          setDiaryCreate('경기 일정')
+          moveToMatchWriteTicket(date, match.id)
+        }}
+      />
+    ),
+    [moveToMatchWriteTicket, date],
+  )
+
+  const keyExtractor = useCallback((item: Match) => `${item.id}`, [])
+
   return (
     <FlatList
       contentContainerStyle={styles.flatList}
@@ -38,22 +54,13 @@ const MatchList = () => {
           onChange={setSelectedDate}
         />
       }
-      renderItem={({item: match}) => (
-        <MatchCard
-          match={match} //
-          onClick={() => {
-            setScreenName(pathname)
-            setDiaryCreate('경기 일정')
-            moveToMatchWriteTicket(date, match.id)
-          }}
-        />
-      )}
+      renderItem={renderItem}
       ListFooterComponent={
         matchingList.length > 0 ? (
           <AddDoubleHeaderTicketButton onPress={() => moveToDoubleHeaderWriteTicket(date)} /> //
         ) : null
       }
-      keyExtractor={item => `${item.id}`}
+      keyExtractor={keyExtractor}
     />
   )
 }
