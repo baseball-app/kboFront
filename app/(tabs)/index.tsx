@@ -1,4 +1,4 @@
-import {StyleSheet, Image, TouchableOpacity, View, Modal, Text, Pressable} from 'react-native'
+import {StyleSheet, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
 import {usePathname} from 'expo-router'

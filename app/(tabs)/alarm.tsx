@@ -1,8 +1,9 @@
-import {StyleSheet, SafeAreaView} from 'react-native'
+import {StyleSheet} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import React from 'react'
 import {AlarmList} from '@/widgets/alarm/alarm-list'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 const AlarmScreen = () => {
   const {top} = useSafeAreaInsets()

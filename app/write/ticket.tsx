@@ -27,6 +27,7 @@ import ImageResizer from '@bam.tech/react-native-image-resizer'
 import LottieView from 'lottie-react-native'
 
 import * as FileSystem from 'expo-file-system'
+import * as FileSystemLegacy from 'expo-file-system/legacy'
 import {useLogin} from '@/hooks/auth/useLogin'
 import Toast from 'react-native-toast-message'
 import {logEvent} from '@/analytics/func'
@@ -270,9 +271,9 @@ const TicketPage = () => {
         false, // 메타데이터 유지 여부
       )
 
-      await FileSystem.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage.uri, {
+      await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage.uri, {
         fieldName: 'image',
-        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        uploadType: FileSystemLegacy.FileSystemUploadType.MULTIPART,
         parameters: {
           date: dayjs(writeStore.selectedDate).format('YYYY-MM-DD'),
           game: String(writeStore.selectedMatch?.id || ''),
