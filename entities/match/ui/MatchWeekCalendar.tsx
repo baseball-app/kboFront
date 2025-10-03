@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, Platform} from 'react-native'
-import {format, startOfWeek, addDays, isSameDay, isToday, addWeeks} from 'date-fns'
 import {Ionicons} from '@expo/vector-icons'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import dayjs from 'dayjs'
@@ -46,7 +45,7 @@ const MatchCalendarHeader = ({setCurrentDate, prevMonth, nextMonth, currentDate}
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity style={[styles.headerTextContainer, {width: 100}]} onPress={handleMonthYearChange}>
-          <Text style={styles.headerText}>{format(currentDate, 'yyyy.MM')}</Text>
+          <Text style={styles.headerText}>{dayjs(currentDate).format('yyyy.MM')}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={nextMonth} style={styles.headerTextContainer}>
           <Ionicons name="chevron-forward" size={24} color="black" />
@@ -105,34 +104,35 @@ type MatchCalendarBodyProps = {
 
 const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarBodyProps) => {
   const days = []
-  const startDate = startOfWeek(currentDate) // 주의 첫 번째 날을 가져옴
+  const startDate = dayjs(currentDate).startOf('week') // 주의 첫 번째 날을 가져옴
 
   // 7일 동안의 날짜를 요일과 함께 표시
   for (let i = 0; i < 7; i++) {
-    const day = addDays(startDate, i)
-    const isSelected = isSameDay(day, selectedDate) // 선택된 날짜 여부
-    const isTodaySelected = isToday(selectedDate) // 선택된 날짜가 오늘인지 여부
-    const isTodayAndNotSelected = isToday(day) && !isSelected // 오늘이지만 선택되지 않은 경우
+    const day = dayjs(startDate).add(i, 'day')
+    const isSelected = dayjs(day).isSame(selectedDate) // 선택된 날짜 여부
+    const today = dayjs()
+    const isToday = dayjs(day).isSame(today)
+    const isTodayAndNotSelected = isToday && !isSelected // 오늘이지만 선택되지 않은 경우
 
     days.push(
       <TouchableOpacity
         key={i}
         style={[styles.dayContainer, isSelected && styles.selectedDay, isTodayAndNotSelected && styles.todayDay]}
-        onPress={() => onChange(day)}>
+        onPress={() => onChange(day.toDate())}>
         <Text
           style={[
             styles.dayOfWeekText,
-            isSelected ? styles.selectedText : isToday(day) ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
+            isSelected ? styles.selectedText : isToday ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
           ]}>
           {DAYS_OF_WEEK[i]}
         </Text>
         <Text
           style={[
             styles.dayText,
-            isSelected ? styles.selectedText : isToday(day) ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
+            isSelected ? styles.selectedText : isToday ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
             Platform.OS === 'android' ? {paddingLeft: '15%'} : {},
           ]}>
-          {format(day, 'd')} {/* 날짜 */}
+          {dayjs(day).format('d')} {/* 날짜 */}
         </Text>
       </TouchableOpacity>,
     )
@@ -144,8 +144,8 @@ const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarB
 const MatchWeekCalendar = ({onChange, value}: Props) => {
   const [currentDate, setCurrentDate] = useState(new Date())
 
-  const prevMonth = () => setCurrentDate(addWeeks(currentDate, -1))
-  const nextMonth = () => setCurrentDate(addWeeks(currentDate, 1))
+  const prevMonth = () => setCurrentDate(dayjs(currentDate).add(-1, 'week').toDate())
+  const nextMonth = () => setCurrentDate(dayjs(currentDate).add(1, 'week').toDate())
 
   return (
     <View style={styles.container}>

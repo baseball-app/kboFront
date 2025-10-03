@@ -1,9 +1,9 @@
 import {Match} from '@/entities/match'
-import {format} from 'date-fns'
 import React from 'react'
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import Ellipse from '@/components/common/Ellipse'
 import {useTeam} from '../model'
+import dayjs from 'dayjs'
 
 type Props = {
   match: Match
@@ -13,7 +13,7 @@ type Props = {
 
 /** 매치 팀 경기 카드 컴포넌트 */
 const MatchCard = ({match, onClick, isSelected}: Props) => {
-  const time = format(match.game_date, 'HH:mm')
+  const time = dayjs(match.game_date).format('HH:mm')
   const {findTeamById} = useTeam()
 
   const homeTeam = findTeamById(match.team_home_info.id)

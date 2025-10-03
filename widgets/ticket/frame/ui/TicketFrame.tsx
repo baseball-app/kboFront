@@ -1,14 +1,11 @@
 import Ellipse from '@/components/common/Ellipse'
-import {findMatchResultImage, findWeatherImage} from '@/constants/match'
 import {useTeam} from '@/entities/match'
 import {TicketDetail} from '@/entities/ticket'
 import useProfile from '@/hooks/my/useProfile'
-import MaskedView from '@react-native-masked-view/masked-view'
-import {format} from 'date-fns'
 import React, {memo} from 'react'
 import {Image, StyleSheet, View, Text, ScrollView} from 'react-native'
-import Svg, {Line, Path} from 'react-native-svg'
-import FastImage from '@d11/react-native-fast-image'
+import Svg, {Line} from 'react-native-svg'
+import dayjs from 'dayjs'
 
 type Props = {
   ticketDetail: TicketDetail
@@ -60,7 +57,7 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
               <View style={styles.infoBox}>
                 <Text style={styles.infoLabel}>오늘의 경기일정</Text>
                 <Text style={styles.infoValue}>
-                  {ticketDetail?.date ? format(ticketDetail?.date, 'yyyy-MM-dd') : ''}
+                  {ticketDetail?.date ? dayjs(ticketDetail?.date).format('yyyy-MM-dd') : ''}
                 </Text>
               </View>
               <View style={styles.infoBox}>

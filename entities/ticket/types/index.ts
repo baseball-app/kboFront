@@ -15,6 +15,8 @@ const TicketCalendarLogSchema = z.object({
     name: z.string(), // '잠실야구장'
     team_id: z.number(), // 3
   }),
+  home: z.string(),
+  opponent_name: z.string(),
 })
 
 type TicketCalendarLog = z.infer<typeof TicketCalendarLogSchema>

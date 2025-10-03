@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react'
 import {StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native'
-import {TicketCalendarLog} from './home/Calendar'
 import {findMatchResultImage} from '@/constants/match'
 import {useTeam} from '@/entities/match'
+import { TicketCalendarLog } from '@/entities/ticket/types'
 
 //TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
 const MatchResultCell = ({
