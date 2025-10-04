@@ -57,7 +57,7 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
               <View style={styles.infoBox}>
                 <Text style={styles.infoLabel}>오늘의 경기일정</Text>
                 <Text style={styles.infoValue}>
-                  {ticketDetail?.date ? dayjs(ticketDetail?.date).format('yyyy-MM-dd') : ''}
+                  {ticketDetail?.date ? dayjs(ticketDetail?.date).format('YYYY-MM-DD') : ''}
                 </Text>
               </View>
               <View style={styles.infoBox}>

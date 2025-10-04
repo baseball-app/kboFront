@@ -43,7 +43,7 @@ const WheelPicker2 = ({
   // const isDraggingRef = useRef(false)
   const handleScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y
-    console.log('offsetY', debounceRef.current)
+
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(() => {
       const index = Math.round(offsetY / itemHeight)

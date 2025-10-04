@@ -45,7 +45,7 @@ const MatchCalendarHeader = ({setCurrentDate, prevMonth, nextMonth, currentDate}
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity style={[styles.headerTextContainer, {width: 100}]} onPress={handleMonthYearChange}>
-          <Text style={styles.headerText}>{dayjs(currentDate).format('yyyy.MM')}</Text>
+          <Text style={styles.headerText}>{dayjs(currentDate).format('YYYY.MM')}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={nextMonth} style={styles.headerTextContainer}>
           <Ionicons name="chevron-forward" size={24} color="black" />
@@ -132,7 +132,7 @@ const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarB
             isSelected ? styles.selectedText : isToday ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
             Platform.OS === 'android' ? {paddingLeft: '15%'} : {},
           ]}>
-          {dayjs(day).format('d')} {/* 날짜 */}
+          {dayjs(day).format('D')} {/* 날짜 */}
         </Text>
       </TouchableOpacity>,
     )

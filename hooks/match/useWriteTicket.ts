@@ -56,7 +56,7 @@ const useWriteTicket = () => {
   const moveToWriteTicket = (date: Date, match?: Match | null) => {
     if (!match) {
       router.push(ROUTES.WRITE, {
-        date: dayjs(date).format('yyyy-MM-dd'),
+        date: dayjs(date).format('YYYY-MM-DD'),
         step: 2,
       })
       return
@@ -64,7 +64,7 @@ const useWriteTicket = () => {
 
     router.push(ROUTES.WRITE, {
       matchId: match?.id,
-      date: dayjs(date).format('yyyy-MM-dd'),
+      date: dayjs(date).format('YYYY-MM-DD'),
       step: 2,
     })
   }

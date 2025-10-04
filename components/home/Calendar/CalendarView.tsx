@@ -152,7 +152,7 @@ const YearMonthPicker = ({
             style={styles.confirmButton}
             onPress={() => {
               console.log(`${selectedYear}-${selectedMonth}-01`)
-              onConfirm(new Date(`${selectedYear}-${selectedMonth}-01`))
+              onConfirm(new Date(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`))
             }}>
             <Text style={styles.confirmText}>완료</Text>
           </TouchableOpacity>

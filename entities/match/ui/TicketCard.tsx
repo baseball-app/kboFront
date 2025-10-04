@@ -55,7 +55,7 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
         <Text style={styles.parkName} numberOfLines={1}>
           {ticket.gip_place || ticket.ballpark.name}
         </Text>
-        <Text style={[styles.date, {marginBottom: 4}]}>{dayjs(ticket.date).format('yyyy.MM.dd')}</Text>
+        <Text style={[styles.date, {marginBottom: 4}]}>{dayjs(ticket.date).format('YYYY.MM.DD')}</Text>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={onClick}
