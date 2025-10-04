@@ -26,7 +26,6 @@ import ImageResizer from '@bam.tech/react-native-image-resizer'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import LottieView from 'lottie-react-native'
 import * as FileSystem from 'expo-file-system'
-import * as FileSystemLegacy from 'expo-file-system/legacy'
 import {useLogin} from '@/hooks/auth/useLogin'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
@@ -238,9 +237,9 @@ const EditTicketPage = () => {
         false, // 메타데이터 유지 여부
       )
 
-      await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_upd/`, resizedImage?.uri || '', {
+      await FileSystem.uploadAsync(`${Config.API_URL}/tickets/ticket_upd/`, resizedImage?.uri || '', {
         fieldName: 'image',
-        uploadType: FileSystemLegacy.FileSystemUploadType.MULTIPART,
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
         parameters: {
           id: String(ticketDetail?.id),
           result: writeData?.result === '경기 취소' ? '취소' : writeData?.result || '',
