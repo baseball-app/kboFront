@@ -17,6 +17,7 @@ import ApiClient from '@/api'
 import {usePopup} from '@/slice/commonSlice'
 import {useAppRouter} from '@/shared'
 import {showToast} from '@/shared'
+import LottieView from 'lottie-react-native'
 
 type Inquiry = {
   email: string
@@ -34,7 +35,7 @@ export default function NicknameScreen() {
 
   const {openCommonPopup} = usePopup()
 
-  const {mutate: submitInquiry} = useMutation({
+  const {mutate: submitInquiry, isPending} = useMutation({
     mutationFn: async (inquiry: Inquiry) => ApiClient.post('/users/submission-inquiry/', inquiry),
     onSuccess: () => {
       openCommonPopup(
@@ -46,6 +47,7 @@ export default function NicknameScreen() {
   })
 
   const onSubmit = () => {
+    if (isPending) return
     // email 유효성 검사
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(inquiry.email)) {
@@ -63,56 +65,67 @@ export default function NicknameScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={router.back}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.title}>앱을 사용하면서{'\n'}불편했던 점을 적어주세요</Text>
-      </View>
+      <Pressable style={{flex: 1}} onPress={Keyboard.dismiss}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={router.back}>
+            <Ionicons name="chevron-back" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.title}>앱을 사용하면서{'\n'}불편했던 점을 적어주세요</Text>
+        </View>
 
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
-        <TextInput
-          placeholder="답변 받으실 이메일 주소를 적어주세요"
-          value={inquiry.email} //
-          onChangeText={text => setInquiry({...inquiry, email: text})}
-          style={{
-            padding: 20,
-            backgroundColor: 'white',
-            borderRadius: 10,
-            borderWidth: 1,
-            borderColor: '#D0CEC7',
-            marginBottom: 14,
-          }}
-          placeholderTextColor={'#CCCCCC'}
-          maxLength={50}
-        />
-        <TextInput
-          placeholder={`소중한 의견을 기다리고 있습니다!\n비방, 욕설, 부적절한 내용이 포함될 경우 답변이 제한될 수 있고, 앱 이용이 제한될 수 있습니다.`}
-          value={inquiry.content} //
-          onChangeText={text => setInquiry({...inquiry, content: text})}
-          multiline
-          placeholderTextColor={'#CCCCCC'}
-          numberOfLines={20}
-          style={{
-            padding: 20,
-            height: 300,
-            backgroundColor: 'white',
-            borderRadius: 10,
-            borderWidth: 1,
-            borderColor: '#D0CEC7',
-            textAlignVertical: 'top',
-          }}
-          maxLength={500}
-        />
-      </KeyboardAvoidingView>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, inquiry.email && inquiry.content ? styles.buttonActive : null]}
-          onPress={onSubmit}
-          disabled={!inquiry.email || !inquiry.content}>
-          <Text style={styles.buttonText}>등록하기</Text>
-        </TouchableOpacity>
-      </View>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
+          <TextInput
+            placeholder="답변 받으실 이메일 주소를 적어주세요"
+            value={inquiry.email} //
+            onChangeText={text => setInquiry({...inquiry, email: text})}
+            style={{
+              padding: 20,
+              backgroundColor: 'white',
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: '#D0CEC7',
+              marginBottom: 14,
+            }}
+            placeholderTextColor={'#CCCCCC'}
+            maxLength={50}
+          />
+          <TextInput
+            placeholder={`소중한 의견을 기다리고 있습니다!\n비방, 욕설, 부적절한 내용이 포함될 경우 답변이 제한될 수 있고, 앱 이용이 제한될 수 있습니다.`}
+            value={inquiry.content} //
+            onChangeText={text => setInquiry({...inquiry, content: text})}
+            multiline
+            placeholderTextColor={'#CCCCCC'}
+            numberOfLines={20}
+            style={{
+              padding: 20,
+              height: 300,
+              backgroundColor: 'white',
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: '#D0CEC7',
+              textAlignVertical: 'top',
+            }}
+            maxLength={500}
+          />
+        </KeyboardAvoidingView>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[styles.button, inquiry.email && inquiry.content ? styles.buttonActive : null]}
+            onPress={onSubmit}
+            disabled={!inquiry.email || !inquiry.content}>
+            {isPending ? (
+              <LottieView
+                source={require('@/assets/lottie/loading.json')}
+                autoPlay
+                loop
+                style={{width: 100, height: 100}}
+              />
+            ) : (
+              <Text style={styles.buttonText}>등록하기</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      </Pressable>
     </SafeAreaView>
   )
 }
@@ -176,9 +189,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#ccc',
-    padding: 15,
     borderRadius: 5,
+    display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
+    height: 50,
   },
   buttonActive: {
     backgroundColor: '#007AFF',
