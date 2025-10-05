@@ -16,7 +16,7 @@ const useCaptureView = () => {
     }
   }
 
-  const ViewShot = useCallback(({children, style}: {children: React.ReactNode; style: StyleProp<ViewStyle>}) => {
+  const ViewShot = useCallback(({children, style}: {children: React.ReactNode; style?: StyleProp<ViewStyle>}) => {
     return (
       <ViewShotComponent
         ref={ref}

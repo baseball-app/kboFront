@@ -1,6 +1,11 @@
+import {Linking} from 'react-native'
 import Share, {Social} from 'react-native-share'
 
 const useShare = () => {
+  const checkCanOpenInstagram = () => {
+    return Linking.canOpenURL('instagram://')
+  }
+
   const shareInstagramStories = (url: string) => {
     // 로컬 파일 경로인 경우 file:// 프로토콜 추가
     const imageUrl = url.startsWith('/') ? `file:/${url}` : url
@@ -16,7 +21,7 @@ const useShare = () => {
     })
   }
 
-  return {shareInstagramStories}
+  return {shareInstagramStories, checkCanOpenInstagram}
 }
 
 export {useShare}

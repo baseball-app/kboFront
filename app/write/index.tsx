@@ -114,8 +114,8 @@ const DailyLogWriteScreen = () => {
     if (currentStep < 3) {
       setCurrentStep(currentStep + 1)
     } else {
-      router.dismiss()
-      router.navigate(ROUTES.WRITE_TICKET)
+      // router.dismiss()
+      router.dismissTo(ROUTES.WRITE_TICKET)
     }
   }
 

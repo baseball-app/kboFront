@@ -34,8 +34,7 @@ const useWriteTicket = () => {
     writeStore.clearState()
     queryClient.refetchQueries({queryKey: ['tickets']})
 
-    router.dismiss()
-    router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {
+    router.dismissTo(ROUTES.WRITE_TODAY_TICKET_CARD, {
       id: id,
       target_id: profile.id,
     })

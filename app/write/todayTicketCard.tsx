@@ -12,6 +12,7 @@ import {TicketFrame} from '@/widgets/ticket/frame'
 import {NoPermissionError, useCaptureView, useShare, useMediaPermission, showToast} from '@/shared'
 import {TicketDeleteButton} from '@/features/ticket/delete-ticket'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
+import {ShareInstagramButton} from '@/features/ticket/share-instagram'
 
 export default function GameCard() {
   const router = useAppRouter()
@@ -20,7 +21,7 @@ export default function GameCard() {
   const {openSettingModal, checkMediaPermission} = useMediaPermission()
   const {ViewShot, onCaptureView} = useCaptureView()
 
-  const {shareInstagramStories} = useShare()
+  const {shareInstagramStories, checkCanOpenInstagram} = useShare()
 
   const onSaveTicketImage = async () => {
     try {
@@ -43,6 +44,14 @@ export default function GameCard() {
     try {
       const viewShot = await onCaptureView()
       if (!viewShot) throw new Error('이미지 캡처에 실패했어요')
+
+      const isSupportedInstagram = await checkCanOpenInstagram()
+
+      if (!isSupportedInstagram) {
+        showToast('지금은 인스타그램 공유만 지원해요')
+        return
+      }
+
       shareInstagramStories(viewShot.uri)
     } catch (error) {
       showToast('잠시 후 다시 시도해 주세요')
@@ -109,9 +118,10 @@ export default function GameCard() {
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
           <View style={styles.iconBox}>
-            <TouchableOpacity onPress={onShareInstagramStories}>
+            <ShareInstagramButton ticketDetail={ticketDetail} />
+            {/* <TouchableOpacity onPress={onShareInstagramStories}>
               <Image source={require('@/assets/icons/share.png')} resizeMode="contain" style={styles.editIcon} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>
@@ -286,6 +296,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 5,
     borderWidth: 1,
+    backgroundColor: '#fff',
     borderColor: '#95938B',
     borderRadius: 40,
     paddingHorizontal: 12.5,

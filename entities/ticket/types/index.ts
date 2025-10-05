@@ -54,8 +54,8 @@ type TicketDetail = {
   opponent: number
   writer: number
 
-  hometeam_id: string
-  awayteam_id: string
+  hometeam_id: number
+  awayteam_id: number
 
   only_me: boolean
   is_double: boolean
