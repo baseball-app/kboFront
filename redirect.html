@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오늘의 야구</title>
+  </head>
+  <script>
+    function redirectToStore() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera
+      console.log(userAgent)
+      if (/android/i.test(userAgent)) {
+        window.location.href = 'https://play.google.com/store/apps/details?id=xyz.kboapp&hl=ko'
+      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        window.location.href =
+          'https://apps.apple.com/kr/app/%EC%98%A4%EB%8A%98%EC%9D%98-%EC%95%BC%EA%B5%AC-%EB%82%B4%EA%B0%80-%EC%9D%91%EC%9B%90%ED%95%98%EB%8A%94-%EA%B5%AC%EB%8B%A8%EC%9D%84-%EA%B8%B0%EB%A1%9D%ED%95%B4%EB%B4%90%EC%9A%94/id6742373024'
+      }
+    }
+
+    window.onload = () => {
+      redirectToStore()
+      document.getElementById('store-button').addEventListener('click', redirectToStore)
+    }
+  </script>
+  <body style="margin: 0; padding: 0; height: 100vh; background-color: #fffcf3">
+    <main
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        gap: 20px;
+      ">
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+          margin-top: 140px;
+        ">
+        <img src="./logo.png" alt="logo" style="height: 220px" />
+        <p
+          style="
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 16px;
+            line-height: 140%;
+            letter-spacing: 0;
+            text-align: center;
+            margin: 0;
+            color: #77756c;
+          ">
+          반가워요! 오늘의 야구와 함께<br />내가 응원하는 구단을 기록해보세요
+        </p>
+      </div>
+      <button
+        id="store-button"
+        style="
+          width: 327px;
+          height: 50px;
+          opacity: 1;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          border-radius: 10px;
+          font-family: 'Pretendard', sans-serif;
+          font-size: 16px;
+          font-weight: 600;
+          background-color: #1e5ef4;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+          margin-bottom: 24px;
+        ">
+        스토어로 이동하기
+      </button>
+    </main>
+  </body>
+</html>
