@@ -1,14 +1,13 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {
-  FlatList,
-  ListRenderItemInfo,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-  Animated,
-} from 'react-native'
+import React, {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {FlatList, NativeScrollEvent, NativeSyntheticEvent, View, ViewStyle} from 'react-native'
+
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+  interpolateColor,
+} from 'react-native-reanimated'
 
 const WheelPicker2 = ({
   itemHeight,
@@ -52,20 +51,12 @@ const WheelPicker2 = ({
     }, 60)
   }, [])
 
-  const renderItem = useCallback(
-    ({item}: ListRenderItemInfo<string>) => {
-      if (!item) return <View style={{height: itemHeight}} />
-      return <WheelItem innerValue={innerValue} item={item} itemHeight={itemHeight} />
-    },
-    [itemHeight, innerValue],
-  )
-
   return (
     <View style={[{height: itemHeight * 3}, containerStyle]}>
       <Animated.FlatList
         data={_items}
         ref={flatListRef}
-        renderItem={renderItem}
+        renderItem={({item}) => <WheelItem isSelected={innerValue === item} item={item} itemHeight={itemHeight} />}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
         snapToInterval={itemHeight}
@@ -79,65 +70,45 @@ const WheelPicker2 = ({
   )
 }
 
-const WheelItem = ({innerValue, item, itemHeight}: {innerValue: string; item: string; itemHeight: number}) => {
-  const scale = useRef(new Animated.Value(innerValue === item ? 1 : 0.8)).current
-  const colorAnim = useRef(new Animated.Value(innerValue === item ? 1 : 0)).current
+const WheelItem = memo(
+  ({item, itemHeight, isSelected}: {item: string; itemHeight: number; isSelected: boolean}) => {
+    const scale = useSharedValue(isSelected ? 1 : 0.8)
+    const colorAnim = useSharedValue(isSelected ? 1 : 0)
 
-  useEffect(() => {
-    if (innerValue === item) {
-      Animated.parallel([
-        Animated.spring(scale, {
-          toValue: 1,
-          useNativeDriver: true,
-        }),
-        Animated.timing(colorAnim, {
-          toValue: 1,
-          duration: 60,
-          useNativeDriver: false,
-        }),
-      ]).start()
-    } else {
-      Animated.parallel([
-        Animated.spring(scale, {
-          toValue: 0.8,
-          useNativeDriver: true,
-        }),
-        Animated.timing(colorAnim, {
-          toValue: 0,
-          duration: 60,
-          useNativeDriver: false,
-        }),
-      ]).start()
-    }
-  }, [innerValue, item])
+    React.useEffect(() => {
+      if (isSelected) {
+        scale.value = withSpring(1)
+        colorAnim.value = withTiming(1, {duration: 60})
+      } else {
+        scale.value = withSpring(0.8)
+        colorAnim.value = withTiming(0, {duration: 60})
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSelected])
 
-  // colorAnim 값을 이용해 색상을 부드럽게 보간합니다.
-  const animatedColor = colorAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['#95938B', '#171716'],
-  })
+    const animatedStyle = useAnimatedStyle(() => ({
+      height: itemHeight,
+      alignItems: 'center',
+      justifyContent: 'center',
+      transform: [{scale: scale.value}],
+    }))
 
-  return (
-    <TouchableOpacity activeOpacity={0.95} style={{height: itemHeight}}>
-      <Animated.View
-        style={{
-          height: itemHeight,
-          alignItems: 'center',
-          justifyContent: 'center',
-          transform: [{scale}],
-        }}>
-        <Animated.Text
-          style={{
-            fontSize: 24,
-            lineHeight: 24 * 1.4,
-            fontWeight: '700',
-            color: animatedColor,
-          }}>
-          {item}
-        </Animated.Text>
+    const animatedTextStyle = useAnimatedStyle(() => ({
+      fontSize: 24,
+      lineHeight: 24 * 1.4,
+      fontWeight: '700',
+      color: interpolateColor(colorAnim.value, [0, 1], ['#95938B', '#171716']),
+    }))
+
+    if (!item) return <View style={{height: itemHeight}} />
+
+    return (
+      <Animated.View style={[animatedStyle, {height: itemHeight}]}>
+        <Animated.Text style={animatedTextStyle}>{item}</Animated.Text>
       </Animated.View>
-    </TouchableOpacity>
-  )
-}
+    )
+  },
+  (prev, next) => prev.isSelected === next.isSelected,
+)
 
-export default WheelPicker2
+export default memo(WheelPicker2)

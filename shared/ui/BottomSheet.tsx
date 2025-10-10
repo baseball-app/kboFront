@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useEffect, useState} from 'react'
+import React, {PropsWithChildren, useEffect, useState, useCallback, useMemo, memo} from 'react'
 import {StyleSheet, Pressable} from 'react-native'
 import {Modal} from '@/components/common/Modal'
 import Animated, {useSharedValue, withTiming, useAnimatedStyle, Easing, runOnJS} from 'react-native-reanimated'
@@ -10,7 +10,7 @@ type BottomSheetProps = {
   onPressOverlay?: () => void
 }
 
-const BottomSheet = ({
+const BottomSheetComponent = ({
   isOpen,
   children,
   duration = 350,
@@ -21,6 +21,11 @@ const BottomSheet = ({
 
   const overlayOpacity = useSharedValue(0)
   const sheetTranslateY = useSharedValue(height)
+
+  // setIsRealOpen을 useCallback으로 감싸서 runOnJS에서 안정적으로 사용
+  const handleAnimationEnd = useCallback(() => {
+    setIsRealOpen(false)
+  }, [])
 
   useEffect(() => {
     if (isOpen) {
@@ -47,13 +52,15 @@ const BottomSheet = ({
           duration,
           easing: Easing.in(Easing.quad),
         },
-        () => {
-          // 애니메이션이 끝난 뒤 모달 제거
-          runOnJS(setIsRealOpen)(false)
+        finished => {
+          // 애니메이션이 정상적으로 완료된 경우에만 모달 제거
+          if (finished) {
+            runOnJS(handleAnimationEnd)()
+          }
         },
       )
     }
-  }, [isOpen])
+  }, [isOpen, duration, height, overlayOpacity, sheetTranslateY, handleAnimationEnd])
 
   const overlayStyle = useAnimatedStyle(() => ({
     opacity: overlayOpacity.value,
@@ -61,17 +68,27 @@ const BottomSheet = ({
 
   const sheetStyle = useAnimatedStyle(() => ({
     transform: [{translateY: sheetTranslateY.value}],
+    height,
   }))
+
+  // onPressOverlay가 undefined인 경우 불필요한 함수 생성 방지
+  const handleOverlayPress = useCallback(() => {
+    onPressOverlay?.()
+  }, [onPressOverlay])
 
   return (
     <Modal visible={isOpen || isRealOpen} transparent animationType="none">
-      <AnimatedPressable style={[styles.overlay, overlayStyle]} onPress={onPressOverlay} />
+      <AnimatedPressable
+        style={[styles.overlay, overlayStyle]}
+        onPress={onPressOverlay ? handleOverlayPress : undefined}
+      />
       <Animated.View style={[styles.sheet, sheetStyle]}>{children}</Animated.View>
     </Modal>
   )
 }
 
-export {BottomSheet}
+// React.memo로 불필요한 리렌더링 방지
+export const BottomSheet = memo(BottomSheetComponent)
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 

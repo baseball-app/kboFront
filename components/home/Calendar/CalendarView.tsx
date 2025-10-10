@@ -2,7 +2,7 @@ import MatchResultCell from '@/components/MatchResultCell'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import {Ionicons} from '@expo/vector-icons'
 import dayjs from 'dayjs'
-import React, {useState} from 'react'
+import React, {memo, useMemo, useState} from 'react'
 import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {TicketCalendarLog} from './type'
 import {CALENDAR_END_DATE, CALENDAR_START_DATE} from '@/constants/day'
@@ -40,6 +40,8 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
 
   // const loading = true
   const loading = isLoading || isTicketListLoading
+
+  const memoizedDays = useMemo(() => dayjs(date).toDate(), [date, ticketList])
 
   return (
     <View style={styles.container}>
@@ -79,7 +81,7 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
         <View style={{width: width}}>
           <RenderDays
             isLoading={!ticketList} //
-            date={dayjs(date).toDate()}
+            date={memoizedDays}
             ticketList={ticketList}
             dayClick={onClick}
           />
@@ -165,63 +167,65 @@ const YearMonthPicker = ({
 const dimensions = Dimensions.get('window')
 const width = dimensions.width - 48
 
-const RenderDays = ({
-  date,
-  dayClick,
-  ticketList,
-  isLoading,
-}: {
-  date: Date
-  ticketList: Record<string, TicketCalendarLog[]> | null | undefined
-  dayClick: (day: Date) => void
-  isLoading: boolean
-}) => {
-  // UI에 검은 테두리 보여주는 상태
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+const RenderDays = memo(
+  ({
+    date,
+    dayClick,
+    ticketList,
+    isLoading,
+  }: {
+    date: Date
+    ticketList: Record<string, TicketCalendarLog[]> | null | undefined
+    dayClick: (day: Date) => void
+    isLoading: boolean
+  }) => {
+    // UI에 검은 테두리 보여주는 상태
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  const [days] = useState<Date[]>(() => {
-    const startDate = dayjs(date).startOf('month').startOf('week')
-    const endDate = dayjs(date).endOf('month').endOf('week')
+    const [days] = useState<Date[]>(() => {
+      const startDate = dayjs(date).startOf('month').startOf('week')
+      const endDate = dayjs(date).endOf('month').endOf('week')
 
-    return Array.from(
-      {length: endDate.diff(startDate, 'day') + 1}, //
-      (_, i) => startDate.add(i, 'day').toDate(),
+      return Array.from(
+        {length: endDate.diff(startDate, 'day') + 1}, //
+        (_, i) => startDate.add(i, 'day').toDate(),
+      )
+    })
+
+    return (
+      <View style={[styles.daysContainer, {width: width}]}>
+        {days.map(day => {
+          const ticketsGroupByDate = ticketList?.[dayjs(day).format('YYYY-MM-DD')] || []
+          const isSameMonth = dayjs(day).isSame(date, 'month')
+          const isSameDay = dayjs(day).isSame(selectedDate, 'day')
+          const isToday = dayjs(day).isSame(dayjs(), 'day')
+
+          return (
+            <View
+              key={dayjs(day).format('YYYY-MM-DD')}
+              style={[
+                styles.day,
+                !isSameMonth && styles.inactiveDay,
+                Boolean(selectedDate) && isSameDay && styles.selectedDay,
+                // styles.selectedDay,
+                {height: 80},
+              ]}>
+              <Text style={[styles.dayText, isToday && styles.today]}>{dayjs(day).format('D')}</Text>
+              <MatchResultCell
+                isLoading={isLoading}
+                onPress={() => {
+                  setSelectedDate(day)
+                  dayClick(day)
+                }}
+                data={ticketsGroupByDate} //
+              />
+            </View>
+          )
+        })}
+      </View>
     )
-  })
-
-  return (
-    <View style={[styles.daysContainer, {width: width}]}>
-      {days.map(day => {
-        const ticketsGroupByDate = ticketList?.[dayjs(day).format('YYYY-MM-DD')] || []
-        const isSameMonth = dayjs(day).isSame(date, 'month')
-        const isSameDay = dayjs(day).isSame(selectedDate, 'day')
-        const isToday = dayjs(day).isSame(dayjs(), 'day')
-
-        return (
-          <View
-            key={dayjs(day).format('YYYY-MM-DD')}
-            style={[
-              styles.day,
-              !isSameMonth && styles.inactiveDay,
-              Boolean(selectedDate) && isSameDay && styles.selectedDay,
-              // styles.selectedDay,
-              {height: 80},
-            ]}>
-            <Text style={[styles.dayText, isToday && styles.today]}>{dayjs(day).format('D')}</Text>
-            <MatchResultCell
-              isLoading={isLoading}
-              onPress={() => {
-                setSelectedDate(day)
-                dayClick(day)
-              }}
-              data={ticketsGroupByDate} //
-            />
-          </View>
-        )
-      })}
-    </View>
-  )
-}
+  },
+)
 
 export {CalendarView}
 

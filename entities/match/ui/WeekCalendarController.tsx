@@ -1,16 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet, Platform} from 'react-native'
-import {Ionicons} from '@expo/vector-icons'
-import {DAYS_OF_WEEK} from '@/constants/day'
-import dayjs from 'dayjs'
-import {BottomSheet} from '@/shared/ui'
 import WheelPicker2 from '@/components/WheelPicker2'
-import {WeekCalendarController} from './WeekCalendarController'
-
-type Props = {
-  onChange: (date: Date) => void
-  value: Date
-}
+import {BottomSheet} from '@/shared/ui/BottomSheet'
+import {Ionicons} from '@expo/vector-icons'
+import dayjs from 'dayjs'
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react'
+import {Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import Animated, {useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated'
 
 type MatchCalendarHeaderProps = {
   prevMonth: () => void
@@ -19,39 +13,119 @@ type MatchCalendarHeaderProps = {
   setCurrentDate: (date: Date) => void
 }
 
-const MatchCalendarHeader = ({setCurrentDate, prevMonth, nextMonth, currentDate}: MatchCalendarHeaderProps) => {
+const WeekCalendarController = ({setCurrentDate, prevMonth, nextMonth, currentDate}: MatchCalendarHeaderProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
-
-  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
-  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
-  const [selectedDay, setSelectedDay] = useState(currentDate.getDate())
-
-  useEffect(() => {
-    setSelectedYear(currentDate.getFullYear())
-    setSelectedMonth(currentDate.getMonth() + 1)
-    setSelectedDay(currentDate.getDate())
-  }, [currentDate])
 
   const handleMonthYearChange = () => {
     setIsModalVisible(prev => !prev)
   }
 
-  const selectedDayjs = dayjs(`${selectedYear}-${selectedMonth}-01`)
-  const dayList = Array.from({length: selectedDayjs.daysInMonth()}, (_, i) => `${i + 1}일`)
-
   return (
     <>
+      <_HeaderController
+        prevMonth={prevMonth}
+        nextMonth={nextMonth}
+        currentDate={currentDate}
+        openBottomSheet={handleMonthYearChange}
+      />
+      <_BottomSheetController
+        currentDate={currentDate}
+        isModalVisible={isModalVisible}
+        setCurrentDate={setCurrentDate}
+        setIsModalVisible={setIsModalVisible}
+      />
+    </>
+  )
+}
+
+const _HeaderController = memo(
+  ({
+    prevMonth,
+    nextMonth,
+    currentDate,
+    openBottomSheet,
+  }: Omit<MatchCalendarHeaderProps, 'setCurrentDate'> & {openBottomSheet: () => void}) => {
+    return (
       <View style={styles.header}>
-        <TouchableOpacity onPress={prevMonth} style={styles.headerTextContainer}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.headerTextContainer, {width: 100}]} onPress={handleMonthYearChange}>
+        <PrevWeekButton onPress={prevMonth} />
+        <TouchableOpacity style={[styles.headerTextContainer, {width: 100}]} onPress={openBottomSheet}>
           <Text style={styles.headerText}>{dayjs(currentDate).format('YYYY.MM')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={nextMonth} style={styles.headerTextContainer}>
-          <Ionicons name="chevron-forward" size={24} color="black" />
-        </TouchableOpacity>
+        <NextWeekButton onPress={nextMonth} />
       </View>
+    )
+  },
+)
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
+
+const PrevWeekButton = memo(({onPress}: {onPress: () => void}) => {
+  const scale = useSharedValue(1)
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{scale: scale.value}],
+    }
+  })
+
+  const handlePressIn = useCallback(() => {
+    'worklet'
+    scale.value = withTiming(0.85, {duration: 80})
+  }, [])
+
+  const handlePressOut = useCallback(() => {
+    'worklet'
+    scale.value = withTiming(1, {duration: 80})
+  }, [])
+
+  return (
+    <AnimatedPressable
+      onPress={onPress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={[styles.headerTextContainer, animatedStyle]}>
+      <Ionicons name="chevron-back" size={24} color="black" />
+    </AnimatedPressable>
+  )
+})
+
+const NextWeekButton = memo(({onPress}: {onPress: () => void}) => {
+  return (
+    <AnimatedPressable onPress={onPress} style={styles.headerTextContainer}>
+      <Ionicons name="chevron-forward" size={24} color="black" />
+    </AnimatedPressable>
+  )
+})
+
+const _BottomSheetController = memo(
+  ({
+    isModalVisible,
+    setIsModalVisible,
+    setCurrentDate,
+    currentDate,
+  }: {
+    isModalVisible: boolean
+    setIsModalVisible: (isModalVisible: boolean) => void
+    setCurrentDate: (date: Date) => void
+    currentDate: Date
+  }) => {
+    const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
+    const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
+    const [selectedDay, setSelectedDay] = useState(currentDate.getDate())
+
+    useEffect(() => {
+      setSelectedYear(currentDate.getFullYear())
+      setSelectedMonth(currentDate.getMonth() + 1)
+      setSelectedDay(currentDate.getDate())
+    }, [currentDate])
+
+    const selectedDayjs = useMemo(() => dayjs(`${selectedYear}-${selectedMonth}-01`), [selectedYear, selectedMonth])
+    const dayList = useMemo(
+      () => Array.from({length: selectedDayjs.daysInMonth()}, (_, i) => `${i + 1}일`),
+      [selectedDayjs],
+    )
+
+    return (
       <BottomSheet isOpen={isModalVisible} duration={250} height={350}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
@@ -93,96 +167,13 @@ const MatchCalendarHeader = ({setCurrentDate, prevMonth, nextMonth, currentDate}
           </View>
         </View>
       </BottomSheet>
-    </>
-  )
-}
-
-type MatchCalendarBodyProps = {
-  currentDate: Date
-  selectedDate: Date
-  onChange: (date: Date) => void
-}
-
-const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarBodyProps) => {
-  const days = []
-  const startDate = dayjs(currentDate).startOf('week') // 주의 첫 번째 날을 가져옴
-
-  // 7일 동안의 날짜를 요일과 함께 표시
-  for (let i = 0; i < 7; i++) {
-    const day = dayjs(startDate).add(i, 'day')
-    const isSelected = dayjs(day).isSame(selectedDate) // 선택된 날짜 여부
-    const today = dayjs()
-    const isToday = dayjs(day).isSame(today)
-    const isTodayAndNotSelected = isToday && !isSelected // 오늘이지만 선택되지 않은 경우
-
-    days.push(
-      <TouchableOpacity
-        key={i}
-        style={[styles.dayContainer, isSelected && styles.selectedDay, isTodayAndNotSelected && styles.todayDay]}
-        onPress={() => onChange(day.toDate())}>
-        <Text
-          style={[
-            styles.dayOfWeekText,
-            isSelected ? styles.selectedText : isToday ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
-          ]}>
-          {DAYS_OF_WEEK[i]}
-        </Text>
-        <Text
-          style={[
-            styles.dayText,
-            isSelected ? styles.selectedText : isToday ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
-            Platform.OS === 'android' ? {paddingLeft: '15%'} : {},
-          ]}>
-          {dayjs(day).format('D')} {/* 날짜 */}
-        </Text>
-      </TouchableOpacity>,
     )
-  }
+  },
+)
 
-  return <View style={styles.weekRow}>{days}</View>
-}
-
-const MatchWeekCalendar = ({onChange, value}: Props) => {
-  // 현재 캘린더가 보고 있는 날짜
-  const [currentDate, setCurrentDate] = useState(new Date())
-
-  const prevMonth = useCallback(() => setCurrentDate(currentDate => dayjs(currentDate).add(-1, 'week').toDate()), [])
-  const nextMonth = useCallback(() => setCurrentDate(currentDate => dayjs(currentDate).add(1, 'week').toDate()), [])
-
-  useEffect(() => {
-    console.log('currentDate', currentDate)
-  }, [currentDate])
-
-  const handleChange = useCallback(
-    (date: Date) => {
-      setCurrentDate(date)
-      onChange(date)
-    },
-    [onChange],
-  )
-
-  return (
-    <View style={styles.container}>
-      <WeekCalendarController
-        setCurrentDate={handleChange}
-        prevMonth={prevMonth}
-        nextMonth={nextMonth}
-        currentDate={currentDate}
-      />
-      <MatchCalendarBody
-        currentDate={currentDate}
-        selectedDate={value}
-        onChange={date => {
-          setCurrentDate(date)
-          onChange(date)
-        }}
-      />
-    </View>
-  )
-}
+export {WeekCalendarController}
 
 const styles = StyleSheet.create({
-  container: {},
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -198,10 +189,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  navButton: {
-    fontSize: 24,
-    color: 'black',
-  },
   daysOfWeekContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -214,10 +201,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '100%',
     color: '#000',
-  },
-  singleRowDaysContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   day: {
     width: '14.28%',
@@ -236,47 +219,17 @@ const styles = StyleSheet.create({
   inactiveDay: {
     opacity: 0.5,
   },
-
   selectedDay: {
     borderWidth: 2,
     borderRadius: 10,
     padding: 4,
     backgroundColor: '#000',
   },
-  moodContainer: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-    marginBottom: 4,
-  },
   datePickerContainer: {
     flexDirection: 'row',
     height: 134,
     overflow: 'hidden',
     justifyContent: 'space-between',
-  },
-  picker: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  pickerItem: {
-    fontSize: 24,
-    backgroundColor: '#fff',
-  },
-  moodIcon: {
-    fontSize: 24,
-  },
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: 'red',
-    position: 'absolute',
-    top: 4,
-    right: 4,
   },
   modalContent: {
     width: '100%',
@@ -363,5 +316,3 @@ const styles = StyleSheet.create({
     color: '#000',
   },
 })
-
-export {MatchWeekCalendar}

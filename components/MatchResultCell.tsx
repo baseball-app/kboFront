@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import {StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native'
 import {findMatchResultImage} from '@/constants/match'
 import {useTeam} from '@/entities/match'
-import { TicketCalendarLog } from '@/entities/ticket/types'
+import {TicketCalendarLog} from '@/entities/ticket/types'
 
 //TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
 const MatchResultCell = ({
@@ -24,7 +24,9 @@ const MatchResultCell = ({
       myTeam: findTeamByName(res.home),
       opponent: findTeamByName(res.opponent_name),
     }
-  }, [data])
+  }, [data, findTeamByName])
+
+  console.log(data)
 
   return (
     <TouchableOpacity style={{alignItems: 'center'}} onPress={onPress}>
