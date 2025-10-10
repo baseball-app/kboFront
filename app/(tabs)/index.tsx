@@ -20,7 +20,8 @@ const CalendarScreen = () => {
   // 페이지 이동 시, 초기화
   useEffect(() => {
     const tabPathList = ['/rank', '/match', '/my', '/ticket']
-    if (profile.id && tabPathList.includes(pathname)) {
+    if (!profile.id) return
+    if (tabPathList.includes(pathname) || !userId) {
       setUserId(profile.id)
     }
   }, [pathname, profile.id])
