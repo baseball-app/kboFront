@@ -3,9 +3,10 @@ import {useTeam} from '@/entities/match'
 import {TicketDetail} from '@/entities/ticket'
 import useProfile from '@/hooks/my/useProfile'
 import React, {memo} from 'react'
-import {Image, StyleSheet, View, Text, ScrollView} from 'react-native'
+import {StyleSheet, View, Text, ScrollView} from 'react-native'
 import Svg, {Line} from 'react-native-svg'
 import dayjs from 'dayjs'
+import FastImage from '@d11/react-native-fast-image'
 
 type Props = {
   ticketDetail: TicketDetail
@@ -23,7 +24,7 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
       <View style={styles.ticketBackground}>
         <View style={[styles.ticketContent]}>
           <View style={{position: 'relative', width: '100%'}}>
-            <Image
+            <FastImage
               source={{
                 uri: ticketDetail?.image,
               }}
@@ -121,7 +122,7 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
                       return (
                         <>
                           <View style={styles.onlyMeButtonBox}>
-                            <Image
+                            <FastImage
                               source={require('@/assets/icons/lock.png')}
                               style={styles.lockButton}
                               resizeMode="contain"

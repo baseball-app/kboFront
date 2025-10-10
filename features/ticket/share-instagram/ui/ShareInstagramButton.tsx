@@ -48,7 +48,6 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
   })()
 
   const {findTeamById} = useTeam()
-  console.log(ticketDetail)
 
   const ticketCaption = (() => {
     const hometeam = findTeamById(ticketDetail?.hometeam_id)

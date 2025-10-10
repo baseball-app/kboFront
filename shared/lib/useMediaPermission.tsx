@@ -22,8 +22,8 @@ const useMediaPermission = () => {
       if (isNotGranted) throw new NoPermissionError()
     }
 
-    console.log('status', premissionResponse?.status)
-    console.log('accessPrivileges', premissionResponse?.accessPrivileges)
+    // console.log('status', premissionResponse?.status)
+    // console.log('accessPrivileges', premissionResponse?.accessPrivileges)
 
     return {isGranted: true}
   }

@@ -26,8 +26,6 @@ const MatchResultCell = ({
     }
   }, [data, findTeamByName])
 
-  console.log(data)
-
   return (
     <TouchableOpacity style={{alignItems: 'center'}} onPress={onPress}>
       {matchResult ? (

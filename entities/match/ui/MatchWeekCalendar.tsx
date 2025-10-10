@@ -149,10 +149,6 @@ const MatchWeekCalendar = ({onChange, value}: Props) => {
   const prevMonth = useCallback(() => setCurrentDate(currentDate => dayjs(currentDate).add(-1, 'week').toDate()), [])
   const nextMonth = useCallback(() => setCurrentDate(currentDate => dayjs(currentDate).add(1, 'week').toDate()), [])
 
-  useEffect(() => {
-    console.log('currentDate', currentDate)
-  }, [currentDate])
-
   const handleChange = useCallback(
     (date: Date) => {
       setCurrentDate(date)

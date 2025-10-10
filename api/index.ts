@@ -168,9 +168,9 @@ export const uploadFile = async <T>(url: string, data: FormData): Promise<T> => 
 
     return response.data
   } catch (error) {
-    console.log(JSON.stringify(error))
-    console.error('Error occurred during upload file:', error)
-    console.log((error as any)?.message)
+    // console.log(JSON.stringify(error))
+    // console.error('Error occurred during upload file:', error)
+    // console.log((error as any)?.message)
     return Promise.reject(error)
   }
 }
