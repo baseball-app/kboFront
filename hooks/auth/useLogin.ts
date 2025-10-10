@@ -1,10 +1,7 @@
 import {useMemo} from 'react'
 import {useMMKVObject} from 'react-native-mmkv'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
-import {clearAll} from '@/store/mmkv-store/mmkvStore'
 import ApiClient from '@/api'
-import {useQueryClient} from '@tanstack/react-query'
-import {ROUTES, useAppRouter} from '../common'
 
 export type TUser = {
   accessToken: string
@@ -25,31 +22,6 @@ export type LoginServerResponse = {
 export const useLogin = () => {
   const [user, setUser] = useMMKVObject<TUser>(MmkvStoreKeys.USER_LOGIN)
   const isLogined = useMemo(() => user?.accessToken && user.accessToken.length > 0, [user?.accessToken])
-  const router = useAppRouter()
-  const queryClient = useQueryClient()
-
-  const logout = async () => {
-    try {
-      await ApiClient.post('/auths/token/revoke/', {})
-    } catch (error) {
-      console.error('토큰 무효화 실패', error)
-    } finally {
-      // 사용자 데이터 제거
-      setUser(undefined)
-
-      // React Query 캐시 완전 클리어
-      queryClient.removeQueries()
-      queryClient.clear()
-      await queryClient.cancelQueries()
-      queryClient.resetQueries()
-
-      // MMKV 로컬 스토리지 완전 클리어
-      clearAll()
-
-      router.dismissAll()
-      router.replace(ROUTES.AUTH_LOGIN)
-    }
-  }
 
   const resetToken = (info: Pick<LoginServerResponse, 'access_token' | 'refresh_token'>) => {
     setUser({
@@ -89,7 +61,6 @@ export const useLogin = () => {
     user,
     isLogined,
     setUser,
-    logout,
     login,
     refreshAccessToken,
   }

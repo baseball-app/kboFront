@@ -1,8 +1,8 @@
 import React from 'react'
 import {ScrollView, StyleSheet} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import Privacy from '@/components/term/Privacy'
 import Header from '@/components/common/Header'
+import {Privacy} from '@/entities/terms'
 
 const PrivacyPolicyScreen = () => {
   return (

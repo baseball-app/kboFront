@@ -7,8 +7,9 @@ import {PROFILE_IMAGES} from '@/constants/join'
 import {useEffect} from 'react'
 import {IUserJoinSlice} from '@/slice/userJoinSlice'
 import {useCommonSlice} from '@/slice/commonSlice'
-import useTeam from '../match/useTeam'
-import {useAppRouter} from '../common'
+import {useTeam} from '@/entities/match'
+import {useAppRouter} from '@/shared'
+import {hashKey} from '@/shared'
 
 export type Team = {
   id: number // 3
@@ -123,7 +124,9 @@ const useProfile = () => {
   }
 
   useEffect(() => {
-    if (data) updateProfileCacheData(data)
+    if (data && hashKey(data) !== hashKey(profile)) {
+      updateProfileCacheData(data)
+    }
   }, [data])
 
   const myTeam = findTeamById(data?.my_team.id)

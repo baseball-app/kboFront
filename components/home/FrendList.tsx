@@ -7,7 +7,7 @@ import {usePathname} from 'expo-router'
 import Skeleton from '../skeleton/Skeleton'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
 
 const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; userId: number | null}) => {
   const {friend_status, isLoadingFriendStatus} = useFriends()

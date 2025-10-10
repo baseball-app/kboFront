@@ -2,7 +2,7 @@ import {TextStyle, ViewStyle} from 'react-native'
 import {create, StateCreator} from 'zustand'
 
 /** 모달데이터 구조 */
-interface IModalConfig {
+export interface IModalConfig {
   header: string
   content: string
   button: IButton[]

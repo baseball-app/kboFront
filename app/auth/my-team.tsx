@@ -3,8 +3,7 @@ import {StyleSheet, View, Text, TouchableOpacity, ScrollView, Image} from 'react
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {Ionicons} from '@expo/vector-icons'
 import useUserJoin from '@/hooks/auth/useUserJoin'
-import useTeam from '@/hooks/match/useTeam'
-
+import {useTeam} from '@/entities/match'
 export default function MyTeamScreen() {
   const {
     setMyTeam,

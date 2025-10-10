@@ -1,6 +1,6 @@
 import {userJoinSlice} from '@/slice/userJoinSlice'
 import React, {useRef, useState} from 'react'
-import {useAppRouter} from '../common'
+import {useAppRouter} from '@/shared'
 const consentList = [
   {
     value: 'terms-of-service',

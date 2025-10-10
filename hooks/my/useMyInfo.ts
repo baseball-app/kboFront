@@ -1,7 +1,6 @@
 import ApiClient from '@/api'
 import {usePopup} from '@/slice/commonSlice'
 import {useQuery} from '@tanstack/react-query'
-import {useLogin} from '@/hooks/auth/useLogin'
 import Clipboard from '@react-native-clipboard/clipboard'
 import useProfile from './useProfile'
 
@@ -10,16 +9,14 @@ type InvitationCode = {
 }
 
 const useMyInfo = () => {
-  const {user, isLogined, logout} = useLogin()
-  const {openCommonPopup, modal} = usePopup()
+  const {openCommonPopup} = usePopup()
 
   const {profile} = useProfile()
 
   const {data: invitation} = useQuery({
-    queryKey: ['invitation-code', user],
+    queryKey: ['invitation-code'],
     queryFn: () => ApiClient.get<InvitationCode>('/users/invitation-code/'),
     staleTime: 1000 * 60,
-    enabled: Boolean(isLogined),
   })
 
   // TODO: copy인데 잘못씀
@@ -43,54 +40,9 @@ const useMyInfo = () => {
     }
   }
 
-  const withdraw = async () => {
-    try {
-      await ApiClient.post<InvitationCode>('/users/leave/', {})
-      await logout()
-    } catch (error) {
-      console.error('회원 탈퇴 오류 :: ', error)
-    }
-  }
-
-  const withdrawUser = () => {
-    modal.open({
-      header: '안내',
-      content: `회원 탈퇴를 진행하시겠습니까? \n회원 탈퇴시,계정은 삭제되며 복구되지 않습니다.`,
-      button: [
-        {
-          text: '취소',
-          onPress: modal.hide,
-          buttonStyle: {
-            borderRadius: 10,
-            backgroundColor: '#EEEEEE',
-            flex: 1,
-          },
-          buttonTextStyle: {
-            color: '#000000',
-          },
-        },
-        {
-          text: '회원탈퇴',
-          onPress: () => {
-            withdraw()
-            modal.hide()
-          },
-          buttonStyle: {
-            backgroundColor: '#1E5EF4',
-            borderRadius: 10,
-          },
-          buttonTextStyle: {
-            color: 'white',
-          },
-        },
-      ],
-    })
-  }
-
   return {
     profile,
     onPasteInviteCode,
-    withdrawUser,
   }
 }
 

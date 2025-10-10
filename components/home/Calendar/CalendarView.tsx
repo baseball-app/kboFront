@@ -1,16 +1,18 @@
 import MatchResultCell from '@/components/MatchResultCell'
-import WheelPicker from '@/components/WheelPicker'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import {Ionicons} from '@expo/vector-icons'
 import dayjs from 'dayjs'
-import React, {useState} from 'react'
-import {Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import React, {memo, useMemo, useState} from 'react'
+import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {TicketCalendarLog} from './type'
-import {END_DATE, START_DATE} from './CalendarContainer'
+import {CALENDAR_END_DATE, CALENDAR_START_DATE} from '@/constants/day'
 import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
-import {groupBy} from '@/utils/groupBy'
+import {groupBy} from '@/shared'
 import LottieView from 'lottie-react-native'
+
+import {BottomSheet} from '@/shared/ui'
+import WheelPicker2 from '@/components/WheelPicker2'
 
 type Props = {
   date: Date
@@ -39,6 +41,8 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
   // const loading = true
   const loading = isLoading || isTicketListLoading
 
+  const memoizedDays = useMemo(() => dayjs(date).toDate(), [date, ticketList])
+
   return (
     <View style={styles.container}>
       {loading && (
@@ -64,39 +68,43 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
           <Ionicons name="chevron-down" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <View style={styles.daysOfWeekContainer}>
-        {DAYS_OF_WEEK.map((day, index) => (
-          <Text
-            key={index}
-            style={[styles.dayOfWeekText, index === 0 && {color: '#FF0000'}, index === 6 && {color: '#1E5EF4'}]}>
-            {day}
-          </Text>
-        ))}
-      </View>
+      <CalendarHeader />
       <View style={{width: width}}>
         <View style={{width: width}}>
           <RenderDays
             isLoading={!ticketList} //
-            date={dayjs(date).toDate()}
+            date={memoizedDays}
             ticketList={ticketList}
             dayClick={onClick}
           />
         </View>
       </View>
-      {isModalVisible && (
-        <YearMonthPicker
-          open={isModalVisible}
-          onCancel={() => setIsModalVisible(false)}
-          onConfirm={date => {
-            setDate(date)
-            setIsModalVisible(false)
-          }}
-          initialYearMonth={dayjs(date).format('YYYY.MM')}
-        />
-      )}
+      <YearMonthPicker
+        open={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        onConfirm={date => {
+          setDate(date)
+          setIsModalVisible(false)
+        }}
+        initialYearMonth={dayjs(date).format('YYYY.MM')}
+      />
     </View>
   )
 }
+
+const CalendarHeader = memo(() => {
+  return (
+    <View style={styles.daysOfWeekContainer}>
+      {DAYS_OF_WEEK.map((day, index) => (
+        <Text
+          key={index}
+          style={[styles.dayOfWeekText, index === 0 && {color: '#FF0000'}, index === 6 && {color: '#1E5EF4'}]}>
+          {day}
+        </Text>
+      ))}
+    </View>
+  )
+})
 
 const YearMonthPicker = ({
   open,
@@ -113,106 +121,115 @@ const YearMonthPicker = ({
   const [selectedMonth, setSelectedMonth] = useState(Number(initialYearMonth.split('.')[1]))
 
   const [yearList] = useState(
-    Array.from({length: END_DATE.diff(START_DATE, 'year') + 1}, (_, i) => `${START_DATE.year() + i}년`),
+    Array.from(
+      {length: CALENDAR_END_DATE.diff(CALENDAR_START_DATE, 'year') + 1},
+      (_, i) => `${CALENDAR_START_DATE.year() + i}년`,
+    ),
   )
 
   return (
-    <Modal visible={open} transparent={true} animationType="slide">
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
-          <View style={styles.datePickerContainer}>
-            <WheelPicker
-              items={yearList}
-              itemHeight={42}
-              initValue={`${selectedYear}년`}
-              onItemChange={item => setSelectedYear(Number(item.replaceAll(/\D/g, '')))}
-              containerStyle={{width: '49%'}}
-            />
-            <WheelPicker
-              items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
-              itemHeight={42}
-              initValue={`${selectedMonth}월`}
-              onItemChange={item => setSelectedMonth(Number(item.replaceAll(/\D/g, '')))}
-              containerStyle={{width: '49%'}}
-            />
-          </View>
-          <View style={styles.buttonBox}>
-            <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-              <Text style={styles.cancelText}>취소</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => onConfirm(new Date(`${selectedYear}-${selectedMonth}-01`))}>
-              <Text style={styles.confirmText}>완료</Text>
-            </TouchableOpacity>
-          </View>
+    <BottomSheet isOpen={open} duration={350} height={350}>
+      <View style={styles.modalContent}>
+        <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
+        <View style={styles.datePickerContainer}>
+          <WheelPicker2
+            itemHeight={50}
+            initialItem={`${selectedYear}년`}
+            onItemChange={item => {
+              setSelectedYear(Number(item.replaceAll(/\D/g, '')))
+            }}
+            items={yearList}
+            containerStyle={{width: '49%'}}
+          />
+          <WheelPicker2
+            items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
+            itemHeight={50}
+            initialItem={`${selectedMonth}월`}
+            onItemChange={item => {
+              setSelectedMonth(Number(item.replaceAll(/\D/g, '')))
+            }}
+            containerStyle={{width: '49%'}}
+          />
+        </View>
+        <View style={styles.buttonBox}>
+          <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+            <Text style={styles.cancelText}>취소</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={() => {
+              onConfirm(new Date(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`))
+            }}>
+            <Text style={styles.confirmText}>완료</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </Modal>
+    </BottomSheet>
   )
 }
 
 const dimensions = Dimensions.get('window')
 const width = dimensions.width - 48
 
-const RenderDays = ({
-  date,
-  dayClick,
-  ticketList,
-  isLoading,
-}: {
-  date: Date
-  ticketList: Record<string, TicketCalendarLog[]> | null | undefined
-  dayClick: (day: Date) => void
-  isLoading: boolean
-}) => {
-  // UI에 검은 테두리 보여주는 상태
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+const RenderDays = memo(
+  ({
+    date,
+    dayClick,
+    ticketList,
+    isLoading,
+  }: {
+    date: Date
+    ticketList: Record<string, TicketCalendarLog[]> | null | undefined
+    dayClick: (day: Date) => void
+    isLoading: boolean
+  }) => {
+    // UI에 검은 테두리 보여주는 상태
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  const [days] = useState<Date[]>(() => {
-    const startDate = dayjs(date).startOf('month').startOf('week')
-    const endDate = dayjs(date).endOf('month').endOf('week')
+    const [days] = useState<Date[]>(() => {
+      const startDate = dayjs(date).startOf('month').startOf('week')
+      const endDate = dayjs(date).endOf('month').endOf('week')
 
-    return Array.from(
-      {length: endDate.diff(startDate, 'day') + 1}, //
-      (_, i) => startDate.add(i, 'day').toDate(),
+      return Array.from(
+        {length: endDate.diff(startDate, 'day') + 1}, //
+        (_, i) => startDate.add(i, 'day').toDate(),
+      )
+    })
+
+    return (
+      <View style={[styles.daysContainer, {width: width}]}>
+        {days.map(day => {
+          const ticketsGroupByDate = ticketList?.[dayjs(day).format('YYYY-MM-DD')] || []
+          const isSameMonth = dayjs(day).isSame(date, 'month')
+          const isSameDay = dayjs(day).isSame(selectedDate, 'day')
+          const isToday = dayjs(day).isSame(dayjs(), 'day')
+
+          return (
+            <View
+              key={dayjs(day).format('YYYY-MM-DD')}
+              style={[
+                styles.day,
+                !isSameMonth && styles.inactiveDay,
+                Boolean(selectedDate) && isSameDay && styles.selectedDay,
+                // styles.selectedDay,
+                {height: 80},
+              ]}>
+              <Text style={[styles.dayText, isToday && styles.today]}>{dayjs(day).format('D')}</Text>
+              <MatchResultCell
+                isLoading={isLoading}
+                onPress={() => {
+                  setSelectedDate(day)
+                  dayClick(day)
+                }}
+                data={ticketsGroupByDate} //
+              />
+            </View>
+          )
+        })}
+      </View>
     )
-  })
-
-  return (
-    <View style={[styles.daysContainer, {width: width}]}>
-      {days.map(day => {
-        const ticketsGroupByDate = ticketList?.[dayjs(day).format('YYYY-MM-DD')] || []
-        const isSameMonth = dayjs(day).isSame(date, 'month')
-        const isSameDay = dayjs(day).isSame(selectedDate, 'day')
-        const isToday = dayjs(day).isSame(dayjs(), 'day')
-
-        return (
-          <View
-            key={dayjs(day).format('YYYY-MM-DD')}
-            style={[
-              styles.day,
-              !isSameMonth && styles.inactiveDay,
-              Boolean(selectedDate) && isSameDay && styles.selectedDay,
-              // styles.selectedDay,
-              {height: 80},
-            ]}>
-            <Text style={[styles.dayText, isToday && styles.today]}>{dayjs(day).format('D')}</Text>
-            <MatchResultCell
-              isLoading={isLoading}
-              onPress={() => {
-                setSelectedDate(day)
-                dayClick(day)
-              }}
-              data={ticketsGroupByDate} //
-            />
-          </View>
-        )
-      })}
-    </View>
-  )
-}
+  },
+)
 
 export {CalendarView}
 
@@ -315,7 +332,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     width: '100%',

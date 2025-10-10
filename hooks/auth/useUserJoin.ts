@@ -2,7 +2,7 @@ import {userJoinSlice} from '@/slice/userJoinSlice'
 import {useSegments} from 'expo-router'
 import useConsent from './useConsent'
 import useProfile from '../my/useProfile'
-import {ROUTES, useAppRouter} from '../common'
+import {ROUTES, useAppRouter} from '@/shared'
 
 // 유저의 회원가입 프로세스
 const userJoinProcess = [
@@ -36,7 +36,7 @@ const useUserJoin = () => {
       // 회원가입 로직
       await updateProfileWithSignUp(joinSlice)
 
-      router.navigate(ROUTES.CALENDAR_TAB)
+      router.dismissTo(ROUTES.CALENDAR_TAB)
     } catch (error) {
       console.error('회원가입 정보 수정 오류 :: ', error)
       console.error('data :: ', {
@@ -69,12 +69,11 @@ const useUserJoin = () => {
    * 다음 step으로 이동
    * 다음 step이 없으면 회원가입 요청
    */
-  const moveToNextStep = () => {
+  const moveToNextStep = async () => {
     try {
       const nextStep = getNextStep(currentStep)
       if (!nextStep) {
-        router.dismissAll()
-        signUp()
+        await signUp()
       } else {
         router.navigate(nextStep)
       }

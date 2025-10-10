@@ -1,23 +1,16 @@
 import React, {useState} from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {useRouter} from 'expo-router'
-import {Ionicons} from '@expo/vector-icons'
-import {moderateScale, verticalScale} from '@/utils/metrics'
 import useProfile from '@/hooks/my/useProfile'
-import useTeam from '@/hooks/match/useTeam'
 import Header from '@/components/common/Header'
+import {useTeam} from '@/entities/match'
 
 export default function ChangeScreen() {
   const {updateMyTeam, profile} = useProfile()
-
   const {teams} = useTeam()
-
   const [selectedTeamId, setSelectedTeamId] = useState(profile.my_team?.id)
 
   const isChanged = selectedTeamId !== profile.my_team?.id
-
-  const router = useRouter()
 
   return (
     <SafeAreaView style={styles.container}>

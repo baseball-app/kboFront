@@ -1,3 +1,5 @@
+import {UseMutationResult} from '@tanstack/react-query'
+
 export type Pagination<T> = {
   count: number
   next: string // 'http://api.example.org/accounts/?page=4'
@@ -5,3 +7,7 @@ export type Pagination<T> = {
   results: T[]
   last_page: number
 }
+
+export type MutationFn<T> = UseMutationResult<unknown, Error, T>['mutate']
+
+//

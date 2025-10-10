@@ -1,7 +1,6 @@
 import Header from '@/components/common/Header'
-import {useAppRouter} from '@/hooks/common'
+import {useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
-import {moderateScale, verticalScale} from '@/utils/metrics'
 import React, {useState} from 'react'
 import {KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    paddingHorizontal: verticalScale(24),
+    paddingHorizontal: 24,
     flexDirection: 'row',
   },
   backButton: {
@@ -111,8 +110,8 @@ const styles = StyleSheet.create({
   headerTitle: {
     flex: 1,
     textAlign: 'center',
-    fontSize: moderateScale(20),
+    fontSize: 20,
     fontWeight: 'bold',
-    marginRight: verticalScale(16),
+    marginRight: 16,
   },
 })

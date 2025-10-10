@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {Ionicons} from '@expo/vector-icons'
-import {useAppRouter} from '@/hooks/common'
+import {useAppRouter} from '@/shared'
 
 const TermsScreen = () => {
   const router = useAppRouter()

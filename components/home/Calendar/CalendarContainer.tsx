@@ -4,13 +4,14 @@ import {TicketCalendarLog} from './type'
 import dayjs from 'dayjs'
 import {usePathname, useSegments} from 'expo-router'
 import {useQueryClient} from '@tanstack/react-query'
-import {TicketDetail} from '@/hooks/match/useTicketDetail'
+import {TicketDetail} from '@/entities/ticket'
 import ApiClient from '@/api'
-import {Match} from '@/hooks/match/useMatch'
+import {Match} from '@/entities/match'
 import {useAnalyticsStore} from '@/analytics/event'
 import useProfile from '@/hooks/my/useProfile'
 import {Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, View} from 'react-native'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
+import {CALENDAR_START_DATE, CALENDAR_END_DATE} from '@/constants/day'
 
 type Props = {
   targetId: number
@@ -18,8 +19,8 @@ type Props = {
 
 const width = Dimensions.get('window').width - 48
 
-export const START_DATE = dayjs('2024-01-01')
-export const END_DATE = dayjs(`${dayjs().year() + 1}-12-31`)
+const START_DATE = CALENDAR_START_DATE
+const END_DATE = CALENDAR_END_DATE
 
 const CalendarContainer = ({targetId}: Props) => {
   const {profile} = useProfile()
@@ -197,11 +198,9 @@ const CalendarContainer = ({targetId}: Props) => {
   const segments = useSegments()
 
   useEffect(() => {
-    if (segments.join('') !== '(tabs)') {
-      setHideCalendar(true)
-    } else {
-      setHideCalendar(false)
-    }
+    const isCalendarPage = segments.join('') !== '(tabs)'
+    if (hideCalendar === isCalendarPage) return
+    setHideCalendar(isCalendarPage)
   }, [segments])
 
   const renderCalendar = useCallback(

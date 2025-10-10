@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 import 'react-native-reanimated'
-import {useEffect} from 'react'
+import {useEffect, useMemo} from 'react'
 import {Stack, usePathname} from 'expo-router'
 import {useFonts} from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
@@ -9,12 +9,12 @@ import QueryProvider from '@/components/provider/QueryProvider'
 import CommonModal from '@/components/common/CommonModal'
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
 import {Text, View, TextInput, Platform} from 'react-native'
-import DeepLinkProvider from '@/components/provider/DeepLinkProvider'
 import Toast, {ToastConfig} from 'react-native-toast-message'
 import {EVENTS} from '@/analytics/event'
 import {logEvent} from '@/analytics/func'
-import messaging from '@react-native-firebase/messaging'
+import {setBackgroundMessageHandler, getMessaging} from '@react-native-firebase/messaging'
 import notifee from '@notifee/react-native'
+import {CommonSheet} from '@/components/common/CommonSheet'
 
 interface TextWithDefaultProps extends Text {
   defaultProps?: {allowFontScaling?: boolean}
@@ -32,22 +32,13 @@ interface TextInputWithDefaultProps extends TextInput {
   (TextInput as unknown as TextInputWithDefaultProps).defaultProps || {}
 ;(TextInput as unknown as TextInputWithDefaultProps).defaultProps!.allowFontScaling = false
 
-/*
-  1. Create the config
-*/
-const toastConfig: ToastConfig = {
-  info: ({text1}) => (
-    <View style={{paddingVertical: 8, paddingHorizontal: 16, backgroundColor: '#353430', borderRadius: 999}}>
-      <Text style={{color: '#fff', fontSize: 15}}>{text1}</Text>
-    </View>
-  ),
-}
-
 enableScreens(false)
 
 SplashScreen.preventAutoHideAsync()
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
+const messaging = getMessaging()
+
+setBackgroundMessageHandler(messaging, async remoteMessage => {
   if (Platform.OS === 'android') {
     console.log('📡 Background Push 수신됨:', remoteMessage)
     await notifee.displayNotification({
@@ -77,6 +68,27 @@ export default function RootLayout() {
     logEvent(EVENTS.SCREEN_VIEW, {screen_name: pathname})
   }, [pathname])
 
+  const toastConfig: ToastConfig = useMemo(
+    () => ({
+      info: (
+        {text1}, //
+      ) => (
+        <View
+          style={{
+            paddingVertical: 8,
+            paddingHorizontal: 16,
+            backgroundColor: '#353430',
+            borderRadius: 999,
+            marginBottom: 40,
+          }}>
+          <Text style={{color: '#fff', fontSize: 15}}>{text1}</Text>
+        </View>
+      ),
+    }),
+    [],
+    // [bottom],
+  )
+
   if (!loaded) return null
 
   return (
@@ -91,7 +103,8 @@ export default function RootLayout() {
         <Stack.Screen name="ticket" options={{headerShown: false}} />
       </Stack>
       <CommonModal />
-      <Toast config={toastConfig} />
+      <CommonSheet />
+      <Toast config={{...toastConfig}} />
     </QueryProvider>
   )
 }

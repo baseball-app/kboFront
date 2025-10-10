@@ -1,5 +1,5 @@
 import {ProfileImage} from '@/constants/join'
-import {Team} from '@/hooks/match/useTeam'
+import {Team} from '@/entities/match'
 import {create, StateCreator} from 'zustand'
 
 export interface IUserJoinSlice {
@@ -16,7 +16,7 @@ export interface IUserJoinSlice {
   setMyTeam: (team: Omit<Team, 'logo_url'>) => void
 }
 
-export const joinSlice: StateCreator<IUserJoinSlice> = set => ({
+const joinSlice: StateCreator<IUserJoinSlice> = set => ({
   id: 0,
   profile: null,
   nickname: '',

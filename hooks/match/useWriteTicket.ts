@@ -1,11 +1,10 @@
 import {useDailyWriteStore} from '@/slice/dailyWriteSlice'
-import {Match} from './useMatch'
-import {format} from 'date-fns'
+import {Match} from '@/entities/match'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {uploadFile} from '@/api'
 import useProfile from '../my/useProfile'
-import {useLogin} from '../auth/useLogin'
-import {ROUTES, useAppRouter} from '../common'
+import {ROUTES, useAppRouter} from '@/shared'
+import dayjs from 'dayjs'
 
 export type RegisterTicket = {
   starting_pitchers: string
@@ -30,14 +29,12 @@ const useWriteTicket = () => {
   const writeStore = useDailyWriteStore()
   const queryClient = useQueryClient()
   const {profile} = useProfile()
-  const {user} = useLogin()
 
   const initializeTicket = (id: number) => {
     writeStore.clearState()
     queryClient.refetchQueries({queryKey: ['tickets']})
 
-    router.dismiss()
-    router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {
+    router.dismissTo(ROUTES.WRITE_TODAY_TICKET_CARD, {
       id: id,
       target_id: profile.id,
     })
@@ -58,7 +55,7 @@ const useWriteTicket = () => {
   const moveToWriteTicket = (date: Date, match?: Match | null) => {
     if (!match) {
       router.push(ROUTES.WRITE, {
-        date: format(date, 'yyyy-MM-dd'),
+        date: dayjs(date).format('YYYY-MM-DD'),
         step: 2,
       })
       return
@@ -66,7 +63,7 @@ const useWriteTicket = () => {
 
     router.push(ROUTES.WRITE, {
       matchId: match?.id,
-      date: format(date, 'yyyy-MM-dd'),
+      date: dayjs(date).format('YYYY-MM-DD'),
       step: 2,
     })
   }

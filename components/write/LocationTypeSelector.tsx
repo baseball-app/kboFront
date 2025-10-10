@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {Modal} from '@/components/common/Modal'
+import {BottomSheet} from '@/shared/ui'
 
 type Props = {
   value: string
@@ -39,39 +39,37 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
           <Image source={require('@/assets/icons/bottomArrow.png')} resizeMode="contain" style={styles.dropDownImg} />
         </TouchableOpacity>
       </View>
-      <Modal animationType="none" transparent={true} visible={tabMenuModalVisible}>
-        <View style={modal.bottomSheetOverlay}>
-          <View style={styles.writePlaceModalContent}>
-            <Text style={styles.modalTitle}>기록하고 싶은 장소를 선택해주세요</Text>
-            <View style={styles.writePlaceOptionsContainer}>
-              {tabMenuConfig.map(option => (
-                <TouchableOpacity
-                  key={option.value}
-                  style={[styles.writePlaceOptionButton, tempValue === option.title && styles.selectedOption]}
-                  activeOpacity={1}
-                  onPress={() => setTempValue(option.title)}>
-                  <Text style={[styles.optionText, tempValue === option.title && styles.selectedWriteOptionText]}>
-                    {option.title}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-            <View style={styles.writeButtonBox}>
-              <TouchableOpacity style={styles.cancelButton} onPress={() => setTabMenuModalVisible(false)}>
-                <Text style={styles.cancelText}>취소</Text>
-              </TouchableOpacity>
+      <BottomSheet isOpen={tabMenuModalVisible} duration={250} height={285}>
+        <View style={styles.writePlaceModalContent}>
+          <Text style={styles.modalTitle}>기록하고 싶은 장소를 선택해주세요</Text>
+          <View style={styles.writePlaceOptionsContainer}>
+            {tabMenuConfig.map(option => (
               <TouchableOpacity
-                style={styles.confirmButton}
-                onPress={() => {
-                  onChange(tempValue)
-                  setTabMenuModalVisible(false)
-                }}>
-                <Text style={styles.confirmText}>완료</Text>
+                key={option.value}
+                style={[styles.writePlaceOptionButton, tempValue === option.title && styles.selectedOption]}
+                activeOpacity={1}
+                onPress={() => setTempValue(option.title)}>
+                <Text style={[styles.optionText, tempValue === option.title && styles.selectedWriteOptionText]}>
+                  {option.title}
+                </Text>
               </TouchableOpacity>
-            </View>
+            ))}
+          </View>
+          <View style={styles.writeButtonBox}>
+            <TouchableOpacity style={styles.cancelButton} onPress={() => setTabMenuModalVisible(false)}>
+              <Text style={styles.cancelText}>취소</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => {
+                onChange(tempValue)
+                setTabMenuModalVisible(false)
+              }}>
+              <Text style={styles.confirmText}>완료</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+      </BottomSheet>
     </>
   )
 }

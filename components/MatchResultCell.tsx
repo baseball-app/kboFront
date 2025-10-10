@@ -1,9 +1,8 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native'
-import {TicketCalendarLog} from './home/Calendar'
 import {findMatchResultImage} from '@/constants/match'
-import useTeam from '@/hooks/match/useTeam'
-import Skeleton from './skeleton/Skeleton'
+import {useTeam} from '@/entities/match'
+import {TicketCalendarLog} from '@/entities/ticket/types'
 
 //TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
 const MatchResultCell = ({
@@ -17,9 +16,15 @@ const MatchResultCell = ({
 }) => {
   const {findTeamByName} = useTeam()
 
-  const matchResult = data[0]?.result
-  const opponent = findTeamByName(data[0]?.opponent_name)
-  const myTeam = findTeamByName(data[0]?.home)
+  const {matchResult, opponent, myTeam} = useMemo(() => {
+    const res = data[0]
+    if (!res) return {matchResult: null, myTeam: null, opponent: null}
+    return {
+      matchResult: res.result,
+      myTeam: findTeamByName(res.home),
+      opponent: findTeamByName(res.opponent_name),
+    }
+  }, [data, findTeamByName])
 
   return (
     <TouchableOpacity style={{alignItems: 'center'}} onPress={onPress}>

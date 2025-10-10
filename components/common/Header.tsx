@@ -1,10 +1,9 @@
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native'
-import {useAppRouter} from '@/hooks/common'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import {useAppRouter} from '@/shared'
 
 type ButtonType = {
-  onPress: () => void
+  onPress?: () => void
   content: React.ReactNode
 }
 
@@ -37,9 +36,13 @@ const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButt
         },
       ]}>
       {leftButton ? (
-        <TouchableOpacity style={styles.icon} onPress={leftButton.onPress}>
-          {leftButton.content}
-        </TouchableOpacity>
+        leftButton.onPress ? (
+          <TouchableOpacity style={styles.icon} onPress={leftButton.onPress}>
+            {leftButton.content}
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.icon}>{leftButton.content}</View>
+        )
       ) : hasBackButton ? (
         <TouchableOpacity style={styles.icon} onPress={onBackButtonClick}>
           <Image source={require('@/assets/icons/back.png')} style={{width: 16, height: 28}} />
@@ -49,9 +52,13 @@ const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButt
       )}
       <Text style={styles.text}>{title}</Text>
       {rightButton ? (
-        <TouchableOpacity style={styles.icon} onPress={rightButton.onPress}>
-          {rightButton.content}
-        </TouchableOpacity>
+        rightButton.onPress ? (
+          <TouchableOpacity style={styles.icon} onPress={rightButton.onPress}>
+            {rightButton.content}
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.icon}>{rightButton.content}</View>
+        )
       ) : (
         <View style={styles.icon} />
       )}

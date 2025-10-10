@@ -1,0 +1,1 @@
+export {useNavigateWriteTicket} from './useNavigateWriteTicket'

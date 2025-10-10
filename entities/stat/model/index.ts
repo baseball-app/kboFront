@@ -1,0 +1,1 @@
+export {useMyStat} from './useMyStat'

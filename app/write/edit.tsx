@@ -11,7 +11,6 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
-import {Modal} from '@/components/common/Modal'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import React from 'react'
@@ -21,7 +20,7 @@ import LocationTypeSelector from '@/components/write/LocationTypeSelector'
 import Ellipse from '@/components/common/Ellipse'
 import Input from '@/components/common/Input'
 import useProfile from '@/hooks/my/useProfile'
-import useTeam, {Team} from '@/hooks/match/useTeam'
+import {useTeam, Team} from '@/entities/match'
 import SelectBox from '@/components/common/SelectBox'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
@@ -31,8 +30,10 @@ import {useLogin} from '@/hooks/auth/useLogin'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
 import {Config} from '@/config/Config'
-import {useKeyboard} from '@/hooks/useKeyboard'
-import {useAppRouter} from '@/hooks/common'
+import {useKeyboard} from '@/shared'
+import {useAppRouter} from '@/shared'
+import {BottomSheet} from '@/shared/ui'
+import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard'
 
 interface ITicketEditData {
   homeTeam: {
@@ -329,10 +330,7 @@ const EditTicketPage = () => {
         </TouchableOpacity>
         <Text style={styles.dateText}>{title}</Text>
       </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
-        keyboardVerticalOffset={30}>
+      <CustKeyboardAvoidingView>
         <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
           <View style={styles.tabMenuContainer}>
             <View style={styles.tabMenu}>
@@ -534,58 +532,62 @@ const EditTicketPage = () => {
             </View>
           </View>
         </ScrollView>
-        {!isKeyboardVisible && Platform.OS === 'android' && (
-          <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />
-        )}
-      </KeyboardAvoidingView>
-      {Platform.OS === 'ios' && <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />}
+      </CustKeyboardAvoidingView>
+      {isKeyboardVisible && Platform.OS === 'android' ? null : (
+        <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />
+      )}
+      {/* {Platform.OS === 'ios' && <FooterButton isEnabled={isEnabled} isPending={isPending} onSubmit={onSubmit} />} */}
 
-      <Modal animationType="slide" transparent={true} visible={teamModalVisible}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.teamModalContent}>
-            <Text style={styles.modalTitle}>오늘의 상대구단</Text>
-            <View style={styles.optionsContainer}>
-              {teams?.map(team => (
-                <TouchableOpacity
-                  key={team.id}
-                  style={[styles.optionButton, opponentTeam === team.name && styles.selectedOption]}
-                  activeOpacity={1}
-                  onPress={() =>
-                    onChangeValue('awayTeam', {
-                      ...writeData.awayTeam,
-                      id: team.id,
-                    })
-                  }>
-                  <Image source={team.logo} style={styles.logoImg} resizeMode="contain" />
-                  <Text style={[styles.optionText, opponentTeam === team.name && styles.selectedOptionText]}>
-                    {team.name}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+      <BottomSheet
+        isOpen={teamModalVisible}
+        duration={250}
+        height={394}
+        onPressOverlay={() => setTeamModalVisible(false)}>
+        <View style={styles.teamModalContent}>
+          <Text style={styles.modalTitle}>오늘의 상대구단</Text>
+          <View style={styles.optionsContainer}>
+            {teams?.map(team => (
+              <TouchableOpacity
+                key={team.id}
+                style={[styles.optionButton, opponentTeam === team.name && styles.selectedOption]}
+                activeOpacity={1}
+                onPress={() =>
+                  onChangeValue('awayTeam', {
+                    ...writeData.awayTeam,
+                    id: team.id,
+                  })
+                }>
+                <Image source={team.logo} style={styles.logoImg} resizeMode="contain" />
+                <Text style={[styles.optionText, opponentTeam === team.name && styles.selectedOptionText]}>
+                  {team.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
-      </Modal>
-      <Modal animationType="slide" transparent={true} visible={placeModalVisible}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.placeModalContent}>
-            <Text style={styles.modalTitle}>오늘의 경기구단</Text>
-            <View style={styles.optionsContainer}>
-              {placeOption.map(option => (
-                <TouchableOpacity
-                  key={option.value}
-                  style={[styles.placeOptionButton, writeData?.place === option.label && styles.selectedOption]}
-                  activeOpacity={1}
-                  onPress={() => onChangeValue('place', option.value)}>
-                  <Text style={[styles.optionText, writeData?.place === option.label && styles.selectedOptionText]}>
-                    {option.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+      </BottomSheet>
+      <BottomSheet
+        isOpen={placeModalVisible}
+        duration={250}
+        height={400}
+        onPressOverlay={() => setPlaceModalVisible(false)}>
+        <View style={styles.placeModalContent}>
+          <Text style={styles.modalTitle}>오늘의 경기구단</Text>
+          <View style={styles.optionsContainer}>
+            {placeOption.map(option => (
+              <TouchableOpacity
+                key={option.value}
+                style={[styles.placeOptionButton, writeData?.place === option.label && styles.selectedOption]}
+                activeOpacity={1}
+                onPress={() => onChangeValue('place', option.value)}>
+                <Text style={[styles.optionText, writeData?.place === option.label && styles.selectedOptionText]}>
+                  {option.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
-      </Modal>
+      </BottomSheet>
     </SafeAreaView>
   )
 }
@@ -956,49 +958,3 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 })
-
-/**
-//  (NOBRIDGE) LOG  starting_pitchers 종현
-(NOBRIDGE) LOG  is_double false
-(NOBRIDGE) LOG  score_opponent 2
-(NOBRIDGE) LOG  only_me true
-(NOBRIDGE) LOG  awayteam_id 2
-(NOBRIDGE) LOG  weather 흐림
-(NOBRIDGE) LOG  gip_place 잠실야구장
-(NOBRIDGE) LOG  is_cheer false
-(NOBRIDGE) LOG  memo 히히
-*  (NOBRIDGE) LOG  id 49
-*  (NOBRIDGE) LOG  image
-(NOBRIDGE) LOG  result 승리
-(NOBRIDGE) LOG  is_homeballpark true
-(NOBRIDGE) LOG  food 자몽
-(NOBRIDGE) LOG  hometeam_id 4
-(NOBRIDGE) LOG  is_ballpark true
-(NOBRIDGE) LOG  score_our 1
-
-* 
- (NOBRIDGE) LOG  direct_yn false
- (NOBRIDGE) LOG  direct_yn false
-
-
-
-* 		starting_pitchers: 오타니
-* 		is_double: true
-* 		score_opponent: 2
-* 		only_me: true
-* 		awayteam_id: 9
-* 		weather: 맑음
-* 		gip_place: 광주-기아 챔피언스 필드
-* 		is_cheer: true
-* 		memo: 앳호
-* 		id: 57
-* 		image: (binary)
-* 		result: 취소
-* 		is_homeballpark: true
-* 		food: 치킨 콜라 샌드위치
-* 		hometeam_id: 1
-* 		is_ballpark: true
-* 		score_our: 2
-
- * 
- */

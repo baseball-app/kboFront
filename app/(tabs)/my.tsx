@@ -1,47 +1,28 @@
-import React, {useRef, useState} from 'react'
+import React from 'react'
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
   StyleSheet,
-  TextInput,
   Platform,
   KeyboardAvoidingView,
   ScrollView,
-  Pressable,
   Dimensions,
 } from 'react-native'
-import {Ionicons} from '@expo/vector-icons' // Assuming you're using Expo
 import {theme} from '@/constants/Colors'
-import {useLogin} from '@/hooks/auth/useLogin'
 import useMyInfo from '@/hooks/my/useMyInfo'
-import ProfileImageBox from '@/components/common/ProfileImageBox'
-import useTeam from '@/hooks/match/useTeam'
-import useMakeFriend from '@/hooks/my/useMakeFriend'
-import {usePushMessage} from '@/hooks/usePushMessage'
-import Clipboard from '@react-native-clipboard/clipboard'
-import {usePopup} from '@/slice/commonSlice'
-import {Config} from '@/config/Config'
+
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {ROUTES, useAppRouter} from '@/hooks/common'
+import {ROUTES, useAppRouter} from '@/shared'
+
+import {AccountMenuWidget} from '@/widgets/account-menu'
+import {ProfileBox, TeamBox} from '@/widgets/my-info'
+import {AddFriendInput} from '@/features/user/friend/follow'
 
 const ProfileScreen = () => {
-  const {logout} = useLogin()
-  const {profile, onPasteInviteCode, withdrawUser} = useMyInfo()
-  const {openCommonPopup} = usePopup()
-  const {} = useTeam()
+  const {profile, onPasteInviteCode} = useMyInfo()
   const router = useAppRouter()
-  const [inviteCode, setInviteCode] = useState<string | undefined>(undefined)
-  const {addFriend} = useMakeFriend()
-  const inputRef = useRef<TextInput>(null)
-
-  const {deviceToken} = usePushMessage()
-
-  const copyDeviceToken = () => {
-    Clipboard.setString(deviceToken)
-    openCommonPopup(`토큰이 복사되었습니다.`)
-  }
 
   return (
     <SafeAreaView style={[styles.container, {flex: 1}]}>
@@ -57,252 +38,60 @@ const ProfileScreen = () => {
               paddingTop: 12,
               position: 'relative',
             }}>
-            <Pressable
-              onPress={() => router.push(ROUTES.MY_ALARM)}
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                paddingHorizontal: 24,
-                paddingTop: 10,
-                paddingBottom: 0,
-                position: 'absolute',
-                right: 0,
-                top: 0,
-              }}>
-              <Image source={require('@/assets/icons/tabMenu/alarmMenuActive.png')} style={{width: 24, height: 24}} />
-              {profile.is_unread ? (
-                <View
-                  style={{
-                    width: 5,
-                    height: 5,
-                    backgroundColor: '#E42217',
-                    borderRadius: 9999,
-                    position: 'absolute',
-                    right: 22,
-                    top: 10,
-                  }}
-                />
-              ) : null}
-            </Pressable>
-            <View style={styles.profileHeader}>
-              <ProfileImageBox source={profile.profile_image} />
-
-              <View style={styles.profileInfoBox}>
-                <View style={styles.profileInfo}>
-                  <Text style={styles.profileName}>{profile?.nickname} 님</Text>
-                  <TouchableOpacity onPress={() => router.push(ROUTES.MY_CHANGE_NICKNAME)}>
-                    <Image
-                      source={require('@/assets/icons/edit_pen.png')}
-                      style={styles.profileEditIcon}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.winRateContainer}>
-                  <Text style={styles.winRateLabel}>승요력</Text>
-                  <Text style={styles.winRateValue}>{profile?.predict_ratio}%</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.teamCard}>
-              <View style={styles.teamInfo}>
-                <Image
-                  // image 연결해줘야 함 어떻게 ?
-                  // 로고 url을 넣을 것인가?
-                  source={profile.my_team?.logo}
-                  style={styles.teamLogo}
-                  resizeMode="contain"
-                />
-                <Text style={styles.teamName}>{profile.my_team?.name}</Text>
-              </View>
-
-              <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push(ROUTES.MY_CHANGE_TEAM)}>
-                <Image source={require('../../assets/icons/gear.png')} style={styles.teamSettingsIcon} />
-              </TouchableOpacity>
-            </View>
+            {/* 프로필 박스 */}
+            <ProfileBox />
+            {/* 팀 박스 */}
+            <TeamBox />
 
             <View style={styles.statsContainer}>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.statItem, styles.statBox]}
-                onPress={() => {
-                  router.push(ROUTES.MY_FOLLOWERS)
-                }}>
-                <View style={{gap: 10}}>
-                  <Text style={styles.statLabel}>팔로워</Text>
-                  <Text style={styles.statValue}>{profile?.followers}</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.statItem, styles.statBox]}
-                onPress={() => {
-                  router.push(ROUTES.MY_FOLLOWINGS)
-                }}>
-                <View style={{gap: 10}}>
-                  <Text style={styles.statLabel}>팔로잉</Text>
-                  <Text style={styles.statValue}>{profile?.followings}</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.statItem, styles.statBox]}
-                onPress={onPasteInviteCode}>
-                <View style={{gap: 10}}>
-                  <Text style={styles.statLabel}>초대코드</Text>
-                  <Image source={require('../../assets/icons/invitation.png')} style={styles.inviteCodeIcon} />
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.inviteCodeInputBox}>
-              <TextInput
-                placeholder="초대코드를 입력해주세요"
-                style={styles.inviteCodeInput}
-                value={inviteCode}
-                onChangeText={setInviteCode}
-                placeholderTextColor="#95938B"
-                ref={inputRef}
+              <PressableButton
+                onPress={() => router.push(ROUTES.MY_FOLLOWERS)}
+                label="팔로워"
+                value={`${profile?.followers}`}
               />
-              <TouchableOpacity
-                style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: '#D0CEC7'}]} //
-                disabled={!inviteCode}
-                onPress={() => {
-                  inputRef.current?.blur()
-                  inviteCode &&
-                    addFriend(inviteCode).finally(() => {
-                      setInviteCode(undefined)
-                    })
-                }}>
-                <Text style={[styles.inviteCodeInputButtonText, !inviteCode && {color: '#77756C'}]}>확인</Text>
-              </TouchableOpacity>
+              <PressableButton
+                onPress={() => router.push(ROUTES.MY_FOLLOWINGS)}
+                label="팔로잉"
+                value={`${profile?.followings}`}
+              />
+              <PressableButton
+                onPress={onPasteInviteCode}
+                label="초대코드"
+                value={
+                  <Image //
+                    source={require('@/assets/icons/invitation.png')}
+                    style={styles.inviteCodeIcon}
+                  />
+                }
+              />
             </View>
+            <AddFriendInput />
           </View>
 
-          <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => router.push(ROUTES.MY_TERMS)}>
-              <Text style={styles.menuText}>이용약관</Text>
-              <Ionicons name="chevron-forward" size={24} color="gray" />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem} onPress={() => router.push(ROUTES.MY_INQUIRY)}>
-              <Text style={styles.menuText}>문의하기</Text>
-              <Ionicons name="chevron-forward" size={24} color="gray" />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem} onPress={logout}>
-              <Text style={styles.menuText}>로그아웃</Text>
-              <Ionicons name="chevron-forward" size={24} color="gray" />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem} onPress={withdrawUser}>
-              <Text style={styles.menuText}>회원탈퇴</Text>
-              <Ionicons name="chevron-forward" size={24} color="gray" />
-            </TouchableOpacity>
-
-            {Config.MODE === 'dev' ? (
-              <TouchableOpacity style={styles.menuItem} onPress={copyDeviceToken}>
-                <Text style={styles.menuText}>디바이스 토큰 복사</Text>
-                <Ionicons name="chevron-forward" size={24} color="gray" />
-              </TouchableOpacity>
-            ) : null}
-          </View>
+          {/* 메뉴 */}
+          <AccountMenuWidget />
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
   )
 }
 
+const PressableButton = ({onPress, label, value}: {onPress: () => void; label: string; value: React.ReactNode}) => {
+  return (
+    <TouchableOpacity activeOpacity={0.9} style={[styles.statItem, styles.statBox]} onPress={onPress}>
+      <View style={{gap: 10}}>
+        <Text style={styles.statLabel}>{label}</Text>
+        {typeof value === 'string' ? <Text style={styles.statValue}>{value}</Text> : value}
+      </View>
+    </TouchableOpacity>
+  )
+}
+
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: theme.colors.backgroundPrimary,
     minHeight: Dimensions.get('window').height,
     flex: 1,
     backgroundColor: '#FFFCF3',
-  },
-  profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    paddingBottom: 0,
-  },
-  profileInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  profileInfoBox: {
-    gap: 10,
-    justifyContent: 'center',
-
-    flexDirection: 'column',
-  },
-  profileName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginRight: 4,
-  },
-  profileEditIcon: {
-    width: 18,
-    height: 18,
-  },
-  winRateContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  winRateLabel: {
-    fontSize: 16,
-    marginRight: 3,
-    lineHeight: 16 * 1.4,
-    color: 'gray',
-  },
-  winRateValue: {
-    fontSize: 16,
-    lineHeight: 16 * 1.4,
-    color: '#2D68FF', // Blue color for the percentage
-    // fontWeight: "bold",
-  },
-  teamCard: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: theme.colors.borderColor,
-    margin: 20,
-    marginBottom: 14,
-    padding: 15,
-    borderRadius: 10,
-    // width: 327,
-    height: 68,
-  },
-  teamInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  teamLogo: {
-    width: 32,
-    height: 32,
-    marginRight: 10,
-  },
-  teamName: {
-    fontWeight: '600',
-    fontSize: 16,
-  },
-  teamSettingsIconBox: {
-    backgroundColor: '#00184F',
-    borderRadius: 50,
-    width: 26,
-    height: 26,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  teamSettingsIcon: {
-    width: 16,
-    height: 16,
   },
   statsContainer: {
     flexDirection: 'row',
@@ -335,34 +124,6 @@ const styles = StyleSheet.create({
   inviteCodeIcon: {
     width: 32,
     height: 32,
-  },
-  menuContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingBottom: 70,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    marginVertical: 1,
-  },
-  menuText: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  tabBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-    backgroundColor: 'white',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
   },
   inviteCodeInputBox: {
     marginHorizontal: 20,
