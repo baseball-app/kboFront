@@ -112,7 +112,7 @@ export default function GameCard() {
           ),
         }}
         rightButton={{
-          content: <TicketDeleteButton ticketId={ticketDetail?.id || 0} />,
+          content: isMyTicket ? <TicketDeleteButton ticketId={ticketDetail?.id || 0} /> : undefined,
         }}
       />
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>

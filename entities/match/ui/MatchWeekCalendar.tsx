@@ -110,7 +110,7 @@ const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarB
   // 7일 동안의 날짜를 요일과 함께 표시
   for (let i = 0; i < 7; i++) {
     const day = dayjs(startDate).add(i, 'day')
-    const isSelected = dayjs(day).isSame(selectedDate) // 선택된 날짜 여부
+    const isSelected = dayjs(day).isSame(selectedDate, 'date') // 선택된 날짜 여부
     const today = dayjs()
     const isToday = dayjs(day).isSame(today)
     const isTodayAndNotSelected = isToday && !isSelected // 오늘이지만 선택되지 않은 경우

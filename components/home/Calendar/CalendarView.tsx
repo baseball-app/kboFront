@@ -68,15 +68,7 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
           <Ionicons name="chevron-down" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <View style={styles.daysOfWeekContainer}>
-        {DAYS_OF_WEEK.map((day, index) => (
-          <Text
-            key={index}
-            style={[styles.dayOfWeekText, index === 0 && {color: '#FF0000'}, index === 6 && {color: '#1E5EF4'}]}>
-            {day}
-          </Text>
-        ))}
-      </View>
+      <CalendarHeader />
       <View style={{width: width}}>
         <View style={{width: width}}>
           <RenderDays
@@ -99,6 +91,20 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
     </View>
   )
 }
+
+const CalendarHeader = memo(() => {
+  return (
+    <View style={styles.daysOfWeekContainer}>
+      {DAYS_OF_WEEK.map((day, index) => (
+        <Text
+          key={index}
+          style={[styles.dayOfWeekText, index === 0 && {color: '#FF0000'}, index === 6 && {color: '#1E5EF4'}]}>
+          {day}
+        </Text>
+      ))}
+    </View>
+  )
+})
 
 const YearMonthPicker = ({
   open,

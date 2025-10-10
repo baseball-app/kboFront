@@ -19,7 +19,7 @@ const useDeleteTicket = () => {
       showToast('삭제되었습니다.')
 
       queryClient.refetchQueries({queryKey: ['tickets']})
-      queryClient.refetchQueries({queryKey: ['ticket']})
+      // queryClient.refetchQueries({queryKey: ['ticket']})
       queryClient.refetchQueries({queryKey: ['ticketListByTeam']})
     },
     onError: () => {

@@ -21,6 +21,7 @@ const CalendarScreen = () => {
   useEffect(() => {
     const tabPathList = ['/rank', '/match', '/my', '/ticket']
     if (!profile.id) return
+    if (userId === profile.id) return
     if (tabPathList.includes(pathname) || !userId) {
       setUserId(profile.id)
     }

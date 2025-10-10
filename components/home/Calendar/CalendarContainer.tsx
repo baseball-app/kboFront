@@ -198,11 +198,9 @@ const CalendarContainer = ({targetId}: Props) => {
   const segments = useSegments()
 
   useEffect(() => {
-    if (segments.join('') !== '(tabs)') {
-      setHideCalendar(true)
-    } else {
-      setHideCalendar(false)
-    }
+    const isCalendarPage = segments.join('') !== '(tabs)'
+    if (hideCalendar === isCalendarPage) return
+    setHideCalendar(isCalendarPage)
   }, [segments])
 
   const renderCalendar = useCallback(

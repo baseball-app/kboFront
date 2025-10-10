@@ -1,4 +1,3 @@
-import useProfile from '@/hooks/my/useProfile'
 import {useCommonSlice} from '@/slice/commonSlice'
 import React from 'react'
 import {Text, TouchableOpacity} from 'react-native'
@@ -6,8 +5,6 @@ import {useDeleteTicket} from '../model'
 
 const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
   const {modal} = useCommonSlice()
-  const {profile} = useProfile()
-  const isMyTicket = profile?.id === ticketId
   const {deleteTicket} = useDeleteTicket()
 
   const onDeleteTicket = () => {
@@ -35,8 +32,6 @@ const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
       ],
     })
   }
-
-  if (!isMyTicket) return undefined
 
   return (
     <TouchableOpacity onPress={() => onDeleteTicket()}>

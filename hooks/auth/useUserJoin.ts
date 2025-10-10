@@ -36,7 +36,7 @@ const useUserJoin = () => {
       // 회원가입 로직
       await updateProfileWithSignUp(joinSlice)
 
-      router.navigate(ROUTES.CALENDAR_TAB)
+      router.dismissTo(ROUTES.CALENDAR_TAB)
     } catch (error) {
       console.error('회원가입 정보 수정 오류 :: ', error)
       console.error('data :: ', {
@@ -73,7 +73,6 @@ const useUserJoin = () => {
     try {
       const nextStep = getNextStep(currentStep)
       if (!nextStep) {
-        router.dismissAll()
         await signUp()
       } else {
         router.navigate(nextStep)
