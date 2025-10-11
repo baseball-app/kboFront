@@ -3,7 +3,7 @@ import {EmptyMatchView, LoadingMatchList, Match, MatchCard, MatchWeekCalendar, u
 import {AddDoubleHeaderTicketButton, useNavigateWriteTicket} from '@/features/match'
 import dayjs from 'dayjs'
 import {usePathname} from 'expo-router'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {FlatList, StyleSheet} from 'react-native'
 
 const MatchList = () => {
@@ -21,6 +21,7 @@ const MatchList = () => {
 
   // 페이지 이동 시, 날짜 초기화
   useEffect(() => {
+    if (dayjs().isSame(selectedDate, 'date')) return
     if (pathname !== '/match' && !pathname.includes('write')) setSelectedDate(new Date())
   }, [pathname])
 
@@ -40,6 +41,15 @@ const MatchList = () => {
 
   const keyExtractor = useCallback((item: Match) => `${item.id}`, [])
 
+  const ListHeaderComponent = useMemo(() => {
+    return (
+      <MatchWeekCalendar //
+        value={selectedDate}
+        onChange={setSelectedDate}
+      />
+    )
+  }, [selectedDate])
+
   return (
     <FlatList
       contentContainerStyle={styles.flatList}
@@ -48,12 +58,7 @@ const MatchList = () => {
         isPending ? <LoadingMatchList /> : <EmptyMatchView onClick={() => moveToDoubleHeaderWriteTicket(date)} />
       }
       scrollEnabled
-      ListHeaderComponent={
-        <MatchWeekCalendar //
-          value={selectedDate}
-          onChange={setSelectedDate}
-        />
-      }
+      ListHeaderComponent={ListHeaderComponent}
       renderItem={renderItem}
       ListFooterComponent={
         matchingList.length > 0 ? (

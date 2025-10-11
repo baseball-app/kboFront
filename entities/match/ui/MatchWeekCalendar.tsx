@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet, Platform} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {DAYS_OF_WEEK} from '@/constants/day'
 import dayjs from 'dayjs'
-import {BottomSheet} from '@/shared/ui'
+import {BottomSheet, Pressable} from '@/shared/ui'
 import WheelPicker2 from '@/components/WheelPicker2'
 import {WeekCalendarController} from './WeekCalendarController'
 
@@ -97,6 +97,53 @@ const MatchCalendarHeader = ({setCurrentDate, prevMonth, nextMonth, currentDate}
   )
 }
 
+type CalendarCellProps = {
+  day: Date
+  index: number
+  isSelected: boolean
+  currentDate: Date
+  onChange: (date: Date) => void
+}
+
+const CalendarCell = React.memo(
+  ({day, index, isSelected, onChange}: CalendarCellProps) => {
+    const today = dayjs()
+    const dayObj = dayjs(day)
+    const isToday = dayObj.isSame(today, 'date')
+    const isTodayAndNotSelected = isToday && !isSelected
+
+    return (
+      <Pressable
+        style={[styles.dayContainer, isSelected && styles.selectedDay, isTodayAndNotSelected && styles.todayDay]}
+        onPress={() => onChange(day)}>
+        <Text
+          style={[
+            styles.dayOfWeekText,
+            isSelected ? styles.selectedText : isToday ? styles.todayText : styles.defaultText,
+          ]}>
+          {DAYS_OF_WEEK[index]}
+        </Text>
+        <Text
+          style={[
+            styles.dayText,
+            isSelected ? styles.selectedText : isToday ? styles.todayText : styles.defaultText,
+            // Platform.OS === 'android' ? {paddingLeft: '15%'} : {},
+          ]}>
+          {dayObj.format('D')}
+        </Text>
+      </Pressable>
+    )
+  },
+  (prevProps, nextProps) => {
+    // isSelected가 같고 currentDate가 같으면 리렌더링하지 않음
+    console.log('CalendarCell :: ', prevProps.isSelected, nextProps.isSelected)
+    return (
+      prevProps.isSelected === nextProps.isSelected &&
+      dayjs(prevProps.currentDate).isSame(nextProps.currentDate, 'date')
+    )
+  },
+)
+
 type MatchCalendarBodyProps = {
   currentDate: Date
   selectedDate: Date
@@ -104,42 +151,28 @@ type MatchCalendarBodyProps = {
 }
 
 const MatchCalendarBody = ({currentDate, selectedDate, onChange}: MatchCalendarBodyProps) => {
-  const days = []
+  const days = Array.from({length: 7}, (_, i) => i)
   const startDate = dayjs(currentDate).startOf('week') // 주의 첫 번째 날을 가져옴
 
-  // 7일 동안의 날짜를 요일과 함께 표시
-  for (let i = 0; i < 7; i++) {
-    const day = dayjs(startDate).add(i, 'day')
-    const isSelected = dayjs(day).isSame(selectedDate, 'date') // 선택된 날짜 여부
-    const today = dayjs()
-    const isToday = dayjs(day).isSame(today)
-    const isTodayAndNotSelected = isToday && !isSelected // 오늘이지만 선택되지 않은 경우
+  return (
+    <View style={styles.weekRow}>
+      {days.map((_, i) => {
+        const day = dayjs(startDate).add(i, 'day')
+        const isSelected = dayjs(day).isSame(selectedDate, 'date') // 선택된 날짜 여부
 
-    days.push(
-      <TouchableOpacity
-        key={i}
-        style={[styles.dayContainer, isSelected && styles.selectedDay, isTodayAndNotSelected && styles.todayDay]}
-        onPress={() => onChange(day.toDate())}>
-        <Text
-          style={[
-            styles.dayOfWeekText,
-            isSelected ? styles.selectedText : isToday ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
-          ]}>
-          {DAYS_OF_WEEK[i]}
-        </Text>
-        <Text
-          style={[
-            styles.dayText,
-            isSelected ? styles.selectedText : isToday ? styles.todayText : styles.defaultText, // 선택된 날짜이면 선택된 스타일, 오늘이면 오늘 스타일, 기본이면 기본 스타일 적용
-            Platform.OS === 'android' ? {paddingLeft: '15%'} : {},
-          ]}>
-          {dayjs(day).format('D')} {/* 날짜 */}
-        </Text>
-      </TouchableOpacity>,
-    )
-  }
-
-  return <View style={styles.weekRow}>{days}</View>
+        return (
+          <CalendarCell
+            key={i}
+            day={day.toDate()}
+            index={i}
+            isSelected={isSelected}
+            currentDate={currentDate}
+            onChange={onChange}
+          />
+        )
+      })}
+    </View>
+  )
 }
 
 const MatchWeekCalendar = ({onChange, value}: Props) => {
