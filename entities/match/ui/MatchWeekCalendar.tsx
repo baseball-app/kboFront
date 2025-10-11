@@ -191,7 +191,7 @@ const MatchWeekCalendar = ({onChange, value}: Props) => {
   )
 
   return (
-    <View style={styles.container}>
+    <>
       <WeekCalendarController
         setCurrentDate={handleChange}
         prevMonth={prevMonth}
@@ -206,7 +206,7 @@ const MatchWeekCalendar = ({onChange, value}: Props) => {
           onChange(date)
         }}
       />
-    </View>
+    </>
   )
 }
 

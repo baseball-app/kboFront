@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {FlatList, NativeScrollEvent, NativeSyntheticEvent, View, ViewStyle} from 'react-native'
+import {FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform, View, ViewStyle} from 'react-native'
 
 import Animated, {
   useSharedValue,
@@ -64,51 +64,60 @@ const WheelPicker2 = ({
         decelerationRate="fast"
         onScroll={handleScroll}
         getItemLayout={getItemLayout}
-        initialScrollIndex={_items.indexOf(initialItem) - 1}
+        onLayout={() => {
+          console.log('onLayout')
+          const initialIndex = _items.indexOf(initialItem) - 1
+          if (initialIndex >= 0 && flatListRef.current) {
+            setTimeout(() => {
+              flatListRef.current?.scrollToIndex({
+                index: initialIndex,
+                animated: false,
+              })
+            }, 100)
+          }
+        }}
+        initialScrollIndex={Platform.select({ios: _items.indexOf(initialItem) - 1})}
       />
     </View>
   )
 }
 
-const WheelItem = memo(
-  ({item, itemHeight, isSelected}: {item: string; itemHeight: number; isSelected: boolean}) => {
-    const scale = useSharedValue(isSelected ? 1 : 0.8)
-    const colorAnim = useSharedValue(isSelected ? 1 : 0)
+const WheelItem = ({item, itemHeight, isSelected}: {item: string; itemHeight: number; isSelected: boolean}) => {
+  const scale = useSharedValue(isSelected ? 1 : 0.8)
+  const colorAnim = useSharedValue(isSelected ? 1 : 0)
 
-    React.useEffect(() => {
-      if (isSelected) {
-        scale.value = withSpring(1)
-        colorAnim.value = withTiming(1, {duration: 60})
-      } else {
-        scale.value = withSpring(0.8)
-        colorAnim.value = withTiming(0, {duration: 60})
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSelected])
+  React.useEffect(() => {
+    if (isSelected) {
+      scale.value = withSpring(1)
+      colorAnim.value = withTiming(1, {duration: 60})
+    } else {
+      scale.value = withSpring(0.8)
+      colorAnim.value = withTiming(0, {duration: 60})
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSelected])
 
-    const animatedStyle = useAnimatedStyle(() => ({
-      height: itemHeight,
-      alignItems: 'center',
-      justifyContent: 'center',
-      transform: [{scale: scale.value}],
-    }))
+  const animatedStyle = useAnimatedStyle(() => ({
+    height: itemHeight,
+    alignItems: 'center',
+    justifyContent: 'center',
+    transform: [{scale: scale.value}],
+  }))
 
-    const animatedTextStyle = useAnimatedStyle(() => ({
-      fontSize: 24,
-      lineHeight: 24 * 1.4,
-      fontWeight: '700',
-      color: interpolateColor(colorAnim.value, [0, 1], ['#95938B', '#171716']),
-    }))
+  const animatedTextStyle = useAnimatedStyle(() => ({
+    fontSize: 24,
+    lineHeight: 24 * 1.4,
+    fontWeight: '700',
+    color: interpolateColor(colorAnim.value, [0, 1], ['#95938B', '#171716']),
+  }))
 
-    if (!item) return <View style={{height: itemHeight}} />
+  if (!item) return <View style={{height: itemHeight}} />
 
-    return (
-      <Animated.View style={[animatedStyle, {height: itemHeight}]}>
-        <Animated.Text style={animatedTextStyle}>{item}</Animated.Text>
-      </Animated.View>
-    )
-  },
-  (prev, next) => prev.isSelected === next.isSelected,
-)
+  return (
+    <Animated.View style={[animatedStyle, {height: itemHeight}]}>
+      <Animated.Text style={animatedTextStyle}>{item}</Animated.Text>
+    </Animated.View>
+  )
+}
 
-export default memo(WheelPicker2)
+export default WheelPicker2

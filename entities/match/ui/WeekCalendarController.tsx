@@ -1,4 +1,5 @@
 import WheelPicker2 from '@/components/WheelPicker2'
+import {AnimatedPressable} from '@/shared'
 import {BottomSheet} from '@/shared/ui/BottomSheet'
 import {Ionicons} from '@expo/vector-icons'
 import dayjs from 'dayjs'
@@ -38,26 +39,22 @@ const WeekCalendarController = ({setCurrentDate, prevMonth, nextMonth, currentDa
   )
 }
 
-const _HeaderController = memo(
-  ({
-    prevMonth,
-    nextMonth,
-    currentDate,
-    openBottomSheet,
-  }: Omit<MatchCalendarHeaderProps, 'setCurrentDate'> & {openBottomSheet: () => void}) => {
-    return (
-      <View style={styles.header}>
-        <PrevWeekButton onPress={prevMonth} />
-        <TouchableOpacity style={[styles.headerTextContainer, {width: 100}]} onPress={openBottomSheet}>
-          <Text style={styles.headerText}>{dayjs(currentDate).format('YYYY.MM')}</Text>
-        </TouchableOpacity>
-        <NextWeekButton onPress={nextMonth} />
-      </View>
-    )
-  },
-)
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
+const _HeaderController = ({
+  prevMonth,
+  nextMonth,
+  currentDate,
+  openBottomSheet,
+}: Omit<MatchCalendarHeaderProps, 'setCurrentDate'> & {openBottomSheet: () => void}) => {
+  return (
+    <View style={styles.header}>
+      <PrevWeekButton onPress={prevMonth} />
+      <TouchableOpacity style={[styles.headerTextContainer, {width: 100}]} onPress={openBottomSheet}>
+        <Text style={styles.headerText}>{dayjs(currentDate).format('YYYY.MM')}</Text>
+      </TouchableOpacity>
+      <NextWeekButton onPress={nextMonth} />
+    </View>
+  )
+}
 
 const PrevWeekButton = memo(({onPress}: {onPress: () => void}) => {
   const scale = useSharedValue(1)
@@ -97,79 +94,77 @@ const NextWeekButton = memo(({onPress}: {onPress: () => void}) => {
   )
 })
 
-const _BottomSheetController = memo(
-  ({
-    isModalVisible,
-    setIsModalVisible,
-    setCurrentDate,
-    currentDate,
-  }: {
-    isModalVisible: boolean
-    setIsModalVisible: (isModalVisible: boolean) => void
-    setCurrentDate: (date: Date) => void
-    currentDate: Date
-  }) => {
-    const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
-    const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
-    const [selectedDay, setSelectedDay] = useState(currentDate.getDate())
+const _BottomSheetController = ({
+  isModalVisible,
+  setIsModalVisible,
+  setCurrentDate,
+  currentDate,
+}: {
+  isModalVisible: boolean
+  setIsModalVisible: (isModalVisible: boolean) => void
+  setCurrentDate: (date: Date) => void
+  currentDate: Date
+}) => {
+  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
+  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
+  const [selectedDay, setSelectedDay] = useState(currentDate.getDate())
 
-    useEffect(() => {
-      setSelectedYear(currentDate.getFullYear())
-      setSelectedMonth(currentDate.getMonth() + 1)
-      setSelectedDay(currentDate.getDate())
-    }, [currentDate])
+  useEffect(() => {
+    setSelectedYear(currentDate.getFullYear())
+    setSelectedMonth(currentDate.getMonth() + 1)
+    setSelectedDay(currentDate.getDate())
+  }, [currentDate])
 
-    const selectedDayjs = useMemo(() => dayjs(`${selectedYear}-${selectedMonth}-01`), [selectedYear, selectedMonth])
-    const dayList = useMemo(
-      () => Array.from({length: selectedDayjs.daysInMonth()}, (_, i) => `${i + 1}일`),
-      [selectedDayjs],
-    )
+  const selectedDayjs = useMemo(() => dayjs(`${selectedYear}-${selectedMonth}-01`), [selectedYear, selectedMonth])
+  const dayList = useMemo(
+    () => Array.from({length: selectedDayjs.daysInMonth()}, (_, i) => `${i + 1}일`),
+    [selectedDayjs],
+  )
 
-    return (
-      <BottomSheet isOpen={isModalVisible} duration={250} height={350}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
-          <View style={styles.datePickerContainer}>
-            <WheelPicker2
-              items={Array.from({length: 10}, (_, i) => `${2020 + i}년`)}
-              itemHeight={50}
-              initialItem={`${selectedYear}년`}
-              onItemChange={item => setSelectedYear(Number(item.replaceAll(/\D/g, '')))}
-              containerStyle={{width: '30%'}}
-            />
-            <WheelPicker2
-              items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
-              itemHeight={50}
-              initialItem={`${selectedMonth}월`}
-              onItemChange={item => setSelectedMonth(Number(item.replaceAll(/\D/g, '')))}
-              containerStyle={{width: '30%'}}
-            />
-            <WheelPicker2
-              items={dayList}
-              itemHeight={50}
-              initialItem={`${selectedDay}일`}
-              onItemChange={item => setSelectedDay(Number(item.replaceAll(/\D/g, '')))}
-              containerStyle={{width: '30%'}}
-            />
-          </View>
-          <View style={styles.buttonBox}>
-            <TouchableOpacity style={styles.cancelButton} onPress={() => setIsModalVisible(false)}>
-              <Text style={styles.cancelText}>취소</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => {
-                setCurrentDate(dayjs(`${selectedYear}-${selectedMonth}-${selectedDay}`).toDate())
-                setIsModalVisible(false)
-              }}>
-              <Text style={styles.confirmText}>완료</Text>
-            </TouchableOpacity>
-          </View>
+  return (
+    <BottomSheet isOpen={isModalVisible} duration={250} height={350}>
+      <View style={styles.modalContent}>
+        <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
+        <View style={styles.datePickerContainer}>
+          <WheelPicker2
+            items={Array.from({length: 10}, (_, i) => `${2020 + i}년`)}
+            itemHeight={50}
+            initialItem={`${selectedYear}년`}
+            onItemChange={item => setSelectedYear(Number(item.replaceAll(/\D/g, '')))}
+            containerStyle={{width: '30%'}}
+          />
+          <WheelPicker2
+            items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
+            itemHeight={50}
+            initialItem={`${selectedMonth}월`}
+            onItemChange={item => setSelectedMonth(Number(item.replaceAll(/\D/g, '')))}
+            containerStyle={{width: '30%'}}
+          />
+          <WheelPicker2
+            items={dayList}
+            itemHeight={50}
+            initialItem={`${selectedDay}일`}
+            onItemChange={item => setSelectedDay(Number(item.replaceAll(/\D/g, '')))}
+            containerStyle={{width: '30%'}}
+          />
         </View>
-      </BottomSheet>
-    )
-  },
-)
+        <View style={styles.buttonBox}>
+          <TouchableOpacity style={styles.cancelButton} onPress={() => setIsModalVisible(false)}>
+            <Text style={styles.cancelText}>취소</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={() => {
+              setCurrentDate(dayjs(`${selectedYear}-${selectedMonth}-${selectedDay}`).toDate())
+              setIsModalVisible(false)
+            }}>
+            <Text style={styles.confirmText}>완료</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </BottomSheet>
+  )
+}
 
 export {WeekCalendarController}
 

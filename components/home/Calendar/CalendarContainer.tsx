@@ -30,7 +30,6 @@ const CalendarContainer = ({targetId}: Props) => {
   const queryClient = useQueryClient()
 
   const router = useAppRouter()
-  console.log('CalendarContainer 렌더링')
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
 
@@ -130,7 +129,10 @@ const CalendarContainer = ({targetId}: Props) => {
             .toDate(),
         )
 
-      return newList.concat(prev).filter(date => !dayjs(date).isBefore(START_DATE))
+      // 중복 제거를 위해 YYYY-MM 기준으로 유니크하게 필터링
+      const combined = newList.concat(prev)
+      const uniqueMap = new Map(combined.map(date => [dayjs(date).format('YYYY-MM'), date]))
+      return Array.from(uniqueMap.values()).filter(date => !dayjs(date).isBefore(START_DATE))
     })
   }
 
@@ -145,7 +147,10 @@ const CalendarContainer = ({targetId}: Props) => {
             .toDate(),
         )
 
-      return prev.concat(newList).filter(date => !dayjs(date).isAfter(END_DATE))
+      // 중복 제거를 위해 YYYY-MM 기준으로 유니크하게 필터링
+      const combined = prev.concat(newList)
+      const uniqueMap = new Map(combined.map(date => [dayjs(date).format('YYYY-MM'), date]))
+      return Array.from(uniqueMap.values()).filter(date => !dayjs(date).isAfter(END_DATE))
     })
   }
 
@@ -268,7 +273,7 @@ const CalendarContainer = ({targetId}: Props) => {
             index,
           })}
           renderItem={renderCalendar}
-          keyExtractor={(item: Date) => item.toString()}
+          keyExtractor={(item: Date) => dayjs(item).format('YYYY-MM')}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           removeClippedSubviews={true}

@@ -4,7 +4,7 @@ import {AddDoubleHeaderTicketButton, useNavigateWriteTicket} from '@/features/ma
 import dayjs from 'dayjs'
 import {usePathname} from 'expo-router'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {FlatList, StyleSheet} from 'react-native'
+import {FlatList, StyleSheet, View} from 'react-native'
 
 const MatchList = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -41,32 +41,36 @@ const MatchList = () => {
 
   const keyExtractor = useCallback((item: Match) => `${item.id}`, [])
 
-  const ListHeaderComponent = useMemo(() => {
-    return (
-      <MatchWeekCalendar //
-        value={selectedDate}
-        onChange={setSelectedDate}
-      />
-    )
-  }, [selectedDate])
+  // const ListHeaderComponent = useMemo(() => {
+  //   return (
+
+  //   )
+  // }, [selectedDate])
 
   return (
-    <FlatList
-      contentContainerStyle={styles.flatList}
-      data={matchingList}
-      ListEmptyComponent={
-        isPending ? <LoadingMatchList /> : <EmptyMatchView onClick={() => moveToDoubleHeaderWriteTicket(date)} />
-      }
-      scrollEnabled
-      ListHeaderComponent={ListHeaderComponent}
-      renderItem={renderItem}
-      ListFooterComponent={
-        matchingList.length > 0 ? (
-          <AddDoubleHeaderTicketButton onPress={() => moveToDoubleHeaderWriteTicket(date)} /> //
-        ) : null
-      }
-      keyExtractor={keyExtractor}
-    />
+    <>
+      <View style={{paddingHorizontal: 24}}>
+        <MatchWeekCalendar //
+          value={selectedDate}
+          onChange={setSelectedDate}
+        />
+      </View>
+      <FlatList
+        contentContainerStyle={styles.flatList}
+        data={matchingList}
+        ListEmptyComponent={
+          isPending ? <LoadingMatchList /> : <EmptyMatchView onClick={() => moveToDoubleHeaderWriteTicket(date)} />
+        }
+        scrollEnabled
+        renderItem={renderItem}
+        ListFooterComponent={
+          matchingList.length > 0 ? (
+            <AddDoubleHeaderTicketButton onPress={() => moveToDoubleHeaderWriteTicket(date)} /> //
+          ) : null
+        }
+        keyExtractor={keyExtractor}
+      />
+    </>
   )
 }
 

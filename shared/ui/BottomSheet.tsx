@@ -27,38 +27,48 @@ const BottomSheetComponent = ({
     setIsRealOpen(false)
   }, [])
 
+  const startAnimation = useCallback(() => {
+    'worklet'
+    overlayOpacity.value = withTiming(1, {
+      duration,
+      easing: Easing.out(Easing.quad),
+    })
+
+    sheetTranslateY.value = withTiming(0, {
+      duration,
+      easing: Easing.out(Easing.quad),
+    })
+  }, [duration])
+
+  const stopAnimation = useCallback(() => {
+    'worklet'
+    overlayOpacity.value = withTiming(0, {
+      duration,
+      easing: Easing.in(Easing.quad),
+    })
+
+    sheetTranslateY.value = withTiming(
+      height,
+      {
+        duration,
+        easing: Easing.in(Easing.quad),
+      },
+      finished => {
+        // 애니메이션이 정상적으로 완료된 경우에만 모달 제거
+        if (finished) {
+          runOnJS(handleAnimationEnd)()
+        }
+      },
+    )
+  }, [duration])
+
   useEffect(() => {
     if (isOpen) {
       setIsRealOpen(true)
 
-      overlayOpacity.value = withTiming(1, {
-        duration,
-        easing: Easing.out(Easing.quad),
-      })
-
-      sheetTranslateY.value = withTiming(0, {
-        duration,
-        easing: Easing.out(Easing.quad),
-      })
+      startAnimation()
     } else {
-      overlayOpacity.value = withTiming(0, {
-        duration,
-        easing: Easing.in(Easing.quad),
-      })
-
-      sheetTranslateY.value = withTiming(
-        height,
-        {
-          duration,
-          easing: Easing.in(Easing.quad),
-        },
-        finished => {
-          // 애니메이션이 정상적으로 완료된 경우에만 모달 제거
-          if (finished) {
-            runOnJS(handleAnimationEnd)()
-          }
-        },
-      )
+      stopAnimation()
     }
   }, [isOpen, duration, height, overlayOpacity, sheetTranslateY, handleAnimationEnd])
 
@@ -82,13 +92,21 @@ const BottomSheetComponent = ({
         style={[styles.overlay, overlayStyle]}
         onPress={onPressOverlay ? handleOverlayPress : undefined}
       />
+      {/* <Animated.View
+        style={[
+          styles.sheet,
+          {
+            transform: [{translateY: 0}],
+          },
+        ]}>
+        {children}
+      </Animated.View> */}
       <Animated.View style={[styles.sheet, sheetStyle]}>{children}</Animated.View>
     </Modal>
   )
 }
 
-// React.memo로 불필요한 리렌더링 방지
-export const BottomSheet = memo(BottomSheetComponent)
+export const BottomSheet = BottomSheetComponent
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
@@ -100,6 +118,7 @@ const styles = StyleSheet.create({
   sheet: {
     position: 'absolute',
     bottom: 0,
+    // flex: 1,
     left: 0,
     right: 0,
     zIndex: 10,
