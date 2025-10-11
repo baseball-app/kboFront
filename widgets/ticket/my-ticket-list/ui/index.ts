@@ -1,1 +1,1 @@
-export {MyTicketList} from './MyTicketList'
+export {MyTicketBox} from './MyTicketBox'

@@ -2,13 +2,13 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {CalendarView} from './CalendarView'
 import {TicketCalendarLog} from './type'
 import dayjs from 'dayjs'
-import {usePathname, useSegments} from 'expo-router'
 import {useQueryClient} from '@tanstack/react-query'
 import {TicketDetail} from '@/entities/ticket'
 import ApiClient from '@/api'
 import {Match} from '@/entities/match'
 import {useAnalyticsStore} from '@/analytics/event'
 import useProfile from '@/hooks/my/useProfile'
+import {useIsFocused} from '@react-navigation/native'
 import {Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, View} from 'react-native'
 import {ROUTES, useAppRouter} from '@/shared'
 import {CALENDAR_START_DATE, CALENDAR_END_DATE} from '@/constants/day'
@@ -30,7 +30,7 @@ const CalendarContainer = ({targetId}: Props) => {
   const queryClient = useQueryClient()
 
   const router = useAppRouter()
-  const pathname = usePathname()
+  console.log('CalendarContainer 렌더링')
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
 
@@ -77,7 +77,7 @@ const CalendarContainer = ({targetId}: Props) => {
       // 해당 날짜 경기 일정 prefetch
       prefetchMatchList(targetDate).finally(() => {
         // ga 데이터 수집용도
-        setScreenName(pathname)
+        setScreenName('/')
         setDiaryCreate('메인 버튼')
         // ga 데이터 수집용도
         router.push(ROUTES.WRITE, {date: targetDate})
@@ -195,13 +195,11 @@ const CalendarContainer = ({targetId}: Props) => {
   }
 
   const [hideCalendar, setHideCalendar] = useState(false)
-  const segments = useSegments()
+  const isFocused = useIsFocused()
 
   useEffect(() => {
-    const isCalendarPage = segments.join('') !== '(tabs)'
-    if (hideCalendar === isCalendarPage) return
-    setHideCalendar(isCalendarPage)
-  }, [segments])
+    setHideCalendar(!isFocused)
+  }, [isFocused])
 
   const renderCalendar = useCallback(
     ({item}: {item: Date}) => {

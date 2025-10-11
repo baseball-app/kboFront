@@ -1,19 +1,14 @@
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
-import {useTicketListByTeam} from '@/entities/ticket'
 import React from 'react'
 import {StyleSheet} from 'react-native'
-import {MyTicketList} from '@/widgets/ticket/my-ticket-list'
 import {StatProfileBox} from '@/widgets/stat'
-import {TeamTagList} from '@/widgets/match'
+import {MyTicketBox} from '@/widgets/ticket/my-ticket-list/ui'
 
 const MyTicketBoxScreen = () => {
-  const {ticketList, onChangeTeam, selectedTeamId, isLoading} = useTicketListByTeam()
-
   return (
     <InitScrollProvider style={styles.container}>
       <StatProfileBox />
-      <TeamTagList selectedTeamId={selectedTeamId} onChangeTeam={onChangeTeam} />
-      <MyTicketList isLoading={isLoading} ticketList={ticketList} />
+      <MyTicketBox />
     </InitScrollProvider>
   )
 }

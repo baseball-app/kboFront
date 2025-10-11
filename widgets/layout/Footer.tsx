@@ -1,8 +1,8 @@
 import {useSegments} from 'expo-router'
 import React from 'react'
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import {View, Text, StyleSheet, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {ROUTES, useAppRouter} from '@/shared'
+import {Pressable, ROUTES, useAppRouter} from '@/shared'
 const footerList = [
   {
     name: '캘린더',
@@ -67,7 +67,7 @@ const Footer = () => {
         <View style={styles.wrapper}>
           {footerList.map(item => {
             return (
-              <TouchableOpacity
+              <Pressable
                 key={item.name}
                 onPress={() => {
                   if (currentPath === item.path) {
@@ -77,13 +77,13 @@ const Footer = () => {
                     router.navigate(item.path)
                   }
                 }}
-                style={styles.tabButton}>
+                style={[styles.tabButton]}>
                 <Image
                   source={currentPath === item.path ? item.icon.active : item.icon.inactive}
                   style={styles.tabImg}
                 />
                 <Text style={currentPath === item.path ? styles.tabTextActive : styles.tabText}>{item.name}</Text>
-              </TouchableOpacity>
+              </Pressable>
             )
           })}
         </View>
