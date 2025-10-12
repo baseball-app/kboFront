@@ -2,13 +2,13 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {CalendarView} from './CalendarView'
 import {TicketCalendarLog} from './type'
 import dayjs from 'dayjs'
-import {usePathname, useSegments} from 'expo-router'
 import {useQueryClient} from '@tanstack/react-query'
 import {TicketDetail} from '@/entities/ticket'
 import ApiClient from '@/api'
 import {Match} from '@/entities/match'
 import {useAnalyticsStore} from '@/analytics/event'
 import useProfile from '@/hooks/my/useProfile'
+import {useIsFocused} from '@react-navigation/native'
 import {Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, View} from 'react-native'
 import {ROUTES, useAppRouter} from '@/shared'
 import {CALENDAR_START_DATE, CALENDAR_END_DATE} from '@/constants/day'
@@ -30,7 +30,6 @@ const CalendarContainer = ({targetId}: Props) => {
   const queryClient = useQueryClient()
 
   const router = useAppRouter()
-  const pathname = usePathname()
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
 
@@ -77,7 +76,7 @@ const CalendarContainer = ({targetId}: Props) => {
       // 해당 날짜 경기 일정 prefetch
       prefetchMatchList(targetDate).finally(() => {
         // ga 데이터 수집용도
-        setScreenName(pathname)
+        setScreenName('/')
         setDiaryCreate('메인 버튼')
         // ga 데이터 수집용도
         router.push(ROUTES.WRITE, {date: targetDate})
@@ -130,7 +129,10 @@ const CalendarContainer = ({targetId}: Props) => {
             .toDate(),
         )
 
-      return newList.concat(prev).filter(date => !dayjs(date).isBefore(START_DATE))
+      // 중복 제거를 위해 YYYY-MM 기준으로 유니크하게 필터링
+      const combined = newList.concat(prev)
+      const uniqueMap = new Map(combined.map(date => [dayjs(date).format('YYYY-MM'), date]))
+      return Array.from(uniqueMap.values()).filter(date => !dayjs(date).isBefore(START_DATE))
     })
   }
 
@@ -145,7 +147,10 @@ const CalendarContainer = ({targetId}: Props) => {
             .toDate(),
         )
 
-      return prev.concat(newList).filter(date => !dayjs(date).isAfter(END_DATE))
+      // 중복 제거를 위해 YYYY-MM 기준으로 유니크하게 필터링
+      const combined = prev.concat(newList)
+      const uniqueMap = new Map(combined.map(date => [dayjs(date).format('YYYY-MM'), date]))
+      return Array.from(uniqueMap.values()).filter(date => !dayjs(date).isAfter(END_DATE))
     })
   }
 
@@ -195,13 +200,11 @@ const CalendarContainer = ({targetId}: Props) => {
   }
 
   const [hideCalendar, setHideCalendar] = useState(false)
-  const segments = useSegments()
+  const isFocused = useIsFocused()
 
   useEffect(() => {
-    const isCalendarPage = segments.join('') !== '(tabs)'
-    if (hideCalendar === isCalendarPage) return
-    setHideCalendar(isCalendarPage)
-  }, [segments])
+    setHideCalendar(!isFocused)
+  }, [isFocused])
 
   const renderCalendar = useCallback(
     ({item}: {item: Date}) => {
@@ -270,7 +273,7 @@ const CalendarContainer = ({targetId}: Props) => {
             index,
           })}
           renderItem={renderCalendar}
-          keyExtractor={(item: Date) => item.toString()}
+          keyExtractor={(item: Date) => dayjs(item).format('YYYY-MM')}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           removeClippedSubviews={true}

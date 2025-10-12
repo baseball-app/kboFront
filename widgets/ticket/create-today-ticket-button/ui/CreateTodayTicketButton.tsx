@@ -4,15 +4,14 @@ import dayjs from 'dayjs'
 import {usePopup} from '@/slice/commonSlice'
 import {useNavigateWriteTicket} from '@/features/match/navigate-write-ticket'
 import {useAnalyticsStore} from '@/analytics/event'
-import {usePathname} from 'expo-router'
-import {Image, StyleSheet, TouchableOpacity} from 'react-native'
+import {Image, StyleSheet} from 'react-native'
+import {Pressable} from '@/shared'
 
 const CreateTodayTicketButton = () => {
   const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()})
   const {openCommonPopup} = usePopup()
   const {moveToWriteTicket} = useNavigateWriteTicket()
   const {setScreenName, setDiaryCreate} = useAnalyticsStore()
-  const pathname = usePathname()
 
   const onClickFloatingButton = async () => {
     if (!todayMatchingList?.length) {
@@ -22,13 +21,12 @@ const CreateTodayTicketButton = () => {
 
     moveToWriteTicket({date: dayjs().format('YYYY-MM-DD'), step: 1}, () => {
       // ga 데이터 수집용도
-      setScreenName(pathname)
+      setScreenName('/')
       setDiaryCreate('메인 버튼')
     })
   }
   return (
-    <TouchableOpacity //
-      activeOpacity={0.95}
+    <Pressable //
       style={styles.floatingButton}
       onPress={onClickFloatingButton}>
       <Image
@@ -39,7 +37,7 @@ const CreateTodayTicketButton = () => {
           height: 24,
         }}
       />
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 

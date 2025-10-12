@@ -1,5 +1,6 @@
-import React from 'react'
-import {StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {Pressable} from '@/shared'
+import React, {memo} from 'react'
+import {StyleSheet, Text} from 'react-native'
 
 type Props = {
   name: string
@@ -8,18 +9,21 @@ type Props = {
   paddingHorizontal: number
 }
 
-const TeamTag = ({name, isActive, onClick, paddingHorizontal}: Props) => {
+function TeamTag({name, isActive, onClick, paddingHorizontal}: Props) {
   return (
-    <TouchableOpacity
-      activeOpacity={1} //
+    <Pressable
       onPress={onClick}
       style={[styles.tag, isActive && styles.tagActive, {paddingHorizontal: paddingHorizontal}]}>
       <Text style={[styles.text, isActive && styles.textActive]}>{name}</Text>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 
-export {TeamTag}
+const MemoizedTeamTag = memo(TeamTag, (prevProps, nextProps) => {
+  return prevProps.isActive === nextProps.isActive
+})
+
+export {MemoizedTeamTag as TeamTag}
 
 const styles = StyleSheet.create({
   tag: {

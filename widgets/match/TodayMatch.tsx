@@ -36,7 +36,7 @@ const TodayMatch = () => {
           ballpark_name={todayMyTeamMatch.ballpark_info.name.slice(0, 2)}
         />
       ) : (
-        <EmptyMatch myTeamName={profile.my_team?.name || ''} />
+        <EmptyMatch myTeamName={profile.my_team?.short_name || ''} />
       )}
 
       <TouchableOpacity style={styles.seeMoreButton} onPress={() => router.navigate(ROUTES.MATCH_TAB)}>

@@ -3,6 +3,7 @@ import {StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native'
 import {findMatchResultImage} from '@/constants/match'
 import {useTeam} from '@/entities/match'
 import {TicketCalendarLog} from '@/entities/ticket/types'
+import {Pressable} from '@/shared'
 
 //TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
 const MatchResultCell = ({
@@ -27,7 +28,7 @@ const MatchResultCell = ({
   }, [data, findTeamByName])
 
   return (
-    <TouchableOpacity style={{alignItems: 'center'}} onPress={onPress}>
+    <Pressable style={{alignItems: 'center'}} onPress={onPress}>
       {matchResult ? (
         <View style={{alignItems: 'center', justifyContent: 'flex-start'}}>
           <Image source={findMatchResultImage(matchResult)} style={styles.moodContainer} />
@@ -44,7 +45,7 @@ const MatchResultCell = ({
       ) : (
         <View style={[styles.moodContainer]} />
       )}
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 

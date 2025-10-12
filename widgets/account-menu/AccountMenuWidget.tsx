@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {memo} from 'react'
 import {View, TouchableOpacity, Text, StyleSheet, Dimensions} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
-import {useAppRouter, ROUTES} from '@/shared'
+import {useAppRouter, ROUTES, Pressable} from '@/shared'
 import {useLogout} from '@/features/auth/logout'
 import {useWithdraw} from '@/features/auth/withdraw'
 import {Config} from '@/config/Config'
@@ -35,10 +35,10 @@ const AccountMenuWidget = () => {
   return (
     <View style={styles.menuContainer}>
       {menuList.map(menu => (
-        <TouchableOpacity key={menu.title} style={styles.menuItem} onPress={menu.onClick}>
+        <Pressable key={menu.title} style={styles.menuItem} onPress={menu.onClick}>
           <Text style={styles.menuText}>{menu.title}</Text>
           <Ionicons name="chevron-forward" size={24} color="gray" />
-        </TouchableOpacity>
+        </Pressable>
       ))}
     </View>
   )
@@ -64,4 +64,6 @@ const styles = StyleSheet.create({
   },
 })
 
-export {AccountMenuWidget}
+const MemoAccountMenuWidget = memo(AccountMenuWidget)
+
+export {MemoAccountMenuWidget as AccountMenuWidget}

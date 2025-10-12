@@ -1,16 +1,14 @@
 import {ProfileImage} from '@/entities/user'
 import React from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {StyleSheet, Text, View} from 'react-native'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
-import {ROUTES, useAppRouter} from '@/shared'
+import {Pressable, ROUTES, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
-import {usePathname} from 'expo-router'
 
 const StatProfileBox = () => {
   const {profile} = useProfile()
   const router = useAppRouter()
-  const pathname = usePathname()
 
   return (
     <View style={styles.infoBox}>
@@ -23,14 +21,14 @@ const StatProfileBox = () => {
           </Text>
         </View>
       </View>
-      <TouchableOpacity
+      <Pressable
         style={styles.button}
         onPress={() => {
-          logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: pathname})
+          logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: ROUTES.TICKET_MY_STAT})
           router.push(ROUTES.TICKET_MY_STAT)
         }}>
         <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   )
 }

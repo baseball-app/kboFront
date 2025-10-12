@@ -1,31 +1,28 @@
 import {StyleSheet, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
-import {usePathname} from 'expo-router'
 import useProfile from '@/hooks/my/useProfile'
 import {useEffect, useState} from 'react'
 import useFriends from '@/hooks/my/useFriends'
 import {InitScrollProvider} from '@/components/provider/InitScrollProvider'
 import {CalendarContainer} from '@/components/home/Calendar/CalendarContainer'
 import {TodayMatch} from '@/widgets'
-import {MatchCalendarTitle, useMatch} from '@/entities/match'
+import {MatchCalendarTitle} from '@/entities/match'
 import {CreateTodayTicketButton} from '@/widgets/ticket/create-today-ticket-button'
+import {useIsFocused} from '@react-navigation/native'
 
 const CalendarScreen = () => {
   const {profile} = useProfile()
   const [userId, setUserId] = useState<number | null>(null)
   const isMyDiary = userId === profile.id
-  const pathname = usePathname()
+  const isFocused = useIsFocused()
 
   // 페이지 이동 시, 초기화
   useEffect(() => {
-    const tabPathList = ['/rank', '/match', '/my', '/ticket']
     if (!profile.id) return
     if (userId === profile.id) return
-    if (tabPathList.includes(pathname) || !userId) {
-      setUserId(profile.id)
-    }
-  }, [pathname, profile.id])
+    if (isFocused && !userId) setUserId(profile.id)
+  }, [profile.id])
 
   const {friend_status} = useFriends()
 
