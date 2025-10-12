@@ -2,6 +2,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {TeamWithInfo} from '../types'
 import Ellipse from '@/components/common/Ellipse'
 import dayjs from 'dayjs'
+import {getTempBaseballMediumName} from '@/shared'
 
 type TicketCardProps = {
   ticket: {
@@ -60,7 +61,7 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
           marginRight: -2,
         }}>
         <Text style={styles.parkName} numberOfLines={1}>
-          {ticket.gip_place || ticket.ballpark.name}
+          {getTempBaseballMediumName(ticket.gip_place || ticket.ballpark.name)}
         </Text>
         <Text style={[styles.date, {marginBottom: 4}]}>{dayjs(ticket.date).format('YYYY.MM.DD')}</Text>
         <TouchableOpacity

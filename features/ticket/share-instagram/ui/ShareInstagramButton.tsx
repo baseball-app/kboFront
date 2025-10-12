@@ -1,6 +1,6 @@
 import {Modal} from '@/components/common/Modal'
 import {TicketDetail} from '@/entities/ticket'
-import {showToast, useCaptureView, useShare} from '@/shared'
+import {getTempBaseballMediumName, showToast, useCaptureView, useShare} from '@/shared'
 import React, {useState} from 'react'
 import {TouchableOpacity, Image, StyleSheet, View, Text, Pressable, Dimensions} from 'react-native'
 import FastImage from '@d11/react-native-fast-image'
@@ -8,6 +8,7 @@ import {useTeam} from '@/entities/match'
 import {Svg} from 'react-native-svg'
 import {Line} from 'react-native-svg'
 import {BlurView} from 'expo-blur'
+import dayjs from 'dayjs'
 
 // 반응형 스케일링 유틸 함수
 const {width: SCREEN_WIDTH} = Dimensions.get('window')
@@ -122,8 +123,8 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
                   label={ticketDetail?.is_ballpark ? '직관장소' : '집관장소'}
                   value={
                     (ticketDetail?.gip_place || '').length > 8
-                      ? (ticketDetail?.gip_place || '').slice(0, 8) + '...'
-                      : ticketDetail?.gip_place || ''
+                      ? getTempBaseballMediumName(ticketDetail?.gip_place || '').slice(0, 8) + '...'
+                      : ticketDetail?.gip_place || '-'
                   }
                 />
                 <_LabelWithValue label="관람방식" value={ticketDetail?.is_ballpark ? '직관' : '집관'} />
@@ -135,11 +136,15 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
                     ticketDetail?.score_opponent
                   }(${findTeamById(ticketDetail?.awayteam_id)?.short_name})`}
                 />
-                <_LabelWithValue label="선발선수" value={'레오나르도다빈치치치치치치'} maxWidth={scale(80)} />
+                <_LabelWithValue label="선발선수" value={ticketDetail?.starting_pitchers || '-'} maxWidth={scale(80)} />
               </View>
               <View style={styles.divider} />
               <View style={styles.ticketRow}>
-                <_LabelWithValue label="경기일정" value={`2025.09.03\n18:30`} numberOfLines={2} />
+                <_LabelWithValue
+                  label="경기일정"
+                  value={`${ticketDetail?.date ? dayjs(ticketDetail.date).format('YYYY.MM.DD') : ''}\n`}
+                  numberOfLines={2}
+                />
               </View>
               <View>
                 <Svg height="2" width="100%" style={styles.svgContainer}>
@@ -211,7 +216,7 @@ const styles = StyleSheet.create({
   ticketCard: {
     paddingTop: scale(12),
     paddingBottom: scale(12),
-    borderRadius: scale(24),
+    borderRadius: scale(18),
     display: 'flex',
     flexDirection: 'column',
     gap: scale(14),
