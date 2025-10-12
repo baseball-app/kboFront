@@ -3,14 +3,13 @@ import {View} from 'react-native'
 import React from 'react'
 import {MatchList} from '@/widgets'
 import {MatchNotification} from '@/entities/match'
-import {SafeAreaView} from 'react-native-safe-area-context'
 
 const MatchScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <MatchNotification />
       <MatchList />
-    </SafeAreaView>
+    </View>
   )
 }
 
