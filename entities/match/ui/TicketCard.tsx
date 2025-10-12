@@ -22,9 +22,16 @@ type TicketCardProps = {
 const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketCardProps) => {
   return (
     <View style={styles.teamCard}>
-      <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 12}}>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flex: 1}}>
         <View style={[styles.teamLabel, {backgroundColor: opponentTeam?.color ?? 'white'}]} />
-        <View style={{display: 'flex', flexDirection: 'row', gap: 20}}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 20,
+            justifyContent: 'center',
+            marginHorizontal: 'auto',
+          }}>
           <View style={{display: 'flex', alignItems: 'center', width: 38}}>
             <Text style={styles.teamName}>{homeTeam?.short_name}</Text>
             <Text style={styles.teamScoreText}>{ticket.score_our}</Text>
