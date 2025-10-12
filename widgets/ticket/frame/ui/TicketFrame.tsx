@@ -49,44 +49,28 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
               </View>
             </View>
             <View style={styles.matchBox}>
-              <View style={styles.infoBox}>
-                <Text style={styles.infoLabel}>경기 결과&날씨</Text>
-                <Text style={styles.infoValue}>
-                  {ticketDetail?.result === '취소' ? '경기 취소' : ticketDetail?.result} / {ticketDetail?.weather}
-                </Text>
-              </View>
-              <View style={styles.infoBox}>
-                <Text style={styles.infoLabel}>오늘의 경기일정</Text>
-                <Text style={styles.infoValue}>
-                  {ticketDetail?.date ? dayjs(ticketDetail?.date).format('YYYY-MM-DD') : ''}
-                </Text>
-              </View>
-              <View style={styles.infoBox}>
-                <Text style={styles.infoLabel}>
-                  {ticketDetail?.is_ballpark ? '오늘의 경기구장' : '오늘의 집관장소'}
-                </Text>
-                <View style={{flex: 1}}>
-                  <Text style={[styles.infoValue]} numberOfLines={2}>
-                    {ticketDetail?.gip_place}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.infoBox}>
-                <Text style={styles.infoLabel}>오늘의 선발선수</Text>
-                <View style={{flex: 1}}>
-                  <Text style={[styles.infoValue]} numberOfLines={2}>
-                    {ticketDetail?.starting_pitchers}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.infoBox}>
-                <Text style={styles.infoLabel}>오늘의 직관푸드</Text>
-                <View style={{flex: 1}}>
-                  <Text style={[styles.infoValue]} numberOfLines={2}>
-                    {ticketDetail?.food}
-                  </Text>
-                </View>
-              </View>
+              <_InfoRow
+                label="경기 결과&날씨"
+                value={`${ticketDetail?.result === '취소' ? '경기 취소' : ticketDetail?.result} / ${
+                  ticketDetail?.weather
+                }`}
+              />
+              <_InfoRow
+                label="오늘의 경기일정"
+                value={ticketDetail?.date ? dayjs(ticketDetail?.date).format('YYYY-MM-DD') : ''}
+              />
+              <_InfoRow
+                label={ticketDetail?.is_ballpark ? '오늘의 경기구장' : '오늘의 집관장소'}
+                value={ticketDetail?.gip_place}
+              />
+              <_InfoRow
+                label="오늘의 선발선수" //
+                value={ticketDetail?.starting_pitchers}
+              />
+              <_InfoRow
+                label="오늘의 직관푸드" //
+                value={ticketDetail?.food}
+              />
             </View>
           </View>
           {Boolean(ticketDetail?.memo) && (
@@ -149,6 +133,20 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
     </>
   )
 })
+
+const _InfoRow = ({label, value}: {label: string; value?: string}) => {
+  if (!value) return null
+  return (
+    <View style={styles.infoBox}>
+      <Text style={styles.infoLabel}>{label}</Text>
+      <View style={{flex: 1}}>
+        <Text style={[styles.infoValue]} numberOfLines={2}>
+          {value}
+        </Text>
+      </View>
+    </View>
+  )
+}
 
 export {TicketFrame}
 
