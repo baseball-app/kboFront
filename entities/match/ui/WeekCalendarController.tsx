@@ -47,52 +47,18 @@ const _HeaderController = ({
 }: Omit<MatchCalendarHeaderProps, 'setCurrentDate'> & {openBottomSheet: () => void}) => {
   return (
     <View style={styles.header}>
-      <PrevWeekButton onPress={prevMonth} />
+      <Pressable onPress={prevMonth} style={[styles.headerTextContainer]}>
+        <Ionicons name="chevron-back" size={24} color="black" />
+      </Pressable>
       <TouchableOpacity style={[styles.headerTextContainer, {width: 100}]} onPress={openBottomSheet}>
         <Text style={styles.headerText}>{dayjs(currentDate).format('YYYY.MM')}</Text>
       </TouchableOpacity>
-      <NextWeekButton onPress={nextMonth} />
+      <Pressable onPress={nextMonth} style={styles.headerTextContainer}>
+        <Ionicons name="chevron-forward" size={24} color="black" />
+      </Pressable>
     </View>
   )
 }
-
-const PrevWeekButton = memo(({onPress}: {onPress: () => void}) => {
-  const scale = useSharedValue(1)
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{scale: scale.value}],
-    }
-  })
-
-  const handlePressIn = useCallback(() => {
-    'worklet'
-    scale.value = withTiming(0.85, {duration: 80})
-  }, [])
-
-  const handlePressOut = useCallback(() => {
-    'worklet'
-    scale.value = withTiming(1, {duration: 80})
-  }, [])
-
-  return (
-    <AnimatedPressable
-      onPress={onPress}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      style={[styles.headerTextContainer, animatedStyle]}>
-      <Ionicons name="chevron-back" size={24} color="black" />
-    </AnimatedPressable>
-  )
-})
-
-const NextWeekButton = memo(({onPress}: {onPress: () => void}) => {
-  return (
-    <AnimatedPressable onPress={onPress} style={styles.headerTextContainer}>
-      <Ionicons name="chevron-forward" size={24} color="black" />
-    </AnimatedPressable>
-  )
-})
 
 const _BottomSheetController = ({
   isModalVisible,
@@ -122,7 +88,7 @@ const _BottomSheetController = ({
   )
 
   return (
-    <BottomSheet isOpen={isModalVisible} duration={250} height={350}>
+    <BottomSheet isOpen={isModalVisible} duration={350} height={320}>
       <View style={styles.modalContent}>
         <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
         <View style={styles.datePickerContainer}>

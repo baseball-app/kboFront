@@ -128,7 +128,7 @@ const YearMonthPicker = ({
   )
 
   return (
-    <BottomSheet isOpen={open} duration={350} height={350}>
+    <BottomSheet isOpen={open} duration={350} height={320}>
       <View style={styles.modalContent}>
         <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
         <View style={styles.datePickerContainer}>
