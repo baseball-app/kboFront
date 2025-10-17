@@ -22,7 +22,7 @@ const TeamTagList = ({
           ?.filter(club => club.id !== profile.my_team?.id) //
           .map((club, index) => (
             <TeamTag
-              paddingHorizontal={index < 5 ? (width - 251) / 10 : index < 10 ? (width - 221) / 10 : 12}
+              paddingHorizontal={index < 5 ? (width - 251) / 10 : index < 10 ? (width - 222) / 10 : 12}
               key={club.id}
               name={club.short_name || ''} //
               isActive={club.id === selectedTeamId}

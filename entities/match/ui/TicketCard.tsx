@@ -35,7 +35,7 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
           }}>
           <View style={{display: 'flex', alignItems: 'center', width: 46}}>
             <Text style={styles.teamName}>{homeTeam?.short_name}</Text>
-            <Text style={styles.teamScoreText}>{ticket.score_our}</Text>
+            <Text style={[styles.teamScoreText, {width: '100%'}]}>{ticket.score_our}</Text>
           </View>
           <View style={{display: 'flex', gap: 6, justifyContent: 'center'}}>
             <Ellipse size={3} />
@@ -43,7 +43,7 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
           </View>
           <View style={{display: 'flex', alignItems: 'center', width: 46}}>
             <Text style={styles.teamName}>{awayTeam?.short_name}</Text>
-            <Text style={styles.teamScoreText}>{ticket.score_opponent}</Text>
+            <Text style={[styles.teamScoreText, {width: '100%'}]}>{ticket.score_opponent}</Text>
           </View>
         </View>
       </View>
