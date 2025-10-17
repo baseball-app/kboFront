@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     marginTop: 8,
-    backgroundColor: 'red',
   },
   headerTextContainer: {
     flexDirection: 'row',
