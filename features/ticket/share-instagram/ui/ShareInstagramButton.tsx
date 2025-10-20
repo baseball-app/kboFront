@@ -2,7 +2,7 @@ import {Modal} from '@/components/common/Modal'
 import {TicketDetail} from '@/entities/ticket'
 import {getTempBaseballMediumName, showToast, useCaptureView, useShare} from '@/shared'
 import React, {useState} from 'react'
-import {TouchableOpacity, Image, StyleSheet, View, Text, Pressable, Dimensions} from 'react-native'
+import {TouchableOpacity, Image, StyleSheet, View, Text, Pressable, Dimensions, Platform} from 'react-native'
 import FastImage from '@d11/react-native-fast-image'
 import {useTeam} from '@/entities/match'
 import {Svg} from 'react-native-svg'
@@ -89,8 +89,17 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
         />
       </TouchableOpacity>
       <Modal visible={isOpen} onRequestClose={() => setIsOpen(false)} animationType="fade" transparent={true}>
-        <BlurView intensity={30} tint="dark" style={StyleSheet.absoluteFill}>
-          <Pressable style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0, 0, 0, 0.6)'}]} />
+        <BlurView
+          intensity={Platform.OS === 'ios' ? 30 : 20}
+          tint="dark"
+          style={StyleSheet.absoluteFill}
+          experimentalBlurMethod="dimezisBlurView">
+          <Pressable
+            style={[
+              StyleSheet.absoluteFill,
+              Platform.OS === 'ios' ? {backgroundColor: 'rgba(0, 0, 0, 0.6)'} : {backgroundColor: 'rgba(0, 0, 0, 0.4)'},
+            ]}
+          />
         </BlurView>
         <View style={styles.modalContainer}>
           <View style={{alignItems: 'flex-end', display: 'flex', width: scale(234)}}>
