@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     lineHeight: 22.4,
     flex: 1,
     height: 48,
+    minHeight: 48,
   },
   editable: {
     backgroundColor: '#F3F2EE',
