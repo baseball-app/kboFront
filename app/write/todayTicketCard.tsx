@@ -118,10 +118,7 @@ export default function GameCard() {
       <ScrollView contentContainerStyle={styles.scrollBox} showsVerticalScrollIndicator={false}>
         {isMyTicket && (
           <View style={styles.iconBox}>
-            {/* <ShareInstagramButton ticketDetail={ticketDetail} /> */}
-            {/* <TouchableOpacity onPress={onShareInstagramStories}>
-              <Image source={require('@/assets/icons/share.png')} resizeMode="contain" style={styles.editIcon} />
-            </TouchableOpacity> */}
+            <ShareInstagramButton ticketDetail={ticketDetail} />
             <TouchableOpacity onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
             </TouchableOpacity>

@@ -89,8 +89,8 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
         />
       </TouchableOpacity>
       <Modal visible={isOpen} onRequestClose={() => setIsOpen(false)} animationType="fade" transparent={true}>
-        <BlurView intensity={80} tint="dark" style={StyleSheet.absoluteFill}>
-          <Pressable style={StyleSheet.absoluteFill} />
+        <BlurView intensity={30} tint="dark" style={StyleSheet.absoluteFill}>
+          <Pressable style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0, 0, 0, 0.6)'}]} />
         </BlurView>
         <View style={styles.modalContainer}>
           <View style={{alignItems: 'flex-end', display: 'flex', width: scale(234)}}>
@@ -129,7 +129,7 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
                 />
                 <_LabelWithValue label="관람방식" value={ticketDetail?.is_ballpark ? '직관' : '집관'} />
               </View>
-              <View style={styles.ticketRow}>
+              <View style={[styles.ticketRow, {paddingBottom: scale(2)}]}>
                 <_LabelWithValue
                   label="경기결과"
                   value={`${ticketDetail?.score_our}(${findTeamById(ticketDetail?.hometeam_id)?.short_name}) : ${
@@ -138,12 +138,17 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
                 />
                 <_LabelWithValue label="선발선수" value={ticketDetail?.starting_pitchers || '-'} maxWidth={scale(80)} />
               </View>
-              <View style={styles.divider} />
-              <View style={styles.ticketRow}>
+              <View style={[styles.divider, {marginBottom: scale(2)}]} />
+              <View style={[styles.ticketRow, {paddingBottom: scale(10)}]}>
                 <_LabelWithValue
                   label="경기일정"
                   value={`${ticketDetail?.date ? dayjs(ticketDetail.date).format('YYYY.MM.DD') : ''}\n`}
                   numberOfLines={2}
+                />
+                <Image
+                  source={require('@/assets/qr/dev_qr.png')}
+                  resizeMode="contain"
+                  style={{width: scale(68), height: scale(68)}}
                 />
               </View>
               <View>
@@ -269,9 +274,9 @@ const styles = StyleSheet.create({
   },
   shareButtonText: {
     color: '#fff',
-    fontSize: scale(14),
-    fontWeight: '700',
-    lineHeight: scale(19.6),
+    fontSize: scale(16),
+    fontWeight: '600',
+    lineHeight: scale(19),
   },
   instagramIcon: {
     width: scale(20),
