@@ -1,8 +1,21 @@
-import {Linking} from 'react-native'
+import {Platform} from 'react-native'
 import Share, {Social} from 'react-native-share'
+import * as Linking from 'expo-linking'
+import {InstagramModuleNative} from './InstagramModule'
 
 const useShare = () => {
-  const checkCanOpenInstagram = () => {
+  const checkCanOpenInstagram = async () => {
+    // Android에서는 Native Module 사용
+    if (Platform.OS === 'android' && InstagramModuleNative) {
+      try {
+        return await InstagramModuleNative.isInstagramInstalled()
+      } catch (error) {
+        console.error('Instagram 설치 확인 오류:', error)
+        return false
+      }
+    }
+
+    // iOS에서는 기존 방식 사용
     return Linking.canOpenURL('instagram://')
   }
 

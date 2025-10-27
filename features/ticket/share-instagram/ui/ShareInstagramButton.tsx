@@ -31,6 +31,7 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
       const isSupportedInstagram = await checkCanOpenInstagram()
 
       if (!isSupportedInstagram) {
+        setIsOpen(false)
         showToast('지금은 인스타그램 공유만 지원해요')
         return
       }
