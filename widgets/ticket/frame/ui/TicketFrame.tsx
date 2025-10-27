@@ -3,7 +3,7 @@ import {useTeam} from '@/entities/match'
 import {TicketDetail} from '@/entities/ticket'
 import useProfile from '@/hooks/my/useProfile'
 import React, {memo} from 'react'
-import {StyleSheet, View, Text, ScrollView} from 'react-native'
+import {StyleSheet, View, Text, ScrollView, Dimensions} from 'react-native'
 import Svg, {Line} from 'react-native-svg'
 import dayjs from 'dayjs'
 import FastImage from '@d11/react-native-fast-image'
@@ -78,17 +78,25 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
               style={{
                 position: 'relative',
                 width: '100%',
+                overflow: 'hidden',
+                marginTop: -1,
               }}>
-              <Svg height="1" width="100%" style={{width: '100%', backgroundColor: 'white'}}>
+              {/* <Svg height="1" width="100%" style={{width: '100%', backgroundColor: 'white'}}>
                 <Line x1="0" y1="0" x2="100%" y2="1" stroke="#55524E" strokeWidth="1" strokeDasharray={[4, 4]} />
-              </Svg>
+              </Svg> */}
               <View
                 style={{
-                  width: '100%',
+                  // width: Dimensions.get('window').width,
                   backgroundColor: 'white',
                   paddingHorizontal: 24,
                   paddingTop: 28,
                   paddingBottom: 56,
+                  borderWidth: 1,
+                  borderColor: '#55524E',
+                  borderStyle: 'dashed',
+                  marginLeft: -3,
+                  marginBottom: -2,
+                  marginRight: -3,
                 }}>
                 <View style={styles.thoughtsBox}>
                   {(() => {
