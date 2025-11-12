@@ -1,16 +1,6 @@
 import {useLocalSearchParams} from 'expo-router'
 import {useRef, useState} from 'react'
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  Platform,
-  KeyboardAvoidingView,
-} from 'react-native'
+import {Text, TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
@@ -108,8 +98,8 @@ const TicketPage = () => {
 
   const [writeData, setWriteData] = useState<IWriteDataInterface>({
     todayScore: {
-      our: '',
-      opponent: '',
+      our: writeStore.selectedMatch?.score_home?.toString() || '',
+      opponent: writeStore.selectedMatch?.score_away?.toString() || '',
     },
     todayImg: undefined,
     matchTeam: null,

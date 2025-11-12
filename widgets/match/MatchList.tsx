@@ -41,12 +41,6 @@ const MatchList = () => {
 
   const keyExtractor = useCallback((item: Match) => `${item.id}`, [])
 
-  // const ListHeaderComponent = useMemo(() => {
-  //   return (
-
-  //   )
-  // }, [selectedDate])
-
   return (
     <>
       <View style={{paddingHorizontal: 24}}>
