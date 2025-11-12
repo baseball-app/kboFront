@@ -4,7 +4,6 @@ import {TicketDetail} from '@/entities/ticket'
 import useProfile from '@/hooks/my/useProfile'
 import React, {memo} from 'react'
 import {StyleSheet, View, Text, ScrollView, Dimensions} from 'react-native'
-import Svg, {Line} from 'react-native-svg'
 import dayjs from 'dayjs'
 import FastImage from '@d11/react-native-fast-image'
 
