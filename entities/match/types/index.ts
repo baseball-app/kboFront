@@ -28,6 +28,7 @@ type Match = {
   game_date: string //'2025-02-16T08:27:20.308Z'
   score_home?: number
   score_away?: number
+  is_finished?: boolean
 }
 
 export type {Team, TeamWithInfo, Match}
