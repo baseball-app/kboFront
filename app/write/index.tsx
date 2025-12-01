@@ -7,7 +7,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import {ROUTES, useAppRouter} from '@/shared'
-import {MatchCard, useMatch} from '@/entities/match'
+import {Match, MatchCard, useMatch} from '@/entities/match'
 
 /** 경기 결과 목업데이터 */
 const matchResult = [
@@ -139,8 +139,17 @@ const DailyLogWriteScreen = () => {
 
   useEffect(() => {
     if (date) setSelectedDate(new Date(date as string))
-    if (params.matchId && matchingList)
-      setSelectedMatch(matchingList?.find(match => match.id === Number(params.matchId))!)
+    if (params.matchId && matchingList) {
+      const targetMatch = matchingList?.find(match => match.id === Number(params.matchId))
+      console.log(targetMatch)
+      if (targetMatch) {
+        // 경기가 종료되지 않은 경우, 결과를 undefined로 설정
+        const match: Match = targetMatch.is_finished
+          ? targetMatch
+          : {...targetMatch, score_home: undefined, score_away: undefined}
+        setSelectedMatch(match)
+      }
+    }
   }, [date, isSuccess])
 
   return (
