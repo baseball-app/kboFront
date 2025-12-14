@@ -19,6 +19,7 @@ import {ROUTES, useAppRouter} from '@/shared'
 import {AccountMenuWidget} from '@/widgets/account-menu'
 import {ProfileBox, TeamBox} from '@/widgets/my-info'
 import {AddFriendInput} from '@/features/user/friend/follow'
+import {AlarmIcon} from '@/entities/alarm'
 
 const ProfileScreen = () => {
   const {profile, onPasteInviteCode} = useMyInfo()
@@ -38,6 +39,9 @@ const ProfileScreen = () => {
               paddingTop: 12,
               position: 'relative',
             }}>
+            <View style={{paddingHorizontal: 24, alignItems: 'flex-end', paddingTop: 10}}>
+              <AlarmIcon onPress={() => router.push(ROUTES.MY_ALARM)} />
+            </View>
             {/* 프로필 박스 */}
             <ProfileBox />
             {/* 팀 박스 */}
