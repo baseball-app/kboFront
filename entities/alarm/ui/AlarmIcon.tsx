@@ -13,7 +13,7 @@ const AlarmIcon = ({onPress}: AlarmIconProps) => {
   return (
     <Pressable style={{position: 'relative'}} onPress={onPress}>
       <Image source={require('@/assets/icons/tabMenu/alarmMenuActive.png')} style={{width: 24, height: 24}} />
-      {!data?.is_unread ? (
+      {data?.is_unread ? (
         <View
           style={{
             width: 5,
