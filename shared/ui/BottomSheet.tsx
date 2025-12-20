@@ -1,5 +1,5 @@
 import React, {PropsWithChildren, useEffect, useState, useCallback, useMemo, memo} from 'react'
-import {StyleSheet, Pressable} from 'react-native'
+import {StyleSheet, Pressable, BackHandler} from 'react-native'
 import {Modal} from '@/components/common/Modal'
 import Animated, {useSharedValue, withTiming, useAnimatedStyle, Easing, runOnJS} from 'react-native-reanimated'
 
@@ -86,8 +86,16 @@ const BottomSheetComponent = ({
     onPressOverlay?.()
   }, [onPressOverlay])
 
+  // 안드로이드 백 버튼 처리 (onRequestClose)
+  const handleRequestClose = useCallback(() => {
+    console.log('onRequestClose called')
+    if (onPressOverlay) {
+      onPressOverlay()
+    }
+  }, [onPressOverlay])
+
   return (
-    <Modal visible={isOpen || isRealOpen} transparent animationType="none">
+    <Modal visible={isOpen || isRealOpen} transparent animationType="none" onRequestClose={handleRequestClose}>
       <AnimatedPressable
         style={[styles.overlay, overlayStyle]}
         onPress={onPressOverlay ? handleOverlayPress : undefined}

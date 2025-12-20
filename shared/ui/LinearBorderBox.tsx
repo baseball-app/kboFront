@@ -34,13 +34,13 @@ interface LinearBorderBoxProps {
 
 export const LinearBorderBox = ({
   children,
-  colors = ['#833ab4', '#fd1d1d', '#fcb045'],
-  locations = [0, 0.5, 1],
+  colors = ['#EF4B87', '#EF4B87', '#1E5EF4'],
+  locations = [0, 0.4, 1],
   animated = true,
   duration = 3000,
   borderWidth = 2,
   borderRadius = 12,
-  backgroundColor = '#fffcf3',
+  backgroundColor = 'transparent',
   contentStyle,
   style,
 }: LinearBorderBoxProps) => {
@@ -90,7 +90,7 @@ export const LinearBorderBox = ({
       left: '50%',
       marginTop: -gradientOffset.value,
       marginLeft: -gradientOffset.value,
-      transform: animated ? [{rotate: `${rotation.value}deg`}] : [],
+      transform: animated ? [{rotate: `${rotation.value % 360}deg`}] : [],
     }
   })
 
@@ -133,6 +133,6 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   content: {
-    padding: 16,
+    // padding: 16,
   },
 })

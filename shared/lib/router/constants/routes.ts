@@ -8,8 +8,10 @@ const MATCH_TAB = '/(tabs)/match'
 const TICKET_TAB = '/(tabs)/ticket'
 
 // 알림 탭
-// deprecated
+// ! deprecated
 const ALARM_TAB = '/(tabs)/alarm'
+
+const STATS_TAB = '/(tabs)/stats'
 
 // 랭킹 탭
 const RANK_TAB = '/(tabs)/rank'
@@ -68,6 +70,7 @@ export {
   MATCH_TAB,
   TICKET_TAB,
   ALARM_TAB,
+  STATS_TAB,
   RANK_TAB,
   MY_TAB,
   AUTH_LOGIN,

@@ -1,14 +1,10 @@
 import {ProfileImage} from '@/entities/user'
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
-import {logEvent} from '@/analytics/func'
-import {EVENTS} from '@/analytics/event'
-import {Pressable, ROUTES, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 
 const StatProfileBox = () => {
   const {profile} = useProfile()
-  const router = useAppRouter()
 
   return (
     <View style={styles.infoBox}>
@@ -21,14 +17,6 @@ const StatProfileBox = () => {
           </Text>
         </View>
       </View>
-      <Pressable
-        style={styles.button}
-        onPress={() => {
-          logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: ROUTES.TICKET_MY_STAT})
-          router.push(ROUTES.TICKET_MY_STAT)
-        }}>
-        <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
-      </Pressable>
     </View>
   )
 }
@@ -55,19 +43,6 @@ const styles = StyleSheet.create({
   },
   team: {
     color: '#666',
-  },
-  button: {
-    backgroundColor: '#081B46',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 16,
-    lineHeight: 22.4,
   },
 })
 

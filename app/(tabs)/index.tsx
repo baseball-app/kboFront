@@ -39,9 +39,9 @@ const CalendarScreen = () => {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FriendList setUserId={setUserId} userId={userId} />
       <InitScrollProvider style={styles.scollContainer}>
-        <LinearBorderBox borderWidth={5}>
+        {/* <LinearBorderBox borderWidth={1}>
           <Text>Sign in with Facebook</Text>
-        </LinearBorderBox>
+        </LinearBorderBox> */}
         <MatchCalendarTitle selectedUserName={selectedUserName} />
         <TodayMatch />
         <View style={{marginBottom: 70}}>
