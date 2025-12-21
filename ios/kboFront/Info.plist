@@ -71,6 +71,8 @@
 	</array>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>이 앱은 알림을 위해 푸시 권한을 요청합니다.</string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
