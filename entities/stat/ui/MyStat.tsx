@@ -11,7 +11,7 @@ const MyStat = ({percentage}: Props) => {
     <View style={styles.progressBox}>
       <AnimatedCircularProgress
         size={170}
-        width={8}
+        width={16}
         fill={percentage} // percentage
         tintColor="#1E5EF4"
         arcSweepAngle={270}

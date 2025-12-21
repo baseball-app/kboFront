@@ -1,13 +1,15 @@
 import React, {PropsWithChildren, useEffect, useState, useCallback, useMemo, memo} from 'react'
 import {StyleSheet, Pressable, BackHandler} from 'react-native'
 import {Modal} from '@/components/common/Modal'
-import Animated, {useSharedValue, withTiming, useAnimatedStyle, Easing, runOnJS} from 'react-native-reanimated'
+import Animated, {useSharedValue, withTiming, useAnimatedStyle, Easing} from 'react-native-reanimated'
+import {scheduleOnRN} from 'react-native-worklets'
 
 type BottomSheetProps = {
   isOpen: boolean
   duration?: number
   height: number
   onPressOverlay?: () => void
+  onAnimationEnd?: () => void
 }
 
 const BottomSheetComponent = ({
@@ -16,6 +18,7 @@ const BottomSheetComponent = ({
   duration = 350,
   height,
   onPressOverlay,
+  onAnimationEnd,
 }: PropsWithChildren<BottomSheetProps>) => {
   const [isRealOpen, setIsRealOpen] = useState(false)
 
@@ -25,7 +28,8 @@ const BottomSheetComponent = ({
   // setIsRealOpen을 useCallback으로 감싸서 runOnJS에서 안정적으로 사용
   const handleAnimationEnd = useCallback(() => {
     setIsRealOpen(false)
-  }, [])
+    onAnimationEnd?.()
+  }, [onAnimationEnd])
 
   const startAnimation = useCallback(() => {
     'worklet'
@@ -56,7 +60,7 @@ const BottomSheetComponent = ({
       finished => {
         // 애니메이션이 정상적으로 완료된 경우에만 모달 제거
         if (finished) {
-          runOnJS(handleAnimationEnd)()
+          scheduleOnRN(handleAnimationEnd)
         }
       },
     )

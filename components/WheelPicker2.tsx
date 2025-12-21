@@ -65,7 +65,6 @@ const WheelPicker2 = ({
         onScroll={handleScroll}
         getItemLayout={getItemLayout}
         onLayout={() => {
-          console.log('onLayout')
           const initialIndex = _items.indexOf(initialItem) - 1
           if (initialIndex >= 0 && flatListRef.current) {
             setTimeout(() => {
