@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native'
+import {StyleSheet, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import FriendList from '@/components/home/FrendList'
 import useProfile from '@/hooks/my/useProfile'
@@ -10,7 +10,6 @@ import {TodayMatch} from '@/widgets'
 import {MatchCalendarTitle} from '@/entities/match'
 import {CreateTodayTicketButton} from '@/widgets/ticket/create-today-ticket-button'
 import {useIsFocused} from '@react-navigation/native'
-import {LinearBorderBox} from '@/shared/ui'
 
 const CalendarScreen = () => {
   const {profile} = useProfile()

@@ -1,5 +1,5 @@
 import {useSegments} from 'expo-router'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {View, Text, StyleSheet, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {Pressable, ROUTES, useAppRouter} from '@/shared'
@@ -59,7 +59,13 @@ const Footer = () => {
   const router = useAppRouter()
   const segments = useSegments()
 
-  const currentPath = `/${segments.join('/')}`
+  const [activePath, setActivePath] = useState<string>(ROUTES.CALENDAR_TAB)
+
+  useEffect(() => {
+    const currentPath = `/${segments.join('/')}`
+    const tab = footerList.find(item => item.path === currentPath)
+    if (tab && tab.path !== activePath) setActivePath(currentPath)
+  }, [segments])
 
   return (
     <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.footerContainer}>
@@ -70,19 +76,20 @@ const Footer = () => {
               <Pressable
                 key={item.name}
                 onPress={() => {
-                  if (currentPath === item.path) {
+                  if (activePath === item.path) {
                     // 현재 경로와 탭 경로가 같으면 스크롤을 맨 위로 이동
                   } else {
                     // 다른 탭으로 이동
                     router.navigate(item.path)
+                    setActivePath(item.path)
                   }
                 }}
                 style={[styles.tabButton]}>
                 <Image
-                  source={currentPath === item.path ? item.icon.active : item.icon.inactive}
+                  source={activePath === item.path ? item.icon.active : item.icon.inactive}
                   style={styles.tabImg}
                 />
-                <Text style={currentPath === item.path ? styles.tabTextActive : styles.tabText}>{item.name}</Text>
+                <Text style={activePath === item.path ? styles.tabTextActive : styles.tabText}>{item.name}</Text>
               </Pressable>
             )
           })}
