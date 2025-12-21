@@ -11,4 +11,4 @@ export {
 } from './model'
 
 // UI
-export {MyStat, StatBox} from './ui'
+export {MyStat, StatBox, SelectSeasonBottomSheet} from './ui'
