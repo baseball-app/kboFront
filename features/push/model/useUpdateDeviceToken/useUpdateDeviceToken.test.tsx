@@ -1,10 +1,9 @@
 import {renderHook, act} from '@testing-library/react-hooks'
 import React, {PropsWithChildren} from 'react'
-import {Platform} from 'react-native'
-import {useUpdateDeviceToken, AlreadyExistsError} from './useUpdateDeviceToken'
+import {useUpdateDeviceToken} from './useUpdateDeviceToken'
 import {updateDeviceToken} from '../../api'
 import {useMMKVObject} from 'react-native-mmkv'
-import {TestQueryClientWrapper} from '@/shared'
+import {TestQueryClientWrapper} from '@/shared/lib/test/TestQueryClientWrapper'
 
 // Mock dependencies
 jest.mock('../../api')
