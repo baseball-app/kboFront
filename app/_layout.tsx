@@ -15,6 +15,7 @@ import {logEvent} from '@/analytics/func'
 import {setBackgroundMessageHandler, getMessaging} from '@react-native-firebase/messaging'
 import notifee from '@notifee/react-native'
 import {CommonSheet} from '@/components/common/CommonSheet'
+import {VersionGuard} from '@/apps/version'
 
 interface TextWithDefaultProps extends Text {
   defaultProps?: {allowFontScaling?: boolean}
@@ -92,19 +93,21 @@ export default function RootLayout() {
   if (!loaded) return null
 
   return (
-    <QueryProvider>
-      <Stack>
-        <Stack.Screen name="auth" options={{headerShown: false}} />
-        <Stack.Screen name="(tabs)" options={{headerShown: false}} />
-        <Stack.Screen name="my" options={{headerShown: false}} />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name="index" options={{headerShown: false}} />
-        <Stack.Screen name="write" options={{headerShown: false}} />
-        <Stack.Screen name="ticket" options={{headerShown: false}} />
-      </Stack>
-      <CommonModal />
-      <CommonSheet />
-      <Toast config={{...toastConfig}} />
-    </QueryProvider>
+    <VersionGuard>
+      <QueryProvider>
+        <Stack>
+          <Stack.Screen name="auth" options={{headerShown: false}} />
+          <Stack.Screen name="(tabs)" options={{headerShown: false}} />
+          <Stack.Screen name="my" options={{headerShown: false}} />
+          <Stack.Screen name="+not-found" />
+          <Stack.Screen name="index" options={{headerShown: false}} />
+          <Stack.Screen name="write" options={{headerShown: false}} />
+          <Stack.Screen name="ticket" options={{headerShown: false}} />
+        </Stack>
+        <CommonModal />
+        <CommonSheet />
+        <Toast config={{...toastConfig}} />
+      </QueryProvider>
+    </VersionGuard>
   )
 }

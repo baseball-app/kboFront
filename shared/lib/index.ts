@@ -11,4 +11,4 @@ export {groupBy} from './groupBy'
 export {hashKey} from './hashKey'
 export {getTempBaseballMediumName} from './getTempBaseballMediumName'
 
-export * from './test'
+export {TestQueryClientWrapper} from './test'
