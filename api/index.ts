@@ -142,22 +142,6 @@ const ApiClient = {
 
 export const uploadFile = async <T>(url: string, data: FormData): Promise<T> => {
   try {
-    // const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
-    // console.log(token)
-    // const response = await fetch(url, {
-    //   method: 'POST',
-    //   body: data,
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data;boundary="boundary"',
-    //     'X-KBOAPP-TOKEN': token?.accessToken || '',
-    //   },
-    // })
-
-    // const result = await response.json()
-
-    // console.log('here', result, response)
-
-    // return result.data
     const response = await axiosInstance.post<T>(url, data, {
       headers: {
         accept: 'application/json',
@@ -168,9 +152,6 @@ export const uploadFile = async <T>(url: string, data: FormData): Promise<T> => 
 
     return response.data
   } catch (error) {
-    // console.log(JSON.stringify(error))
-    // console.error('Error occurred during upload file:', error)
-    // console.log((error as any)?.message)
     return Promise.reject(error)
   }
 }

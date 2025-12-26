@@ -16,7 +16,8 @@ import SelectBox from '@/components/common/SelectBox'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
 import LottieView from 'lottie-react-native'
 
-import * as FileSystem from 'expo-file-system'
+import * as FileSystemLegacy from 'expo-file-system/legacy'
+
 import {useLogin} from '@/hooks/auth/useLogin'
 import Toast from 'react-native-toast-message'
 import {logEvent} from '@/analytics/func'
@@ -63,7 +64,7 @@ const Optional = ({label}: {label: string}) => {
 
 const TicketPage = () => {
   const {isKeyboardVisible} = useKeyboard()
-  console.log('isKeyboardVisible', isKeyboardVisible)
+
   const {registerTicket, initializeTicket, ...writeStore} = useWriteTicket()
   const {profile} = useProfile()
   const {user} = useLogin()
@@ -173,29 +174,6 @@ const TicketPage = () => {
       } as any)
     }
 
-    // const formDataObj = {
-    //   date: dayjs(writeStore.selectedDate).format('YYYY-MM-DD'),
-    //   game: String(writeStore.selectedMatch?.id || ''),
-    //   result: writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult,
-    //   weather: writeStore.selectedWeather,
-    //   is_ballpark: JSON.stringify(tabMenu === '직관'),
-    //   score_our: writeData.todayScore.our,
-    //   score_opponent: writeData.todayScore.opponent,
-    //   starting_pitchers: writeData.matchPlayer || '',
-    //   gip_place: tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace || '',
-    //   food: writeData.todayFood || '',
-    //   memo: writeData.todayThoughts || '',
-    //   is_homeballpark: JSON.stringify(tabMenu === '집관'),
-    //   only_me: JSON.stringify(writeData.onlyMeCheck),
-    //   is_double: JSON.stringify(isDirectWrite),
-    //   hometeam_id: String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id),
-    //   awayteam_id: String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id),
-    //   direct_yn: JSON.stringify(isDirectWrite),
-    //   is_cheer: JSON.stringify(isCheer),
-    // }
-
-    // console.log('Form Data:', JSON.stringify(formDataObj, null, 2))
-
     formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
     formData.append('game', String(writeStore.selectedMatch?.id || ''))
     formData.append('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
@@ -217,7 +195,7 @@ const TicketPage = () => {
     // 직관푸드
     formData.append('food', writeData.todayFood || '')
 
-    // 오늘의 소감
+    // 오늘의 소감`
     formData.append('memo', writeData.todayThoughts || '')
     formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
 
@@ -260,9 +238,9 @@ const TicketPage = () => {
         false, // 메타데이터 유지 여부
       )
 
-      await FileSystem.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage.uri, {
+      await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage.uri, {
         fieldName: 'image',
-        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        uploadType: FileSystemLegacy.FileSystemUploadType.MULTIPART,
         parameters: {
           date: dayjs(writeStore.selectedDate).format('YYYY-MM-DD'),
           game: String(writeStore.selectedMatch?.id || ''),

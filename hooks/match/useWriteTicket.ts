@@ -42,9 +42,7 @@ const useWriteTicket = () => {
 
   const {mutateAsync: registerTicket, isPending} = useMutation({
     mutationFn: (data: FormData) => uploadFile<{id: number}>(`/tickets/ticket_add/`, data),
-    onSuccess: data => {
-      initializeTicket(data.id)
-    },
+    onSuccess: data => initializeTicket(data.id),
   })
 
   /**
