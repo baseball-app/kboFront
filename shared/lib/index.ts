@@ -10,5 +10,6 @@ export {showToast} from './showToast'
 export {groupBy} from './groupBy'
 export {hashKey} from './hashKey'
 export {getTempBaseballMediumName} from './getTempBaseballMediumName'
+export {resizeImage} from './resizeImage'
 
 export * from './test'

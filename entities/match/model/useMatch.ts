@@ -14,7 +14,7 @@ const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
     isPending,
   } = useQuery({
     queryKey: ['matchTeam', startDate],
-    queryFn: async () => getMatchByDate(startDate),
+    queryFn: () => getMatchByDate(startDate),
     enabled: Boolean(selectedDate),
   })
 

@@ -12,39 +12,39 @@ import {Match, MatchCard, useMatch} from '@/entities/match'
 /** 경기 결과 목업데이터 */
 const matchResult = [
   {
-    questionImage: require('@/assets/icons/emo/win.png'),
-    questionText: '승리',
+    image: require('@/assets/icons/emo/win.png'),
+    text: '승리',
   },
   {
-    questionImage: require('@/assets/icons/emo/lose.png'),
-    questionText: '패배',
+    image: require('@/assets/icons/emo/lose.png'),
+    text: '패배',
   },
   {
-    questionImage: require('@/assets/icons/emo/draw.png'),
-    questionText: '무승부',
+    image: require('@/assets/icons/emo/draw.png'),
+    text: '무승부',
   },
   {
-    questionImage: require('@/assets/icons/emo/cancel.png'),
-    questionText: '경기 취소',
+    image: require('@/assets/icons/emo/cancel.png'),
+    text: '경기 취소',
   },
 ]
 /** 날씨 목업 데이터 */
 const weatherResult = [
   {
-    questionImage: require('@/assets/icons/emo/sunny.png'),
-    questionText: '맑음',
+    image: require('@/assets/icons/emo/sunny.png'),
+    text: '맑음',
   },
   {
-    questionImage: require('@/assets/icons/emo/cloudy.png'),
-    questionText: '흐림',
+    image: require('@/assets/icons/emo/cloudy.png'),
+    text: '흐림',
   },
   {
-    questionImage: require('@/assets/icons/emo/rain.png'),
-    questionText: '비',
+    image: require('@/assets/icons/emo/rain.png'),
+    text: '비',
   },
   {
-    questionImage: require('@/assets/icons/emo/wind.png'),
-    questionText: '바람',
+    image: require('@/assets/icons/emo/wind.png'),
+    text: '바람',
   },
 ]
 

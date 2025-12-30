@@ -1,32 +1,23 @@
+import {Pressable} from '@/shared'
 import React, {useState} from 'react'
 import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native'
 
 interface IQuestionBox {
   title: string
-  questionData: any
+  questionData: {image: string; text: string}[]
   onQuestionClick: (p: string) => void
   selectedQuestion: string
-  isDisabled?: boolean
-  backgroundColor?: string
   type: string
 }
 
 const QuestionBox = (props: IQuestionBox) => {
-  const {title, questionData, onQuestionClick, selectedQuestion, isDisabled, backgroundColor} = props
+  const {title, questionData, onQuestionClick, selectedQuestion} = props
   return (
-    <View
-      style={[
-        isDisabled ? styles.disabledContainer : styles.container, //
-        backgroundColor && {backgroundColor},
-      ]}>
+    <View style={[styles.container]}>
       <Text style={styles.questionTitle}>{title}</Text>
       <View style={styles.questionDataBox}>
         {questionData?.map((ev: any, idx: number) => (
-          <TouchableOpacity
-            key={idx}
-            onPress={() => onQuestionClick(ev.questionText)}
-            activeOpacity={1}
-            disabled={isDisabled}>
+          <Pressable key={idx} onPress={() => onQuestionClick(ev.questionText)}>
             <View style={styles.questionInfo}>
               <View style={[styles.imageContainer, props.type === 'weather' && {backgroundColor: '#F3F2EE'}]}>
                 <Image
@@ -42,7 +33,7 @@ const QuestionBox = (props: IQuestionBox) => {
               </View>
               <Text>{ev.questionText}</Text>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </View>
     </View>

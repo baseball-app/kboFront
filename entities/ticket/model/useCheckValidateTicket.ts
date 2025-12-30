@@ -22,4 +22,4 @@ const useCheckValidateTicket = () => {
   return {isCanNotWriteTicket: isTicketCountOverThreshold(TICKET_COUNT_THRESHOLD)}
 }
 
-export {useCheckValidateTicket, MatchScreenError}
+export {useCheckValidateTicket, MatchScreenError, TICKET_COUNT_THRESHOLD}

@@ -1,4 +1,4 @@
-import {useCheckValidateTicket, useMonthlyTicket} from '@/entities/ticket'
+import {TICKET_COUNT_THRESHOLD, useCheckValidateTicket, useMonthlyTicket} from '@/entities/ticket'
 import {ROUTES, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import {usePopup} from '@/slice/commonSlice'
@@ -15,7 +15,7 @@ const useNavigateWriteTicket = () => {
     const yearMonth = dayjs(params.date).format('YYYY-MM')
     const tickets = await getCachedTicketsByDate(yearMonth)
     if (isCanNotWriteTicket(tickets || [], params.date)) {
-      openCommonPopup('오늘의 야구 티켓은 최대 2번까지만\n작성하실 수 있어요!')
+      openCommonPopup(`오늘의 야구 티켓은 최대 ${TICKET_COUNT_THRESHOLD}번까지만\n작성하실 수 있어요!`)
     } else {
       onSuccess?.()
       router.push(ROUTES.WRITE, params)

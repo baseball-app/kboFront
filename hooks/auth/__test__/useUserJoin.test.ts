@@ -36,6 +36,7 @@ describe('useUserJoin', () => {
     push: jest.fn(),
     back: jest.fn(),
     dismissAll: jest.fn(),
+    dismissTo: jest.fn(),
   }
 
   const mockUpdateProfileWithSignUp = jest.fn()
@@ -98,7 +99,7 @@ describe('useUserJoin', () => {
     })
 
     expect(mockUpdateProfileWithSignUp).toHaveBeenCalled()
-    expect(mockRouter.navigate).toHaveBeenCalledWith('/(tabs)')
+    expect(mockRouter.dismissTo).toHaveBeenCalledWith('/(tabs)')
   })
 
   it('should throw error for invalid path', () => {
