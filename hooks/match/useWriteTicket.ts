@@ -5,6 +5,8 @@ import {uploadFile} from '@/api'
 import useProfile from '../my/useProfile'
 import {ROUTES, useAppRouter} from '@/shared'
 import dayjs from 'dayjs'
+import {IFormData} from '@/types/IFormData'
+import {TicketRegisterRequestDto} from '@/features/ticket/create-ticket'
 
 export type RegisterTicket = {
   starting_pitchers: string
@@ -41,7 +43,7 @@ const useWriteTicket = () => {
   }
 
   const {mutateAsync: registerTicket, isPending} = useMutation({
-    mutationFn: (data: FormData) => uploadFile<{id: number}>(`/tickets/ticket_add/`, data),
+    mutationFn: (data: IFormData<TicketRegisterRequestDto>) => uploadFile<{id: number}>(`/tickets/ticket_add/`, data),
     onSuccess: data => initializeTicket(data.id),
   })
 

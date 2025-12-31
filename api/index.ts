@@ -2,6 +2,7 @@ import {Config} from '@/config/Config'
 import {TUser} from '@/hooks/auth/useLogin'
 import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
 import {getItem} from '@/store/mmkv-store/mmkvStore'
+import {IFormData} from '@/types/IFormData'
 import axios, {AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
 
 const axiosInstance: AxiosInstance = axios.create({
@@ -140,7 +141,7 @@ const ApiClient = {
   },
 }
 
-export const uploadFile = async <T>(url: string, data: FormData): Promise<T> => {
+export const uploadFile = async <T>(url: string, data: IFormData): Promise<T> => {
   try {
     const response = await axiosInstance.post<T>(url, data, {
       headers: {
