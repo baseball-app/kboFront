@@ -12,4 +12,4 @@ export {hashKey} from './hashKey'
 export {getTempBaseballMediumName} from './getTempBaseballMediumName'
 export {resizeImage} from './resizeImage'
 
-export * from './test'
+export {TestQueryClientWrapper} from './test'

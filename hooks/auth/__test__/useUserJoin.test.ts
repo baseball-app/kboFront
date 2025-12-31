@@ -2,7 +2,7 @@ import {renderHook, act} from '@testing-library/react-hooks'
 import {useSegments} from 'expo-router'
 import useUserJoin from '../useUserJoin'
 import useProfile from '../../my/useProfile'
-import {useAppRouter} from '@/shared'
+import {ROUTES, useAppRouter} from '@/shared'
 
 jest.mock('../../my/useProfile', () => ({
   __esModule: true,
@@ -99,7 +99,7 @@ describe('useUserJoin', () => {
     })
 
     expect(mockUpdateProfileWithSignUp).toHaveBeenCalled()
-    expect(mockRouter.dismissTo).toHaveBeenCalledWith('/(tabs)')
+    expect(mockRouter.dismissTo).toHaveBeenCalledWith(ROUTES.CALENDAR_TAB)
   })
 
   it('should throw error for invalid path', () => {

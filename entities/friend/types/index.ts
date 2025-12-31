@@ -13,11 +13,7 @@ export type FriendStatusList = {
   friends: FriendStatus[]
 }
 
-export type FriendStatus = {
-  id: number // 1
-  nickname: string // 'abc'
-  profile_type: number // 0
-  profile_image: string // ''
+export type FriendStatus = Friend & {
   ticket_info?: {
     writer_id?: number // 1
     game_id?: number // 1

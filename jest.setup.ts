@@ -280,3 +280,18 @@ jest.doMock('react-native', () => {
     ReactNative,
   )
 })
+
+// '@react-native-firebase/messaging'
+
+// import {
+//   FirebaseMessagingTypes,
+//   getMessaging,
+//   getToken,
+//   requestPermission,
+//   AuthorizationStatus,
+//   onMessage,
+// } from '@react-native-firebase/messaging'
+
+// jest.mock('@react-native-firebase/messaging', () => ({
+//   getMessaging: () => {},
+// }))

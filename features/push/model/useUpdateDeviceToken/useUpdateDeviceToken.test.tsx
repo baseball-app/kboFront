@@ -4,7 +4,6 @@ import {useUpdateDeviceToken} from './useUpdateDeviceToken'
 import {updateDeviceToken} from '../../api'
 import {useMMKVObject} from 'react-native-mmkv'
 import {TestQueryClientWrapper} from '@/shared/lib/test/TestQueryClientWrapper'
-// import {TestQueryClientWrapper} from '@/shared'
 
 // Mock dependencies
 jest.mock('../../api')
