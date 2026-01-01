@@ -13,7 +13,6 @@ import Input from '@/components/common/Input'
 import useProfile from '@/hooks/my/useProfile'
 import {useTeam, Team} from '@/entities/match'
 import SelectBox from '@/components/common/SelectBox'
-import ImageResizer from '@bam.tech/react-native-image-resizer'
 import LottieView from 'lottie-react-native'
 
 import * as FileSystemLegacy from 'expo-file-system/legacy'
@@ -23,10 +22,13 @@ import Toast from 'react-native-toast-message'
 import {logEvent} from '@/analytics/func'
 import {EVENTS, useAnalyticsStore} from '@/analytics/event'
 import {Config} from '@/config/Config'
-import {useAppRouter} from '@/shared'
+import {resizeImage, useAppRouter} from '@/shared'
 import {useKeyboard} from '@/shared'
 import {BottomSheet} from '@/shared/ui'
 import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard'
+import {PLACE_LIST} from '@/constants/ticket'
+import {TicketFormDataMapper} from '@/features/ticket/create-ticket'
+import {TicketImageUploader} from '@/entities/ticket'
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined
   matchTeam: Team | null
@@ -40,18 +42,6 @@ interface IWriteDataInterface {
     opponent: string
   }
 }
-
-const placeOption = [
-  {label: '대구 삼성 라이온즈 파크', value: '대구 삼성 라이온즈 파크'},
-  {label: '부산 사직 야구장', value: '부산 사직 야구장'},
-  {label: '잠실 종합운동장 야구장', value: '잠실 종합운동장 야구장'},
-  {label: '고척 스카이돔', value: '고척 스카이돔'},
-  {label: '인천 SSG 랜더스필드', value: '인천 SSG 랜더스필드'},
-  {label: '수원 KT위즈파크', value: '수원 KT위즈파크'},
-  {label: '대전 한화생명 볼파크', value: '대전 한화생명 볼파크'},
-  {label: '창원 NC파크', value: '창원 NC파크'},
-  {label: '광주 기아 챔피언스 필드', value: '광주 기아 챔피언스 필드'},
-]
 
 const Optional = ({label}: {label: string}) => {
   return (
@@ -84,15 +74,10 @@ const TicketPage = () => {
   const teamAwayInfo = writeStore.selectedMatch?.team_away_info
   const teamHomeInfo = writeStore.selectedMatch?.team_home_info
 
-  const opponentTeam =
-    writeStore.selectedMatch?.team_away_info.id === profile.my_team?.id
-      ? writeStore.selectedMatch?.team_home_info
-      : writeStore.selectedMatch?.team_away_info
+  const opponentTeam = teamAwayInfo?.id === profile.my_team?.id ? teamHomeInfo : teamAwayInfo
 
   // 마이팀이 포함되어 있는지 여부
-  const isCheer =
-    writeStore.selectedMatch?.team_away_info.id === profile.my_team?.id ||
-    writeStore.selectedMatch?.team_home_info.id === profile.my_team?.id
+  const isCheer = teamAwayInfo?.id === profile.my_team?.id || teamHomeInfo?.id === profile.my_team?.id
 
   // 직접입력 여부
   const isDirectWrite = !writeStore.selectedMatch
@@ -111,7 +96,6 @@ const TicketPage = () => {
     onlyMeCheck: false,
   })
 
-  const [tabMenu, setTabMenu] = useState(writeStore.selectedPlace)
   const [teamModalVisible, setTeamModalVisible] = useState(false)
   const [placeModalVisible, setPlaceModalVisible] = useState(false)
 
@@ -154,67 +138,20 @@ const TicketPage = () => {
     if (isPending) return
     setIsPending(true)
 
-    const formData = new FormData()
+    const ticketFormDataMapper = new TicketFormDataMapper(resizeImage)
 
-    if (writeData.todayImg?.uri) {
-      const resizedImage = await ImageResizer.createResizedImage(
-        writeData.todayImg?.uri || '', // 원본 이미지
-        800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
-        800, // 리사이즈할 세로 크기
-        'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
-        100, // 품질 (0 ~ 100)
-        0, // 회전 (0 = 그대로)
-        undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
-        false, // 메타데이터 유지 여부
-      )
-      formData.append('image', {
-        uri: resizedImage?.uri, // 리사이징된 이미지 URI 사용
-        type: writeData.todayImg?.type, // 원본 이미지의 MIME 타입 유지
-        name: 'image.png',
-      } as any)
-    }
-
-    formData.append('date', dayjs(writeStore.selectedDate).format('YYYY-MM-DD'))
-    formData.append('game', String(writeStore.selectedMatch?.id || ''))
-    formData.append('result', writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult)
-    formData.append('weather', writeStore.selectedWeather)
-    formData.append('is_ballpark', JSON.stringify(tabMenu === '직관'))
-
-    formData.append('score_our', writeData.todayScore.our)
-    formData.append('score_opponent', writeData.todayScore.opponent)
-
-    // 선발선수
-    formData.append('starting_pitchers', writeData.matchPlayer || '')
-
-    // 경기구단
-    formData.append(
-      'gip_place',
-      tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace || '',
-    )
-
-    // 직관푸드
-    formData.append('food', writeData.todayFood || '')
-
-    // 오늘의 소감`
-    formData.append('memo', writeData.todayThoughts || '')
-    formData.append('is_homeballpark', JSON.stringify(tabMenu === '집관'))
-
-    //나만보기
-    formData.append('only_me', JSON.stringify(writeData.onlyMeCheck))
-    formData.append('is_double', JSON.stringify(isDirectWrite))
-
-    // hometeam_id
-    formData.append('hometeam_id', String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id))
-    formData.append('awayteam_id', String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id))
-    formData.append('direct_yn', JSON.stringify(isDirectWrite))
-    formData.append('is_cheer', JSON.stringify(isCheer))
+    const formData = await ticketFormDataMapper.toFormData({
+      writeStore,
+      writeData,
+      myTeamId: profile?.id || 0,
+    })
 
     registerTicket(formData)
       .then(() => {
         logEvent(EVENTS.DIARY_CREATE, {
           method: diary_create, //
           screen_name,
-          type: tabMenu,
+          type: writeStore.selectedPlace,
         })
         console.log('티켓 발급 성공')
         setIsPending(false)
@@ -226,41 +163,20 @@ const TicketPage = () => {
   }
 
   const onSaveDataWhenFailedSubmit = async () => {
+    // TODO: 현재는 uri가 없으면 그냥 에러를 반환하고 있는 것으로 판단됨
+    // 수정해야할듯
     if (writeData.todayImg?.uri) {
-      const resizedImage = await ImageResizer.createResizedImage(
-        writeData.todayImg?.uri || '', // 원본 이미지
-        800, // 리사이즈할 가로 크기 (필요한 크기로 변경)
-        800, // 리사이즈할 세로 크기
-        'PNG', // 출력 포맷 ('JPEG' 또는 'PNG')
-        100, // 품질 (0 ~ 100)
-        0, // 회전 (0 = 그대로)
-        undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
-        false, // 메타데이터 유지 여부
-      )
+      const ticketFormDataMapper = new TicketFormDataMapper(resizeImage)
+      const {image: resizedImage, ...bodyData} = await ticketFormDataMapper.toStringDto({
+        writeStore,
+        writeData,
+        myTeamId: profile?.id || 0,
+      })
 
-      await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage.uri, {
+      await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage, {
         fieldName: 'image',
         uploadType: FileSystemLegacy.FileSystemUploadType.MULTIPART,
-        parameters: {
-          date: dayjs(writeStore.selectedDate).format('YYYY-MM-DD'),
-          game: String(writeStore.selectedMatch?.id || ''),
-          result: writeStore.selectedMatchResult === '경기 취소' ? '취소' : writeStore.selectedMatchResult,
-          weather: writeStore.selectedWeather,
-          is_ballpark: JSON.stringify(tabMenu === '직관'),
-          score_our: writeData.todayScore.our,
-          score_opponent: writeData.todayScore.opponent,
-          starting_pitchers: writeData.matchPlayer,
-          gip_place: tabMenu === '직관' ? ballparkInfo?.name || writeData.matchPlace : writeData.matchPlace,
-          food: writeData.todayFood,
-          memo: writeData.todayThoughts,
-          is_homeballpark: JSON.stringify(tabMenu === '집관'),
-          only_me: JSON.stringify(writeData.onlyMeCheck),
-          is_double: JSON.stringify(isDirectWrite),
-          hometeam_id: String(writeStore.selectedMatch?.team_home_info.id || profile.my_team?.id),
-          awayteam_id: String(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id),
-          direct_yn: JSON.stringify(isDirectWrite),
-          is_cheer: JSON.stringify(isCheer),
-        },
+        parameters: bodyData,
         headers: {
           'X-KBOAPP-TOKEN': user?.accessToken || '',
         },
@@ -344,7 +260,7 @@ const TicketPage = () => {
           <View style={styles.tabMenuContainer}>
             <View style={styles.tabMenu}>
               {/* 직관, 집관 선택 컴포넌트 */}
-              <LocationTypeSelector value={tabMenu} onChange={setTabMenu} />
+              <LocationTypeSelector value={writeStore.selectedPlace} onChange={writeStore.setSelectedPlace} />
             </View>
             <View style={styles.tabMenuBox}>
               <View>
@@ -378,14 +294,6 @@ const TicketPage = () => {
                     value={writeData.todayScore.opponent}
                     onChangeText={value => handleScoreChange('opponent', value.replaceAll(/\D/g, ''))}
                     returnKeyType="done"
-                    // submitBehavior="newline"
-                    onSubmitEditing={() => {
-                      // console.log('제출?')
-                      // inputListRef.current['player'].focus()
-                      // uploadPhoto()
-                    }}
-                    // returnKeyType="done"
-                    // submitBehavior="newline"
                     ref={ref => {
                       if (ref) inputListRef.current['opponent'] = ref
                     }}
@@ -400,26 +308,9 @@ const TicketPage = () => {
                   </Text>
                 </View>
               </View>
-
-              <TouchableOpacity style={styles.imageUploadBox} onPress={uploadPhoto} activeOpacity={1}>
-                {writeData.todayImg ? (
-                  <Image source={{uri: writeData.todayImg.uri}} style={styles.todayImg} />
-                ) : (
-                  <>
-                    <Image source={require('@/assets/icons/add_image.png')} style={styles.addImage} />
-                    <Text style={styles.uploadText}>오늘의 사진을 넣어주세요</Text>
-                    <Text
-                      style={{
-                        fontWeight: '400',
-                        fontSize: 12,
-                        color: '#8A8A8A',
-                        lineHeight: 16.8,
-                      }}>
-                      * 사진 미등록 시, 기본 사진으로 자동 설정됩니다
-                    </Text>
-                  </>
-                )}
-              </TouchableOpacity>
+              <TicketImageUploader //
+                onChange={image => setWriteData(prevData => ({...prevData, todayImg: image}))}
+              />
 
               {(() => {
                 if (isDirectWrite) {
@@ -443,7 +334,7 @@ const TicketPage = () => {
                 )
               })()}
 
-              {tabMenu === '집관' ? (
+              {writeStore.selectedPlace === '집관' ? (
                 <Input
                   label={<Optional label="오늘의 집관장소" />}
                   value={writeData.matchPlace}
@@ -590,7 +481,7 @@ const TicketPage = () => {
         <View style={styles.placeModalContent}>
           <Text style={styles.modalTitle}>오늘의 경기구단</Text>
           <View style={styles.optionsContainer}>
-            {placeOption.map(option => (
+            {PLACE_LIST.map(option => (
               <TouchableOpacity
                 key={option.value}
                 style={[styles.placeOptionButton, writeData.matchPlace === option.label && styles.selectedOption]}

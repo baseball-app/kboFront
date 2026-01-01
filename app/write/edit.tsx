@@ -35,6 +35,8 @@ import {useKeyboard} from '@/shared'
 import {useAppRouter} from '@/shared'
 import {BottomSheet} from '@/shared/ui'
 import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard'
+import {PLACE_LIST} from '@/constants/ticket'
+import {TicketImageUploader} from '@/entities/ticket'
 
 interface ITicketEditData {
   homeTeam: {
@@ -59,18 +61,6 @@ interface ITicketEditData {
   direct_yn: boolean
 }
 
-const placeOption = [
-  {label: '대구 삼성 라이온즈 파크', value: '대구 삼성 라이온즈 파크'},
-  {label: '부산 사직 야구장', value: '부산 사직 야구장'},
-  {label: '잠실 종합운동장 야구장', value: '잠실 종합운동장 야구장'},
-  {label: '고척 스카이돔', value: '고척 스카이돔'},
-  {label: '인천 SSG 랜더스필드', value: '인천 SSG 랜더스필드'},
-  {label: '수원 KT위즈파크', value: '수원 KT위즈파크'},
-  {label: '대전 한화생명 볼파크', value: '대전 한화생명 볼파크'},
-  {label: '창원 NC파크', value: '창원 NC파크'},
-  {label: '광주 기아 챔피언스 필드', value: '광주 기아 챔피언스 필드'},
-]
-
 const Optional = ({label}: {label: string}) => {
   return (
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -83,7 +73,6 @@ const Optional = ({label}: {label: string}) => {
 const EditTicketPage = () => {
   const {isKeyboardVisible} = useKeyboard()
   const {id} = useLocalSearchParams()
-  const insets = useSafeAreaInsets()
   const [isPending, setIsPending] = useState(false)
   const {profile} = useProfile()
   const {ticketDetail, updateTicket, initializeTicketInfo} = useTicketDetail(Number(id), Number(profile?.id))
@@ -393,19 +382,9 @@ const EditTicketPage = () => {
                 </View>
               </View>
 
-              <TouchableOpacity style={styles.imageUploadBox} onPress={uploadPhoto} activeOpacity={1}>
-                {writeData.todayImg ? (
-                  <Image
-                    source={{uri: typeof writeData.todayImg === 'string' ? writeData.todayImg : writeData.todayImg.uri}}
-                    style={styles.todayImg}
-                  />
-                ) : (
-                  <>
-                    <Image source={require('@/assets/icons/add_image.png')} style={styles.addImage} />
-                    <Text style={styles.uploadText}>오늘의 사진을 넣어주세요</Text>
-                  </>
-                )}
-              </TouchableOpacity>
+              <TicketImageUploader //
+                onChange={image => onChangeValue('todayImg', image)}
+              />
 
               {(() => {
                 if (isDirectWrite) {
@@ -575,7 +554,7 @@ const EditTicketPage = () => {
         <View style={styles.placeModalContent}>
           <Text style={styles.modalTitle}>오늘의 경기구단</Text>
           <View style={styles.optionsContainer}>
-            {placeOption.map(option => (
+            {PLACE_LIST.map(option => (
               <TouchableOpacity
                 key={option.value}
                 style={[styles.placeOptionButton, writeData?.place === option.label && styles.selectedOption]}
