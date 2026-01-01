@@ -46,6 +46,10 @@ jest.mock('expo-modules-core', () => ({
   NativeModulesProxy: {},
   EventEmitter: jest.fn(),
   requireNativeViewManager: jest.fn(),
+  requireNativeModule: jest.fn(() => ({
+    requestMediaLibraryPermissionsAsync: jest.fn(),
+    launchImageLibraryAsync: jest.fn(),
+  })),
   UnavailabilityError: jest.fn(),
 }))
 
@@ -295,3 +299,34 @@ jest.doMock('react-native', () => {
 // jest.mock('@react-native-firebase/messaging', () => ({
 //   getMessaging: () => {},
 // }))
+
+// Mock expo-image-picker
+jest.mock('expo-image-picker', () => ({
+  requestMediaLibraryPermissionsAsync: jest.fn(() =>
+    Promise.resolve({
+      granted: true,
+      canAskAgain: true,
+      status: 'granted',
+    }),
+  ),
+  launchImageLibraryAsync: jest.fn(() =>
+    Promise.resolve({
+      canceled: false,
+      assets: [
+        {
+          uri: 'file:///mock/image.jpg',
+          width: 100,
+          height: 100,
+          type: 'image',
+          fileName: 'mock-image.jpg',
+          fileSize: 1000,
+        },
+      ],
+    }),
+  ),
+  MediaTypeOptions: {
+    Images: 'images',
+    Videos: 'videos',
+    All: 'all',
+  },
+}))

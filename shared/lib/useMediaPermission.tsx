@@ -1,5 +1,6 @@
 import {Platform, PermissionsAndroid, Linking, Alert} from 'react-native'
 import * as MediaLibrary from 'expo-media-library'
+import {openNoPermissionAlert} from './openNoPermissionAlert'
 
 export class NoPermissionError extends Error {
   constructor(message?: string) {
@@ -28,20 +29,7 @@ const useMediaPermission = () => {
     return {isGranted: true}
   }
 
-  const openSettingModal = () => {
-    Alert.alert('권한이 없어요', '앱 설정으로 가서 액세스 권한을 수정할 수 있어요. 이동하시겠어요?', [
-      {
-        text: '취소',
-        style: 'cancel',
-      },
-      {
-        text: '설정하기',
-        onPress: () => Linking.openSettings(),
-      },
-    ])
-  }
-
-  return {checkMediaPermission, openSettingModal}
+  return {checkMediaPermission, openSettingModal: openNoPermissionAlert}
 }
 
 export {useMediaPermission}
