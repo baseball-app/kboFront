@@ -62,3 +62,5 @@ const TicketRegisterRequestMapper = (data: TicketRegisterRequestDto): FormData =
 
   return formData
 }
+
+export {TicketFormDataMapper, TicketRegisterRequestDto} from './TicketFormDataMapper'
