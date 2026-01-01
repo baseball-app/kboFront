@@ -1,0 +1,15 @@
+{
+  "Test Describe Block": {
+    "prefix": "test",
+    "body": [
+      "describe('${TM_FILENAME_BASE/(.*)\\.spec/$1/}', () => {",
+      "  //",
+      "",
+      "  it('$1', () => {",
+      "    //",
+      "  })",
+      "})"
+    ],
+    "description": "테스트 describe 블록 생성 (파일 이름 자동 포함)"
+  }
+}
