@@ -21,7 +21,7 @@ interface IWriteDataInterface {
 type TicketRegisterRequestDto = {
   date: string
 
-  game: number
+  game: number | any
   hometeam_id: number
   awayteam_id: number
 
@@ -66,7 +66,7 @@ class TicketFormDataMapper {
 
     const date = dayjs(writeStore.selectedDate).format('YYYY-MM-DD')
 
-    const game = writeStore.selectedMatch?.id || 0
+    const game = writeStore.selectedMatch?.id || ''
     const hometeam_id = teamHomeInfo?.id || myTeamId
     const awayteam_id = teamAwayInfo?.id || writeData.matchTeam?.id || 0
 

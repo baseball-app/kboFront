@@ -1,12 +1,15 @@
 import {Match} from '@/entities/match'
 import {create, StateCreator} from 'zustand'
 
-export interface IDailyLogWrite {
+export interface IDailyLogWriteState {
   selectedMatch: Match | null
   selectedMatchResult: string
   selectedWeather: string
   selectedPlace: string
   selectedDate: Date | null
+}
+
+export interface IDailyLogWriteAction {
   setSelectedMatch: (pM: Match | null) => void
   setSelectedMatchResult: (pR: string) => void
   setSelectedWeather: (pW: string) => void
@@ -15,7 +18,7 @@ export interface IDailyLogWrite {
   clearState: () => void
 }
 
-export const dailyWriteSlice: StateCreator<IDailyLogWrite> = set => ({
+export const dailyWriteSlice: StateCreator<IDailyLogWriteState & IDailyLogWriteAction> = set => ({
   selectedMatch: null,
   selectedMatchResult: '',
   selectedWeather: '',
@@ -36,4 +39,4 @@ export const dailyWriteSlice: StateCreator<IDailyLogWrite> = set => ({
     }),
 })
 
-export const useDailyWriteStore = create<IDailyLogWrite>(dailyWriteSlice)
+export const useDailyWriteStore = create<IDailyLogWriteState & IDailyLogWriteAction>(dailyWriteSlice)

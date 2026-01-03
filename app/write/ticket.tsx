@@ -143,7 +143,7 @@ const TicketPage = () => {
     const formData = await ticketFormDataMapper.toFormData({
       writeStore,
       writeData,
-      myTeamId: profile?.id || 0,
+      myTeamId: profile.my_team?.id || 0,
     })
 
     registerTicket(formData)
@@ -170,7 +170,7 @@ const TicketPage = () => {
       const {image: resizedImage, ...bodyData} = await ticketFormDataMapper.toStringDto({
         writeStore,
         writeData,
-        myTeamId: profile?.id || 0,
+        myTeamId: profile?.my_team?.id || 0,
       })
 
       await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage, {
@@ -213,32 +213,6 @@ const TicketPage = () => {
         bottomOffset: insets.bottom + 92,
       })
       setIsPending(false)
-    }
-  }
-
-  const uploadPhoto = async () => {
-    /** 갤러리 접근 권한 요청 */
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
-
-    /** 갤러리에서 이미지 선택 */
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      quality: 1,
-      aspect: [307, 270],
-      selectionLimit: 1,
-    } as ImagePicker.ImagePickerOptions)
-
-    if (!result.canceled && result.assets && result.assets.length > 0) {
-      setWriteData(prevData => ({
-        ...prevData,
-        todayImg: result.assets[0],
-      }))
-    } else if (result.canceled) {
-      // setWriteData(prevData => ({
-      //   ...prevData,
-      //   todayImg: undefined,
-      // }))
     }
   }
 
@@ -309,6 +283,7 @@ const TicketPage = () => {
                 </View>
               </View>
               <TicketImageUploader //
+                uri={writeData.todayImg?.uri}
                 onChange={image => setWriteData(prevData => ({...prevData, todayImg: image}))}
               />
 

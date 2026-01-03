@@ -10,7 +10,6 @@ import {TodayMatch} from '@/widgets'
 import {MatchCalendarTitle} from '@/entities/match'
 import {CreateTodayTicketButton} from '@/widgets/ticket/create-today-ticket-button'
 import {useIsFocused} from '@react-navigation/native'
-import {LinearBorderBox} from '@/shared/ui'
 
 const CalendarScreen = () => {
   const {profile} = useProfile()
@@ -39,9 +38,6 @@ const CalendarScreen = () => {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FriendList setUserId={setUserId} userId={userId} />
       <InitScrollProvider style={styles.scollContainer}>
-        <LinearBorderBox borderWidth={5}>
-          <Text>Sign in with Facebook</Text>
-        </LinearBorderBox>
         <MatchCalendarTitle selectedUserName={selectedUserName} />
         <TodayMatch />
         <View style={{marginBottom: 70}}>

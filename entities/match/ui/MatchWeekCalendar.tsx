@@ -136,7 +136,7 @@ const CalendarCell = React.memo(
   },
   (prevProps, nextProps) => {
     // isSelected가 같고 currentDate가 같으면 리렌더링하지 않음
-    console.log('CalendarCell :: ', prevProps.isSelected, nextProps.isSelected)
+    // console.log('CalendarCell :: ', prevProps.isSelected, nextProps.isSelected)
     return (
       prevProps.isSelected === nextProps.isSelected &&
       dayjs(prevProps.currentDate).isSame(nextProps.currentDate, 'date')

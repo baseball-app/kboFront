@@ -1,10 +1,10 @@
 import {Pressable} from '@/shared'
-import React, {useState} from 'react'
-import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native'
+import React from 'react'
+import {StyleSheet, View, Text, Image, ImageSourcePropType} from 'react-native'
 
 interface IQuestionBox {
   title: string
-  questionData: {image: string; text: string}[]
+  questionData: {image: ImageSourcePropType; text: string}[]
   onQuestionClick: (p: string) => void
   selectedQuestion: string
   type: string
@@ -16,22 +16,22 @@ const QuestionBox = (props: IQuestionBox) => {
     <View style={[styles.container]}>
       <Text style={styles.questionTitle}>{title}</Text>
       <View style={styles.questionDataBox}>
-        {questionData?.map((ev: any, idx: number) => (
-          <Pressable key={idx} onPress={() => onQuestionClick(ev.questionText)}>
+        {questionData?.map((ev, idx: number) => (
+          <Pressable key={idx} onPress={() => onQuestionClick(ev.text)}>
             <View style={styles.questionInfo}>
               <View style={[styles.imageContainer, props.type === 'weather' && {backgroundColor: '#F3F2EE'}]}>
                 <Image
-                  source={ev.questionImage}
+                  source={ev.image}
                   style={[styles.questionImage, props.type === 'weather' && {width: 30, height: 30}]}
                 />
-                {selectedQuestion === ev.questionText && (
+                {selectedQuestion === ev.text && (
                   <>
                     <View style={styles.overlay} />
                     <Image source={require('@/assets/icons/check.png')} style={styles.checkImage} />
                   </>
                 )}
               </View>
-              <Text>{ev.questionText}</Text>
+              <Text>{ev.text}</Text>
             </View>
           </Pressable>
         ))}

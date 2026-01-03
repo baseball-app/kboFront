@@ -11,3 +11,15 @@ export const CLUB_LIST = [
   {name: '한화', value: '한화', id: 9},
   {name: '키움', value: '키움', id: 10},
 ]
+
+export const PLACE_LIST = [
+  {label: '대구 삼성 라이온즈 파크', value: '대구 삼성 라이온즈 파크'},
+  {label: '부산 사직 야구장', value: '부산 사직 야구장'},
+  {label: '잠실 종합운동장 야구장', value: '잠실 종합운동장 야구장'},
+  {label: '고척 스카이돔', value: '고척 스카이돔'},
+  {label: '인천 SSG 랜더스필드', value: '인천 SSG 랜더스필드'},
+  {label: '수원 KT위즈파크', value: '수원 KT위즈파크'},
+  {label: '대전 한화생명 볼파크', value: '대전 한화생명 볼파크'},
+  {label: '창원 NC파크', value: '창원 NC파크'},
+  {label: '광주 기아 챔피언스 필드', value: '광주 기아 챔피언스 필드'},
+]
