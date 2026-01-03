@@ -13,6 +13,7 @@ import {NoPermissionError, useCaptureView, useShare, useMediaPermission, showToa
 import {TicketDeleteButton} from '@/features/ticket/delete-ticket'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {ShareInstagramButton} from '@/features/ticket/share-instagram'
+import Skeleton from '@/components/skeleton/Skeleton'
 
 export default function GameCard() {
   const router = useAppRouter()
@@ -148,10 +149,8 @@ export default function GameCard() {
           </View>
         ) : null}
 
-        <ViewShot
-          //
-          style={styles.ticketBox}>
-          {ticketDetail && <TicketFrame ticketDetail={ticketDetail} />}
+        <ViewShot style={styles.ticketBox}>
+          {ticketDetail ? <TicketFrame ticketDetail={ticketDetail} /> : <Skeleton width={'100%'} height={500} />}
         </ViewShot>
         <View style={styles.emojiBox}>
           {reactionList.map(reaction => (
