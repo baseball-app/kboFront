@@ -7,7 +7,7 @@ import {ROUTES, useAppRouter} from '@/shared'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {LinearBorderBox, Pressable, SelectBox} from '@/shared/ui'
-import {SelectSeasonBottomSheet} from '@/entities/stat'
+import {SelectSeasonBottomSheet, STATS_TYPE_LIST} from '@/entities/stat'
 import {HomeAwayStatsCard, StadiumStatsCard, TeamStatsCard} from '@/entities/stat/ui'
 
 const MatchScreen = () => {
@@ -88,16 +88,7 @@ const MatchScreen = () => {
               <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
             </Pressable>
             <View style={styles.filterContainer}>
-              <SelectBox
-                list={[
-                  {label: '상대구단별', value: '상대구단별'},
-                  {label: '구장별', value: '구장별'},
-                  {label: '홈/원정 경기별', value: '홈/원정 경기별'},
-                  {label: '집관 경기별', value: '집관 경기별'},
-                ]}
-                value={selectedType}
-                onChange={setSelectedType}
-              />
+              <SelectBox list={STATS_TYPE_LIST} value={selectedType} onChange={setSelectedType} />
               <Pressable onPress={toggleAlignment} style={sortStyles.container}>
                 <Text style={sortStyles.text}>{isSortedByHighWinRate() ? '승률 높은순' : '승률 낮은순'}</Text>
                 <Image source={require('@/assets/icons/updown.png')} style={sortStyles.icon} />

@@ -1,5 +1,5 @@
 import useFriends from '@/hooks/my/useFriends'
-import React from 'react'
+import React, {memo} from 'react'
 import {View, StyleSheet, FlatList} from 'react-native'
 import FriendStatusProfile from './FriendStatusProfile'
 import useProfile from '@/hooks/my/useProfile'
@@ -19,28 +19,7 @@ const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; u
     <View style={styles.container}>
       <FlatList
         data={friend_status?.friends}
-        ListEmptyComponent={
-          isLoadingFriendStatus ? (
-            <View style={{flexDirection: 'row', gap: 20, marginLeft: 20}}>
-              <View style={{gap: 10}}>
-                <Skeleton height={50} width={50} type="circle" />
-                <Skeleton height={15} width={50} />
-              </View>
-              <View style={{gap: 10}}>
-                <Skeleton height={50} width={50} type="circle" />
-                <Skeleton height={15} width={50} />
-              </View>
-              <View style={{gap: 10}}>
-                <Skeleton height={50} width={50} type="circle" />
-                <Skeleton height={15} width={50} />
-              </View>
-              <View style={{gap: 10}}>
-                <Skeleton height={50} width={50} type="circle" />
-                <Skeleton height={15} width={50} />
-              </View>
-            </View>
-          ) : null
-        }
+        ListEmptyComponent={isLoadingFriendStatus ? <LoadingFriendList /> : null}
         renderItem={({item}) => (
           <View style={styles.friendItem}>
             <FriendStatusProfile
@@ -94,6 +73,29 @@ const styles = StyleSheet.create({
   friendItem: {
     marginLeft: 20,
   },
+})
+
+const LoadingFriendList = memo(() => {
+  return (
+    <View style={{flexDirection: 'row', gap: 20, marginLeft: 20}}>
+      <View style={{gap: 10}}>
+        <Skeleton height={50} width={50} type="circle" />
+        <Skeleton height={15} width={50} />
+      </View>
+      <View style={{gap: 10}}>
+        <Skeleton height={50} width={50} type="circle" />
+        <Skeleton height={15} width={50} />
+      </View>
+      <View style={{gap: 10}}>
+        <Skeleton height={50} width={50} type="circle" />
+        <Skeleton height={15} width={50} />
+      </View>
+      <View style={{gap: 10}}>
+        <Skeleton height={50} width={50} type="circle" />
+        <Skeleton height={15} width={50} />
+      </View>
+    </View>
+  )
 })
 
 export default FriendList
