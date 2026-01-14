@@ -35,7 +35,7 @@ interface LinearBorderBoxProps {
 export const LinearBorderBox = ({
   children,
   colors = ['#EF4B87', '#EF4B87', '#1E5EF4'],
-  locations = [0, 0.4, 1],
+  locations = [0, 0.45, 1],
   animated = true,
   duration = 3000,
   borderWidth = 2,
