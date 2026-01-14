@@ -8,6 +8,7 @@ type Team = {
 type TeamWithInfo = Omit<Team, 'logo_url'> & {
   logo: any // image에 들어갈 것
   color: string
+  gradient: [string, string, ...string[]]
 }
 
 type TeamInfo = {

@@ -4,6 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
 import {useTeam} from '@/entities/match'
+import {color_token} from '@/constants/theme'
 
 export default function ChangeScreen() {
   const {updateMyTeam, profile} = useProfile()
@@ -14,7 +15,7 @@ export default function ChangeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="마이팀 변경" variants="transparent" />
+      <Header title="마이팀 변경" />
 
       <View style={styles.headerDescription}>
         <Text style={styles.headerDescriptionText}>내가 설정한 마이팀을 기준으로{'\n'}데이터가 새로 작성됩니다.</Text>
@@ -48,14 +49,7 @@ export default function ChangeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
-  },
-  header: {
-    paddingHorizontal: 24,
-    flexDirection: 'row',
-  },
-  backButton: {
-    marginBottom: 30,
+    backgroundColor: color_token.white,
   },
   content: {
     flex: 1,
@@ -74,6 +68,7 @@ const styles = StyleSheet.create({
   headerDescription: {
     alignItems: 'center',
     marginBottom: 28,
+    marginTop: 20,
   },
 
   headerDescriptionText: {
@@ -86,10 +81,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    rowGap: 12,
+    rowGap: 16,
   },
   teamButton: {
-    width: '31%',
+    width: '30%',
     aspectRatio: 99 / 90,
     paddingTop: 16,
     paddingBottom: 10,

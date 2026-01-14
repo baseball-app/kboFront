@@ -16,7 +16,7 @@ const MyTicketBoxScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: '#fcfcfc',
   },
 })
 

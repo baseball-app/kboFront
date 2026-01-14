@@ -20,6 +20,7 @@ import {AccountMenuWidget} from '@/widgets/account-menu'
 import {ProfileBox, TeamBox} from '@/widgets/my-info'
 import {AddFriendInput} from '@/features/user/friend/follow'
 import {AlarmIcon} from '@/entities/alarm'
+import {color_token} from '@/constants/theme'
 
 const ProfileScreen = () => {
   const {profile, onPasteInviteCode} = useMyInfo()
@@ -30,18 +31,32 @@ const ProfileScreen = () => {
       <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={[styles.container]}
+          style={[styles.container, {backgroundColor: color_token.white}]}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}>
           <View
             style={{
-              backgroundColor: theme.colors.backgroundPrimary,
-              paddingBottom: 20,
+              backgroundColor: color_token.gray150,
+              paddingBottom: 32,
               paddingTop: 12,
               position: 'relative',
+              borderBottomLeftRadius: 20,
+              borderBottomRightRadius: 20,
+              borderBottomStartRadius: 20,
+              borderBottomEndRadius: 20,
+              overflow: 'hidden',
             }}>
-            <View style={{paddingHorizontal: 24, alignItems: 'flex-end', paddingTop: 10}}>
+            <View
+              style={{
+                paddingHorizontal: 24,
+                position: 'absolute',
+                top: 10,
+                right: 0,
+                alignItems: 'flex-end',
+                paddingTop: 10,
+              }}>
               <AlarmIcon onPress={() => router.push(ROUTES.MY_ALARM)} />
             </View>
+            <View style={{height: 10}} />
             {/* 프로필 박스 */}
             <ProfileBox />
             {/* 팀 박스 */}
@@ -95,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     minHeight: Dimensions.get('window').height,
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.gray150,
   },
   statsContainer: {
     flexDirection: 'row',

@@ -4,17 +4,20 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import {Ionicons} from '@expo/vector-icons'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {DEFAULT_PROFILE_IMAGE, PROFILE_IMAGES} from '@/constants/join'
+import Header from '@/components/common/Header'
+import {color_token} from '@/constants/theme'
 
 export default function ProfileImageScreen() {
   const {profile, setProfile, moveToNextStep, moveToPrevStep} = useUserJoin()
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={moveToPrevStep}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      <Header
+        leftButton={{
+          onPress: moveToPrevStep, //
+          content: <Ionicons name="chevron-back" size={24} color="black" />,
+        }}
+      />
 
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>프로필 이미지를{'\n'}선택해주세요</Text>
@@ -53,17 +56,11 @@ export default function ProfileImageScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  backButton: {
-    marginBottom: 30,
+    backgroundColor: color_token.white,
   },
   content: {
     paddingHorizontal: 24,
+    paddingTop: 28,
     flex: 1,
   },
   title: {

@@ -3,22 +3,24 @@ import {StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingVie
 import Ionicons from '@expo/vector-icons/Ionicons'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {SafeAreaView} from 'react-native-safe-area-context'
+import {color_token} from '@/constants/theme'
+import Header from '@/components/common/Header'
 
 export default function NicknameScreen() {
   const {nickname, setNickname, moveToNextStep, moveToPrevStep} = useUserJoin()
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={moveToPrevStep}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
-        <Text style={styles.subtitle}>한글/영어/숫자/밑줄/띄어쓰기를{'\n'}사용할 수 있습니다.</Text>
-      </View>
-
+      <Header
+        leftButton={{
+          onPress: moveToPrevStep, //
+          content: <Ionicons name="chevron-back" size={24} color="black" />,
+        }}
+      />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
         <View style={styles.inputSection}>
+          <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
+          <Text style={styles.subtitle}>한글/영어/숫자/밑줄/띄어쓰기를{'\n'}사용할 수 있습니다.</Text>
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -47,7 +49,7 @@ export default function NicknameScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.white,
   },
   content: {
     flex: 1,
@@ -55,13 +57,7 @@ const styles = StyleSheet.create({
   inputSection: {
     flex: 1,
     padding: 24,
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  backButton: {
-    marginBottom: 30,
+    paddingTop: 28,
   },
   title: {
     fontSize: 24,

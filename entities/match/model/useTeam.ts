@@ -17,6 +17,7 @@ const useTeam = () => {
           name: team.name,
           short_name: static_team_info?.short_name,
           color: static_team_info?.color,
+          gradient: static_team_info?.gradient,
         } as TeamWithInfo
       })
     },

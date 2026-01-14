@@ -18,6 +18,6 @@ export default MatchScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fffcf3',
+    backgroundColor: '#fcfcfc',
   },
 })

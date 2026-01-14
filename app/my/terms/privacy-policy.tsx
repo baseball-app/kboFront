@@ -3,11 +3,12 @@ import {ScrollView, StyleSheet} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {Privacy} from '@/entities/terms'
+import {color_token} from '@/constants/theme'
 
 const PrivacyPolicyScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Header variants="transparent" />
+      <Header />
       <ScrollView style={styles.content}>
         {/* 개인정보 처리방침 */}
         <Privacy />
@@ -19,11 +20,7 @@ const PrivacyPolicyScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
-  },
-  header: {
-    padding: 16,
-    borderBottomColor: '#E0E0E0',
+    backgroundColor: color_token.white,
   },
   content: {
     flex: 1,

@@ -2,6 +2,7 @@ import React from 'react'
 import {StyleSheet, View, Text, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {AppleLoginButton, KakaoLoginButton, NaverLoginButton} from '@/features/auth/login'
+import {color_token} from '@/constants/theme'
 
 export default function LoginScreen() {
   return (
@@ -28,7 +29,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.gray100,
   },
   contentContainer: {
     flex: 1,
