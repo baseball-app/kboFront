@@ -6,7 +6,7 @@ import {EVENTS} from '@/analytics/event'
 import {ROUTES, useAppRouter} from '@/shared'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
-import {LinearBorderBox, Pressable, SelectBox, Txt} from '@/shared/ui'
+import {Button, LinearBorderBox, Pressable, SelectBox, Txt} from '@/shared/ui'
 import {SelectSeasonBottomSheet, STATS_TYPE_LIST} from '@/entities/stat'
 import {HomeAwayStatsCard, StadiumStatsCard, TeamStatsCard} from '@/entities/stat/ui'
 import useProfile from '@/hooks/my/useProfile'
@@ -96,14 +96,14 @@ const MatchScreen = () => {
                 </View>
               </View>
             </LinearBorderBox>
-            <Pressable
-              style={styles.button}
+            <Button
               onPress={() => {
                 logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: ROUTES.TICKET_MY_STAT})
                 router.push(ROUTES.TICKET_MY_STAT)
-              }}>
-              <Text style={styles.buttonText}>나의 승요력 보러가기</Text>
-            </Pressable>
+              }}
+              type="secondary">
+              나의 승요력 보러가기
+            </Button>
             <View style={styles.filterContainer}>
               <SelectBox list={STATS_TYPE_LIST} value={selectedType} onChange={setSelectedType} />
               <Pressable onPress={toggleAlignment} style={sortStyles.container}>
