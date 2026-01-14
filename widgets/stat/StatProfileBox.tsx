@@ -2,6 +2,7 @@ import {ProfileImage} from '@/entities/user'
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 import useProfile from '@/hooks/my/useProfile'
+import {color_token} from '@/constants/theme'
 
 const StatProfileBox = () => {
   const {profile} = useProfile()
@@ -23,8 +24,8 @@ const StatProfileBox = () => {
 
 const styles = StyleSheet.create({
   infoBox: {
-    padding: 20,
-    backgroundColor: 'white',
+    padding: 24,
+    backgroundColor: color_token.white,
     shadowColor: '#000000', // 그림자 색상
     shadowOffset: {width: 0, height: 3}, // X, Y 방향 그림자 거리
     shadowOpacity: 0.08, // 그림자 투명도 (14% = 0.14보다 살짝 줄여야 자연스러움)
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
   profileCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
   },
   name: {
     fontSize: 18,

@@ -2,6 +2,8 @@ import React, {useMemo} from 'react'
 import {View, StyleSheet} from 'react-native'
 import {useNotBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
 import {TeamStatsCard} from '@/entities/stat/ui'
+import {EmptyStatsList} from './EmptyStatsList'
+import {LoadingStatsList} from './LoadingStatsList'
 
 const MyHomeStatsCardList = () => {
   const {selectedStatsFilter} = useSelectedStatsFilter()
@@ -22,8 +24,12 @@ const MyHomeStatsCardList = () => {
     })
   }, [data, selectedStatsFilter?.sort])
 
-  if (isLoading || isError || !sortedData.length) {
-    return null
+  if (isError || isLoading) {
+    return <LoadingStatsList />
+  }
+
+  if (!sortedData.length) {
+    return <EmptyStatsList />
   }
 
   return (

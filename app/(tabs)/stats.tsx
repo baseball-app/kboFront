@@ -35,19 +35,19 @@ const MatchScreen = () => {
   return (
     <>
       <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-        <Header
-          leftButton={{
-            content: (
-              <Pressable onPress={() => setOpen(true)} style={styles.headerButton}>
-                <Txt size={20} weight="bold">
-                  {selectedYear} 시즌
-                </Txt>
-                <Image source={require('@/assets/icons/arrow_down.png')} style={styles.arrowIcon} />
-              </Pressable>
-            ),
-          }}
-        />
         <ScrollView style={styles.scrollView}>
+          <Header
+            leftButton={{
+              content: (
+                <Pressable onPress={() => setOpen(true)} style={styles.headerButton}>
+                  <Txt size={20} weight="bold">
+                    {selectedYear} 시즌
+                  </Txt>
+                  <Image source={require('@/assets/icons/arrow_down.png')} style={styles.arrowIcon} />
+                </Pressable>
+              ),
+            }}
+          />
           <View style={styles.contentGap}>
             <SeasonStatsBoxWidget year={selectedYear} />
             <Button
@@ -110,11 +110,13 @@ const styles = StyleSheet.create({
     height: 18,
   },
   scrollView: {
-    paddingHorizontal: 24,
-    paddingTop: 12,
+    // paddingHorizontal: 24,
+    // paddingTop: 12,
   },
   contentGap: {
     gap: 12,
+    paddingHorizontal: 24,
+    paddingTop: 12,
   },
   filterContainer: {
     flexDirection: 'row',
