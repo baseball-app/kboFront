@@ -6,14 +6,19 @@ import {EVENTS} from '@/analytics/event'
 import {ROUTES, useAppRouter} from '@/shared'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
-import {LinearBorderBox, Pressable, SelectBox} from '@/shared/ui'
+import {LinearBorderBox, Pressable, SelectBox, Txt} from '@/shared/ui'
 import {SelectSeasonBottomSheet, STATS_TYPE_LIST} from '@/entities/stat'
 import {HomeAwayStatsCard, StadiumStatsCard, TeamStatsCard} from '@/entities/stat/ui'
+import useProfile from '@/hooks/my/useProfile'
+import {useTeam} from '@/entities/match'
 
 const MatchScreen = () => {
   const router = useAppRouter()
 
   const [open, setOpen] = useState(false)
+
+  const {profile} = useProfile()
+  const {findTeamById} = useTeam()
 
   const [selectedYear, setSelectedYear] = useState(2025)
   const [selectedType, setSelectedType] = useState('상대구단별')
@@ -40,7 +45,11 @@ const MatchScreen = () => {
         />
         <ScrollView style={{paddingHorizontal: 24, paddingTop: 12}}>
           <View style={{gap: 12}}>
-            <LinearBorderBox borderWidth={1.5} borderRadius={10} backgroundColor="#FFFFFF">
+            <LinearBorderBox
+              borderWidth={1.5}
+              borderRadius={10}
+              backgroundColor="#FFFFFF"
+              colors={findTeamById(profile.my_team?.id)?.gradient}>
               <View style={{flexDirection: 'row', overflow: 'hidden'}}>
                 <View
                   style={{
@@ -54,27 +63,35 @@ const MatchScreen = () => {
                     marginTop: -1,
                     marginBottom: -2,
                   }}>
-                  <Text style={{fontSize: 16, fontWeight: 400, color: '#161617', lineHeight: 16 * 1.4}}>
-                    나의 승요력
-                  </Text>
-                  <Text style={{fontSize: 24, fontWeight: 700, color: '#161617'}}>100%</Text>
+                  <Txt size={16}>나의 승요력</Txt>
+                  <Txt size={24} weight="bold">
+                    100%
+                  </Txt>
                 </View>
                 <View style={{paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
                   <View style={{paddingVertical: 16, alignItems: 'center'}}>
-                    <Text style={{fontSize: 16, fontWeight: 400, color: '#161617', lineHeight: 16 * 1.4}}>경기</Text>
-                    <Text style={{fontSize: 24, fontWeight: 700, color: '#161617'}}>21</Text>
+                    <Txt size={16}>경기</Txt>
+                    <Txt size={24} weight="bold">
+                      21
+                    </Txt>
                   </View>
                   <View style={{paddingVertical: 16, alignItems: 'center'}}>
-                    <Text style={{fontSize: 16, fontWeight: 400, color: '#161617', lineHeight: 16 * 1.4}}>승</Text>
-                    <Text style={{fontSize: 24, fontWeight: 700, color: '#161617'}}>2</Text>
+                    <Txt size={16}>승</Txt>
+                    <Txt size={24} weight="bold">
+                      2
+                    </Txt>
                   </View>
                   <View style={{paddingVertical: 16, alignItems: 'center'}}>
-                    <Text style={{fontSize: 16, fontWeight: 400, color: '#161617', lineHeight: 16 * 1.4}}>패</Text>
-                    <Text style={{fontSize: 24, fontWeight: 700, color: '#161617'}}>19</Text>
+                    <Txt size={16}>패</Txt>
+                    <Txt size={24} weight="bold">
+                      19
+                    </Txt>
                   </View>
                   <View style={{paddingVertical: 16, alignItems: 'center'}}>
-                    <Text style={{fontSize: 16, fontWeight: 400, color: '#161617', lineHeight: 16 * 1.4}}>무</Text>
-                    <Text style={{fontSize: 24, fontWeight: 700, color: '#161617'}}>0</Text>
+                    <Txt size={16}>무</Txt>
+                    <Txt size={24} weight="bold">
+                      0
+                    </Txt>
                   </View>
                 </View>
               </View>
