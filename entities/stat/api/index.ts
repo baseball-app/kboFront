@@ -4,6 +4,7 @@ export {
   getMostWinTeam,
   getBallparkMostView,
   getWinRateCalculation,
+  getWeekdayMostWin,
 } from './detail'
 
 export {

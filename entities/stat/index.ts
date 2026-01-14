@@ -8,6 +8,11 @@ export {
   STATS_TYPE_LIST,
   type SelectedStatsType,
   type SelectedStatsFilter,
+  useBallparkWinPercentByYear,
+  useHomeAwayWinPercentByYear,
+  useNotBallparkWinPercentByYear,
+  useOpponentWinPercentByYear,
+  useTotalWinPercentByYear,
 } from './model'
 
 // UI

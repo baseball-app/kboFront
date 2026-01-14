@@ -1,0 +1,87 @@
+import {useQuery} from '@tanstack/react-query'
+import {
+  getBallparkWinPercentByYear,
+  getHomeAwayWinPercentByYear,
+  getNotBallparkWinPercentByYear,
+  getOpponentWinPercentByYear,
+  getTotalWinPercentByYear,
+} from '../api'
+import {useSelectedStatsFilter} from './store'
+
+/**
+ * 구장별 승률 표출
+ */
+const useBallparkWinPercentByYear = () => {
+  const {selectedStatsFilter} = useSelectedStatsFilter()
+  const year = selectedStatsFilter?.year ?? 2025
+
+  return useQuery({
+    queryKey: ['myStat', 'summary', 'ballpark_win_percent', year],
+    staleTime: 1000 * 20,
+    queryFn: () => getBallparkWinPercentByYear({year}),
+  })
+}
+
+/**
+ * 홈/원정별 승률 표출
+ */
+const useHomeAwayWinPercentByYear = () => {
+  const {selectedStatsFilter} = useSelectedStatsFilter()
+  const year = selectedStatsFilter?.year ?? 2025
+
+  return useQuery({
+    queryKey: ['myStat', 'summary', 'home_away_win_percent', year],
+    staleTime: 1000 * 20,
+    queryFn: () => getHomeAwayWinPercentByYear({year}),
+  })
+}
+
+/**
+ * 집관 승률 표출
+ */
+const useNotBallparkWinPercentByYear = () => {
+  const {selectedStatsFilter} = useSelectedStatsFilter()
+  const year = selectedStatsFilter?.year ?? 2025
+
+  return useQuery({
+    queryKey: ['myStat', 'summary', 'not_ballpark_win_percent', year],
+    staleTime: 1000 * 20,
+    queryFn: () => getNotBallparkWinPercentByYear({year}),
+  })
+}
+
+/**
+ * 상대구단별 승률 표출
+ */
+const useOpponentWinPercentByYear = () => {
+  const {selectedStatsFilter} = useSelectedStatsFilter()
+  const year = selectedStatsFilter?.year ?? 2025
+
+  return useQuery({
+    queryKey: ['myStat', 'summary', 'opponent_win_percent', year],
+    staleTime: 1000 * 20,
+    queryFn: () => getOpponentWinPercentByYear({year}),
+  })
+}
+
+/**
+ * 총 승률 표출
+ */
+const useTotalWinPercentByYear = () => {
+  const {selectedStatsFilter} = useSelectedStatsFilter()
+  const year = selectedStatsFilter?.year ?? 2025
+
+  return useQuery({
+    queryKey: ['myStat', 'summary', 'total_win_percent', year],
+    staleTime: 1000 * 20,
+    queryFn: () => getTotalWinPercentByYear({year}),
+  })
+}
+
+export {
+  useBallparkWinPercentByYear,
+  useHomeAwayWinPercentByYear,
+  useNotBallparkWinPercentByYear,
+  useOpponentWinPercentByYear,
+  useTotalWinPercentByYear,
+}
