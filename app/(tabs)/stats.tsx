@@ -1,4 +1,4 @@
-import {Image, ScrollView, StyleSheet, Text} from 'react-native'
+import {Image, ScrollView, StyleSheet} from 'react-native'
 import {View} from 'react-native'
 import React, {useState} from 'react'
 import {logEvent} from '@/analytics/func'
@@ -6,22 +6,19 @@ import {EVENTS} from '@/analytics/event'
 import {ROUTES, useAppRouter} from '@/shared'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
-import {Button, LinearBorderBox, Pressable, SelectBox, Txt} from '@/shared/ui'
-import {SelectSeasonBottomSheet, STATS_TYPE_LIST} from '@/entities/stat'
+import {Button, Pressable, SelectBox, Txt} from '@/shared/ui'
+import {SelectedStatsType, SelectSeasonBottomSheet, STATS_TYPE_LIST} from '@/entities/stat'
 import {HomeAwayStatsCard, StadiumStatsCard, TeamStatsCard} from '@/entities/stat/ui'
-import useProfile from '@/hooks/my/useProfile'
-import {useTeam} from '@/entities/match'
+import {color_token} from '@/constants/theme'
+import {SeasonStatsBoxWidget} from '@/widgets/stat'
 
 const MatchScreen = () => {
   const router = useAppRouter()
 
   const [open, setOpen] = useState(false)
 
-  const {profile} = useProfile()
-  const {findTeamById} = useTeam()
-
   const [selectedYear, setSelectedYear] = useState(2025)
-  const [selectedType, setSelectedType] = useState('상대구단별')
+  const [selectedType, setSelectedType] = useState<SelectedStatsType>('상대구단별')
   const [selectedAlignment, setSelectedAlignment] = useState('승률 높은순')
 
   const isSortedByHighWinRate = () => selectedAlignment === '승률 높은순'
@@ -32,70 +29,22 @@ const MatchScreen = () => {
 
   return (
     <>
-      <SafeAreaView style={[styles.container, {flex: 1}]} edges={['top', 'left', 'right']}>
+      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
         <Header
           leftButton={{
             content: (
-              <Pressable onPress={() => setOpen(true)} style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-                <Text style={{fontSize: 20, fontWeight: 700, color: '#161617'}}>{selectedYear} 시즌</Text>
-                <Image source={require('@/assets/icons/arrow_down.png')} style={{width: 18, height: 18}} />
+              <Pressable onPress={() => setOpen(true)} style={styles.headerButton}>
+                <Txt size={20} weight="bold">
+                  {selectedYear} 시즌
+                </Txt>
+                <Image source={require('@/assets/icons/arrow_down.png')} style={styles.arrowIcon} />
               </Pressable>
             ),
           }}
         />
-        <ScrollView style={{paddingHorizontal: 24, paddingTop: 12}}>
-          <View style={{gap: 12}}>
-            <LinearBorderBox
-              borderWidth={1.5}
-              borderRadius={10}
-              backgroundColor="#FFFFFF"
-              colors={findTeamById(profile.my_team?.id)?.gradient}>
-              <View style={{flexDirection: 'row', overflow: 'hidden'}}>
-                <View
-                  style={{
-                    paddingHorizontal: 24,
-                    paddingVertical: 16,
-                    alignItems: 'center',
-                    borderWidth: 0.7,
-                    borderColor: '#C7C9D0',
-                    borderStyle: 'dashed',
-                    marginLeft: -1,
-                    marginTop: -1,
-                    marginBottom: -2,
-                  }}>
-                  <Txt size={16}>나의 승요력</Txt>
-                  <Txt size={24} weight="bold">
-                    100%
-                  </Txt>
-                </View>
-                <View style={{paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between', flex: 1}}>
-                  <View style={{paddingVertical: 16, alignItems: 'center'}}>
-                    <Txt size={16}>경기</Txt>
-                    <Txt size={24} weight="bold">
-                      21
-                    </Txt>
-                  </View>
-                  <View style={{paddingVertical: 16, alignItems: 'center'}}>
-                    <Txt size={16}>승</Txt>
-                    <Txt size={24} weight="bold">
-                      2
-                    </Txt>
-                  </View>
-                  <View style={{paddingVertical: 16, alignItems: 'center'}}>
-                    <Txt size={16}>패</Txt>
-                    <Txt size={24} weight="bold">
-                      19
-                    </Txt>
-                  </View>
-                  <View style={{paddingVertical: 16, alignItems: 'center'}}>
-                    <Txt size={16}>무</Txt>
-                    <Txt size={24} weight="bold">
-                      0
-                    </Txt>
-                  </View>
-                </View>
-              </View>
-            </LinearBorderBox>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.contentGap}>
+            <SeasonStatsBoxWidget year={selectedYear} />
             <Button
               onPress={() => {
                 logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: ROUTES.TICKET_MY_STAT})
@@ -105,19 +54,56 @@ const MatchScreen = () => {
               나의 승요력 보러가기
             </Button>
             <View style={styles.filterContainer}>
-              <SelectBox list={STATS_TYPE_LIST} value={selectedType} onChange={setSelectedType} />
+              <SelectBox
+                list={STATS_TYPE_LIST}
+                value={selectedType}
+                onChange={value => setSelectedType(value as SelectedStatsType)}
+              />
               <Pressable onPress={toggleAlignment} style={sortStyles.container}>
-                <Text style={sortStyles.text}>{isSortedByHighWinRate() ? '승률 높은순' : '승률 낮은순'}</Text>
+                <Txt size={14} weight="medium" color={color_token.gray600}>
+                  {isSortedByHighWinRate() ? '승률 높은순' : '승률 낮은순'}
+                </Txt>
                 <Image source={require('@/assets/icons/updown.png')} style={sortStyles.icon} />
               </Pressable>
             </View>
-            <View style={{gap: 12, marginTop: 12, paddingBottom: 70}}>
-              <TeamStatsCard teamName="삼성 라이온즈" matchResult={{win: 2, draw: 0, lose: 19}} />
-              <TeamStatsCard teamName="두산 베어스" matchResult={{win: 2, draw: 0, lose: 19}} />
-              <StadiumStatsCard stadiumName="부산 사직 야구장" matchResult={{win: 2, draw: 0, lose: 19}} />
-              <StadiumStatsCard stadiumName="대구 삼성 라이온즈 파크" matchResult={{win: 2, draw: 0, lose: 19}} />
-              <HomeAwayStatsCard title="홈" matchResult={{win: 2, draw: 0, lose: 19}} />
-              <HomeAwayStatsCard title="원정" matchResult={{win: 2, draw: 0, lose: 19}} />
+            <View style={styles.cardList}>
+              {(() => {
+                if (selectedType === '상대구단별') {
+                  return (
+                    <>
+                      <TeamStatsCard teamName="삼성 라이온즈" matchResult={{win: 2, draw: 0, lose: 19}} />
+                      <TeamStatsCard teamName="두산 베어스" matchResult={{win: 2, draw: 0, lose: 19}} />
+                    </>
+                  )
+                }
+                if (selectedType === '구장별') {
+                  return (
+                    <>
+                      <StadiumStatsCard stadiumName="부산 사직 야구장" matchResult={{win: 2, draw: 0, lose: 19}} />
+                      <StadiumStatsCard
+                        stadiumName="대구 삼성 라이온즈 파크"
+                        matchResult={{win: 2, draw: 0, lose: 19}}
+                      />
+                    </>
+                  )
+                }
+                if (selectedType === '홈/원정 경기별') {
+                  return (
+                    <>
+                      <HomeAwayStatsCard title="홈" matchResult={{win: 2, draw: 0, lose: 19}} />
+                      <HomeAwayStatsCard title="원정" matchResult={{win: 2, draw: 0, lose: 19}} />
+                    </>
+                  )
+                }
+                if (selectedType === '집관 경기별') {
+                  return (
+                    <>
+                      <TeamStatsCard teamName="두산 베어스" matchResult={{win: 2, draw: 0, lose: 19}} />
+                    </>
+                  )
+                }
+                return null
+              })()}
             </View>
           </View>
         </ScrollView>
@@ -138,26 +124,35 @@ const MatchScreen = () => {
 export default MatchScreen
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: color_token.white,
   },
-  button: {
-    backgroundColor: '#081B46',
-    padding: 14,
-    borderRadius: 10,
+  headerButton: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 600,
-    fontSize: 16,
-    lineHeight: 16 * 1.4,
+  arrowIcon: {
+    width: 18,
+    height: 18,
+  },
+  scrollView: {
+    paddingHorizontal: 24,
+    paddingTop: 12,
+  },
+  contentGap: {
+    gap: 12,
   },
   filterContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
+  },
+  cardList: {
+    gap: 12,
+    marginTop: 12,
+    paddingBottom: 70,
   },
 })
 
@@ -166,12 +161,6 @@ const sortStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-  },
-  text: {
-    fontSize: 15,
-    fontWeight: 500,
-    lineHeight: 15 * 1.4,
-    color: '#6D6C77',
   },
   icon: {
     width: 16,
