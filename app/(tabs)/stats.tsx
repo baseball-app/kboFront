@@ -7,24 +7,30 @@ import {ROUTES, useAppRouter} from '@/shared'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {Button, Pressable, SelectBox, Txt} from '@/shared/ui'
-import {SelectedStatsType, SelectSeasonBottomSheet, STATS_TYPE_LIST} from '@/entities/stat'
-import {HomeAwayStatsCard, StadiumStatsCard, TeamStatsCard} from '@/entities/stat/ui'
+import {SelectedStatsType, SelectSeasonBottomSheet, STATS_TYPE_LIST, useSelectedStatsFilter} from '@/entities/stat'
 import {color_token} from '@/constants/theme'
-import {SeasonStatsBoxWidget} from '@/widgets/stat'
+import {
+  SeasonStatsBoxWidget,
+  TeamStatsCardList,
+  StadiumStatsCardList,
+  HomeAwayStatsCardList,
+  MyHomeStatsCardList,
+} from '@/widgets/stat'
 
 const MatchScreen = () => {
   const router = useAppRouter()
+  const {selectedStatsFilter, onChangeSeasonYear, onChangeType, toggleSort} = useSelectedStatsFilter()
 
   const [open, setOpen] = useState(false)
 
-  const [selectedYear, setSelectedYear] = useState(2025)
-  const [selectedType, setSelectedType] = useState<SelectedStatsType>('상대구단별')
-  const [selectedAlignment, setSelectedAlignment] = useState('승률 높은순')
+  const selectedYear = selectedStatsFilter?.year ?? 2025
+  const selectedType = selectedStatsFilter?.type ?? '상대구단별'
+  const selectedAlignment = selectedStatsFilter?.sort ?? '승률 높은순'
 
   const isSortedByHighWinRate = () => selectedAlignment === '승률 높은순'
 
   const toggleAlignment = () => {
-    setSelectedAlignment(prev => (prev === '승률 높은순' ? '승률 낮은순' : '승률 높은순'))
+    toggleSort()
   }
 
   return (
@@ -57,7 +63,7 @@ const MatchScreen = () => {
               <SelectBox
                 list={STATS_TYPE_LIST}
                 value={selectedType}
-                onChange={value => setSelectedType(value as SelectedStatsType)}
+                onChange={value => onChangeType(value as SelectedStatsType)}
               />
               <Pressable onPress={toggleAlignment} style={sortStyles.container}>
                 <Txt size={14} weight="medium" color={color_token.gray600}>
@@ -67,43 +73,10 @@ const MatchScreen = () => {
               </Pressable>
             </View>
             <View style={styles.cardList}>
-              {(() => {
-                if (selectedType === '상대구단별') {
-                  return (
-                    <>
-                      <TeamStatsCard teamName="삼성 라이온즈" matchResult={{win: 2, draw: 0, lose: 19}} />
-                      <TeamStatsCard teamName="두산 베어스" matchResult={{win: 2, draw: 0, lose: 19}} />
-                    </>
-                  )
-                }
-                if (selectedType === '구장별') {
-                  return (
-                    <>
-                      <StadiumStatsCard stadiumName="부산 사직 야구장" matchResult={{win: 2, draw: 0, lose: 19}} />
-                      <StadiumStatsCard
-                        stadiumName="대구 삼성 라이온즈 파크"
-                        matchResult={{win: 2, draw: 0, lose: 19}}
-                      />
-                    </>
-                  )
-                }
-                if (selectedType === '홈/원정 경기별') {
-                  return (
-                    <>
-                      <HomeAwayStatsCard title="홈" matchResult={{win: 2, draw: 0, lose: 19}} />
-                      <HomeAwayStatsCard title="원정" matchResult={{win: 2, draw: 0, lose: 19}} />
-                    </>
-                  )
-                }
-                if (selectedType === '집관 경기별') {
-                  return (
-                    <>
-                      <TeamStatsCard teamName="두산 베어스" matchResult={{win: 2, draw: 0, lose: 19}} />
-                    </>
-                  )
-                }
-                return null
-              })()}
+              {selectedType === '상대구단별' && <TeamStatsCardList />}
+              {selectedType === '구장별' && <StadiumStatsCardList />}
+              {selectedType === '홈/원정 경기별' && <HomeAwayStatsCardList />}
+              {selectedType === '집관 경기별' && <MyHomeStatsCardList />}
             </View>
           </View>
         </ScrollView>
@@ -111,7 +84,7 @@ const MatchScreen = () => {
           isOpen={open}
           value={selectedYear}
           onConfirm={(year, season) => {
-            setSelectedYear(year)
+            onChangeSeasonYear(year)
             setOpen(false)
           }}
           onCancel={() => setOpen(false)}

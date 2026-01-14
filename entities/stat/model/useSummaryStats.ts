@@ -6,15 +6,11 @@ import {
   getOpponentWinPercentByYear,
   getTotalWinPercentByYear,
 } from '../api'
-import {useSelectedStatsFilter} from './store'
 
 /**
  * 구장별 승률 표출
  */
-const useBallparkWinPercentByYear = () => {
-  const {selectedStatsFilter} = useSelectedStatsFilter()
-  const year = selectedStatsFilter?.year ?? 2025
-
+const useBallparkWinPercentByYear = ({year}: {year: number}) => {
   return useQuery({
     queryKey: ['myStat', 'summary', 'ballpark_win_percent', year],
     staleTime: 1000 * 20,
@@ -25,10 +21,7 @@ const useBallparkWinPercentByYear = () => {
 /**
  * 홈/원정별 승률 표출
  */
-const useHomeAwayWinPercentByYear = () => {
-  const {selectedStatsFilter} = useSelectedStatsFilter()
-  const year = selectedStatsFilter?.year ?? 2025
-
+const useHomeAwayWinPercentByYear = ({year}: {year: number}) => {
   return useQuery({
     queryKey: ['myStat', 'summary', 'home_away_win_percent', year],
     staleTime: 1000 * 20,
@@ -39,10 +32,7 @@ const useHomeAwayWinPercentByYear = () => {
 /**
  * 집관 승률 표출
  */
-const useNotBallparkWinPercentByYear = () => {
-  const {selectedStatsFilter} = useSelectedStatsFilter()
-  const year = selectedStatsFilter?.year ?? 2025
-
+const useNotBallparkWinPercentByYear = ({year}: {year: number}) => {
   return useQuery({
     queryKey: ['myStat', 'summary', 'not_ballpark_win_percent', year],
     staleTime: 1000 * 20,
@@ -53,10 +43,7 @@ const useNotBallparkWinPercentByYear = () => {
 /**
  * 상대구단별 승률 표출
  */
-const useOpponentWinPercentByYear = () => {
-  const {selectedStatsFilter} = useSelectedStatsFilter()
-  const year = selectedStatsFilter?.year ?? 2025
-
+const useOpponentWinPercentByYear = ({year}: {year: number}) => {
   return useQuery({
     queryKey: ['myStat', 'summary', 'opponent_win_percent', year],
     staleTime: 1000 * 20,
@@ -67,10 +54,7 @@ const useOpponentWinPercentByYear = () => {
 /**
  * 총 승률 표출
  */
-const useTotalWinPercentByYear = () => {
-  const {selectedStatsFilter} = useSelectedStatsFilter()
-  const year = selectedStatsFilter?.year ?? 2025
-
+const useTotalWinPercentByYear = ({year}: {year: number}) => {
   return useQuery({
     queryKey: ['myStat', 'summary', 'total_win_percent', year],
     staleTime: 1000 * 20,
