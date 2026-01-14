@@ -4,6 +4,9 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import {Ionicons} from '@expo/vector-icons'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {useTeam} from '@/entities/match'
+import {color_token} from '@/constants/theme'
+import Header from '@/components/common/Header'
+
 export default function MyTeamScreen() {
   const {
     setMyTeam,
@@ -16,15 +19,15 @@ export default function MyTeamScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={moveToPrevStep}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-
+      <Header
+        leftButton={{
+          onPress: moveToPrevStep, //
+          content: <Ionicons name="chevron-back" size={24} color="black" />,
+        }}
+      />
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>마이팀 선택하기</Text>
-        <Text style={styles.subtitle}>내가 응원하고 싶은 마이팀을 선택해주세요</Text>
+        <Text style={styles.title}>마이팀을{'\n'}선택해주세요</Text>
+        <Text style={styles.subtitle}>마이팀은 내가 응원하고 싶은{'\n'}최애 야구 구단을 뜻해요.</Text>
         <View style={styles.teamsGrid}>
           {teams?.map(team => (
             <TouchableOpacity
@@ -52,18 +55,17 @@ export default function MyTeamScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.white,
   },
   header: {
     paddingHorizontal: 24,
     paddingTop: 24,
   },
-  backButton: {
-    marginBottom: 16,
-  },
+  backButton: {},
   content: {
     paddingHorizontal: 24,
     paddingBottom: 50,
+    marginTop: 28,
   },
   title: {
     fontSize: 24,
@@ -82,10 +84,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    rowGap: 12,
+    rowGap: 16,
   },
   teamButton: {
-    width: '32%',
+    width: '30%',
     aspectRatio: 99 / 90,
     paddingTop: 16,
     paddingBottom: 10,

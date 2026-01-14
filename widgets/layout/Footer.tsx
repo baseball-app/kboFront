@@ -103,6 +103,15 @@ const Footer = () => {
 const styles = StyleSheet.create({
   footerContainer: {
     backgroundColor: '#fff',
+    // iOS 그림자
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: -3},
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    // Android는 elevation이 위쪽 그림자를 지원하지 않아 borderTop으로 대체
+    elevation: 8,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0, 0, 0, 0.05)',
   },
   container: {
     height: 68,

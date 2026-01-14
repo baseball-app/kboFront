@@ -4,6 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {Ionicons} from '@expo/vector-icons'
 import {useAppRouter} from '@/shared'
+import {color_token} from '@/constants/theme'
 
 const TermsScreen = () => {
   const router = useAppRouter()
@@ -13,7 +14,7 @@ const TermsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="이용약관" variants="transparent" />
+      <Header title="이용약관" />
 
       <TouchableOpacity style={styles.menuItem} onPress={() => moveToDetail('terms-of-service')}>
         <Text style={styles.menuText}>이용약관</Text>
@@ -32,12 +33,12 @@ export default TermsScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.white,
   },
   menuContainer: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'white',
+    backgroundColor: color_token.white,
     padding: 15,
   },
   menuItem: {

@@ -34,7 +34,7 @@ const color_token = {
   lose: '#F96A63',
 
   //
-}
+} as const
 
 const color = {
   title: color_token.gray900,
@@ -147,7 +147,7 @@ const font = (font: Font): TextStyle => {
   return {
     fontWeight: fontWeight[weight],
     fontSize: fontSize[size],
-    lineHeight: (lineHeight / 100) * fontSize[size],
+    lineHeight: ((lineHeight ?? 140) / 100) * fontSize[size],
   }
 }
 

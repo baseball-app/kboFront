@@ -18,6 +18,7 @@ import {usePopup} from '@/slice/commonSlice'
 import {useAppRouter} from '@/shared'
 import {showToast} from '@/shared'
 import LottieView from 'lottie-react-native'
+import {color_token} from '@/constants/theme'
 
 type Inquiry = {
   email: string
@@ -133,7 +134,7 @@ export default function NicknameScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.white,
   },
   content: {
     flex: 1,

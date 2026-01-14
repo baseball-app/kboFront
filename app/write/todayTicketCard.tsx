@@ -258,13 +258,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     marginTop: 12,
   },
-  ticketBoxDot: {
-    backgroundColor: '#FFFCF3',
-    width: '5%',
-    aspectRatio: 1,
-    borderRadius: 100,
-    position: 'absolute',
-  },
+
   resultBox: {
     width: '100%',
     flexDirection: 'row',

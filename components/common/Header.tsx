@@ -1,6 +1,7 @@
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native'
 import {useAppRouter} from '@/shared'
+import {color_token} from '@/constants/theme'
 
 type ButtonType = {
   onPress?: () => void
@@ -31,7 +32,8 @@ const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButt
       style={[
         styles.container,
         {
-          backgroundColor: variants === 'white' ? '#fff' : variants === '#F3F2EE' ? '#F3F2EE' : '#FFFCF3',
+          backgroundColor:
+            variants === 'white' ? color_token.white : variants === '#F3F2EE' ? '#F3F2EE' : color_token.white,
           paddingTop: topInset + 18,
         },
       ]}>

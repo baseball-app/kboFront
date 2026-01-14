@@ -16,6 +16,6 @@ export default function MyStatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fffcf3',
+    backgroundColor: '#ffffff',
   },
 })

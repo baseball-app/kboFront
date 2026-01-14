@@ -3,6 +3,8 @@ import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {Ionicons} from '@expo/vector-icons'
 import useUserJoin from '@/hooks/auth/useUserJoin'
+import {color_token, font} from '@/constants/theme'
+import Header from '@/components/common/Header'
 
 const TermUseScreen = () => {
   const {consent, moveToNextStep, moveToPrevStep} = useUserJoin()
@@ -18,16 +20,17 @@ const TermUseScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={moveToPrevStep}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
+      <Header
+        leftButton={{
+          onPress: moveToPrevStep, //
+          content: <Ionicons name="chevron-back" size={24} color="black" />,
+        }}
+      />
+
+      <View style={styles.content}>
         <Text style={styles.title}>
           오늘의 야구{'\n'}서비스 이용에 동의해{'\n'}주세요
         </Text>
-      </View>
-
-      <View style={styles.content}>
         <TouchableOpacity style={styles.agreementAllItem} onPress={toggleAllConsent}>
           <View style={[styles.circle, isAllChecked && styles.checkedCircle]}>
             <Image source={require('../../../assets/icons/check.png')} style={styles.checkIcon} />
@@ -74,7 +77,7 @@ const TermUseScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.white,
   },
   header: {
     paddingTop: 24,
@@ -98,17 +101,14 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     // paddingTop: 10,
   },
-  backButton: {
-    marginBottom: 30,
-  },
+
   title: {
-    fontSize: 24,
-    fontWeight: 600,
-    lineHeight: 24 * 1.4,
+    ...font('semibold-24'),
     marginBottom: 40,
+    marginTop: 28,
   },
   agreementAllItem: {
     flexDirection: 'row',
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     backgroundColor: '#F3F2EE',
     paddingVertical: 16,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
     borderRadius: 10,
   },
   agreementItem: {
@@ -126,19 +126,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 4,
     paddingVertical: 16,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
     borderRadius: 10,
   },
   agreementText: {
-    marginLeft: 10,
+    marginLeft: 14,
     flex: 1,
-    fontSize: 16,
-    color: '#95938B',
-    fontWeight: 400,
-    lineHeight: 16 * 1.4,
+    color: color_token.gray500,
+    ...font('regular-16'),
   },
   agreementTextActive: {
-    color: '#171716',
+    color: color_token.gray900,
   },
   chevron: {
     marginLeft: 'auto',

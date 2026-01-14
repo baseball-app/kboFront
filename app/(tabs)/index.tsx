@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   scollContainer: {
     flex: 1,
-    backgroundColor: '#fffcf3',
+    backgroundColor: '#fcfcfc',
     padding: 24,
   },
 })

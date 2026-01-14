@@ -1,4 +1,5 @@
 import {findProfileImageById} from '@/constants/join'
+import {color_token} from '@/constants/theme'
 import {FriendStatus} from '@/hooks/my/useFriends'
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 
@@ -100,18 +101,18 @@ export default FriendStatusProfile
 
 const styles = StyleSheet.create({
   profileImageBox: {
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.gray150,
     width: 50,
     height: 50,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#D0CEC7',
+    borderColor: color_token.gray350,
   },
   activeProfileImage: {
     borderWidth: 2,
-    borderColor: '#21376C',
+    borderColor: color_token.secondary_10,
   },
   profileImage: {
     width: 30,

@@ -5,6 +5,7 @@ import {Ionicons} from '@expo/vector-icons'
 import useConsent from '@/hooks/auth/useConsent'
 import {Service} from '@/entities/terms'
 import {useAppRouter} from '@/shared'
+import {color_token} from '@/constants/theme'
 
 const PrivacyPolicyScreen = () => {
   const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent()
@@ -42,13 +43,12 @@ const PrivacyPolicyScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.white,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    borderBottomColor: '#E0E0E0',
   },
   content: {
     flex: 1,

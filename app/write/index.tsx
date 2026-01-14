@@ -8,6 +8,7 @@ import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import {ROUTES, useAppRouter} from '@/shared'
 import {Match, MatchCard, useMatch} from '@/entities/match'
+import {color_token} from '@/constants/theme'
 
 /** 경기 결과 목업데이터 */
 const matchResult = [
@@ -278,7 +279,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 32,
     paddingBottom: 45,
-    backgroundColor: '#fffcf3',
+    backgroundColor: color_token.gray100,
   },
   viewContainer: {
     flex: 1,
@@ -287,7 +288,7 @@ const styles = StyleSheet.create({
     paddingBottom: 45,
     gap: 20,
     flexDirection: 'column',
-    backgroundColor: '#fffcf3',
+    backgroundColor: color_token.gray100,
   },
   stepHeaderBox: {
     paddingVertical: 11,
@@ -378,7 +379,7 @@ const styles = StyleSheet.create({
   buttonBox: {
     width: '100%',
     paddingHorizontal: 24,
-    backgroundColor: '#fffcf3',
+    backgroundColor: '#fcfcfc',
   },
   selectButton: {
     width: '100%',
@@ -425,7 +426,8 @@ const styles = StyleSheet.create({
   },
   noMatchBox: {
     alignItems: 'center',
-    borderColor: '#D0CEC7',
+    backgroundColor: color_token.white,
+    borderColor: color_token.gray300,
     borderWidth: 1,
     borderRadius: 10,
     paddingVertical: 40,

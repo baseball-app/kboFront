@@ -4,6 +4,7 @@ import useProfile from '@/hooks/my/useProfile'
 import React, {useState} from 'react'
 import {KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
+import {color_token} from '@/constants/theme'
 
 const ChangeNicknameScreen = () => {
   const {updateProfile, profile} = useProfile()
@@ -12,7 +13,7 @@ const ChangeNicknameScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="닉네임 변경하기" variants="transparent" />
+      <Header title="닉네임 변경하기" />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
         <View style={styles.inputSection}>
           <View style={styles.inputContainer}>
@@ -44,7 +45,7 @@ export default ChangeNicknameScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFCF3',
+    backgroundColor: color_token.white,
   },
   content: {
     flex: 1,
