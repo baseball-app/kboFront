@@ -7,7 +7,7 @@ type SelectedStatsFilter = {
 }
 
 interface SelectedStatsFilterStore {
-  selectedStatsFilter: SelectedStatsFilter | null
+  selectedStatsFilter: SelectedStatsFilter
   onChangeSeasonYear: (year: number) => void
   onChangeSeason: (season: boolean) => void
   onChangeType: (type: SelectedStatsType) => void

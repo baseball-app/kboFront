@@ -19,19 +19,18 @@ import {
 
 const MatchScreen = () => {
   const router = useAppRouter()
-  const {selectedStatsFilter, onChangeSeasonYear, onChangeType, toggleSort} = useSelectedStatsFilter()
+  const {
+    selectedStatsFilter,
+    onChangeSeasonYear, //
+    onChangeType,
+    toggleSort,
+  } = useSelectedStatsFilter()
 
   const [open, setOpen] = useState(false)
 
-  const selectedYear = selectedStatsFilter?.year ?? 2025
-  const selectedType = selectedStatsFilter?.type ?? '상대구단별'
-  const selectedAlignment = selectedStatsFilter?.sort ?? '승률 높은순'
-
-  const isSortedByHighWinRate = () => selectedAlignment === '승률 높은순'
-
-  const toggleAlignment = () => {
-    toggleSort()
-  }
+  const selectedYear = selectedStatsFilter.year
+  const selectedType = selectedStatsFilter.type
+  const isSortedByHighWinRate = selectedStatsFilter.sort === '승률 높은순'
 
   return (
     <>
@@ -65,9 +64,9 @@ const MatchScreen = () => {
                 value={selectedType}
                 onChange={value => onChangeType(value as SelectedStatsType)}
               />
-              <Pressable onPress={toggleAlignment} style={sortStyles.container}>
+              <Pressable onPress={toggleSort} style={sortStyles.container}>
                 <Txt size={14} weight="medium" color={color_token.gray600}>
-                  {isSortedByHighWinRate() ? '승률 높은순' : '승률 낮은순'}
+                  {isSortedByHighWinRate ? '승률 높은순' : '승률 낮은순'}
                 </Txt>
                 <Image source={require('@/assets/icons/updown.png')} style={sortStyles.icon} />
               </Pressable>
