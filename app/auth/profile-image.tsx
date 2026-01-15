@@ -1,11 +1,11 @@
 import React from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {Ionicons} from '@expo/vector-icons'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {DEFAULT_PROFILE_IMAGE, PROFILE_IMAGES} from '@/constants/join'
 import Header from '@/components/common/Header'
 import {color_token} from '@/constants/theme'
+import {BackButton} from '@/shared/ui'
 
 export default function ProfileImageScreen() {
   const {profile, setProfile, moveToNextStep, moveToPrevStep} = useUserJoin()
@@ -15,7 +15,7 @@ export default function ProfileImageScreen() {
       <Header
         leftButton={{
           onPress: moveToPrevStep, //
-          content: <Ionicons name="chevron-back" size={24} color="black" />,
+          content: <BackButton />,
         }}
       />
 

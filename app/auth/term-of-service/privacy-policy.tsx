@@ -1,22 +1,18 @@
 import React from 'react'
 import {View, Text, ScrollView, TouchableOpacity, StyleSheet} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {Ionicons} from '@expo/vector-icons'
 import useConsent from '@/hooks/auth/useConsent'
 import {Privacy} from '@/entities/terms'
 import {useAppRouter} from '@/shared'
 import {color_token} from '@/constants/theme'
+import Header from '@/components/common/Header'
 const PrivacyPolicyScreen = () => {
   const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent()
   const router = useAppRouter()
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      <Header />
       <ScrollView
         ref={scrollViewRef} //
         style={styles.content}

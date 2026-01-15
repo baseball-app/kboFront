@@ -5,6 +5,7 @@ import {Ionicons} from '@expo/vector-icons'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {color_token, font} from '@/constants/theme'
 import Header from '@/components/common/Header'
+import {BackButton} from '@/shared/ui'
 
 const TermUseScreen = () => {
   const {consent, moveToNextStep, moveToPrevStep} = useUserJoin()
@@ -23,7 +24,7 @@ const TermUseScreen = () => {
       <Header
         leftButton={{
           onPress: moveToPrevStep, //
-          content: <Ionicons name="chevron-back" size={24} color="black" />,
+          content: <BackButton />,
         }}
       />
 

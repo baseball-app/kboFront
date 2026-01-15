@@ -19,6 +19,7 @@ import {useAppRouter} from '@/shared'
 import {showToast} from '@/shared'
 import LottieView from 'lottie-react-native'
 import {color_token} from '@/constants/theme'
+import {BackButton} from '@/shared/ui'
 
 type Inquiry = {
   email: string
@@ -68,9 +69,7 @@ export default function NicknameScreen() {
     <SafeAreaView style={styles.container}>
       <Pressable style={{flex: 1}} onPress={Keyboard.dismiss}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={router.back}>
-            <Ionicons name="chevron-back" size={24} color="black" />
-          </TouchableOpacity>
+          <BackButton onPress={router.back} />
           <Text style={styles.title}>앱을 사용하면서{'\n'}불편했던 점을 적어주세요</Text>
         </View>
 

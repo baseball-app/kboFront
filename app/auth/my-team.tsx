@@ -6,6 +6,7 @@ import useUserJoin from '@/hooks/auth/useUserJoin'
 import {useTeam} from '@/entities/match'
 import {color_token} from '@/constants/theme'
 import Header from '@/components/common/Header'
+import {BackButton} from '@/shared/ui'
 
 export default function MyTeamScreen() {
   const {
@@ -22,7 +23,7 @@ export default function MyTeamScreen() {
       <Header
         leftButton={{
           onPress: moveToPrevStep, //
-          content: <Ionicons name="chevron-back" size={24} color="black" />,
+          content: <BackButton />,
         }}
       />
       <ScrollView contentContainerStyle={styles.content}>

@@ -6,17 +6,14 @@ import useConsent from '@/hooks/auth/useConsent'
 import {Service} from '@/entities/terms'
 import {useAppRouter} from '@/shared'
 import {color_token} from '@/constants/theme'
+import Header from '@/components/common/Header'
 
 const PrivacyPolicyScreen = () => {
   const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent()
   const router = useAppRouter()
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      <Header />
       <ScrollView
         ref={scrollViewRef} //
         style={styles.content}

@@ -1,10 +1,10 @@
 import React from 'react'
 import {StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native'
-import Ionicons from '@expo/vector-icons/Ionicons'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {color_token} from '@/constants/theme'
 import Header from '@/components/common/Header'
+import {BackButton} from '@/shared/ui'
 
 export default function NicknameScreen() {
   const {nickname, setNickname, moveToNextStep, moveToPrevStep} = useUserJoin()
@@ -14,7 +14,7 @@ export default function NicknameScreen() {
       <Header
         leftButton={{
           onPress: moveToPrevStep, //
-          content: <Ionicons name="chevron-back" size={24} color="black" />,
+          content: <BackButton />,
         }}
       />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
