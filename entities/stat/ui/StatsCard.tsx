@@ -1,7 +1,7 @@
 import {useTeam} from '@/entities/match'
 import {Pressable} from '@/shared'
 import React, {useMemo} from 'react'
-import {Image, ImageSourcePropType, StyleSheet, Text, View} from 'react-native'
+import {Image, StyleSheet, Text, View} from 'react-native'
 
 interface StatsCardProps {
   image: React.ReactNode
@@ -11,14 +11,15 @@ interface StatsCardProps {
     lose: number
     draw: number
   }
+  onPress?: () => void
 }
 
-const _StatsCard = ({image, title, matchResult}: StatsCardProps) => {
+const _StatsCard = ({image, title, matchResult, onPress}: StatsCardProps) => {
   const totalMatchCount = matchResult.win + matchResult.draw + matchResult.lose
   const winRate = totalMatchCount === 0 ? 0 : Math.floor(((matchResult.win || 0) / totalMatchCount) * 10000) / 100
 
   return (
-    <Pressable style={styles.container}>
+    <Pressable style={styles.container} onPress={onPress}>
       {image}
       <View style={styles.contents}>
         <View style={styles.body}>
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
 const HomeAwayStatsCard = ({
   title,
   matchResult,
+  onPress,
 }: {
   title: '홈' | '원정'
   matchResult: {
@@ -90,6 +92,7 @@ const HomeAwayStatsCard = ({
     draw: number
     lose: number
   }
+  onPress: () => void
 }) => {
   const image = useMemo(() => {
     return (
@@ -110,13 +113,22 @@ const HomeAwayStatsCard = ({
     )
   }, [title])
 
-  return <_StatsCard image={image} title={<Text style={styles.title}>{title} 승률</Text>} matchResult={matchResult} />
+  return (
+    <_StatsCard
+      onPress={onPress}
+      image={image}
+      title={<Text style={styles.title}>{title} 승률</Text>}
+      matchResult={matchResult}
+    />
+  )
 }
 
 const TeamStatsCard = ({
+  onPress,
   teamName,
   matchResult,
 }: {
+  onPress: () => void
   teamName: string
   matchResult: {
     win: number
@@ -136,6 +148,7 @@ const TeamStatsCard = ({
   return (
     <_StatsCard
       image={image}
+      onPress={onPress}
       title={
         <View style={{flexDirection: 'row', gap: 1}}>
           <Text style={[styles.title, {fontWeight: 700}]}>{teamName}</Text>
@@ -150,6 +163,7 @@ const TeamStatsCard = ({
 const StadiumStatsCard = ({
   stadiumName,
   matchResult,
+  onPress,
 }: {
   stadiumName: string
   matchResult: {
@@ -157,6 +171,7 @@ const StadiumStatsCard = ({
     draw: number
     lose: number
   }
+  onPress: () => void
 }) => {
   const stadium = stadiumList.find(stadium => stadium.name === stadiumName)
   const image = useMemo(
@@ -179,7 +194,12 @@ const StadiumStatsCard = ({
   if (!stadium) return null
 
   return (
-    <_StatsCard image={image} title={<Text style={styles.title}>{stadiumName} 승률</Text>} matchResult={matchResult} />
+    <_StatsCard
+      onPress={onPress}
+      image={image}
+      title={<Text style={styles.title}>{stadiumName} 승률</Text>}
+      matchResult={matchResult}
+    />
   )
 }
 

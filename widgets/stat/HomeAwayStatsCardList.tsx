@@ -2,11 +2,14 @@ import React, {useCallback, useMemo} from 'react'
 import {useHomeAwayWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
 import {HomeAwayStatsCard} from '@/entities/stat/ui'
 import {StatsList} from './StatsList'
+import {useNavigateToStatsDetail} from '@/features/stats'
 
 const HomeAwayStatsCardList = () => {
   const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter()
   const year = selectedStatsFilter?.year ?? 2025
   const {data, isLoading, isError} = useHomeAwayWinPercentByYear({year})
+
+  const {navigateToAwayStatsDetail, navigateToHomeStatsDetail} = useNavigateToStatsDetail()
 
   const sortedData = useMemo(() => {
     if (!data?.home_away_win_stat) return []
@@ -16,6 +19,7 @@ const HomeAwayStatsCardList = () => {
   const renderItem = useCallback(({item}: {item: (typeof sortedData)[0]}) => {
     return (
       <HomeAwayStatsCard
+        onPress={() => (item.home_away === 'home' ? navigateToHomeStatsDetail() : navigateToAwayStatsDetail())}
         key={`${item.home_away}-${item.is_cheer}`}
         title={item.home_away === 'home' ? '홈' : '원정'}
         matchResult={{

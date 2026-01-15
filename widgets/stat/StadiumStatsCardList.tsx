@@ -2,11 +2,14 @@ import React, {useCallback, useMemo} from 'react'
 import {useBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
 import {StadiumStatsCard} from '@/entities/stat/ui'
 import {StatsList} from './StatsList'
+import {useNavigateToStatsDetail} from '@/features/stats'
 
 const StadiumStatsCardList = () => {
   const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter()
   const year = selectedStatsFilter?.year ?? 2025
   const {data, isLoading, isError} = useBallparkWinPercentByYear({year})
+
+  const {navigateToBallparkStatsDetail} = useNavigateToStatsDetail()
 
   const sortedData = useMemo(() => {
     if (!data?.by_user_ballpark_win_stat) return []
@@ -16,6 +19,7 @@ const StadiumStatsCardList = () => {
   const renderItem = useCallback(({item}: {item: (typeof sortedData)[0]}) => {
     return (
       <StadiumStatsCard
+        onPress={() => navigateToBallparkStatsDetail(item.ballpark_id)}
         key={item.ballpark_id}
         stadiumName={item.ballpark_nm}
         matchResult={{

@@ -12,6 +12,7 @@ const TICKET_TAB = '/(tabs)/ticket'
 const ALARM_TAB = '/(tabs)/alarm'
 
 const STATS_TAB = '/(tabs)/stats'
+const STATS_DETAIL = '/(tabs)/stats/detail'
 
 // 랭킹 탭
 const RANK_TAB = '/(tabs)/rank'
@@ -94,4 +95,5 @@ export {
   WRITE_TODAY_TICKET_CARD,
   MY_FOLLOWERS,
   MY_FOLLOWINGS,
+  STATS_DETAIL,
 }
