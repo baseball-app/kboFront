@@ -1,58 +1,39 @@
-import React, {useMemo} from 'react'
-import {View, StyleSheet} from 'react-native'
+import React, {useCallback, useMemo} from 'react'
 import {useBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
 import {StadiumStatsCard} from '@/entities/stat/ui'
-import {LoadingStatsList} from './LoadingStatsList'
-import {EmptyStatsList} from './EmptyStatsList'
+import {StatsList} from './StatsList'
 
 const StadiumStatsCardList = () => {
-  const {selectedStatsFilter} = useSelectedStatsFilter()
+  const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter()
   const year = selectedStatsFilter?.year ?? 2025
   const {data, isLoading, isError} = useBallparkWinPercentByYear({year})
 
   const sortedData = useMemo(() => {
     if (!data?.by_user_ballpark_win_stat) return []
+    return sortDataByWinRate([...data.by_user_ballpark_win_stat])
+  }, [data, sortDataByWinRate])
 
-    const sorted = [...data.by_user_ballpark_win_stat]
-    const isAscending = selectedStatsFilter?.sort === '승률 높은순'
-
-    return sorted.sort((a, b) => {
-      if (isAscending) {
-        return b.win_percent - a.win_percent
-      }
-      return a.win_percent - b.win_percent
-    })
-  }, [data, selectedStatsFilter?.sort])
-
-  if (isError || isLoading) {
-    return <LoadingStatsList />
-  }
-
-  if (!sortedData.length) {
-    return <EmptyStatsList />
-  }
-
+  const renderItem = useCallback(({item}: {item: (typeof sortedData)[0]}) => {
+    return (
+      <StadiumStatsCard
+        key={item.ballpark_id}
+        stadiumName={item.ballpark_nm}
+        matchResult={{
+          win: item.wins,
+          draw: item.draws,
+          lose: item.losses,
+        }}
+      />
+    )
+  }, [])
   return (
-    <View style={styles.container}>
-      {sortedData.map(stat => (
-        <StadiumStatsCard
-          key={stat.ballpark_id}
-          stadiumName={stat.ballpark_nm}
-          matchResult={{
-            win: stat.wins,
-            draw: stat.draws,
-            lose: stat.losses,
-          }}
-        />
-      ))}
-    </View>
+    <StatsList
+      data={sortedData}
+      isLoading={isLoading}
+      isError={isError} //
+      renderItem={renderItem}
+    />
   )
 }
 
 export {StadiumStatsCardList}
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 12,
-  },
-})

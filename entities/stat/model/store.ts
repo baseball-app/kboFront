@@ -1,5 +1,6 @@
 import {create} from 'zustand'
 import {SelectedStatsFilterStore, SelectedStatsType} from './type'
+import {useCallback} from 'react'
 
 const useSelectedStatsFilterStore = create<SelectedStatsFilterStore>(set => ({
   selectedStatsFilter: {
@@ -28,12 +29,21 @@ const useSelectedStatsFilter = () => {
   const {selectedStatsFilter, onChangeSeasonYear, onChangeSeason, onChangeType, toggleSort} =
     useSelectedStatsFilterStore()
 
+  const sortDataByWinRate = useCallback<<T extends {win_percent: number}>(data: T[]) => T[]>(
+    data => {
+      const isAscending = selectedStatsFilter?.sort === '승률 높은순'
+      return data.sort((a, b) => (isAscending ? b.win_percent - a.win_percent : a.win_percent - b.win_percent))
+    },
+    [selectedStatsFilter?.sort],
+  )
+
   return {
     selectedStatsFilter,
     onChangeSeasonYear,
     onChangeSeason,
     onChangeType,
     toggleSort,
+    sortDataByWinRate,
   }
 }
 
