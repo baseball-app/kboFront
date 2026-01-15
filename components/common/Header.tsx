@@ -33,7 +33,7 @@ const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButt
         styles.container,
         {
           backgroundColor:
-            variants === 'white' ? color_token.white : variants === '#F3F2EE' ? '#F3F2EE' : color_token.white,
+            variants === 'white' ? color_token.white : variants === '#F3F2EE' ? '#F3F2EE' : 'transparent',
           paddingTop: topInset + 18,
         },
       ]}>
