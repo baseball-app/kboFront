@@ -12,7 +12,7 @@ const TICKET_TAB = '/(tabs)/ticket'
 const ALARM_TAB = '/(tabs)/alarm'
 
 const STATS_TAB = '/(tabs)/stats'
-const STATS_DETAIL = '/(tabs)/stats/detail'
+const STATS_DETAIL = '/stats/detail'
 
 // 랭킹 탭
 const RANK_TAB = '/(tabs)/rank'

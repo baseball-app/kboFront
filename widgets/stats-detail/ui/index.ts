@@ -1,0 +1,5 @@
+export {AwayStatsDetail} from './AwayStatsDetail'
+export {HomeStatsDetail} from './HomeStatsDetail'
+export {TeamStatsDetail} from './TeamStatsDetail'
+export {StadiumStatsDetail} from './StadiumStatsDetail'
+export {TeamStatsByHomeDetail} from './TeamStatsByHomeDetail'
