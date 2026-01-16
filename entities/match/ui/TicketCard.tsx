@@ -57,8 +57,10 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
           borderStyle: 'dashed',
           justifyContent: 'center',
           borderRadius: 1,
-          height: 102,
+          height: 104,
           marginRight: -2,
+          marginBottom: -2,
+          marginTop: -2,
         }}>
         <Text style={styles.parkName} numberOfLines={1}>
           {getTempBaseballMediumName(ticket.gip_place || ticket.ballpark.name)}

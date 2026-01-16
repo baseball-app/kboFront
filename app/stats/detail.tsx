@@ -1,6 +1,5 @@
 import Header from '@/components/common/Header'
 import {StatsDetailType, useNavigateToStatsDetail} from '@/features/stats'
-import {Txt} from '@/shared/ui'
 import {
   AwayStatsDetail,
   HomeStatsDetail,
@@ -23,7 +22,6 @@ export default function StatsDetailScreen() {
       {query.type === StatsDetailType.HOME && <HomeStatsDetail is_homeballpark />}
       {query.type === StatsDetailType.AWAY && <AwayStatsDetail is_homeballpark={false} />}
       {query.type === StatsDetailType.MY_HOME && <TeamStatsByHomeDetail parameter_id={query.parameter_id} />}
-      {/* {query.type === StatsDetailType.ERROR && <Txt>{query.type}</Txt>} */}
     </SafeAreaView>
   )
 }

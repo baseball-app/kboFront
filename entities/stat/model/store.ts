@@ -4,7 +4,7 @@ import {useCallback} from 'react'
 
 const useSelectedStatsFilterStore = create<SelectedStatsFilterStore>(set => ({
   selectedStatsFilter: {
-    year: 2025,
+    year: new Date().getFullYear(),
     season: true,
     type: '상대구단별',
     sort: '승률 높은순',

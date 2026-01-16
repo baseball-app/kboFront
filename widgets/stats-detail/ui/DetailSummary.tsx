@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     marginBottom: -2,
   },
   statsRow: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,
