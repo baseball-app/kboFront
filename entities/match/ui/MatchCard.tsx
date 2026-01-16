@@ -4,6 +4,9 @@ import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import Ellipse from '@/components/common/Ellipse'
 import {useTeam} from '../model'
 import dayjs from 'dayjs'
+import {size} from '@/shared'
+import {color_token} from '@/constants/theme'
+import {Pressable, Txt} from '@/shared/ui'
 
 type Props = {
   match: Match
@@ -20,33 +23,41 @@ const MatchCard = ({match, onClick, isSelected}: Props) => {
   const awayTeam = findTeamById(match.team_away_info.id)
 
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onClick}>
+    <Pressable onPress={onClick}>
       <View
         style={[
           styles.gameInfoBox, //
           isSelected && styles.gameSelectedInfoBox,
         ]}>
         <View style={styles.matchDayBox}>
-          <Text style={styles.matchDayTitle}>{time}</Text>
+          <Txt size={14} color={color_token.black}>
+            {time}
+          </Txt>
           <Ellipse />
-          <Text style={[styles.matchDayTitle, {marginLeft: 3}]}>{match.ballpark_info.name.slice(0, 2)}</Text>
+          <Txt size={14} color={color_token.black} style={{marginLeft: size(3)}}>
+            {match.ballpark_info.name.slice(0, 2)}
+          </Txt>
         </View>
         <View style={styles.matchTeamBox}>
           <View style={styles.matchTeamInfo}>
-            <Image source={homeTeam?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
+            <Image source={homeTeam?.logo} resizeMode="contain" style={{width: size(35), height: size(35)}} />
             <View style={styles.ellipseBox}>
-              <Ellipse size={5} />
-              <Ellipse size={5} />
+              <Ellipse size={size(5)} />
+              <Ellipse size={size(5)} />
             </View>
-            <Image source={awayTeam?.logo} resizeMode="contain" style={{width: 35, height: 35}} />
+            <Image source={awayTeam?.logo} resizeMode="contain" style={{width: size(35), height: size(35)}} />
           </View>
           <View style={styles.teamNameBox}>
-            <Text style={styles.teamText}>{homeTeam?.short_name}</Text>
-            <Text style={styles.teamText}>{awayTeam?.short_name}</Text>
+            <Txt size={14} color={color_token.black}>
+              {homeTeam?.short_name}
+            </Txt>
+            <Txt size={14} color={color_token.black}>
+              {awayTeam?.short_name}
+            </Txt>
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 
@@ -54,70 +65,49 @@ export {MatchCard}
 
 const styles = StyleSheet.create({
   gameInfoBox: {
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: color_token.white,
+    borderRadius: size(10),
     width: '100%',
     borderWidth: 1,
-    borderColor: '#D0CEC7',
-    height: 113,
-    padding: 12,
+    borderColor: color_token.gray350,
+    height: size(113),
+    padding: size(12),
     flexDirection: 'column',
     alignItems: 'center',
   },
-  disabledGameInfoBox: {
-    backgroundColor: '#DDDDDD88',
-  },
   gameSelectedInfoBox: {
-    borderColor: '#353430',
+    borderColor: color_token.gray800,
   },
   matchTeamBox: {
     flexDirection: 'column',
     width: '100%',
     alignItems: 'center',
-    marginTop: 12,
+    marginTop: size(12),
   },
   matchDayBox: {
-    borderRadius: 10,
-    backgroundColor: '#F3F2EE',
-    paddingHorizontal: 10,
+    borderRadius: size(10),
+    backgroundColor: color_token.gray200,
+    paddingHorizontal: size(10),
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-  },
-  matchDayTitle: {
-    fontSize: 14,
-    fontWeight: '500',
-    lineHeight: 19.6,
-    color: '#000000',
+    gap: size(5),
   },
   matchTeamInfo: {
     flexDirection: 'row',
-    gap: 20,
+    gap: size(20),
     width: '100%',
     justifyContent: 'center',
   },
   ellipseBox: {
     flexDirection: 'column',
-    gap: 6,
+    gap: size(6),
     justifyContent: 'center',
   },
   teamNameBox: {
     width: '100%',
-    marginTop: 4,
+    marginTop: size(4),
     flexDirection: 'row',
-    gap: 45,
+    gap: size(45),
     justifyContent: 'center',
-  },
-  teamText: {
-    fontSize: 14,
-    fontWeight: '500',
-    lineHeight: 19.6,
-    textAlign: 'center',
-    width: 35,
-  },
-  teamImg: {
-    width: 35,
-    height: 35,
-    resizeMode: 'contain',
   },
 })

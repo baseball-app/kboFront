@@ -1,11 +1,12 @@
 import WheelPicker2 from '@/components/WheelPicker2'
-import {AnimatedPressable} from '@/shared'
+import {color_token} from '@/constants/theme'
+import {Pressable, size} from '@/shared'
+import {Button, Txt} from '@/shared/ui'
 import {BottomSheet} from '@/shared/ui/BottomSheet'
 import {Ionicons} from '@expo/vector-icons'
 import dayjs from 'dayjs'
-import React, {memo, useCallback, useEffect, useMemo, useState} from 'react'
-import {Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import Animated, {useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated'
+import React, {useEffect, useMemo, useState} from 'react'
+import {StyleSheet, View} from 'react-native'
 
 type MatchCalendarHeaderProps = {
   prevMonth: () => void
@@ -48,13 +49,15 @@ const _HeaderController = ({
   return (
     <View style={styles.header}>
       <Pressable onPress={prevMonth} style={[styles.headerTextContainer]}>
-        <Ionicons name="chevron-back" size={24} color="black" />
+        <Ionicons name="chevron-back" size={size(24)} color={color_token.gray900} />
       </Pressable>
-      <TouchableOpacity style={[styles.headerTextContainer, {width: 100}]} onPress={openBottomSheet}>
-        <Text style={styles.headerText}>{dayjs(currentDate).format('YYYY.MM')}</Text>
-      </TouchableOpacity>
+      <Pressable style={[styles.headerTextContainer, {width: size(100)}]} onPress={openBottomSheet}>
+        <Txt size={20} weight="bold">
+          {dayjs(currentDate).format('YYYY.MM')}
+        </Txt>
+      </Pressable>
       <Pressable onPress={nextMonth} style={styles.headerTextContainer}>
-        <Ionicons name="chevron-forward" size={24} color="black" />
+        <Ionicons name="chevron-forward" size={size(24)} color={color_token.gray900} />
       </Pressable>
     </View>
   )
@@ -90,7 +93,9 @@ const _BottomSheetController = ({
   return (
     <BottomSheet isOpen={isModalVisible} duration={350} height={320}>
       <View style={styles.modalContent}>
-        <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
+        <Txt weight="bold" style={styles.modalTitle}>
+          원하시는 날짜를 선택해주세요
+        </Txt>
         <View style={styles.datePickerContainer}>
           <WheelPicker2
             items={Array.from({length: 10}, (_, i) => `${2020 + i}년`)}
@@ -115,17 +120,18 @@ const _BottomSheetController = ({
           />
         </View>
         <View style={styles.buttonBox}>
-          <TouchableOpacity style={styles.cancelButton} onPress={() => setIsModalVisible(false)}>
-            <Text style={styles.cancelText}>취소</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.confirmButton}
+          <Button type="gray" style={{flex: 1}} onPress={() => setIsModalVisible(false)}>
+            취소
+          </Button>
+          <Button
+            type="primary"
+            style={{flex: 1}}
             onPress={() => {
               setCurrentDate(dayjs(`${selectedYear}-${selectedMonth}-${selectedDay}`).toDate())
               setIsModalVisible(false)
             }}>
-            <Text style={styles.confirmText}>완료</Text>
-          </TouchableOpacity>
+            완료
+          </Button>
         </View>
       </View>
     </BottomSheet>
@@ -139,142 +145,43 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10,
-    marginTop: 8,
+    paddingVertical: size(10),
+    marginTop: size(8),
   },
   headerTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+
   daysOfWeekContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 8,
-  },
-  dayOfWeekText: {
-    fontSize: 13,
-    fontWeight: '400',
-    lineHeight: 18.2,
-    textAlign: 'center',
-    width: '100%',
-    color: '#000',
-  },
-  day: {
-    width: '14.28%',
-    padding: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dayText: {
-    fontSize: 18,
-    lineHeight: 25.2,
-    fontWeight: '500',
-    minWidth: 20,
-    width: '100%',
-    textAlign: 'center',
-  },
-  inactiveDay: {
-    opacity: 0.5,
-  },
-  selectedDay: {
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 4,
-    backgroundColor: '#000',
+    marginBottom: size(8),
   },
   datePickerContainer: {
     flexDirection: 'row',
-    height: 134,
+    height: size(134),
     overflow: 'hidden',
     justifyContent: 'space-between',
   },
   modalContent: {
     width: '100%',
-    padding: 24,
+    padding: size(24),
     backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: size(20),
+    borderTopRightRadius: size(20),
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
   },
   modalTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginBottom: 28,
+    marginBottom: size(28),
   },
   buttonBox: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 13,
-    marginTop: 40,
-    marginBottom: 16,
-  },
-  confirmButton: {
-    flex: 1,
-    height: 46,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#1E5EF4',
-  },
-  confirmText: {
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
-    color: '#fff',
-  },
-  cancelButton: {
-    flex: 1,
-    height: 46,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#D0CEC7',
-  },
-  cancelText: {
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
-    color: '#000',
-  },
-  weekRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    gap: '1%',
-  },
-  dayContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 12,
-    flexDirection: 'column',
-    gap: 6,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'transparent',
-    padding: 4,
-    flex: 1,
-  },
-  selectedText: {
-    color: '#fff',
-  },
-  todayDay: {
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 4,
-    borderColor: '#55524E',
-  },
-  todayText: {
-    color: '#000',
-  },
-  defaultText: {
-    color: '#000',
+    gap: size(13),
+    marginTop: size(40),
+    marginBottom: size(16),
   },
 })

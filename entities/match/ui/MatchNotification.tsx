@@ -1,12 +1,15 @@
 import type * as React from 'react'
 import {StyleSheet, Text, View, ViewProps} from 'react-native'
+import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
+import {Txt} from '@/shared/ui'
 
 const MatchNotification = () => {
   return (
     <View style={styles.container}>
-      <Text>
-        <Text style={styles.main}>직관 일기</Text>를 쓰고 싶은 경기를 눌러보세요!
-      </Text>
+      <Txt size={14} weight="medium">
+        <Txt color={color_token.primary}>경기 일정</Txt>을 누르고 직관 일기를 작성해보세요!
+      </Txt>
     </View>
   )
 }
@@ -16,11 +19,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
+    paddingVertical: size(10),
     backgroundColor: '#6C98FF33',
-  },
-  main: {
-    color: '#1E5EF4',
   },
 })
 

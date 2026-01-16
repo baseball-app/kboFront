@@ -1,6 +1,7 @@
 import {useAnalyticsStore} from '@/analytics/event'
 import {EmptyMatchView, LoadingMatchList, Match, MatchCard, MatchWeekCalendar, useMatch} from '@/entities/match'
 import {AddDoubleHeaderTicketButton, useNavigateWriteTicket} from '@/features/match'
+import {size} from '@/shared'
 import dayjs from 'dayjs'
 import {usePathname} from 'expo-router'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
@@ -43,7 +44,7 @@ const MatchList = () => {
 
   return (
     <>
-      <View style={{paddingHorizontal: 24}}>
+      <View style={{paddingHorizontal: size(24)}}>
         <MatchWeekCalendar //
           value={selectedDate}
           onChange={setSelectedDate}

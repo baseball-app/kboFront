@@ -1,29 +1,28 @@
 import React from 'react'
-import {TouchableOpacity, Text, StyleSheet} from 'react-native'
+import {StyleSheet} from 'react-native'
+import {Pressable, Txt} from '@/shared/ui'
+import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
 
 const AddDoubleHeaderTicketButton = ({onPress}: {onPress: () => void}) => {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress} //
       style={styles.doubleHeaderButton}>
-      <Text style={styles.doubleHeaderText}>더블헤더 작성하기</Text>
-    </TouchableOpacity>
+      <Txt size={14} weight="medium" color={color_token.white}>
+        더블헤더 작성하기
+      </Txt>
+    </Pressable>
   )
 }
 
 export {AddDoubleHeaderTicketButton}
 
 const styles = StyleSheet.create({
-  doubleHeaderText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 16 * 1.4,
-  },
   doubleHeaderButton: {
-    backgroundColor: '#353430',
-    paddingVertical: 10,
-    paddingHorizontal: 24,
+    backgroundColor: color_token.gray800,
+    paddingVertical: size(10),
+    paddingHorizontal: size(24),
     borderRadius: 99,
     alignSelf: 'flex-start', // fit-content 효과
     marginInline: 'auto',

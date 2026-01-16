@@ -3,6 +3,7 @@ import {View} from 'react-native'
 import React from 'react'
 import {MatchList} from '@/widgets'
 import {MatchNotification} from '@/entities/match'
+import {color_token} from '@/constants/theme'
 
 const MatchScreen = () => {
   return (
@@ -18,6 +19,6 @@ export default MatchScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fcfcfc',
+    backgroundColor: color_token.gray100,
   },
 })
