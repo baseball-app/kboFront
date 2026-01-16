@@ -1,3 +1,5 @@
+import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
 import {TextStyle, ViewStyle} from 'react-native'
 import {create, StateCreator} from 'zustand'
 
@@ -51,11 +53,11 @@ export const usePopup = () => {
           },
           buttonStyle: {
             width: '100%',
-            borderRadius: 10,
-            backgroundColor: '#1E5EF4',
+            borderRadius: size(10),
+            backgroundColor: color_token.primary,
           },
           buttonTextStyle: {
-            color: 'white',
+            color: color_token.white,
           },
         },
       ],

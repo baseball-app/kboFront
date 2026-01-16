@@ -7,6 +7,7 @@ import {Service} from '@/entities/terms'
 import {useAppRouter} from '@/shared'
 import {color_token} from '@/constants/theme'
 import Header from '@/components/common/Header'
+import {BottomFloatSection, Button} from '@/shared/ui'
 
 const PrivacyPolicyScreen = () => {
   const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent()
@@ -22,18 +23,19 @@ const PrivacyPolicyScreen = () => {
         {/* 이용약관 */}
         <Service />
       </ScrollView>
-      <TouchableOpacity
-        style={styles.agreeButton}
-        onPress={() => {
-          if (isScrolledToBottom) {
-            agreeConsent('terms-of-service')
-            router.back()
-          } else {
-            ;(scrollViewRef.current as any)?.scrollToEnd({animated: true})
-          }
-        }}>
-        <Text style={styles.agreeButtonText}>{isScrolledToBottom ? '동의하기' : '아래로 스크롤하기'}</Text>
-      </TouchableOpacity>
+      <BottomFloatSection style={styles.buttonContainer}>
+        <Button
+          onPress={() => {
+            if (isScrolledToBottom) {
+              agreeConsent('terms-of-service')
+              router.back()
+            } else {
+              ;(scrollViewRef.current as any)?.scrollToEnd({animated: true})
+            }
+          }}>
+          {isScrolledToBottom ? '동의하기' : '아래로 스크롤하기'}
+        </Button>
+      </BottomFloatSection>
     </SafeAreaView>
   )
 }
@@ -42,26 +44,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color_token.white,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-  },
   content: {
     flex: 1,
     padding: 16,
   },
-  agreeButton: {
-    backgroundColor: '#1A73E8',
-    padding: 14,
-    alignItems: 'center',
-    margin: 16,
-    borderRadius: 10,
-  },
-  agreeButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+  buttonContainer: {
+    backgroundColor: color_token.white,
   },
 })
 

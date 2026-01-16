@@ -14,6 +14,7 @@ const fontWeight = {
 const fontSize = {
   12: 12,
   14: 14,
+  15: 15,
   16: 16,
   18: 18,
   20: 20,

@@ -2,6 +2,7 @@ import React, {memo} from 'react'
 import {Pressable, StyleSheet, StyleProp, ViewStyle, TextStyle, ActivityIndicator} from 'react-native'
 import {color_token} from '@/constants/theme'
 import {Txt} from './Txt'
+import {size} from '@/shared'
 
 type ButtonType = 'primary' | 'secondary' | 'outline' | 'outline_active' | 'gray'
 type ButtonSize = 'small' | 'medium' | 'large'
@@ -52,22 +53,22 @@ const buttonColors = {
 
 const sizeStyles = {
   small: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingVertical: size(8),
+    paddingHorizontal: size(16),
     fontSize: 14,
-    borderRadius: 8,
+    borderRadius: size(8),
   },
   medium: {
-    paddingVertical: 14,
-    paddingHorizontal: 20,
+    paddingVertical: size(14),
+    paddingHorizontal: size(20),
     fontSize: 16,
-    borderRadius: 10,
+    borderRadius: size(10),
   },
   large: {
-    paddingVertical: 16,
-    paddingHorizontal: 24,
+    paddingVertical: size(16),
+    paddingHorizontal: size(24),
     fontSize: 18,
-    borderRadius: 12,
+    borderRadius: size(12),
   },
 }
 

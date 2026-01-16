@@ -1,6 +1,7 @@
 import {Notification} from '../types'
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {color_token} from '@/constants/theme'
 
 type Props = {
   type: Notification['type']
@@ -84,24 +85,24 @@ const styles = StyleSheet.create({
   date: {
     fontWeight: '400',
     fontSize: 12,
-    color: '#B9B8B3',
+    color: color_token.gray400,
   },
 })
 
 const reaction = StyleSheet.create({
   bg: {
-    backgroundColor: '#EF4B87',
+    backgroundColor: color_token.red,
   },
   color: {
-    color: '#EF4B87',
+    color: color_token.red,
   },
 })
 
 const news = StyleSheet.create({
   bg: {
-    backgroundColor: '#1E5EF4',
+    backgroundColor: color_token.primary,
   },
   color: {
-    color: '#1E5EF4',
+    color: color_token.primary,
   },
 })

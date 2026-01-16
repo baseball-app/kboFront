@@ -3,6 +3,7 @@ import {TeamWithInfo} from '../types'
 import Ellipse from '@/components/common/Ellipse'
 import dayjs from 'dayjs'
 import {getTempBaseballMediumName} from '@/shared'
+import {color_token} from '@/constants/theme'
 
 type TicketCardProps = {
   ticket: {
@@ -53,7 +54,7 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
           width: 140,
           alignItems: 'center',
           borderWidth: 1,
-          borderColor: '#B9B8B3',
+          borderColor: color_token.gray400,
           borderStyle: 'dashed',
           justifyContent: 'center',
           borderRadius: 1,

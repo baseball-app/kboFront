@@ -2,6 +2,7 @@ import {Image, Pressable, StyleSheet, View} from 'react-native'
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
 import {useSheetSlice} from '@/slice/sheetSlice'
 import {Modal} from '@/components/common/Modal'
+import {size} from '@/shared'
 
 const CommonSheet = () => {
   const sheetSlice = useSheetSlice()
@@ -14,8 +15,8 @@ const CommonSheet = () => {
       animationType="slide"
       transparent={false}>
       <SafeAreaProvider>
-        <SafeAreaView edges={['top']} style={{flex: 1, backgroundColor: 'transparent'}}>
-          <View style={{padding: 16, alignItems: 'flex-end'}}>
+        <SafeAreaView edges={['top']} style={styles.safeAreaView}>
+          <View style={styles.headerContainer}>
             <Pressable onPress={sheetSlice.sheet.hide}>
               <Image source={require('@/assets/icons/close.png')} style={styles.icon} resizeMode="contain" />
             </Pressable>
@@ -28,12 +29,20 @@ const CommonSheet = () => {
 }
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  headerContainer: {
+    padding: size(16),
+    alignItems: 'flex-end',
+  },
   webViewContainer: {
     flex: 1,
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: size(24),
+    height: size(24),
   },
 })
 

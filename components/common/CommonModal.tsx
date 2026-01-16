@@ -1,7 +1,10 @@
 import {IModalConfig, useCommonSlice} from '@/slice/commonSlice'
 import React, {useEffect, useState} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
+import {View, TouchableOpacity, StyleSheet} from 'react-native'
 import {Modal} from '@/components/common/Modal'
+import {Txt} from '@/shared/ui'
+import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
 const CommonModal = () => {
   const {currentModal, modal} = useCommonSlice()
   const [modalState, setModalState] = useState<IModalConfig | null>(null)
@@ -24,14 +27,20 @@ const CommonModal = () => {
       onDismiss={modal.hide}>
       <View style={styles.overlay}>
         <View style={styles.container}>
-          <Text style={styles.headerTitle}>{modalState?.header}</Text>
+          <Txt size={15} weight="semibold" color={color_token.gray900}>
+            {modalState?.header}
+          </Txt>
           <View>
-            <Text style={styles.headerContentText}>{modalState?.content}</Text>
+            <Txt size={14} color={color_token.gray800}>
+              {modalState?.content}
+            </Txt>
           </View>
           <View style={styles.buttonBox}>
             {modalState?.button.map((btn, index) => (
               <TouchableOpacity key={index} onPress={btn.onPress} style={[btn.buttonStyle, styles.modalButton]}>
-                <Text style={[styles.modalButtonText, btn.buttonTextStyle]}>{btn.text}</Text>
+                <Txt size={14} weight="semibold" color={color_token.white} style={btn.buttonTextStyle}>
+                  {btn.text}
+                </Txt>
               </TouchableOpacity>
             ))}
           </View>
@@ -50,30 +59,18 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '80%',
-    maxWidth: 330,
+    maxWidth: size(330),
     backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: size(20),
+    padding: size(20),
     flexDirection: 'column',
     alignItems: 'center',
-    gap: 24,
-  },
-  headerTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-    lineHeight: 16.71,
-  },
-  headerContentText: {
-    fontSize: 14,
-    textAlign: 'center',
-    fontWeight: '400',
-    lineHeight: 20,
-    color: '#353430',
+    gap: size(24),
   },
   buttonBox: {
     width: '100%',
     flexDirection: 'row',
-    gap: 13,
+    gap: size(12),
   },
   modalButton: {
     flex: 1,

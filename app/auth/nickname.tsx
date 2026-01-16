@@ -4,7 +4,8 @@ import useUserJoin from '@/hooks/auth/useUserJoin'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {color_token} from '@/constants/theme'
 import Header from '@/components/common/Header'
-import {BackButton} from '@/shared/ui'
+import {BackButton, BottomFloatSection, Button, Txt} from '@/shared/ui'
+import {size} from '@/shared'
 
 export default function NicknameScreen() {
   const {nickname, setNickname, moveToNextStep, moveToPrevStep} = useUserJoin()
@@ -13,14 +14,17 @@ export default function NicknameScreen() {
     <SafeAreaView style={styles.container}>
       <Header
         leftButton={{
-          onPress: moveToPrevStep, //
-          content: <BackButton />,
+          content: <BackButton onPress={moveToPrevStep} />,
         }}
       />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
         <View style={styles.inputSection}>
-          <Text style={styles.title}>닉네임을{'\n'}입력해주세요</Text>
-          <Text style={styles.subtitle}>한글/영어/숫자/밑줄/띄어쓰기를{'\n'}사용할 수 있습니다.</Text>
+          <Txt size={24} weight="semibold" style={styles.title}>
+            닉네임을{'\n'}입력해주세요
+          </Txt>
+          <Txt size={16} color={color_token.gray600}>
+            한글/영어/숫자/밑줄/띄어쓰기를{'\n'}사용할 수 있습니다.
+          </Txt>
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -33,14 +37,11 @@ export default function NicknameScreen() {
             <View style={[styles.inputUnderline, nickname ? styles.inputUnderlineActive : null]} />
           </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.button, nickname ? styles.buttonActive : null]}
-            onPress={moveToNextStep}
-            disabled={!nickname}>
-            <Text style={styles.buttonText}>다음</Text>
-          </TouchableOpacity>
-        </View>
+        <BottomFloatSection>
+          <Button type={nickname ? 'primary' : 'gray'} disabled={!nickname} onPress={moveToNextStep}>
+            다음
+          </Button>
+        </BottomFloatSection>
       </KeyboardAvoidingView>
     </SafeAreaView>
   )
@@ -56,55 +57,28 @@ const styles = StyleSheet.create({
   },
   inputSection: {
     flex: 1,
-    padding: 24,
-    paddingTop: 28,
+    padding: size(24),
+    paddingTop: size(28),
   },
   title: {
-    fontSize: 24,
-    marginBottom: 8,
-    lineHeight: 24 * 1.4,
-    fontWeight: 600,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#77756C',
-    lineHeight: 16 * 1.4,
-    fontWeight: 400,
+    marginBottom: size(8),
   },
   inputContainer: {
-    marginTop: 20,
+    marginTop: size(20),
   },
   input: {
-    fontSize: 16,
-    paddingVertical: 8,
+    fontSize: size(16),
+    paddingVertical: size(8),
     color: '#333333',
   },
   inputUnderline: {
-    height: 1,
+    height: size(1),
     backgroundColor: '#CCCCCC',
-    marginTop: 4,
-    marginBottom: 1,
+    marginTop: size(4),
+    marginBottom: size(1),
   },
   inputUnderlineActive: {
-    height: 2,
+    height: size(2),
     backgroundColor: '#000000',
-  },
-  buttonContainer: {
-    padding: 20,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 40, // Extra padding for Android
-  },
-  button: {
-    backgroundColor: '#ccc',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonActive: {
-    backgroundColor: '#007AFF',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 })

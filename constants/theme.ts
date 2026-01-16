@@ -32,6 +32,7 @@ const color_token = {
   cancel: '#7D8494',
   draw: '#FF9151',
   lose: '#F96A63',
+  red: '#EF4B87',
 
   //
 } as const

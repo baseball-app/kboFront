@@ -16,6 +16,9 @@ import {setBackgroundMessageHandler, getMessaging} from '@react-native-firebase/
 import notifee from '@notifee/react-native'
 import {CommonSheet} from '@/components/common/CommonSheet'
 import {VersionGuard} from '@/apps/version'
+import {size} from '@/shared'
+import {Txt} from '@/shared/ui'
+import {color_token} from '@/constants/theme'
 
 interface TextWithDefaultProps extends Text {
   defaultProps?: {allowFontScaling?: boolean}
@@ -76,13 +79,15 @@ export default function RootLayout() {
       ) => (
         <View
           style={{
-            paddingVertical: 8,
-            paddingHorizontal: 16,
+            paddingVertical: size(8),
+            paddingHorizontal: size(16),
             backgroundColor: '#353430',
             borderRadius: 999,
-            marginBottom: 40,
+            marginBottom: size(40),
           }}>
-          <Text style={{color: '#fff', fontSize: 15}}>{text1}</Text>
+          <Txt color={color_token.white} size={14}>
+            {text1}
+          </Txt>
         </View>
       ),
     }),
