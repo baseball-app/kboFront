@@ -1,13 +1,15 @@
 import React, {memo} from 'react'
-import {View, TouchableOpacity, Text, StyleSheet, Dimensions} from 'react-native'
+import {View, StyleSheet} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
-import {useAppRouter, ROUTES, Pressable} from '@/shared'
+import {useAppRouter, ROUTES, Pressable, size} from '@/shared'
 import {useLogout} from '@/features/auth/logout'
 import {useWithdraw} from '@/features/auth/withdraw'
 import {Config} from '@/config/Config'
 import Clipboard from '@react-native-clipboard/clipboard'
 import {usePushMessage} from '@/shared'
 import {usePopup} from '@/slice/commonSlice'
+import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 const AccountMenuWidget = () => {
   const router = useAppRouter()
@@ -36,8 +38,10 @@ const AccountMenuWidget = () => {
     <View style={styles.menuContainer}>
       {menuList.map(menu => (
         <Pressable key={menu.title} style={styles.menuItem} onPress={menu.onClick}>
-          <Text style={styles.menuText}>{menu.title}</Text>
-          <Ionicons name="chevron-forward" size={24} color="gray" />
+          <Txt size={16} weight="medium" color={color_token.gray900}>
+            {menu.title}
+          </Txt>
+          <Ionicons name="chevron-forward" size={size(24)} color={color_token.gray400} />
         </Pressable>
       ))}
     </View>
@@ -46,21 +50,17 @@ const AccountMenuWidget = () => {
 const styles = StyleSheet.create({
   menuContainer: {
     flex: 1,
-    backgroundColor: 'white',
-    paddingBottom: 70,
+    backgroundColor: color_token.white,
+    paddingBottom: size(70),
   },
   menuItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'white',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    marginVertical: 1,
-  },
-  menuText: {
-    fontSize: 16,
-    fontWeight: '500',
+    backgroundColor: color_token.white,
+    paddingVertical: size(16),
+    paddingHorizontal: size(24),
+    marginVertical: size(1),
   },
 })
 

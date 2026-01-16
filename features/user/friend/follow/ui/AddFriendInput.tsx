@@ -1,6 +1,9 @@
 import React, {useRef, useState} from 'react'
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {useFollowFriend} from '../model'
+import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
+import {Txt} from '@/shared/ui'
 
 const AddFriendInput = () => {
   const inputRef = useRef<TextInput>(null)
@@ -18,7 +21,7 @@ const AddFriendInput = () => {
         ref={inputRef}
       />
       <TouchableOpacity
-        style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: '#D0CEC7'}]} //
+        style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: color_token.gray350}]} //
         disabled={!inviteCode}
         onPress={() => {
           inputRef.current?.blur()
@@ -27,7 +30,9 @@ const AddFriendInput = () => {
               setInviteCode(undefined)
             })
         }}>
-        <Text style={[styles.inviteCodeInputButtonText, !inviteCode && {color: '#77756C'}]}>확인</Text>
+        <Txt size={14} weight="medium" color={!inviteCode ? color_token.gray350 : color_token.white}>
+          확인
+        </Txt>
       </TouchableOpacity>
     </View>
   )
@@ -35,35 +40,30 @@ const AddFriendInput = () => {
 
 const styles = StyleSheet.create({
   inviteCodeInputBox: {
-    marginHorizontal: 20,
-    marginTop: 14,
-    backgroundColor: '#F3F2EE',
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    paddingLeft: 16,
-    borderRadius: 10,
+    marginHorizontal: size(20),
+    marginTop: size(14),
+    backgroundColor: color_token.white,
+    paddingVertical: size(12),
+    paddingHorizontal: size(14),
+    paddingLeft: size(16),
+    borderRadius: size(10),
     borderWidth: 1,
-    borderColor: '#D0CEC7',
+    borderColor: color_token.gray350,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   inviteCodeInput: {
-    fontSize: 16,
+    fontSize: size(16),
     fontWeight: '400',
-    color: '#171716',
+    color: color_token.gray900,
     maxWidth: '60%',
   },
   inviteCodeInputButton: {
-    backgroundColor: '#1E5EF4',
-    paddingVertical: 5,
-    paddingHorizontal: 14,
-    borderRadius: 4,
-  },
-  inviteCodeInputButtonText: {
-    fontSize: 14,
-    lineHeight: 14 * 1.4,
-    color: '#FFFFFF',
+    backgroundColor: color_token.primary,
+    paddingVertical: size(5),
+    paddingHorizontal: size(14),
+    borderRadius: size(4),
   },
 })
 

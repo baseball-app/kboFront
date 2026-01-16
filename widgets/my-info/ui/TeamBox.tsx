@@ -1,8 +1,9 @@
-import {theme} from '@/constants/Colors'
-import {ROUTES, useAppRouter} from '@/shared'
+import {ROUTES, size, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import React from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native'
+import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 const TeamBox = () => {
   const router = useAppRouter()
@@ -11,7 +12,9 @@ const TeamBox = () => {
     <View style={styles.teamCard}>
       <View style={styles.teamInfo}>
         <Image source={profile.my_team?.logo} style={styles.teamLogo} resizeMode="contain" />
-        <Text style={styles.teamName}>{profile.my_team?.name}</Text>
+        <Txt size={16} weight="semibold" color={color_token.gray900}>
+          {profile.my_team?.name}
+        </Txt>
       </View>
 
       <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push(ROUTES.MY_CHANGE_TEAM)}>
@@ -28,39 +31,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: theme.colors.borderColor,
-    margin: 20,
-    marginBottom: 14,
-    padding: 15,
-    borderRadius: 10,
-    // width: 327,
-    height: 68,
+    backgroundColor: color_token.white,
+    borderWidth: size(1),
+    borderColor: color_token.gray350,
+    margin: size(20),
+    marginBottom: size(14),
+    padding: size(15),
+    borderRadius: size(10),
+    height: size(68),
   },
   teamInfo: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   teamLogo: {
-    width: 32,
-    height: 32,
-    marginRight: 10,
-  },
-  teamName: {
-    fontWeight: '600',
-    fontSize: 16,
+    width: size(32),
+    height: size(32),
+    marginRight: size(10),
   },
   teamSettingsIconBox: {
-    backgroundColor: '#00184F',
-    borderRadius: 50,
-    width: 26,
-    height: 26,
+    backgroundColor: color_token.secondary,
+    borderRadius: size(50),
+    width: size(26),
+    height: size(26),
     justifyContent: 'center',
     alignItems: 'center',
   },
   teamSettingsIcon: {
-    width: 16,
-    height: 16,
+    width: size(16),
+    height: size(16),
   },
 })

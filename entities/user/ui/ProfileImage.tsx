@@ -1,4 +1,6 @@
 import {Image, StyleSheet, View} from 'react-native'
+import {size} from '@/shared'
+import {color_token} from '@/constants/theme'
 
 const ProfileImage = ({source}: {source: any}) => {
   return (
@@ -12,18 +14,18 @@ export {ProfileImage}
 
 const styles = StyleSheet.create({
   profileImageBox: {
-    backgroundColor: '#F3F2EE',
-    width: 80,
-    height: 80,
-    borderRadius: 50,
-    marginRight: 18,
+    backgroundColor: color_token.gray200,
+    width: size(80),
+    height: size(80),
+    borderRadius: size(50),
+    marginRight: size(18),
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.8,
-    borderColor: '#D0CEC7',
+    borderColor: color_token.gray350,
   },
   profileImage: {
-    width: 46.44,
-    height: 50.58,
+    width: size(46.44),
+    height: size(50.58),
   },
 })

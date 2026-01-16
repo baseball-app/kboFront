@@ -1,26 +1,17 @@
 import React from 'react'
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
-  KeyboardAvoidingView,
-  ScrollView,
-  Dimensions,
-} from 'react-native'
+import {View, Image, StyleSheet, Platform, KeyboardAvoidingView, ScrollView, Dimensions} from 'react-native'
 import {theme} from '@/constants/Colors'
 import useMyInfo from '@/hooks/my/useMyInfo'
 
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {ROUTES, useAppRouter} from '@/shared'
+import {ROUTES, size, useAppRouter} from '@/shared'
 
 import {AccountMenuWidget} from '@/widgets/account-menu'
 import {ProfileBox, TeamBox} from '@/widgets/my-info'
 import {AddFriendInput} from '@/features/user/friend/follow'
 import {AlarmIcon} from '@/entities/alarm'
 import {color_token} from '@/constants/theme'
+import {Pressable, Txt} from '@/shared/ui'
 
 const ProfileScreen = () => {
   const {profile, onPasteInviteCode} = useMyInfo()
@@ -36,27 +27,27 @@ const ProfileScreen = () => {
           <View
             style={{
               backgroundColor: color_token.gray150,
-              paddingBottom: 32,
-              paddingTop: 12,
+              paddingBottom: size(32),
+              paddingTop: size(12),
               position: 'relative',
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              borderBottomStartRadius: 20,
-              borderBottomEndRadius: 20,
+              borderBottomLeftRadius: size(20),
+              borderBottomRightRadius: size(20),
+              borderBottomStartRadius: size(20),
+              borderBottomEndRadius: size(20),
               overflow: 'hidden',
             }}>
             <View
               style={{
-                paddingHorizontal: 24,
+                paddingHorizontal: size(24),
                 position: 'absolute',
-                top: 10,
+                top: size(10),
                 right: 0,
                 alignItems: 'flex-end',
-                paddingTop: 10,
+                paddingTop: size(10),
               }}>
               <AlarmIcon onPress={() => router.push(ROUTES.MY_ALARM)} />
             </View>
-            <View style={{height: 10}} />
+            <View style={{height: size(10)}} />
             {/* 프로필 박스 */}
             <ProfileBox />
             {/* 팀 박스 */}
@@ -97,12 +88,18 @@ const ProfileScreen = () => {
 
 const PressableButton = ({onPress, label, value}: {onPress: () => void; label: string; value: React.ReactNode}) => {
   return (
-    <TouchableOpacity activeOpacity={0.9} style={[styles.statItem, styles.statBox]} onPress={onPress}>
-      <View style={{gap: 10}}>
-        <Text style={styles.statLabel}>{label}</Text>
-        {typeof value === 'string' ? <Text style={styles.statValue}>{value}</Text> : value}
+    <Pressable style={[styles.statItem, styles.statBox]} onPress={onPress}>
+      <View>
+        <Txt>{label}</Txt>
+        {typeof value === 'string' ? (
+          <Txt size={22} weight="semibold" color={color_token.gray900}>
+            {value}
+          </Txt>
+        ) : (
+          value
+        )}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 
@@ -115,65 +112,26 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 20,
-    gap: 12,
+    marginHorizontal: size(20),
+    gap: size(12),
   },
   statItem: {
     flex: 1,
   },
   statBox: {
     backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 10,
+    padding: size(15),
+    borderRadius: size(10),
     width: '100%',
     borderWidth: 1,
     borderColor: theme.colors.borderColor,
   },
   statValue: {
-    fontSize: 22,
-    lineHeight: 22 * 1.4,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#171716',
+    marginBottom: size(4),
   },
   inviteCodeIcon: {
-    width: 32,
-    height: 32,
-  },
-  inviteCodeInputBox: {
-    marginHorizontal: 20,
-    marginTop: 14,
-    backgroundColor: '#F3F2EE',
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    paddingLeft: 16,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#D0CEC7',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  inviteCodeInput: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#171716',
-    maxWidth: '60%',
-  },
-  inviteCodeInputButton: {
-    backgroundColor: '#1E5EF4',
-    paddingVertical: 5,
-    paddingHorizontal: 14,
-    borderRadius: 4,
-  },
-  inviteCodeInputButtonText: {
-    fontSize: 14,
-    lineHeight: 14 * 1.4,
-    color: '#FFFFFF',
+    width: size(32),
+    height: size(32),
   },
 })
 

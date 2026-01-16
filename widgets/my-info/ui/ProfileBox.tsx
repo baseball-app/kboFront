@@ -1,8 +1,10 @@
 import {ProfileImage} from '@/entities/user'
-import {ROUTES, useAppRouter} from '@/shared'
+import {ROUTES, size, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import React from 'react'
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Pressable, Txt} from '@/shared/ui'
+import {color_token} from '@/constants/theme'
 
 const ProfileBox = () => {
   const router = useAppRouter()
@@ -11,21 +13,26 @@ const ProfileBox = () => {
   return (
     <View style={styles.profileHeader}>
       <ProfileImage source={profile.profile_image} />
-
       <View style={styles.profileInfoBox}>
         <View style={styles.profileInfo}>
-          <Text style={styles.profileName}>{profile?.nickname} 님</Text>
-          <TouchableOpacity onPress={() => router.push(ROUTES.MY_CHANGE_NICKNAME)}>
+          <Txt size={20} weight="bold">
+            {profile?.nickname} 님
+          </Txt>
+          <Pressable onPress={() => router.push(ROUTES.MY_CHANGE_NICKNAME)}>
             <Image
               source={require('@/assets/icons/edit_pen.png')}
               style={styles.profileEditIcon}
               resizeMode="contain"
             />
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <View style={styles.winRateContainer}>
-          <Text style={styles.winRateLabel}>승요력</Text>
-          <Text style={styles.winRateValue}>{profile?.predict_ratio}%</Text>
+          <Txt size={16} color={color_token.gray700}>
+            승요력
+          </Txt>
+          <Txt size={16} color={color_token.primary}>
+            {profile?.predict_ratio}%
+          </Txt>
         </View>
       </View>
     </View>
@@ -38,7 +45,7 @@ const styles = StyleSheet.create({
   profileHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
+    padding: size(20),
     paddingBottom: 0,
   },
   profileInfo: {
@@ -46,34 +53,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   profileInfoBox: {
-    gap: 10,
+    gap: size(4),
     justifyContent: 'center',
-
     flexDirection: 'column',
   },
-  profileName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginRight: 4,
-  },
   profileEditIcon: {
-    width: 18,
-    height: 18,
+    width: size(18),
+    height: size(18),
   },
   winRateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  winRateLabel: {
-    fontSize: 16,
-    marginRight: 3,
-    lineHeight: 16 * 1.4,
-    color: 'gray',
-  },
-  winRateValue: {
-    fontSize: 16,
-    lineHeight: 16 * 1.4,
-    color: '#2D68FF', // Blue color for the percentage
-    // fontWeight: "bold",
+    gap: size(2),
   },
 })
