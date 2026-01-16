@@ -1,15 +1,19 @@
 import React from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {Image, StyleSheet} from 'react-native'
 import {useKakaoLogin} from '../model'
+import {Txt} from '@/shared/ui/Txt'
+import {Pressable, size} from '@/shared'
 
 const KakaoLoginButton = () => {
   const {onPressButton} = useKakaoLogin()
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPressButton}>
+    <Pressable style={styles.button} onPress={onPressButton}>
       <Image source={require('@/assets/icons/kakao.png')} style={[styles.loginIcon]} />
-      <Text style={styles.text}>카카오로 시작하기</Text>
-    </TouchableOpacity>
+      <Txt size={15} weight="semibold" color={'#191919'} style={styles.text}>
+        카카오로 시작하기
+      </Txt>
+    </Pressable>
   )
 }
 
@@ -19,22 +23,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
+    paddingVertical: size(12),
+    paddingHorizontal: size(20),
+    borderRadius: size(8),
     width: '100%',
-    height: 50,
+    height: size(50),
   },
   text: {
-    color: '#191919',
-    fontSize: 15,
-    fontWeight: 600,
-    marginLeft: 8,
+    marginLeft: size(8),
   },
   loginIcon: {
-    marginRight: 4,
-    width: 14,
-    height: 14,
+    marginRight: size(4),
+    width: size(14),
+    height: size(14),
   },
 })
 

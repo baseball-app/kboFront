@@ -1,15 +1,20 @@
 import React from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {Image, Pressable, StyleSheet, Text, TouchableOpacity} from 'react-native'
 import {useNaverLogin} from '../model'
+import {Txt} from '@/shared/ui/Txt'
+import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
 
 const NaverLoginButton = () => {
   const {onPressButton} = useNaverLogin()
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPressButton}>
+    <Pressable style={styles.button} onPress={onPressButton}>
       <Image source={require('@/assets/icons/naver.png')} style={[styles.loginIcon]} />
-      <Text style={styles.text}>네이버로 시작하기</Text>
-    </TouchableOpacity>
+      <Txt size={15} weight="semibold" color={color_token.white} style={styles.text}>
+        네이버로 시작하기
+      </Txt>
+    </Pressable>
   )
 }
 
@@ -19,22 +24,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    height: 50,
+    paddingVertical: size(12),
+    paddingHorizontal: size(20),
+    borderRadius: size(8),
+    height: size(50),
     width: '100%',
   },
   text: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: 600,
-    marginLeft: 8,
+    marginLeft: size(8),
   },
   loginIcon: {
-    marginRight: 4,
-    width: 14,
-    height: 14,
+    marginRight: size(4),
+    width: size(14),
+    height: size(14),
   },
 })
 

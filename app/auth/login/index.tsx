@@ -3,6 +3,8 @@ import {StyleSheet, View, Text, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {AppleLoginButton, KakaoLoginButton, NaverLoginButton} from '@/features/auth/login'
 import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
+import {Txt} from '@/shared/ui/Txt'
 
 export default function LoginScreen() {
   return (
@@ -12,7 +14,9 @@ export default function LoginScreen() {
           <View style={styles.topContent}>
             <Image source={require('@/assets/images/landing-logo.png')} style={styles.icon} resizeMode="contain" />
             <Image source={require('@/assets/images/title.png')} style={styles.titleImage} resizeMode="contain" />
-            <Text style={styles.subtitle}>반가워요! 오늘의 야구와 함께{'\n'}내가 응원하는 구단을 기록해보세요</Text>
+            <Txt size={16} color={color_token.gray600} style={styles.subtitle}>
+              반가워요! 오늘의 야구와 함께{'\n'}내가 응원하는 구단을 기록해보세요
+            </Txt>
           </View>
 
           <View style={styles.bottomContent}>
@@ -41,33 +45,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   bottomContent: {
-    marginHorizontal: 24,
-    paddingBottom: 24,
+    marginHorizontal: size(24),
+    paddingBottom: size(24),
     justifyContent: 'center',
-    // width: '100%',
     alignItems: 'center',
-    gap: 12,
+    gap: size(12),
   },
   icon: {
-    width: 173,
-    height: 147,
-    marginBottom: 40,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    width: size(173),
+    height: size(147),
+    marginBottom: size(40),
   },
   subtitle: {
-    fontSize: 16,
     textAlign: 'center',
-    lineHeight: 16 * 1.4,
-    color: '#77756C',
-    fontWeight: 400,
   },
-
   titleImage: {
-    width: 140,
-    marginBottom: 20,
+    width: size(140),
+    marginBottom: size(20),
   },
 })

@@ -1,6 +1,10 @@
 import React from 'react'
 import {Image, Platform, StyleSheet, Text, TouchableOpacity} from 'react-native'
 import {useAppleLogin} from '../model'
+import {Pressable} from '@/shared'
+import {size} from '@/shared'
+import {Txt} from '@/shared/ui/Txt'
+import {color_token} from '@/constants/theme'
 
 const AppleLoginButton = () => {
   const {onPressButton} = useAppleLogin()
@@ -8,10 +12,15 @@ const AppleLoginButton = () => {
   if (Platform.OS !== 'ios') return null
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPressButton}>
-      <Image source={require('@/assets/icons/apple.png')} style={[styles.loginIcon, {height: 18, marginBottom: 2}]} />
-      <Text style={styles.text}>Apple로 시작하기</Text>
-    </TouchableOpacity>
+    <Pressable style={styles.button} onPress={onPressButton}>
+      <Image
+        source={require('@/assets/icons/apple.png')}
+        style={[styles.loginIcon, {height: size(18), marginBottom: size(2)}]}
+      />
+      <Txt size={15} weight="semibold" color={color_token.white} style={styles.text}>
+        Apple로 시작하기
+      </Txt>
+    </Pressable>
   )
 }
 const styles = StyleSheet.create({
@@ -20,22 +29,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
+    paddingVertical: size(12),
+    paddingHorizontal: size(20),
+    borderRadius: size(8),
     width: '100%',
-    height: 50,
+    height: size(50),
   },
   loginIcon: {
-    marginRight: 4,
-    width: 14,
-    height: 14,
+    marginRight: size(4),
+    width: size(14),
+    height: size(14),
   },
   text: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: '600',
-    marginLeft: 8,
+    marginLeft: size(8),
   },
 })
 export {AppleLoginButton}
