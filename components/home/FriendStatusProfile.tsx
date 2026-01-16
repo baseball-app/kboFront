@@ -1,7 +1,9 @@
 import {findProfileImageById} from '@/constants/join'
 import {color_token} from '@/constants/theme'
 import {FriendStatus} from '@/hooks/my/useFriends'
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Pressable, size} from '@/shared'
+import {Txt} from '@/shared/ui/Txt'
+import {Image, StyleSheet, View} from 'react-native'
 
 type Props = {
   friendStatus: FriendStatus
@@ -34,21 +36,24 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
   const getStyle = () => {
     switch (type) {
       case 'CHOICE':
-        return {}
+        return {
+          borderWidth: 2,
+          borderColor: color_token.primary,
+        }
       case 'OTHER':
         return {
           borderWidth: 1,
-          borderColor: '#D0CEC7',
+          borderColor: color_token.gray350,
         }
       case 'HAS_TICKET':
         return {
           borderWidth: 2,
-          borderColor: '#21376C',
+          borderColor: color_token.secondary_10,
         }
       default:
         return {
           borderWidth: 1,
-          borderColor: '#D0CEC7',
+          borderColor: color_token.gray350,
         }
     }
   }
@@ -57,25 +62,22 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
     switch (type) {
       case 'CHOICE':
         return {
-          color: '#21376C',
+          color: color_token.primary,
           fontWeight: 700 as const,
         }
       case 'OTHER':
         return {
-          color: '#77756C',
+          color: color_token.gray900,
         }
       case 'HAS_TICKET':
         return {
-          color: '#77756C',
+          color: color_token.gray900,
         }
     }
   }
 
   return (
-    <TouchableOpacity
-      onPress={onClick}
-      activeOpacity={0.9} //
-      style={styles.friendItem}>
+    <Pressable onPress={onClick} style={styles.friendItem}>
       <View
         style={[
           styles.profileImageBox, //
@@ -90,10 +92,10 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
           <Image source={require('@/assets/icons/myHome.png')} style={styles.myHomeImage} resizeMode="contain" />
         )}
       </View>
-      <Text style={[styles.friendName, getTextColor(), isMyProfile && {fontWeight: 500}]} numberOfLines={1}>
+      <Txt size={13} style={[getTextColor(), isMyProfile && {fontWeight: 500}]} numberOfLines={1}>
         {friendStatus.nickname}
-      </Text>
-    </TouchableOpacity>
+      </Txt>
+    </Pressable>
   )
 }
 
@@ -102,9 +104,9 @@ export default FriendStatusProfile
 const styles = StyleSheet.create({
   profileImageBox: {
     backgroundColor: color_token.gray150,
-    width: 50,
-    height: 50,
-    borderRadius: 50,
+    width: size(50),
+    height: size(50),
+    borderRadius: size(50),
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
@@ -115,21 +117,15 @@ const styles = StyleSheet.create({
     borderColor: color_token.secondary_10,
   },
   profileImage: {
-    width: 30,
-    height: 30,
+    width: size(27),
+    height: size(27),
   },
   myHomeImage: {
-    width: 16,
-    height: 16,
+    width: size(16),
+    height: size(16),
     position: 'absolute',
     bottom: -2,
     right: -2,
-  },
-  friendName: {
-    fontSize: 13,
-    color: '#171716',
-    maxWidth: 60,
-    fontWeight: 400,
   },
   friendItem: {
     display: 'flex',

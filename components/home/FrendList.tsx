@@ -7,7 +7,8 @@ import {usePathname} from 'expo-router'
 import Skeleton from '../skeleton/Skeleton'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
-import {ROUTES, useAppRouter} from '@/shared'
+import {ROUTES, size, useAppRouter} from '@/shared'
+import {color_token} from '@/constants/theme'
 
 const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; userId: number | null}) => {
   const {friend_status, isLoadingFriendStatus} = useFriends()
@@ -64,21 +65,21 @@ const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; u
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    borderBottomColor: '#E4E2DC',
+    backgroundColor: color_token.white,
+    paddingVertical: size(10),
+    borderBottomColor: color_token.gray300,
     borderBottomWidth: 1,
-    paddingRight: 20,
+    paddingRight: size(20),
   },
   friendItem: {
-    marginLeft: 20,
+    marginLeft: size(20),
   },
 })
 
 const LoadingFriendList = memo(() => {
   return (
-    <View style={{flexDirection: 'row', gap: 20, marginLeft: 20}}>
-      <View style={{gap: 10}}>
+    <View style={{flexDirection: 'row', gap: size(20), marginLeft: size(20)}}>
+      <View style={{gap: size(12)}}>
         <Skeleton height={50} width={50} type="circle" />
         <Skeleton height={15} width={50} />
       </View>

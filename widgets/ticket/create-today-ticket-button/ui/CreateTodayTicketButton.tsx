@@ -5,7 +5,7 @@ import {usePopup} from '@/slice/commonSlice'
 import {useNavigateWriteTicket} from '@/features/match/navigate-write-ticket'
 import {useAnalyticsStore} from '@/analytics/event'
 import {Image, StyleSheet} from 'react-native'
-import {Pressable} from '@/shared'
+import {Pressable, size} from '@/shared'
 
 const CreateTodayTicketButton = () => {
   const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()})
@@ -33,8 +33,8 @@ const CreateTodayTicketButton = () => {
         source={require('@/assets/icons/write.png')}
         resizeMode="contain"
         style={{
-          width: 24,
-          height: 24,
+          width: size(24),
+          height: size(24),
         }}
       />
     </Pressable>
@@ -45,12 +45,12 @@ const styles = StyleSheet.create({
   /* Floating Button */
   floatingButton: {
     position: 'absolute',
-    right: 20,
-    bottom: 20,
-    width: 48,
-    height: 48,
+    right: size(20),
+    bottom: size(20),
+    width: size(48),
+    height: size(48),
     backgroundColor: '#353430',
-    borderRadius: 28,
+    borderRadius: size(28),
     justifyContent: 'center',
     alignItems: 'center',
 

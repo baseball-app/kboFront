@@ -3,16 +3,17 @@ import {DAYS_OF_WEEK} from '@/constants/day'
 import {Ionicons} from '@expo/vector-icons'
 import dayjs from 'dayjs'
 import React, {memo, useMemo, useState} from 'react'
-import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native'
 import {TicketCalendarLog} from './type'
 import {CALENDAR_END_DATE, CALENDAR_START_DATE} from '@/constants/day'
 import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
-import {groupBy} from '@/shared'
+import {groupBy, size} from '@/shared'
 import LottieView from 'lottie-react-native'
 
-import {BottomSheet} from '@/shared/ui'
+import {BottomSheet, Button, Txt} from '@/shared/ui'
 import WheelPicker2 from '@/components/WheelPicker2'
+import {color_token} from '@/constants/theme'
 
 type Props = {
   date: Date
@@ -51,8 +52,8 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
           autoPlay
           loop
           style={{
-            width: 100,
-            height: 100,
+            width: size(100),
+            height: size(100),
             position: 'absolute',
             top: '50%',
             left: '50%',
@@ -64,8 +65,10 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
       )}
       <View style={styles.header}>
         <TouchableOpacity style={styles.headerTextContainer} onPress={() => setIsModalVisible(true)}>
-          <Text style={styles.headerText}>{dayjs(date).format('YYYY.MM')}</Text>
-          <Ionicons name="chevron-down" size={24} color="black" />
+          <Txt size={20} weight="semibold" color={color_token.gray900}>
+            {dayjs(date).format('YYYY.MM')}
+          </Txt>
+          <Ionicons name="chevron-down" size={24} color={color_token.gray900} />
         </TouchableOpacity>
       </View>
       <CalendarHeader />
@@ -96,11 +99,14 @@ const CalendarHeader = memo(() => {
   return (
     <View style={styles.daysOfWeekContainer}>
       {DAYS_OF_WEEK.map((day, index) => (
-        <Text
+        <Txt
+          size={13}
           key={index}
+          weight="medium"
+          color={color_token.gray900}
           style={[styles.dayOfWeekText, index === 0 && {color: '#FF0000'}, index === 6 && {color: '#1E5EF4'}]}>
           {day}
-        </Text>
+        </Txt>
       ))}
     </View>
   )
@@ -130,7 +136,9 @@ const YearMonthPicker = ({
   return (
     <BottomSheet isOpen={open} duration={350} height={320}>
       <View style={styles.modalContent}>
-        <Text style={styles.modalTitle}>원하시는 날짜를 선택해주세요</Text>
+        <Txt size={16} weight="bold" color={color_token.gray900} style={styles.modalTitle}>
+          원하시는 날짜를 선택해주세요
+        </Txt>
         <View style={styles.datePickerContainer}>
           <WheelPicker2
             itemHeight={50}
@@ -152,16 +160,17 @@ const YearMonthPicker = ({
           />
         </View>
         <View style={styles.buttonBox}>
-          <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-            <Text style={styles.cancelText}>취소</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.confirmButton}
+          <Button type="gray" onPress={onCancel} style={{flex: 1}}>
+            취소
+          </Button>
+          <Button
+            type="primary"
+            style={{flex: 1}}
             onPress={() => {
               onConfirm(dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`).toDate())
             }}>
-            <Text style={styles.confirmText}>완료</Text>
-          </TouchableOpacity>
+            완료
+          </Button>
         </View>
       </View>
     </BottomSheet>
@@ -214,7 +223,13 @@ const RenderDays = memo(
                 // styles.selectedDay,
                 {height: 80},
               ]}>
-              <Text style={[styles.dayText, isToday && styles.today]}>{dayjs(day).format('D')}</Text>
+              <Txt
+                size={12}
+                weight="medium"
+                color={isSameMonth ? color_token.gray600 : color_token.gray400}
+                style={[styles.dayText, isToday && styles.today]}>
+                {dayjs(day).format('D')}
+              </Txt>
               <MatchResultCell
                 isLoading={isLoading}
                 onPress={() => {
@@ -248,26 +263,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center', // Center the text and icon
   },
-  headerText: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginRight: 8, // Add some space between the text and the icon
-  },
-  navButton: {
-    fontSize: 24,
-    color: 'black',
-  },
   daysOfWeekContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: 12,
+    paddingVertical: size(12),
   },
   dayOfWeekText: {
     width: '14.28%',
     textAlign: 'center',
-    fontWeight: 500,
-    fontSize: 13,
-    lineHeight: 13 * 1.4,
   },
   daysContainer: {
     flexDirection: 'row',
@@ -277,111 +280,47 @@ const styles = StyleSheet.create({
   day: {
     width: '14.28%',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: size(10),
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderColor: 'transparent',
-    paddingTop: 2,
+    paddingTop: size(2),
   },
   dayText: {
-    fontSize: 12,
-    lineHeight: 16.8,
-    marginBottom: 2,
-    fontWeight: 500,
-    color: '#77756C',
+    marginBottom: size(2),
   },
-  inactiveDay: {
-    opacity: 0.5,
-  },
+  inactiveDay: {},
   today: {
-    borderRadius: 10,
-    backgroundColor: '#000000',
-    color: 'white',
-    width: 30,
+    borderRadius: size(10),
+    backgroundColor: color_token.black,
+    color: color_token.white,
+    width: size(30),
     textAlign: 'center',
   },
   selectedDay: {
-    borderColor: '#95938B',
-  },
-  moodContainer: {
-    width: 28,
-    height: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-    marginBottom: 4,
+    borderColor: color_token.gray500,
   },
   datePickerContainer: {
     flexDirection: 'row',
-    // height: 134,
     overflow: 'hidden',
-  },
-  picker: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  pickerItem: {
-    fontSize: 24,
-    backgroundColor: '#fff',
-  },
-  moodIcon: {
-    fontSize: 24,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
   },
   modalContent: {
     width: '100%',
-    padding: 24,
-    backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    padding: size(24),
+    backgroundColor: color_token.white,
+    borderTopLeftRadius: size(20),
+    borderTopRightRadius: size(20),
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-  },
-  modalTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginBottom: 16,
   },
   buttonBox: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 13,
-    marginTop: 30,
-    marginBottom: 16,
+    gap: size(13),
+    marginTop: size(30),
+    marginBottom: size(16),
   },
-  confirmButton: {
-    flex: 1,
-    height: 46,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#1E5EF4',
-  },
-  confirmText: {
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
-    color: '#fff',
-  },
-  cancelButton: {
-    flex: 1,
-    height: 46,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#D0CEC7',
-  },
-  cancelText: {
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
-    color: '#000',
+  modalTitle: {
+    marginBottom: size(16),
   },
 })

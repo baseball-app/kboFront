@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react'
 import {View, StyleSheet, DimensionValue, Animated} from 'react-native'
+import {size} from '@/shared'
 
 type SkeletonProps = {
   width: DimensionValue
@@ -38,7 +39,11 @@ const Skeleton = ({width, height, type = 'rect'}: SkeletonProps) => {
 
   return (
     <Animated.View
-      style={[styles.container, {width, height, borderRadius: type === 'circle' ? 9999 : 10}, {opacity: opacityAnim}]}
+      style={[
+        styles.container,
+        {width: width, height: height, borderRadius: type === 'circle' ? size(9999) : size(10)},
+        {opacity: opacityAnim},
+      ]}
     />
   )
 }
@@ -46,9 +51,9 @@ const Skeleton = ({width, height, type = 'rect'}: SkeletonProps) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 100,
+    height: size(100),
     backgroundColor: '#E4E2DC',
-    borderRadius: 10,
+    borderRadius: size(10),
   },
 })
 

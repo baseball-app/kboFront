@@ -10,6 +10,8 @@ import {TodayMatch} from '@/widgets'
 import {MatchCalendarTitle} from '@/entities/match'
 import {CreateTodayTicketButton} from '@/widgets/ticket/create-today-ticket-button'
 import {useIsFocused} from '@react-navigation/native'
+import {size} from '@/shared'
+import {color_token} from '@/constants/theme'
 
 const CalendarScreen = () => {
   const {profile} = useProfile()
@@ -40,7 +42,7 @@ const CalendarScreen = () => {
       <InitScrollProvider style={styles.scollContainer}>
         <MatchCalendarTitle selectedUserName={selectedUserName} />
         <TodayMatch />
-        <View style={{marginBottom: 70}}>
+        <View style={{marginBottom: size(70)}}>
           <CalendarContainer targetId={userId || profile.id!} />
         </View>
       </InitScrollProvider>
@@ -54,12 +56,12 @@ const CalendarScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: color_token.white,
   },
   scollContainer: {
     flex: 1,
-    backgroundColor: '#fcfcfc',
-    padding: 24,
+    backgroundColor: color_token.gray100,
+    padding: size(24),
   },
 })
 

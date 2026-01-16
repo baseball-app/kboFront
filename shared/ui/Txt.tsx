@@ -1,6 +1,7 @@
 import {color_token} from '@/constants/theme'
 import React, {memo} from 'react'
 import {Text, TextStyle, StyleProp} from 'react-native'
+import {size as scaleSize} from '..'
 
 const fontWeight = {
   light: 300,
@@ -12,7 +13,9 @@ const fontWeight = {
 } as const
 
 const fontSize = {
+  10: 10,
   12: 12,
+  13: 13,
   14: 14,
   15: 15,
   16: 16,
@@ -33,17 +36,24 @@ interface TxtProps {
   style?: StyleProp<TextStyle>
   color?: string
   children?: React.ReactNode
+  numberOfLines?: number
 }
 
-const Txt = memo(({weight = 'regular', color = color_token.gray900, size = 16, style, children}: TxtProps) => {
-  const textStyle: TextStyle = {
-    fontWeight: fontWeight[weight],
-    fontSize: fontSize[size],
-    lineHeight: fontSize[size] * 1.4,
-    color,
-  }
+const Txt = memo(
+  ({weight = 'regular', color = color_token.gray900, size = 16, style, children, numberOfLines}: TxtProps) => {
+    const textStyle: TextStyle = {
+      fontWeight: fontWeight[weight],
+      fontSize: scaleSize(fontSize[size]),
+      lineHeight: fontSize[size] * 1.4,
+      color,
+    }
 
-  return <Text style={[textStyle, style]}>{children}</Text>
-})
+    return (
+      <Text style={[textStyle, style]} numberOfLines={numberOfLines}>
+        {children}
+      </Text>
+    )
+  },
+)
 
 export {Txt}
