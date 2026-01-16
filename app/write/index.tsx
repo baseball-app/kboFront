@@ -4,11 +4,12 @@ import QuestionBox from '@/components/home/QuestionBox'
 import useWriteTicket from '@/hooks/match/useWriteTicket'
 import {useLocalSearchParams} from 'expo-router'
 import React, {useEffect, useMemo, useState} from 'react'
-import {StyleSheet, ScrollView, Image, Text, TouchableOpacity, View} from 'react-native'
+import {StyleSheet, ScrollView, Image, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
-import {ROUTES, useAppRouter} from '@/shared'
+import {ROUTES, size, useAppRouter} from '@/shared'
 import {Match, MatchCard, useMatch} from '@/entities/match'
 import {color_token} from '@/constants/theme'
+import {BackButton, Txt} from '@/shared/ui'
 
 /** 경기 결과 목업데이터 */
 const matchResult = [
@@ -155,24 +156,25 @@ const DailyLogWriteScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <View style={{position: 'relative'}}>
+      <View style={styles.headerContainer}>
         <Header
           leftButton={{
-            content: <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />,
-            onPress: goToPreviousStep,
+            content: <BackButton onPress={goToPreviousStep} />,
           }}
         />
         <Progress current={currentStep} max={3} />
       </View>
       {currentStep === 1 && (
         <ScrollView style={styles.scrollContainer}>
-          <Text style={styles.title}>경기 일정을{'\n'}선택해주세요</Text>
+          <Txt size={24} weight="semibold" color={color_token.gray900} style={styles.title}>
+            경기 일정을{'\n'}선택해주세요
+          </Txt>
           <View style={styles.matchListBox}>
             {matchingList.length > 0 ? (
               <>
                 {matchingList.map(match => (
                   <MatchCard
-                    key={match.id} //
+                    key={match.id}
                     isSelected={selectedMatch?.id === match.id}
                     match={match}
                     onClick={() => {
@@ -183,15 +185,21 @@ const DailyLogWriteScreen = () => {
                 ))}
                 <View style={styles.doubleHeaderBox}>
                   <TouchableOpacity onPress={onClickDoubleHeaderMatch} style={styles.doubleHeaderButton}>
-                    <Text style={styles.doubleHeaderText}>더블헤더 작성하기</Text>
+                    <Txt size={16} weight="medium" color={color_token.white}>
+                      더블헤더 작성하기
+                    </Txt>
                   </TouchableOpacity>
                 </View>
               </>
             ) : (
               <View style={styles.noMatchBox}>
-                <Text style={[styles.noMatchText, {marginBottom: 24}]}>경기 일정이 없어요.</Text>
+                <Txt size={16} color={color_token.black} style={styles.noMatchText}>
+                  경기 일정이 없어요.
+                </Txt>
                 <TouchableOpacity onPress={nextButtonClick} style={styles.doubleHeaderButton}>
-                  <Text style={styles.doubleHeaderText}>직접 추가하기</Text>
+                  <Txt size={16} weight="medium" color={color_token.white}>
+                    직접 추가하기
+                  </Txt>
                 </TouchableOpacity>
               </View>
             )}
@@ -218,10 +226,9 @@ const DailyLogWriteScreen = () => {
       )}
       {currentStep === 3 && (
         <View style={styles.viewContainer}>
-          <Text style={styles.title}>
-            어디서
-            {'\n'}경기를 보셨나요?
-          </Text>
+          <Txt size={24} weight="semibold" color={color_token.gray900} style={styles.title}>
+            어디서{'\n'}경기를 보셨나요?
+          </Txt>
           <TouchableOpacity onPress={() => onPlaceClick('직관')} activeOpacity={1}>
             <View style={selectedPlace === '직관' ? styles.selectButton : styles.defaultSelectButton}>
               <Image
@@ -230,9 +237,11 @@ const DailyLogWriteScreen = () => {
                     ? require('@/assets/icons/round-check-active.png')
                     : require('@/assets/icons/round-check.png')
                 }
-                style={[{width: 24, height: 24}, selectedPlace === '직관' ? styles.roundCheck : {}]}
+                style={[styles.checkboxImage, selectedPlace === '직관' ? styles.roundCheck : {}]}
               />
-              <Text style={styles.placeText}>직관</Text>
+              <Txt size={20} weight="semibold">
+                직관
+              </Txt>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => onPlaceClick('집관')} activeOpacity={1}>
@@ -243,23 +252,29 @@ const DailyLogWriteScreen = () => {
                     ? require('@/assets/icons/round-check-active.png')
                     : require('@/assets/icons/round-check.png')
                 }
-                style={[{width: 24, height: 24}, selectedPlace === '집관' ? styles.roundCheck : {}]}
+                style={[styles.checkboxImage, selectedPlace === '집관' ? styles.roundCheck : {}]}
               />
-              <Text style={styles.placeText}>집관</Text>
+              <Txt size={20} weight="semibold">
+                집관
+              </Txt>
             </View>
           </TouchableOpacity>
         </View>
       )}
       {currentStep === 3 || autoSkipToNext[currentStep] ? (
-        <View style={[styles.buttonBox, {paddingBottom: 16 + insets.bottom}]}>
+        <View style={[styles.buttonBox, {paddingBottom: size(16) + insets.bottom}]}>
           <TouchableOpacity
             activeOpacity={1}
-            style={[{justifyContent: 'center'}, nextButtonEnabled ? styles.nextButton : styles.nextDisabledButton]}
+            style={[styles.buttonCenter, nextButtonEnabled ? styles.nextButton : styles.nextDisabledButton]}
             onPress={nextButtonClick}
             disabled={!nextButtonEnabled}>
-            <Text style={nextButtonEnabled ? styles.buttonText : styles.buttonDisabledText}>
+            <Txt
+              size={16}
+              weight="semibold"
+              color={nextButtonEnabled ? color_token.white : color_token.gray600}
+              style={styles.buttonTextCenter}>
               {currentStep !== 3 ? '다음' : '오늘의 티켓 만들기'}
-            </Text>
+            </Txt>
           </TouchableOpacity>
         </View>
       ) : null}
@@ -272,105 +287,59 @@ export default DailyLogWriteScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: color_token.white,
+  },
+  headerContainer: {
+    position: 'relative',
   },
   scrollContainer: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 45,
+    paddingHorizontal: size(24),
+    paddingTop: size(32),
+    paddingBottom: size(45),
     backgroundColor: color_token.gray100,
   },
   viewContainer: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 45,
-    gap: 20,
+    paddingHorizontal: size(24),
+    paddingTop: size(32),
+    paddingBottom: size(45),
+    gap: size(20),
     flexDirection: 'column',
     backgroundColor: color_token.gray100,
   },
-  stepHeaderBox: {
-    paddingVertical: 11,
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'relative',
-    backgroundColor: 'white',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    lineHeight: 33.6,
-    color: '#171716',
-  },
+  title: {},
   matchListBox: {
     flexDirection: 'column',
-    marginTop: 28,
-    gap: 20,
-    marginBottom: 40,
-  },
-  linkBox: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingTop: 28,
-    paddingBottom: 28,
-    alignItems: 'center',
+    marginTop: size(28),
+    gap: size(20),
+    marginBottom: size(40),
   },
   doubleHeaderButton: {
-    backgroundColor: '#353430',
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 99,
-  },
-  doubleHeaderText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 500,
-    lineHeight: 16 * 1.4,
+    backgroundColor: color_token.gray800,
+    paddingVertical: size(10),
+    paddingHorizontal: size(24),
+    borderRadius: size(99),
   },
   nextButton: {
-    backgroundColor: '#1E5EF4',
+    backgroundColor: color_token.primary,
     textAlign: 'center',
-    paddingVertical: 14,
-    borderRadius: 10,
-    height: 50,
+    paddingVertical: size(14),
+    borderRadius: size(10),
+    height: size(50),
   },
   nextDisabledButton: {
-    backgroundColor: '#E4E2DC',
+    backgroundColor: color_token.gray300,
     textAlign: 'center',
-    paddingVertical: 14,
-    borderRadius: 10,
-    height: 50,
+    paddingVertical: size(14),
+    borderRadius: size(10),
+    height: size(50),
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+  buttonCenter: {
+    justifyContent: 'center',
+  },
+  buttonTextCenter: {
     textAlign: 'center',
-  },
-  buttonDisabledText: {
-    color: '#77756C',
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  linkTextButton: {
-    marginLeft: 1,
-  },
-  linkText: {
-    color: 'blue',
-    textDecorationLine: 'underline',
-  },
-  progressBarContainer: {
-    width: '100%',
-    height: 4,
-    backgroundColor: '#E4E2DC',
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: '#1E5EF4',
   },
   backImage: {
     width: 16,
@@ -378,58 +347,54 @@ const styles = StyleSheet.create({
   },
   buttonBox: {
     width: '100%',
-    paddingHorizontal: 24,
-    backgroundColor: '#fcfcfc',
+    paddingHorizontal: size(24),
+    backgroundColor: color_token.gray100,
   },
   selectButton: {
     width: '100%',
-    paddingVertical: 14,
-    borderRadius: 10,
-    paddingHorizontal: 10,
+    paddingVertical: size(14),
+    borderRadius: size(10),
+    paddingHorizontal: size(10),
     borderWidth: 1,
-    borderColor: '#353430',
-    backgroundColor: 'white',
+    borderColor: color_token.gray800,
+    backgroundColor: color_token.white,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: size(6),
   },
   defaultSelectButton: {
     width: '100%',
-    paddingVertical: 14,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    backgroundColor: '#F3F2EE',
+    paddingVertical: size(14),
+    borderRadius: size(10),
+    paddingHorizontal: size(10),
+    backgroundColor: color_token.gray150,
     borderWidth: 1,
-    borderColor: '#E4E2DC',
+    borderColor: color_token.gray300,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: size(6),
   },
-  placeText: {
-    fontWeight: 600,
-    fontSize: 20,
-    lineHeight: 28,
+  checkboxImage: {
+    width: size(24),
+    height: size(24),
   },
   roundCheck: {
-    tintColor: '#000',
+    tintColor: color_token.black,
   },
   doubleHeaderBox: {
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 40,
+    marginTop: size(20),
+    marginBottom: size(40),
   },
   noMatchText: {
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 16 * 1.4,
-    color: '#000000',
+    marginBottom: size(24),
   },
   noMatchBox: {
     alignItems: 'center',
     backgroundColor: color_token.white,
     borderColor: color_token.gray300,
     borderWidth: 1,
-    borderRadius: 10,
-    paddingVertical: 40,
+    borderRadius: size(10),
+    paddingVertical: size(40),
   },
 })

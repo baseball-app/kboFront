@@ -1,10 +1,11 @@
 import Header from '@/components/common/Header'
-import {useAppRouter} from '@/shared'
+import {size, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import React, {useState} from 'react'
-import {KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 const ChangeNicknameScreen = () => {
   const {updateProfile, profile} = useProfile()
@@ -22,16 +23,20 @@ const ChangeNicknameScreen = () => {
               value={nickname}
               onChangeText={setNickname}
               placeholder="닉네임 입력"
-              placeholderTextColor="#CCCCCC"
+              placeholderTextColor={color_token.gray400}
               maxLength={10}
             />
             <View style={[styles.inputUnderline, nickname ? styles.inputUnderlineActive : null]} />
-            <Text style={styles.subtitle}>* 한글/영어/숫자/밑줄/띄어쓰기를 사용할 수 있습니다.</Text>
+            <Txt size={14} color={color_token.gray600} style={styles.subtitle}>
+              * 한글/영어/숫자/밑줄/띄어쓰기를 사용할 수 있습니다.
+            </Txt>
             <TouchableOpacity
               style={[styles.button, nickname ? styles.buttonActive : null]}
               onPress={() => updateProfile({nickname}).then(router.back)}
               disabled={!nickname}>
-              <Text style={styles.buttonText}>변경하기</Text>
+              <Txt size={18} weight="bold" color={color_token.white}>
+                변경하기
+              </Txt>
             </TouchableOpacity>
           </View>
         </View>
@@ -52,67 +57,37 @@ const styles = StyleSheet.create({
   },
   inputSection: {
     flex: 1,
-    padding: 20,
-  },
-  header: {
-    paddingHorizontal: 24,
-    flexDirection: 'row',
-  },
-  backButton: {
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    padding: size(20),
   },
   subtitle: {
-    fontSize: 14,
-    color: '#77756C',
-    marginTop: 16,
+    marginTop: size(16),
   },
   inputContainer: {
-    marginTop: 20,
+    marginTop: size(20),
   },
   input: {
     fontSize: 18,
-    paddingVertical: 8,
+    paddingVertical: size(8),
     lineHeight: 24,
-    color: '#171716',
+    color: color_token.gray900,
     textAlign: 'center',
   },
   inputUnderline: {
     height: 2,
-    backgroundColor: '#CCCCCC',
-    marginTop: 4,
+    backgroundColor: color_token.gray400,
+    marginTop: size(4),
   },
   inputUnderlineActive: {
-    backgroundColor: '#171716',
-  },
-  buttonContainer: {
-    padding: 20,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 40, // Extra padding for Android
+    backgroundColor: color_token.gray900,
   },
   button: {
-    backgroundColor: '#ccc',
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: color_token.gray400,
+    padding: size(15),
+    borderRadius: size(10),
     alignItems: 'center',
-    marginTop: 32,
+    marginTop: size(32),
   },
   buttonActive: {
-    backgroundColor: '#1E5EF4',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginRight: 16,
+    backgroundColor: color_token.primary,
   },
 })

@@ -1,19 +1,20 @@
 import {useLocalSearchParams, usePathname} from 'expo-router'
 import React from 'react'
-
-import {Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
+import {View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
 import {useAnalyticsStore} from '@/analytics/event'
 import * as MediaLibrary from 'expo-media-library'
-import {ROUTES, useAppRouter} from '@/shared'
+import {ROUTES, size, useAppRouter} from '@/shared'
 import {TicketFrame} from '@/widgets/ticket/frame'
 import {NoPermissionError, useCaptureView, useShare, useMediaPermission, showToast} from '@/shared'
 import {TicketDeleteButton} from '@/features/ticket/delete-ticket'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {ShareInstagramButton} from '@/features/ticket/share-instagram'
 import Skeleton from '@/components/skeleton/Skeleton'
+import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 export default function GameCard() {
   const router = useAppRouter()
@@ -107,7 +108,7 @@ export default function GameCard() {
         leftButton={{
           onPress: onBackButtonClick,
           content: (
-            <View style={{minWidth: 28}}>
+            <View style={styles.backButtonContainer}>
               <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
             </View>
           ),
@@ -141,9 +142,13 @@ export default function GameCard() {
                 key={index}
                 style={[styles.matchButton, ticketIndex === index && styles.matchButtonActive]}
                 onPress={() => onChangeTicket(index)}>
-                <Text style={[styles.matchText, ticketIndex === index && styles.matchTextActive]}>
+                <Txt
+                  size={14}
+                  weight="bold"
+                  color={ticketIndex === index ? color_token.white : color_token.gray900}
+                  style={styles.matchText}>
                   {index + 1}차 경기
-                </Text>
+                </Txt>
               </TouchableOpacity>
             ))}
           </View>
@@ -156,10 +161,10 @@ export default function GameCard() {
           {reactionList.map(reaction => (
             <TouchableOpacity
               key={reaction.key}
-              style={[styles.emojiButton, reaction.isPressed && {borderColor: '#1E5EF4', borderWidth: 2}]}
+              style={[styles.emojiButton, reaction.isPressed && styles.emojiButtonActive]}
               onPress={() => toggleReaction(reaction.key)}>
-              <Text>{reaction.title}</Text>
-              <Text>{reaction.count}</Text>
+              <Txt>{reaction.title}</Txt>
+              <Txt>{reaction.count}</Txt>
             </TouchableOpacity>
           ))}
         </View>
@@ -169,30 +174,14 @@ export default function GameCard() {
             {!hasDoubleTicket && isMyTicket && (
               <TouchableOpacity
                 onPress={() => {
-                  // ga 데이터 수집용도
                   setScreenName(pathname)
                   setDiaryCreate('메인 버튼')
-                  // ga 데이터 수집용도
                   router.push(ROUTES.WRITE, {date: ticketDetail?.date})
                 }}
-                style={{
-                  backgroundColor: '#1E5EF4',
-                  borderRadius: 10,
-                  paddingVertical: 10,
-                  marginTop: 10,
-                  marginBottom: 32,
-                  height: 50,
-                }}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 600,
-                    color: '#fff',
-                    lineHeight: 22.4,
-                    margin: 'auto',
-                  }}>
+                style={styles.doubleHeaderButton}>
+                <Txt size={16} weight="semibold" color={color_token.white} style={styles.doubleHeaderButtonText}>
                   더블헤더 티켓 추가하기
-                </Text>
+                </Txt>
               </TouchableOpacity>
             )}
           </>
@@ -205,19 +194,22 @@ export default function GameCard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F2EE',
+    backgroundColor: color_token.gray150,
   },
   scrollBox: {
-    marginTop: 14,
-    paddingHorizontal: 24,
-    backgroundColor: '#F3F2EE',
+    marginTop: size(14),
+    paddingHorizontal: size(24),
+    backgroundColor: color_token.gray150,
+  },
+  backButtonContainer: {
+    minWidth: 28,
   },
   iconBox: {
     flexDirection: 'row',
-    gap: 24,
+    gap: size(24),
     width: '100%',
     justifyContent: 'flex-end',
-    marginBottom: 20,
+    marginBottom: size(20),
   },
   editIcon: {
     width: 24,
@@ -226,74 +218,66 @@ const styles = StyleSheet.create({
   matchButtonBox: {
     width: '100%',
     flexDirection: 'row',
-    gap: 12,
-    marginBottom: 24,
+    gap: size(12),
+    marginBottom: size(24),
   },
   matchButton: {
     borderWidth: 1,
-    borderColor: '#D0CEC7',
-    borderRadius: 28.5,
-    paddingVertical: 10,
+    borderColor: color_token.gray350,
+    borderRadius: size(28.5),
+    paddingVertical: size(10),
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
   },
   matchButtonActive: {
-    backgroundColor: '#1E5EF4',
-    borderColor: '#1E5EF4',
+    backgroundColor: color_token.primary,
+    borderColor: color_token.primary,
   },
-  matchText: {
-    fontWeight: '700',
-    fontSize: 14,
-    lineHeight: 16.71,
-    color: '#171716',
-  },
-  matchTextActive: {
-    color: '#fff',
-  },
+  matchText: {},
   ticketBox: {
     width: '100%',
     marginHorizontal: 'auto',
     position: 'relative',
-    marginBottom: 32,
-    marginTop: 12,
-  },
-
-  resultBox: {
-    width: '100%',
-    flexDirection: 'row',
-    marginTop: 2,
-    gap: 2.5,
-  },
-  resultImgBox: {
-    flex: 1,
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 44,
-    gap: 8,
+    marginBottom: size(32),
+    marginTop: size(12),
   },
   emojiBox: {
-    // backgroundColor: '#fffcf3',
     flexDirection: 'row',
     width: '100%',
     flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 30,
+    gap: size(8),
+    marginBottom: size(30),
   },
   emojiButton: {
     flexDirection: 'row',
-    gap: 5,
+    gap: size(5),
     borderWidth: 1,
-    backgroundColor: '#fff',
-    borderColor: '#95938B',
-    borderRadius: 40,
-    paddingHorizontal: 12.5,
-    paddingVertical: 4,
+    backgroundColor: color_token.white,
+    borderColor: color_token.gray600,
+    borderRadius: size(40),
+    paddingHorizontal: size(12.5),
+    paddingVertical: size(4),
+  },
+  emojiButtonActive: {
+    borderColor: color_token.primary,
+    borderWidth: 2,
   },
   backImage: {
     width: 16,
     height: 28,
+  },
+  doubleHeaderButton: {
+    backgroundColor: color_token.primary,
+    borderRadius: size(10),
+    paddingVertical: size(10),
+    marginTop: size(10),
+    marginBottom: size(32),
+    height: size(50),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  doubleHeaderButtonText: {
+    lineHeight: 22.4,
   },
 })

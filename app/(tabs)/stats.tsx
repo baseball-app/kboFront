@@ -3,7 +3,7 @@ import {View} from 'react-native'
 import React, {useState} from 'react'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
-import {ROUTES, useAppRouter} from '@/shared'
+import {ROUTES, size, useAppRouter} from '@/shared'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {Button, Pressable, SelectBox, Txt} from '@/shared/ui'
@@ -103,30 +103,27 @@ const styles = StyleSheet.create({
   headerButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: size(8),
   },
   arrowIcon: {
     width: 18,
     height: 18,
   },
-  scrollView: {
-    // paddingHorizontal: 24,
-    // paddingTop: 12,
-  },
+  scrollView: {},
   contentGap: {
-    gap: 12,
-    paddingHorizontal: 24,
-    paddingTop: 12,
+    gap: size(12),
+    paddingHorizontal: size(24),
+    paddingTop: size(12),
   },
   filterContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: size(20),
   },
   cardList: {
-    gap: 12,
-    marginTop: 12,
-    paddingBottom: 70,
+    gap: size(12),
+    marginTop: size(12),
+    paddingBottom: size(70),
   },
 })
 
@@ -134,7 +131,7 @@ const sortStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: size(4),
   },
   icon: {
     width: 16,

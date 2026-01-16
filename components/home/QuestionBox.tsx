@@ -1,6 +1,8 @@
-import {Pressable} from '@/shared'
+import {Pressable, size} from '@/shared'
 import React from 'react'
-import {StyleSheet, View, Text, Image, ImageSourcePropType} from 'react-native'
+import {StyleSheet, View, Image, ImageSourcePropType} from 'react-native'
+import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 interface IQuestionBox {
   title: string
@@ -13,16 +15,18 @@ interface IQuestionBox {
 const QuestionBox = (props: IQuestionBox) => {
   const {title, questionData, onQuestionClick, selectedQuestion} = props
   return (
-    <View style={[styles.container]}>
-      <Text style={styles.questionTitle}>{title}</Text>
+    <View style={styles.container}>
+      <Txt size={20} weight="semibold" color={color_token.gray900}>
+        {title}
+      </Txt>
       <View style={styles.questionDataBox}>
         {questionData?.map((ev, idx: number) => (
           <Pressable key={idx} onPress={() => onQuestionClick(ev.text)}>
             <View style={styles.questionInfo}>
-              <View style={[styles.imageContainer, props.type === 'weather' && {backgroundColor: '#F3F2EE'}]}>
+              <View style={[styles.imageContainer, props.type === 'weather' && styles.weatherContainer]}>
                 <Image
                   source={ev.image}
-                  style={[styles.questionImage, props.type === 'weather' && {width: 30, height: 30}]}
+                  style={[styles.questionImage, props.type === 'weather' && styles.weatherImage]}
                 />
                 {selectedQuestion === ev.text && (
                   <>
@@ -31,7 +35,7 @@ const QuestionBox = (props: IQuestionBox) => {
                   </>
                 )}
               </View>
-              <Text>{ev.text}</Text>
+              <Txt>{ev.text}</Txt>
             </View>
           </Pressable>
         ))}
@@ -42,75 +46,63 @@ const QuestionBox = (props: IQuestionBox) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
+    backgroundColor: color_token.white,
+    borderRadius: size(12),
     width: '100%',
     borderWidth: 1,
-    borderColor: '#E4E2DC',
-    height: 178,
+    borderColor: color_token.gray300,
+    height: size(178),
     flexDirection: 'column',
-    paddingHorizontal: 26,
-    paddingTop: 16,
-    paddingBottom: 28,
+    paddingHorizontal: size(26),
+    paddingTop: size(16),
+    paddingBottom: size(28),
     alignItems: 'center',
-  },
-  disabledContainer: {
-    backgroundColor: '#F3F2EE',
-    borderRadius: 12,
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#E4E2DC',
-    height: 178,
-    flexDirection: 'column',
-    paddingHorizontal: 26,
-    paddingTop: 16,
-    paddingBottom: 28,
-    alignItems: 'center',
-  },
-  questionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    lineHeight: 28,
-    color: '#171716',
   },
   questionDataBox: {
-    marginTop: 24,
+    marginTop: size(24),
     flexDirection: 'row',
-    gap: 24,
+    gap: size(24),
   },
   questionInfo: {
     flexDirection: 'column',
     alignItems: 'center',
-    gap: 12,
+    gap: size(12),
   },
   imageContainer: {
     position: 'relative',
-    width: 50,
-    height: 50,
+    width: size(50),
+    height: size(50),
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 999,
+    borderRadius: size(999),
+  },
+  weatherContainer: {
+    backgroundColor: color_token.gray150,
   },
   questionImage: {
-    width: 50,
-    height: 50,
+    width: size(50),
+    height: size(50),
     resizeMode: 'contain',
+  },
+  weatherImage: {
+    width: size(30),
+    height: size(30),
   },
   overlay: {
     position: 'absolute',
     top: 0,
     left: 0,
-    width: 50,
-    height: 50,
+    width: size(50),
+    height: size(50),
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 25,
+    borderRadius: size(25),
   },
   checkImage: {
     position: 'absolute',
-    top: 10,
-    left: 10,
-    width: 30,
-    height: 30,
+    top: size(10),
+    left: size(10),
+    width: size(30),
+    height: size(30),
   },
 })
 

@@ -1,16 +1,18 @@
 import Skeleton from '@/components/skeleton/Skeleton'
 import {TicketCard, useTeam} from '@/entities/match'
-import {ROUTES, useAppRouter} from '@/shared'
+import {ROUTES, size, useAppRouter} from '@/shared'
 import {TicketListByTeam} from '@/entities/ticket'
 import useProfile from '@/hooks/my/useProfile'
 import React from 'react'
-import {StyleSheet, Text, View} from 'react-native'
+import {StyleSheet, View} from 'react-native'
 import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 const MyTicketList = ({isLoading, ticketList}: {isLoading: boolean; ticketList?: TicketListByTeam[]}) => {
   const {findTeamById} = useTeam()
   const {profile} = useProfile()
   const router = useAppRouter()
+  
   return (
     <View style={styles.likeBoxContainer}>
       {(() => {
@@ -54,8 +56,10 @@ const MyTicketList = ({isLoading, ticketList}: {isLoading: boolean; ticketList?:
                 )
               })
             ) : (
-              <View style={{alignItems: 'center', justifyContent: 'center', height: 100}}>
-                <Text style={{fontSize: 14, fontWeight: 400, color: '#171716'}}>해당 경기 티켓이 없어요.</Text>
+              <View style={styles.emptyContainer}>
+                <Txt size={14} color={color_token.gray900}>
+                  해당 경기 티켓이 없어요.
+                </Txt>
               </View>
             )}
           </>
@@ -69,6 +73,11 @@ export {MyTicketList}
 
 const styles = StyleSheet.create({
   likeBoxContainer: {
-    gap: 12,
+    gap: size(12),
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 100,
   },
 })

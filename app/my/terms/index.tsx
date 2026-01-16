@@ -1,10 +1,11 @@
 import React from 'react'
-import {StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {StyleSheet, TouchableOpacity} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {Ionicons} from '@expo/vector-icons'
-import {useAppRouter} from '@/shared'
+import {size, useAppRouter} from '@/shared'
 import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 const TermsScreen = () => {
   const router = useAppRouter()
@@ -17,12 +18,16 @@ const TermsScreen = () => {
       <Header title="이용약관" />
 
       <TouchableOpacity style={styles.menuItem} onPress={() => moveToDetail('terms-of-service')}>
-        <Text style={styles.menuText}>이용약관</Text>
-        <Ionicons name="chevron-forward" size={24} color="gray" />
+        <Txt size={16} weight="medium">
+          이용약관
+        </Txt>
+        <Ionicons name="chevron-forward" size={24} color={color_token.gray500} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.menuItem} onPress={() => moveToDetail('privacy-policy')}>
-        <Text style={styles.menuText}>개인정보 처리방침</Text>
-        <Ionicons name="chevron-forward" size={24} color="gray" />
+        <Txt size={16} weight="medium">
+          개인정보 처리방침
+        </Txt>
+        <Ionicons name="chevron-forward" size={24} color={color_token.gray500} />
       </TouchableOpacity>
     </SafeAreaView>
   )
@@ -35,22 +40,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color_token.white,
   },
-  menuContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: color_token.white,
-    padding: 15,
-  },
   menuItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // backgroundColor: 'white',
-    padding: 15,
+    padding: size(15),
     marginVertical: 1,
-  },
-  menuText: {
-    fontSize: 16,
-    fontWeight: '500',
   },
 })

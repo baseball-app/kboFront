@@ -1,12 +1,14 @@
 import React, {useState} from 'react'
-import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Image} from 'react-native'
+import {View, StyleSheet, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {theme} from '@/constants/Colors'
 import {useLocalSearchParams} from 'expo-router'
 import {findProfileImageById} from '@/constants/join'
 import Header from '@/components/common/Header'
 import {useFriends, type FriendType} from '@/entities/friend'
 import {useUnfollowFriend} from '@/features/user/friend/unfollow'
+import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
+import {Txt} from '@/shared/ui'
 
 const FollowerScreen = () => {
   const {id} = useLocalSearchParams()
@@ -33,23 +35,28 @@ const FollowerScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      {/* Header */}
       <View style={styles.header}>
         <Header title="" variants="white" />
         <View style={styles.tabContainer}>
           <TouchableOpacity
             style={activeTab === 'followers' ? styles.ActiveTab : styles.NonActiveTab}
             onPress={() => handleTabChange('followers')}>
-            <Text style={activeTab === 'followers' ? styles.tabTextActive : styles.tabTextNonActive}>
+            <Txt
+              size={16}
+              weight={activeTab === 'followers' ? 'semibold' : 'regular'}
+              color={activeTab === 'followers' ? color_token.black : color_token.gray500}>
               {followers?.length} 팔로워
-            </Text>
+            </Txt>
           </TouchableOpacity>
           <TouchableOpacity
             style={activeTab === 'followings' ? styles.ActiveTab : styles.NonActiveTab}
             onPress={() => handleTabChange('followings')}>
-            <Text style={activeTab === 'followings' ? styles.tabTextActive : styles.tabTextNonActive}>
+            <Txt
+              size={16}
+              weight={activeTab === 'followings' ? 'semibold' : 'regular'}
+              color={activeTab === 'followings' ? color_token.black : color_token.gray500}>
               {followers?.length} 팔로잉
-            </Text>
+            </Txt>
           </TouchableOpacity>
         </View>
       </View>
@@ -61,11 +68,11 @@ const FollowerScreen = () => {
               <View style={styles.iconContainer}>
                 <Image source={findProfileImageById(friend.profile_type)} style={styles.baseballIcon} />
               </View>
-              <Text style={styles.followerName}>{friend.nickname}</Text>
+              <Txt size={14} color={color_token.black}>
+                {friend.nickname}
+              </Txt>
             </View>
-            <TouchableOpacity
-              style={styles.unfollowButton} //
-              onPress={() => openUnfollowPopup(friend)}>
+            <TouchableOpacity style={styles.unfollowButton} onPress={() => openUnfollowPopup(friend)}>
               <Image source={require('@/assets/icons/x.png')} style={styles.unfollowIcon} />
             </TouchableOpacity>
           </View>
@@ -78,53 +85,36 @@ const FollowerScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: color_token.white,
   },
   header: {},
-  backButton: {
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
   tabContainer: {
     flexDirection: 'row',
-    borderBottomColor: '#E4E2DC',
-  },
-  tab: {
-    paddingVertical: 10,
-    marginRight: 20,
+    borderBottomColor: color_token.gray300,
   },
   ActiveTab: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: size(10),
     alignItems: 'center',
     borderBottomWidth: 2,
-    borderBottomColor: '#000',
+    borderBottomColor: color_token.black,
   },
   NonActiveTab: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: size(10),
     alignItems: 'center',
-  },
-  tabTextNonActive: {
-    fontSize: 16,
-    color: '#999',
-  },
-  tabTextActive: {
-    fontSize: 16,
-    color: '#000',
-    fontWeight: '600',
   },
   scrollView: {
     flex: 1,
-    backgroundColor: theme.colors.backgroundPrimary,
-    paddingHorizontal: 20,
-    paddingTop: 10,
+    backgroundColor: color_token.gray100,
+    paddingHorizontal: size(20),
+    paddingTop: size(10),
   },
   followerItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 12,
+    paddingVertical: size(12),
   },
   followerInfo: {
     flexDirection: 'row',
@@ -134,38 +124,22 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderWidth: 0.64,
-    borderRadius: 50,
-    borderColor: '#D0CEC7',
-    backgroundColor: '#FFFFFF',
+    borderRadius: size(50),
+    borderColor: color_token.gray350,
+    backgroundColor: color_token.white,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: size(12),
   },
   baseballIcon: {
-    width: 12.57,
-    height: 12.57,
-  },
-  followerName: {
-    fontSize: 14,
-    color: '#000',
-  },
-  followButton: {
-    width: 32,
-    height: 32,
-    backgroundColor: '#111111',
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  followIcon: {
-    width: 9.9,
-    height: 9.9,
+    width: size(12),
+    height: size(12),
   },
   unfollowButton: {
     width: 32,
     height: 32,
-    backgroundColor: '#F3F2EE',
-    borderRadius: 50,
+    backgroundColor: color_token.gray150,
+    borderRadius: size(50),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -173,12 +147,6 @@ const styles = StyleSheet.create({
     width: 9.9,
     height: 9.9,
   },
-  // removeButton: {
-  //   width: (32),
-  //   height: (32),
-  //   backgroundColor: '#F3F2EE',
-  //   borderRadius: 50,
-  // },
 })
 
 export default FollowerScreen

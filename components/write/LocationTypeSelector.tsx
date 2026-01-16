@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native'
 import {BottomSheet} from '@/shared/ui'
+import {size} from '@/shared'
+import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 type Props = {
   value: string
@@ -35,13 +38,17 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
           style={styles.selectModalButton}
           activeOpacity={1}
           onPress={() => setTabMenuModalVisible(true)}>
-          <Text style={styles.selectBoxText}>{value}</Text>
+          <Txt size={16} weight="bold" color={color_token.gray900}>
+            {value}
+          </Txt>
           <Image source={require('@/assets/icons/bottomArrow.png')} resizeMode="contain" style={styles.dropDownImg} />
         </TouchableOpacity>
       </View>
       <BottomSheet isOpen={tabMenuModalVisible} duration={250} height={285}>
         <View style={styles.writePlaceModalContent}>
-          <Text style={styles.modalTitle}>기록하고 싶은 장소를 선택해주세요</Text>
+          <Txt size={18} weight="bold">
+            기록하고 싶은 장소를 선택해주세요
+          </Txt>
           <View style={styles.writePlaceOptionsContainer}>
             {tabMenuConfig.map(option => (
               <TouchableOpacity
@@ -49,15 +56,20 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
                 style={[styles.writePlaceOptionButton, tempValue === option.title && styles.selectedOption]}
                 activeOpacity={1}
                 onPress={() => setTempValue(option.title)}>
-                <Text style={[styles.optionText, tempValue === option.title && styles.selectedWriteOptionText]}>
+                <Txt
+                  size={16}
+                  weight={tempValue === option.title ? 'bold' : 'regular'}
+                  color={tempValue === option.title ? color_token.primary : color_token.gray800}>
                   {option.title}
-                </Text>
+                </Txt>
               </TouchableOpacity>
             ))}
           </View>
           <View style={styles.writeButtonBox}>
             <TouchableOpacity style={styles.cancelButton} onPress={() => setTabMenuModalVisible(false)}>
-              <Text style={styles.cancelText}>취소</Text>
+              <Txt size={16} weight="semibold" color={color_token.gray900}>
+                취소
+              </Txt>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.confirmButton}
@@ -65,7 +77,9 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
                 onChange(tempValue)
                 setTabMenuModalVisible(false)
               }}>
-              <Text style={styles.confirmText}>완료</Text>
+              <Txt size={16} weight="semibold" color={color_token.white}>
+                완료
+              </Txt>
             </TouchableOpacity>
           </View>
         </View>
@@ -77,99 +91,69 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
 export default LocationTypeSelector
 
 const styles = StyleSheet.create({
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  selectedWriteOptionText: {
-    color: '#1E5EF4',
-    fontWeight: '700',
-  },
   selectedOption: {
-    borderColor: '#1E5EF4',
-    backgroundColor: '#1E5EF41A',
+    borderColor: color_token.primary,
+    backgroundColor: color_token.primary_10,
     flexDirection: 'row',
-  },
-  optionText: {
-    fontSize: 16,
-    color: '#333',
   },
   writePlaceOptionButton: {
     width: '100%',
     borderWidth: 1,
-    borderColor: '#D0CEC7',
-    borderRadius: 10,
+    borderColor: color_token.gray350,
+    borderRadius: size(10),
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingVertical: 13,
-    gap: 8,
+    paddingVertical: size(13),
+    gap: size(8),
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: '#1E5EF4',
+    backgroundColor: color_token.primary,
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingVertical: 12,
-    borderRadius: 10,
-  },
-  confirmText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
+    paddingVertical: size(12),
+    borderRadius: size(10),
   },
   cancelButton: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#D0CEC7',
-    paddingVertical: 12,
-    borderRadius: 10,
-  },
-  cancelText: {
-    color: '#171716',
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
+    backgroundColor: color_token.gray350,
+    paddingVertical: size(12),
+    borderRadius: size(10),
   },
   writeButtonBox: {
     width: '100%',
     flexDirection: 'row',
-    gap: 13,
-    marginTop: 40,
+    gap: size(13),
+    marginTop: size(40),
   },
   writePlaceModalContent: {
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: color_token.white,
     height: 285,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 24,
+    borderTopLeftRadius: size(20),
+    borderTopRightRadius: size(20),
+    padding: size(24),
   },
   writePlaceOptionsContainer: {
-    marginTop: 24,
+    marginTop: size(24),
     flexDirection: 'column',
-    gap: 16,
+    gap: size(16),
   },
   selectBox: {
     height: '100%',
-    paddingHorizontal: 24,
+    paddingHorizontal: size(24),
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  selectBoxText: {
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 19.09,
-    color: '#171716',
   },
   selectModalButton: {
     flexDirection: 'row',
     alignItems: 'center',
     maxWidth: 54,
     height: '100%',
-    gap: 8,
+    gap: size(8),
   },
   dropDownImg: {
     marginBottom: 2,

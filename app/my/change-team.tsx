@@ -1,10 +1,12 @@
 import React, {useState} from 'react'
-import {StyleSheet, View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
+import {StyleSheet, View, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import useProfile from '@/hooks/my/useProfile'
 import Header from '@/components/common/Header'
 import {useTeam} from '@/entities/match'
 import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
+import {Txt} from '@/shared/ui'
 
 export default function ChangeScreen() {
   const {updateMyTeam, profile} = useProfile()
@@ -18,7 +20,9 @@ export default function ChangeScreen() {
       <Header title="마이팀 변경" />
 
       <View style={styles.headerDescription}>
-        <Text style={styles.headerDescriptionText}>내가 설정한 마이팀을 기준으로{'\n'}데이터가 새로 작성됩니다.</Text>
+        <Txt size={16} color={color_token.gray500} style={styles.headerDescriptionText}>
+          내가 설정한 마이팀을 기준으로{'\n'}데이터가 새로 작성됩니다.
+        </Txt>
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
@@ -29,7 +33,9 @@ export default function ChangeScreen() {
               style={[styles.teamButton, selectedTeamId === team.id && styles.selectedTeam]}
               onPress={() => setSelectedTeamId(team.id)}>
               <Image source={team.logo} style={styles.teamLogo} />
-              <Text style={styles.teamName}>{team.name}</Text>
+              <Txt size={16} weight="medium" style={styles.teamName}>
+                {team.name}
+              </Txt>
             </TouchableOpacity>
           ))}
         </View>
@@ -39,7 +45,9 @@ export default function ChangeScreen() {
           style={[styles.nextButton, isChanged && styles.nextButtonActive]}
           onPress={() => updateMyTeam(selectedTeamId)}
           disabled={!isChanged}>
-          <Text style={styles.nextButtonText}>변경하기</Text>
+          <Txt size={18} weight="bold" color={color_token.white}>
+            변경하기
+          </Txt>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -53,52 +61,40 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: size(24),
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  headerTitle: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginRight: 16,
-  },
-
   headerDescription: {
     alignItems: 'center',
-    marginBottom: 28,
-    marginTop: 20,
+    marginBottom: size(28),
+    marginTop: size(20),
   },
-
   headerDescriptionText: {
-    fontSize: 16,
-    lineHeight: 16 * 1.4,
-    color: '#999999',
     textAlign: 'center',
   },
   teamsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    rowGap: 16,
+    rowGap: size(16),
   },
   teamButton: {
     width: '30%',
     aspectRatio: 99 / 90,
-    paddingTop: 16,
-    paddingBottom: 10,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 8,
+    paddingTop: size(16),
+    paddingBottom: size(10),
+    backgroundColor: color_token.gray200,
+    borderRadius: size(8),
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#F0F0F0',
+    borderColor: color_token.gray200,
   },
   selectedTeam: {
-    backgroundColor: 'white',
+    backgroundColor: color_token.white,
     borderWidth: 2,
-    borderColor: '#000',
+    borderColor: color_token.black,
   },
   teamLogo: {
     width: '60%',
@@ -106,28 +102,20 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   teamName: {
-    fontSize: 16,
-    fontWeight: 500,
     textAlign: 'center',
-    marginTop: 8,
-    lineHeight: 16 * 1.4,
+    marginTop: size(8),
   },
   footer: {
-    paddingHorizontal: 24,
-    paddingBottom: 16,
+    paddingHorizontal: size(24),
+    paddingBottom: size(16),
   },
   nextButton: {
-    backgroundColor: '#CCCCCC',
-    padding: 15,
-    borderRadius: 8,
+    backgroundColor: color_token.gray400,
+    padding: size(15),
+    borderRadius: size(8),
     alignItems: 'center',
   },
   nextButtonActive: {
-    backgroundColor: '#1E5EF4',
-  },
-  nextButtonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+    backgroundColor: color_token.primary,
   },
 })

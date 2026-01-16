@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import {
   StyleSheet,
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -11,15 +10,14 @@ import {
   Keyboard,
 } from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import Ionicons from '@expo/vector-icons/Ionicons'
 import {useMutation} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import {usePopup} from '@/slice/commonSlice'
-import {useAppRouter} from '@/shared'
+import {size, useAppRouter} from '@/shared'
 import {showToast} from '@/shared'
 import LottieView from 'lottie-react-native'
 import {color_token} from '@/constants/theme'
-import {BackButton} from '@/shared/ui'
+import {BackButton, Txt} from '@/shared/ui'
 
 type Inquiry = {
   email: string
@@ -67,44 +65,31 @@ export default function NicknameScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Pressable style={{flex: 1}} onPress={Keyboard.dismiss}>
+      <Pressable style={styles.flex1} onPress={Keyboard.dismiss}>
         <View style={styles.header}>
           <BackButton onPress={router.back} />
-          <Text style={styles.title}>앱을 사용하면서{'\n'}불편했던 점을 적어주세요</Text>
+          <Txt size={24} weight="semibold" style={styles.title}>
+            앱을 사용하면서{'\n'}불편했던 점을 적어주세요
+          </Txt>
         </View>
 
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.content}>
           <TextInput
             placeholder="답변 받으실 이메일 주소를 적어주세요"
-            value={inquiry.email} //
+            value={inquiry.email}
             onChangeText={text => setInquiry({...inquiry, email: text})}
-            style={{
-              padding: 20,
-              backgroundColor: 'white',
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: '#D0CEC7',
-              marginBottom: 14,
-            }}
-            placeholderTextColor={'#CCCCCC'}
+            style={styles.emailInput}
+            placeholderTextColor={color_token.gray400}
             maxLength={50}
           />
           <TextInput
             placeholder={`소중한 의견을 기다리고 있습니다!\n비방, 욕설, 부적절한 내용이 포함될 경우 답변이 제한될 수 있고, 앱 이용이 제한될 수 있습니다.`}
-            value={inquiry.content} //
+            value={inquiry.content}
             onChangeText={text => setInquiry({...inquiry, content: text})}
             multiline
-            placeholderTextColor={'#CCCCCC'}
+            placeholderTextColor={color_token.gray400}
             numberOfLines={20}
-            style={{
-              padding: 20,
-              height: 300,
-              backgroundColor: 'white',
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: '#D0CEC7',
-              textAlignVertical: 'top',
-            }}
+            style={styles.contentInput}
             maxLength={500}
           />
         </KeyboardAvoidingView>
@@ -118,10 +103,12 @@ export default function NicknameScreen() {
                 source={require('@/assets/lottie/loading.json')}
                 autoPlay
                 loop
-                style={{width: 100, height: 100}}
+                style={styles.lottieView}
               />
             ) : (
-              <Text style={styles.buttonText}>등록하기</Text>
+              <Txt size={18} weight="bold" color={color_token.white}>
+                등록하기
+              </Txt>
             )}
           </TouchableOpacity>
         </View>
@@ -135,72 +122,54 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color_token.white,
   },
+  flex1: {
+    flex: 1,
+  },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
-    marginTop: 16,
-  },
-  inputSection: {
-    flex: 1,
-    padding: 24,
+    paddingHorizontal: size(24),
+    marginTop: size(16),
   },
   header: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  backButton: {
-    marginBottom: 30,
+    paddingHorizontal: size(24),
+    paddingTop: size(24),
   },
   title: {
-    fontSize: 24,
-    marginBottom: 8,
-    lineHeight: 24 * 1.4,
-    fontWeight: 600,
+    marginBottom: size(8),
   },
-  subtitle: {
-    fontSize: 16,
-    color: '#77756C',
-    lineHeight: 16 * 1.4,
-    fontWeight: 400,
+  emailInput: {
+    padding: size(20),
+    backgroundColor: color_token.white,
+    borderRadius: size(10),
+    borderWidth: 1,
+    borderColor: color_token.gray350,
+    marginBottom: size(14),
   },
-  inputContainer: {
-    marginHorizontal: 24,
-    marginTop: 16,
-    flex: 1,
-  },
-  input: {
-    fontSize: 16,
-    paddingVertical: 8,
-    color: '#333333',
-  },
-  inputUnderline: {
-    height: 1,
-    backgroundColor: '#CCCCCC',
-    marginTop: 4,
-    marginBottom: 1,
-  },
-  inputUnderlineActive: {
-    height: 2,
-    backgroundColor: '#000000',
+  contentInput: {
+    padding: size(20),
+    height: size(300),
+    backgroundColor: color_token.white,
+    borderRadius: size(10),
+    borderWidth: 1,
+    borderColor: color_token.gray350,
+    textAlignVertical: 'top',
   },
   buttonContainer: {
-    marginHorizontal: 24,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 40, // Extra padding for Android
+    marginHorizontal: size(24),
+    paddingBottom: Platform.OS === 'ios' ? size(20) : size(40),
   },
   button: {
-    backgroundColor: '#ccc',
-    borderRadius: 5,
-    display: 'flex',
+    backgroundColor: color_token.gray400,
+    borderRadius: size(5),
     justifyContent: 'center',
     alignItems: 'center',
-    height: 50,
+    height: size(50),
   },
   buttonActive: {
-    backgroundColor: '#007AFF',
+    backgroundColor: color_token.primary,
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+  lottieView: {
+    width: size(100),
+    height: size(100),
   },
 })

@@ -1,16 +1,6 @@
 import {useLocalSearchParams} from 'expo-router'
 import {useEffect, useRef, useState} from 'react'
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  Platform,
-  KeyboardAvoidingView,
-} from 'react-native'
+import {TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform} from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker'
 import React from 'react'
@@ -25,18 +15,18 @@ import SelectBox from '@/components/common/SelectBox'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
 import useTicketDetail from '@/hooks/match/useTicketDetail'
 import LottieView from 'lottie-react-native'
-import * as FileSystem from 'expo-file-system'
 import * as FileSystemLegacy from 'expo-file-system/legacy'
 import {useLogin} from '@/hooks/auth/useLogin'
 import {logEvent} from '@/analytics/func'
 import {EVENTS} from '@/analytics/event'
 import {Config} from '@/config/Config'
-import {useKeyboard} from '@/shared'
+import {size, useKeyboard} from '@/shared'
 import {useAppRouter} from '@/shared'
-import {BottomSheet} from '@/shared/ui'
+import {BottomSheet, Txt} from '@/shared/ui'
 import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard'
 import {PLACE_LIST} from '@/constants/ticket'
 import {TicketImageUploader} from '@/entities/ticket'
+import {color_token} from '@/constants/theme'
 
 interface ITicketEditData {
   homeTeam: {
@@ -63,9 +53,14 @@ interface ITicketEditData {
 
 const Optional = ({label}: {label: string}) => {
   return (
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-      <Text style={{fontSize: 14, color: '#171716', fontWeight: '500', lineHeight: 19.6}}>{label}</Text>
-      <Text style={{fontSize: 14, color: '#95938B', fontWeight: '500', lineHeight: 19.6}}> (선택)</Text>
+    <View style={optionalStyles.container}>
+      <Txt size={14} color={color_token.gray900} weight="medium" style={optionalStyles.label}>
+        {label}
+      </Txt>
+      <Txt size={14} color={color_token.gray600} weight="medium" style={optionalStyles.label}>
+        {' '}
+        (선택)
+      </Txt>
     </View>
   )
 }
@@ -318,7 +313,9 @@ const EditTicketPage = () => {
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
         </TouchableOpacity>
-        <Text style={styles.dateText}>{title}</Text>
+        <Txt size={18} weight="semibold">
+          {title}
+        </Txt>
       </View>
       <CustKeyboardAvoidingView>
         <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
@@ -377,8 +374,12 @@ const EditTicketPage = () => {
                   />
                 </View>
                 <View style={styles.teamNmBox}>
-                  <Text style={styles.teamNmText}>{teamHomeInfo?.short_name}</Text>
-                  <Text style={styles.teamNmText}>{teamAwayInfo?.short_name}</Text>
+                  <Txt size={14} style={styles.teamNmText}>
+                    {teamHomeInfo?.short_name}
+                  </Txt>
+                  <Txt size={14} style={styles.teamNmText}>
+                    {teamAwayInfo?.short_name}
+                  </Txt>
                 </View>
               </View>
 
@@ -475,7 +476,9 @@ const EditTicketPage = () => {
               <Input
                 label={
                   <View style={styles.inputTitleBox}>
-                    <Text style={styles.label}>오늘의 소감</Text>
+                    <Txt size={14} weight="medium" color={color_token.gray900}>
+                      오늘의 소감
+                    </Txt>
                     <TouchableOpacity
                       style={styles.onlyMeBox}
                       onPress={() =>
@@ -492,19 +495,19 @@ const EditTicketPage = () => {
                             : require('@/assets/icons/onlyMeOffCheck.png')
                         }
                         resizeMode="contain"
-                        style={{width: 18, height: 18}}
+                        style={styles.checkboxIcon}
                       />
-                      <Text>나만보기</Text>
+                      <Txt>나만보기</Txt>
                     </TouchableOpacity>
                   </View>
                 }
-                value={writeData?.memo} //
+                value={writeData?.memo}
                 onChangeText={value => onChangeValue('memo', value)}
                 placeholder="오늘의 소감을 기록해주세요"
                 maxLength={500}
                 multiline={true}
                 numberOfLines={6}
-                style={{height: 125, textAlign: 'left', textAlignVertical: 'top'}}
+                style={styles.thoughtsInput}
                 ref={ref => {
                   if (ref) inputListRef.current['thoughts'] = ref
                 }}
@@ -524,7 +527,9 @@ const EditTicketPage = () => {
         height={394}
         onPressOverlay={() => setTeamModalVisible(false)}>
         <View style={styles.teamModalContent}>
-          <Text style={styles.modalTitle}>오늘의 상대구단</Text>
+          <Txt size={18} weight="bold">
+            오늘의 상대구단
+          </Txt>
           <View style={styles.optionsContainer}>
             {teams?.map(team => (
               <TouchableOpacity
@@ -538,9 +543,12 @@ const EditTicketPage = () => {
                   })
                 }>
                 <Image source={team.logo} style={styles.logoImg} resizeMode="contain" />
-                <Text style={[styles.optionText, opponentTeam === team.name && styles.selectedOptionText]}>
+                <Txt
+                  size={14}
+                  weight={opponentTeam === team.name ? 'bold' : 'medium'}
+                  color={opponentTeam === team.name ? color_token.primary : color_token.gray900}>
                   {team.name}
-                </Text>
+                </Txt>
               </TouchableOpacity>
             ))}
           </View>
@@ -552,7 +560,9 @@ const EditTicketPage = () => {
         height={400}
         onPressOverlay={() => setPlaceModalVisible(false)}>
         <View style={styles.placeModalContent}>
-          <Text style={styles.modalTitle}>오늘의 경기구단</Text>
+          <Txt size={18} weight="bold">
+            오늘의 경기구단
+          </Txt>
           <View style={styles.optionsContainer}>
             {PLACE_LIST.map(option => (
               <TouchableOpacity
@@ -560,9 +570,12 @@ const EditTicketPage = () => {
                 style={[styles.placeOptionButton, writeData?.place === option.label && styles.selectedOption]}
                 activeOpacity={1}
                 onPress={() => onChangeValue('place', option.value)}>
-                <Text style={[styles.optionText, writeData?.place === option.label && styles.selectedOptionText]}>
+                <Txt
+                  size={14}
+                  weight={writeData?.place === option.label ? 'bold' : 'medium'}
+                  color={writeData?.place === option.label ? color_token.primary : color_token.gray900}>
                   {option.label}
-                </Text>
+                </Txt>
               </TouchableOpacity>
             ))}
           </View>
@@ -582,22 +595,17 @@ const FooterButton = ({
   onSubmit: () => void
 }) => {
   return (
-    <View style={[styles.footerButtonBox]}>
+    <View style={styles.footerButtonBox}>
       <TouchableOpacity
         style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
         onPress={onSubmit}
         disabled={!isEnabled}>
         {isPending ? (
-          <LottieView
-            source={require('@/assets/lottie/loading.json')}
-            autoPlay
-            loop
-            style={{width: 100, height: 100}}
-          />
+          <LottieView source={require('@/assets/lottie/loading.json')} autoPlay loop style={styles.lottieView} />
         ) : (
-          <Text style={[styles.footerButtonText, isEnabled ? styles.activeButtonText : styles.disabledButtonText]}>
+          <Txt size={16} weight="bold" color={isEnabled ? color_token.white : color_token.gray600}>
             티켓 정보 변경하기
-          </Text>
+          </Txt>
         )}
       </TouchableOpacity>
     </View>
@@ -607,31 +615,22 @@ const FooterButton = ({
 export default EditTicketPage
 
 const styles = StyleSheet.create({
-  safeAreaContainer: {
-    flex: 1,
-    position: 'relative',
-  },
   backImage: {
-    width: 16,
-    height: 28,
+    width: size(16),
+    height: size(28),
   },
   container: {
     flex: 1,
-    backgroundColor: '#F3F2EE',
-    paddingHorizontal: 20,
+    backgroundColor: color_token.gray150,
+    paddingHorizontal: size(20),
     position: 'relative',
   },
   stepHeaderBox: {
-    paddingVertical: 10,
+    paddingVertical: size(10),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-  },
-  dateText: {
-    fontSize: 18,
-    fontWeight: '600',
-    lineHeight: 25.2,
   },
   backButton: {
     position: 'absolute',
@@ -639,130 +638,70 @@ const styles = StyleSheet.create({
   },
   tabMenuContainer: {
     flex: 1,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    marginTop: 24,
+    borderRadius: size(10),
+    marginTop: size(24),
   },
   tabMenuBox: {
     alignItems: 'center',
-    gap: 24,
-    paddingHorizontal: 14,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
-    marginBottom: 20,
-    backgroundColor: '#fff',
-    paddingBottom: 32,
+    gap: size(24),
+    paddingHorizontal: size(14),
+    borderBottomLeftRadius: size(15),
+    borderBottomRightRadius: size(15),
+    marginBottom: size(20),
+    backgroundColor: color_token.white,
+    paddingBottom: size(32),
   },
   scoreBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 4,
-    marginTop: 28,
+    marginBottom: size(4),
+    marginTop: size(28),
   },
   scoreInput: {
-    width: 55,
-    height: 55,
-    fontSize: 24,
+    width: size(55),
+    height: size(55),
+    fontSize: size(24),
     fontWeight: '700',
     borderWidth: 1,
     textAlign: 'center',
-    borderColor: '#D0CEC7',
-    borderRadius: 5,
+    borderColor: color_token.gray350,
+    borderRadius: size(5),
   },
   ellipseBox: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginHorizontal: 10,
-    gap: 6,
+    marginHorizontal: size(10),
+    gap: size(6),
   },
   teamNmBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 25,
+    gap: size(25),
   },
   teamNmText: {
     width: 55,
     textAlign: 'center',
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#333',
   },
-  imageUploadBox: {
-    width: '100%',
-    aspectRatio: 307 / 270,
-    backgroundColor: '#F3F2EE',
-    borderRadius: 10,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#D0CEC7',
-    justifyContent: 'center',
-    marginBottom: 8,
-  },
-  uploadText: {
-    fontSize: 14,
-    color: '#999',
-    marginTop: 8,
-  },
-  inputContainer: {
-    width: '100%',
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 14,
-    marginBottom: 4,
-    fontWeight: '500',
-    lineHeight: 19.6,
-    color: '#171716',
-  },
-  textInput: {
-    height: 45,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderColor: '#D0CEC7',
-    borderWidth: 1,
-    textAlign: 'center',
-    borderRadius: 5,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    fontWeight: '500',
-    lineHeight: 22.4,
-  },
-  textThoughtsInput: {
-    height: 125,
-    padding: 12,
-    borderColor: '#D0CEC7',
-    borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    fontWeight: '500',
-    lineHeight: 22.4,
+  thoughtsInput: {
+    height: size(125),
+    textAlign: 'left',
+    textAlignVertical: 'top',
   },
   footerButtonBox: {
     width: '100%',
-    marginTop: 16,
+    marginTop: size(16),
     position: 'sticky',
     bottom: 0,
   },
   footerButton: {
-    backgroundColor: '#E4E2DC',
-    height: 50,
-    borderRadius: 10,
+    backgroundColor: color_token.gray300,
+    height: size(50),
+    borderRadius: size(10),
     alignItems: 'center',
     justifyContent: 'center',
   },
   disabledButton: {
-    backgroundColor: '#E4E2DC',
-  },
-  disabledButtonText: {
-    color: '#77756C',
-  },
-  footerButtonText: {
-    color: '#77756C',
-    fontSize: 16,
-    fontWeight: 'bold',
+    backgroundColor: color_token.gray300,
   },
   inputTitleBox: {
     flexDirection: 'row',
@@ -773,168 +712,91 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 3,
-    gap: 4,
+    gap: size(4),
   },
-  todayImg: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 10,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+  checkboxIcon: {
+    width: size(18),
+    height: size(18),
   },
   teamModalContent: {
     width: '100%',
-    backgroundColor: '#fff',
-    height: 394,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 24,
+    backgroundColor: color_token.white,
+    height: size(394),
+    borderTopLeftRadius: size(20),
+    borderTopRightRadius: size(20),
+    padding: size(24),
   },
-
   placeModalContent: {
     width: '100%',
-    backgroundColor: '#fff',
-    height: 400,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 24,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    backgroundColor: color_token.white,
+    height: size(400),
+    borderTopLeftRadius: size(20),
+    borderTopRightRadius: size(20),
+    padding: size(24),
   },
   optionsContainer: {
-    marginTop: 24,
+    marginTop: size(24),
     flexDirection: 'row',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
-    rowGap: 12,
+    rowGap: size(12),
   },
   optionButton: {
-    height: 48,
+    height: size(48),
     borderWidth: 1,
     maxWidth: '48%',
     minWidth: '48%',
-    borderColor: '#D0CEC7',
-    borderRadius: 10,
+    borderColor: color_token.gray350,
+    borderRadius: size(10),
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 22,
-    gap: 8,
+    paddingHorizontal: size(22),
+    gap: size(8),
   },
   placeOptionButton: {
     maxWidth: '48%',
     minWidth: '48%',
-    height: 48,
+    height: size(48),
     borderWidth: 1,
-    borderColor: '#D0CEC7',
-    borderRadius: 10,
+    borderColor: color_token.gray350,
+    borderRadius: size(10),
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
   },
   selectedOption: {
-    borderColor: '#1E5EF4',
-    backgroundColor: '#1E5EF41A',
+    borderColor: color_token.primary,
+    backgroundColor: color_token.primary_10,
     flexDirection: 'row',
-  },
-  optionText: {
-    fontSize: 14,
-    color: '#171716',
-    fontWeight: 500,
-    lineHeight: 19.6,
   },
   logoImg: {
     width: 24,
     height: 24,
   },
   tabMenu: {
-    backgroundColor: '#fff',
+    backgroundColor: color_token.white,
     width: '100%',
-    height: 59,
-    borderTopLeftRadius: 10,
+    height: size(59),
+    borderTopLeftRadius: size(10),
     borderBottomWidth: 1,
-    borderColor: '#E4E2DC',
-    borderTopRightRadius: 10,
-  },
-  selectBox: {
-    height: '100%',
-    paddingHorizontal: 24,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  selectBoxText: {
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 19.09,
-    color: '#171716',
-  },
-  selectModalButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    maxWidth: 54,
-    height: '100%',
-    gap: 8,
-  },
-  dropDownImg: {
-    marginBottom: 2,
-  },
-  writeButtonBox: {
-    width: '100%',
-    flexDirection: 'row',
-    gap: 13,
-    marginTop: 40,
-  },
-  confirmButton: {
-    flex: 1,
-    backgroundColor: '#1E5EF4',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    borderRadius: 10,
-  },
-  confirmText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
-  },
-  cancelButton: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: '#D0CEC7',
-    paddingVertical: 12,
-    borderRadius: 10,
-  },
-  cancelText: {
-    color: '#171716',
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
-  },
-  selectedOptionText: {
-    color: '#1E5EF4',
-    fontSize: 14,
-    fontWeight: '700',
-    lineHeight: 19.6,
-  },
-  selectedWriteOptionText: {
-    color: '#1E5EF4',
-    fontWeight: '700',
-  },
-  addImage: {
-    width: 34,
-    height: 34,
+    borderColor: color_token.gray300,
+    borderTopRightRadius: size(10),
   },
   activeButton: {
-    backgroundColor: '#1E5EF4',
+    backgroundColor: color_token.primary,
   },
-  activeButtonText: {
-    color: '#FFFFFF',
+  lottieView: {
+    width: size(100),
+    height: size(100),
+  },
+})
+
+const optionalStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  label: {
+    lineHeight: size(19.6),
   },
 })

@@ -3,6 +3,7 @@ import React from 'react'
 import {StyleSheet} from 'react-native'
 import {StatProfileBox} from '@/widgets/stat'
 import {MyTicketBox} from '@/widgets/ticket/my-ticket-list/ui'
+import {color_token} from '@/constants/theme'
 
 const MyTicketBoxScreen = () => {
   return (
@@ -16,7 +17,7 @@ const MyTicketBoxScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fcfcfc',
+    backgroundColor: color_token.gray100,
   },
 })
 

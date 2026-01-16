@@ -4,6 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import Header from '@/components/common/Header'
 import {Privacy} from '@/entities/terms'
 import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
 
 const PrivacyPolicyScreen = () => {
   return (
@@ -24,19 +25,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 16,
-  },
-  agreeButton: {
-    backgroundColor: '#1A73E8',
-    padding: 14,
-    alignItems: 'center',
-    margin: 16,
-    borderRadius: 10,
-  },
-  agreeButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    padding: size(16),
   },
 })
 
