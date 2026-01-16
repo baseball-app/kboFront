@@ -11,5 +11,6 @@ export {groupBy} from './groupBy'
 export {hashKey} from './hashKey'
 export {getTempBaseballMediumName} from './getTempBaseballMediumName'
 export {resizeImage} from './resizeImage'
+export {size} from './size'
 
 export {TestQueryClientWrapper} from './test'
