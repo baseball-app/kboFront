@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {Modal, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
+import {Modal, Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
 import {Pressable} from './Pressable'
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated'
 import {scheduleOnRN} from 'react-native-worklets'
@@ -117,7 +117,7 @@ const SelectBox = ({
               style={[
                 styles.list,
                 {
-                  top: layout.y + layout.height + 4,
+                  top: layout.y + layout.height + (Platform.OS === 'ios' ? +4 : -20),
                   left: layout.x,
                   minWidth: Math.max(layout.width, 140),
                 },
