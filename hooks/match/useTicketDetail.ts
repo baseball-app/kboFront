@@ -49,6 +49,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
 
   const initializeTicketInfo = () => {
     queryClient.invalidateQueries({queryKey: ['ticket']})
+    queryClient.invalidateQueries({queryKey: ['myStat']})
     return refetch()
   }
 
@@ -110,7 +111,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
 
   // 직관일기 수정
   const {mutateAsync: updateTicket, isPending: isUpdating} = useMutation({
-    mutationFn: (data: FormData) => uploadFile(`/tickets/ticket_upd/`, data),
+    mutationFn: (data: any) => uploadFile(`/tickets/ticket_upd/`, data),
     onSuccess: initializeTicketInfo,
   })
 

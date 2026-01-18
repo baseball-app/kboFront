@@ -6,7 +6,7 @@ import {useNavigateToStatsDetail} from '@/features/stats'
 
 const TeamStatsCardList = () => {
   const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter()
-  const year = selectedStatsFilter?.year ?? 2025
+  const year = selectedStatsFilter.year
   const {data, isLoading, isError} = useOpponentWinPercentByYear({year})
 
   const {navigateToOpponentStatsDetail} = useNavigateToStatsDetail()
