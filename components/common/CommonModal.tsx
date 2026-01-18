@@ -2,7 +2,7 @@ import {IModalConfig, useCommonSlice} from '@/slice/commonSlice'
 import React, {useEffect, useState} from 'react'
 import {View, TouchableOpacity, StyleSheet} from 'react-native'
 import {Modal} from '@/components/common/Modal'
-import {Txt} from '@/shared/ui'
+import {Pressable, Txt} from '@/shared/ui'
 import {color_token} from '@/constants/theme'
 import {size} from '@/shared'
 const CommonModal = () => {
@@ -31,17 +31,17 @@ const CommonModal = () => {
             {modalState?.header}
           </Txt>
           <View>
-            <Txt size={14} color={color_token.gray800}>
+            <Txt size={14} color={color_token.gray800} style={{textAlign: 'center'}}>
               {modalState?.content}
             </Txt>
           </View>
           <View style={styles.buttonBox}>
             {modalState?.button.map((btn, index) => (
-              <TouchableOpacity key={index} onPress={btn.onPress} style={[btn.buttonStyle, styles.modalButton]}>
+              <Pressable key={index} onPress={btn.onPress} style={[btn.buttonStyle, styles.modalButton]}>
                 <Txt size={14} weight="semibold" color={color_token.white} style={btn.buttonTextStyle}>
                   {btn.text}
                 </Txt>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         </View>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   container: {
     width: '80%',
     maxWidth: size(330),
-    backgroundColor: 'white',
+    backgroundColor: color_token.white,
     borderRadius: size(20),
     padding: size(20),
     flexDirection: 'column',
@@ -76,14 +76,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 11,
-    paddingBottom: 13,
-    borderRadius: 10,
-  },
-  modalButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-    lineHeight: 19.6,
+    paddingTop: size(11),
+    paddingBottom: size(13),
+    borderRadius: size(10),
   },
 })
 

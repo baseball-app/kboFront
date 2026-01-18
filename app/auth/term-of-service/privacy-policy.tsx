@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, ScrollView, TouchableOpacity, StyleSheet} from 'react-native'
+import {ScrollView, StyleSheet} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import useConsent from '@/hooks/auth/useConsent'
 import {Privacy} from '@/entities/terms'

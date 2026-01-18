@@ -17,7 +17,7 @@ import {size, useAppRouter} from '@/shared'
 import {showToast} from '@/shared'
 import LottieView from 'lottie-react-native'
 import {color_token} from '@/constants/theme'
-import {BackButton, Txt} from '@/shared/ui'
+import {BackButton, Button, Txt} from '@/shared/ui'
 
 type Inquiry = {
   email: string
@@ -94,23 +94,13 @@ export default function NicknameScreen() {
           />
         </KeyboardAvoidingView>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.button, inquiry.email && inquiry.content ? styles.buttonActive : null]}
+          <Button
+            type={inquiry.email && inquiry.content ? 'primary' : 'gray'}
             onPress={onSubmit}
-            disabled={!inquiry.email || !inquiry.content}>
-            {isPending ? (
-              <LottieView
-                source={require('@/assets/lottie/loading.json')}
-                autoPlay
-                loop
-                style={styles.lottieView}
-              />
-            ) : (
-              <Txt size={18} weight="bold" color={color_token.white}>
-                등록하기
-              </Txt>
-            )}
-          </TouchableOpacity>
+            disabled={!inquiry.email || !inquiry.content}
+            loading={isPending}>
+            등록하기
+          </Button>
         </View>
       </Pressable>
     </SafeAreaView>

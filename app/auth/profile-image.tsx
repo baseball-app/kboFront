@@ -1,11 +1,11 @@
 import React from 'react'
-import {StyleSheet, View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
+import {StyleSheet, View, ScrollView, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {DEFAULT_PROFILE_IMAGE, PROFILE_IMAGES} from '@/constants/join'
 import Header from '@/components/common/Header'
 import {color_token} from '@/constants/theme'
-import {BackButton, BottomFloatSection, Button, Txt} from '@/shared/ui'
+import {BackButton, BottomFloatSection, Button, Pressable, Txt} from '@/shared/ui'
 import {size} from '@/shared'
 
 export default function ProfileImageScreen() {
@@ -38,11 +38,11 @@ export default function ProfileImageScreen() {
           </View>
           <View style={styles.imagesGrid}>
             {PROFILE_IMAGES.map(item => (
-              <TouchableOpacity key={item.id} onPress={() => setProfile(item)}>
+              <Pressable key={item.id} onPress={() => setProfile(item)}>
                 <View style={[styles.imageOptionWrapper, profile?.id === item.id && styles.selectedImageOptionWrapper]}>
                   <Image source={item.image} style={styles.imageOption} />
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         </ScrollView>
@@ -54,14 +54,6 @@ export default function ProfileImageScreen() {
             시작하기
           </Button>
         </BottomFloatSection>
-        {/* <View style={styles.footer}>
-          <TouchableOpacity
-            disabled={!profile}
-            style={[styles.nextButton, Boolean(profile) && styles.nextButtonActive]}
-            onPress={() => Boolean(profile) && moveToNextStep()}>
-            <Text style={[styles.nextButtonText, Boolean(profile) && styles.nextButtonTextActive]}>시작하기</Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
     </SafeAreaView>
   )

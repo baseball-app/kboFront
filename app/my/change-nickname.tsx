@@ -2,10 +2,10 @@ import Header from '@/components/common/Header'
 import {size, useAppRouter} from '@/shared'
 import useProfile from '@/hooks/my/useProfile'
 import React, {useState} from 'react'
-import {KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native'
+import {KeyboardAvoidingView, Platform, StyleSheet, TextInput, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import {Button, Txt} from '@/shared/ui'
 
 const ChangeNicknameScreen = () => {
   const {updateProfile, profile} = useProfile()
@@ -30,14 +30,12 @@ const ChangeNicknameScreen = () => {
             <Txt size={14} color={color_token.gray600} style={styles.subtitle}>
               * 한글/영어/숫자/밑줄/띄어쓰기를 사용할 수 있습니다.
             </Txt>
-            <TouchableOpacity
-              style={[styles.button, nickname ? styles.buttonActive : null]}
-              onPress={() => updateProfile({nickname}).then(router.back)}
-              disabled={!nickname}>
-              <Txt size={18} weight="bold" color={color_token.white}>
-                변경하기
-              </Txt>
-            </TouchableOpacity>
+            <Button
+              type={nickname ? 'primary' : 'gray'}
+              disabled={!nickname}
+              onPress={() => updateProfile({nickname}).then(router.back)}>
+              변경하기
+            </Button>
           </View>
         </View>
       </KeyboardAvoidingView>

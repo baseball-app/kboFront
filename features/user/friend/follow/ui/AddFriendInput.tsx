@@ -1,9 +1,9 @@
 import React, {useRef, useState} from 'react'
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {StyleSheet, TextInput, View} from 'react-native'
 import {useFollowFriend} from '../model'
 import {color_token} from '@/constants/theme'
 import {size} from '@/shared'
-import {Txt} from '@/shared/ui'
+import {Pressable, Txt} from '@/shared/ui'
 
 const AddFriendInput = () => {
   const inputRef = useRef<TextInput>(null)
@@ -20,7 +20,7 @@ const AddFriendInput = () => {
         placeholderTextColor="#95938B"
         ref={inputRef}
       />
-      <TouchableOpacity
+      <Pressable
         style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: color_token.gray350}]} //
         disabled={!inviteCode}
         onPress={() => {
@@ -30,10 +30,10 @@ const AddFriendInput = () => {
               setInviteCode(undefined)
             })
         }}>
-        <Txt size={14} weight="medium" color={!inviteCode ? color_token.gray350 : color_token.white}>
+        <Txt size={14} weight="medium" color={!inviteCode ? color_token.gray600 : color_token.white}>
           확인
         </Txt>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   )
 }

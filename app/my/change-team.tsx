@@ -6,7 +6,7 @@ import Header from '@/components/common/Header'
 import {useTeam} from '@/entities/match'
 import {color_token} from '@/constants/theme'
 import {size} from '@/shared'
-import {Txt} from '@/shared/ui'
+import {BottomFloatSection, Button, Txt} from '@/shared/ui'
 
 export default function ChangeScreen() {
   const {updateMyTeam, profile} = useProfile()
@@ -18,37 +18,36 @@ export default function ChangeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="마이팀 변경" />
-
-      <View style={styles.headerDescription}>
-        <Txt size={16} color={color_token.gray500} style={styles.headerDescriptionText}>
-          내가 설정한 마이팀을 기준으로{'\n'}데이터가 새로 작성됩니다.
-        </Txt>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.teamsGrid}>
-          {teams?.map(team => (
-            <TouchableOpacity
-              key={team.id}
-              style={[styles.teamButton, selectedTeamId === team.id && styles.selectedTeam]}
-              onPress={() => setSelectedTeamId(team.id)}>
-              <Image source={team.logo} style={styles.teamLogo} />
-              <Txt size={16} weight="medium" style={styles.teamName}>
-                {team.name}
-              </Txt>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-      <View style={styles.footer}>
-        <TouchableOpacity
-          style={[styles.nextButton, isChanged && styles.nextButtonActive]}
-          onPress={() => updateMyTeam(selectedTeamId)}
-          disabled={!isChanged}>
-          <Txt size={18} weight="bold" color={color_token.white}>
-            변경하기
+      <View style={{flex: 1}}>
+        <View style={styles.headerDescription}>
+          <Txt size={16} color={color_token.gray500} style={styles.headerDescriptionText}>
+            내가 설정한 마이팀을 기준으로{'\n'}데이터가 새로 작성됩니다.
           </Txt>
-        </TouchableOpacity>
+        </View>
+
+        <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.teamsGrid}>
+            {teams?.map(team => (
+              <TouchableOpacity
+                key={team.id}
+                style={[styles.teamButton, selectedTeamId === team.id && styles.selectedTeam]}
+                onPress={() => setSelectedTeamId(team.id)}>
+                <Image source={team.logo} style={styles.teamLogo} />
+                <Txt size={16} weight="medium" style={styles.teamName}>
+                  {team.name}
+                </Txt>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+        <BottomFloatSection>
+          <Button
+            type={isChanged ? 'primary' : 'gray'}
+            disabled={!isChanged}
+            onPress={() => updateMyTeam(selectedTeamId)}>
+            변경하기
+          </Button>
+        </BottomFloatSection>
       </View>
     </SafeAreaView>
   )
@@ -58,6 +57,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color_token.white,
+    position: 'relative',
   },
   content: {
     flex: 1,

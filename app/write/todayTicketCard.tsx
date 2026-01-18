@@ -14,7 +14,7 @@ import useTicketDetail from '@/hooks/match/useTicketDetail'
 import {ShareInstagramButton} from '@/features/ticket/share-instagram'
 import Skeleton from '@/components/skeleton/Skeleton'
 import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import {BackButton, Button, Pressable, Txt} from '@/shared/ui'
 
 export default function GameCard() {
   const router = useAppRouter()
@@ -106,12 +106,7 @@ export default function GameCard() {
         title="오늘의 티켓"
         variants="#F3F2EE"
         leftButton={{
-          onPress: onBackButtonClick,
-          content: (
-            <View style={styles.backButtonContainer}>
-              <Image source={require('@/assets/icons/back.png')} style={styles.backImage} />
-            </View>
-          ),
+          content: <BackButton onPress={onBackButtonClick} />,
         }}
         rightButton={{
           content: isMyTicket ? <TicketDeleteButton ticketId={ticketDetail?.id || 0} /> : undefined,
@@ -121,24 +116,24 @@ export default function GameCard() {
         {isMyTicket && (
           <View style={styles.iconBox}>
             <ShareInstagramButton ticketDetail={ticketDetail} />
-            <TouchableOpacity onPress={onSaveTicketImage}>
+            <Pressable onPress={onSaveTicketImage}>
               <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={toggleFavorite}>
+            </Pressable>
+            <Pressable onPress={toggleFavorite}>
               <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Pressable>
+            <Pressable
               onPress={() => {
                 router.push(ROUTES.WRITE_EDIT, {id: ticketDetail?.id})
               }}>
               <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         )}
         {hasDoubleTicket ? (
           <View style={styles.matchButtonBox}>
             {data?.map((_, index) => (
-              <TouchableOpacity
+              <Pressable
                 key={index}
                 style={[styles.matchButton, ticketIndex === index && styles.matchButtonActive]}
                 onPress={() => onChangeTicket(index)}>
@@ -149,7 +144,7 @@ export default function GameCard() {
                   style={styles.matchText}>
                   {index + 1}차 경기
                 </Txt>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         ) : null}
@@ -159,30 +154,30 @@ export default function GameCard() {
         </ViewShot>
         <View style={styles.emojiBox}>
           {reactionList.map(reaction => (
-            <TouchableOpacity
+            <Pressable
               key={reaction.key}
               style={[styles.emojiButton, reaction.isPressed && styles.emojiButtonActive]}
               onPress={() => toggleReaction(reaction.key)}>
-              <Txt>{reaction.title}</Txt>
-              <Txt>{reaction.count}</Txt>
-            </TouchableOpacity>
+              <Txt size={14}>{reaction.title}</Txt>
+              <Txt size={14} weight="medium">
+                {reaction.count}
+              </Txt>
+            </Pressable>
           ))}
         </View>
 
         {from_ticket_box ? null : (
           <>
             {!hasDoubleTicket && isMyTicket && (
-              <TouchableOpacity
+              <Button
                 onPress={() => {
                   setScreenName(pathname)
                   setDiaryCreate('메인 버튼')
                   router.push(ROUTES.WRITE, {date: ticketDetail?.date})
                 }}
                 style={styles.doubleHeaderButton}>
-                <Txt size={16} weight="semibold" color={color_token.white} style={styles.doubleHeaderButtonText}>
-                  더블헤더 티켓 추가하기
-                </Txt>
-              </TouchableOpacity>
+                더블헤더 티켓 추가하기
+              </Button>
             )}
           </>
         )}
@@ -247,6 +242,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexWrap: 'wrap',
     gap: size(8),
+    rowGap: size(12),
     marginBottom: size(30),
   },
   emojiButton: {
@@ -254,30 +250,20 @@ const styles = StyleSheet.create({
     gap: size(5),
     borderWidth: 1,
     backgroundColor: color_token.white,
-    borderColor: color_token.gray600,
+    borderColor: color_token.gray350,
     borderRadius: size(40),
     paddingHorizontal: size(12.5),
     paddingVertical: size(4),
   },
   emojiButtonActive: {
     borderColor: color_token.primary,
-    borderWidth: 2,
   },
   backImage: {
     width: 16,
     height: 28,
   },
   doubleHeaderButton: {
-    backgroundColor: color_token.primary,
-    borderRadius: size(10),
-    paddingVertical: size(10),
     marginTop: size(10),
     marginBottom: size(32),
-    height: size(50),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  doubleHeaderButtonText: {
-    lineHeight: 22.4,
   },
 })

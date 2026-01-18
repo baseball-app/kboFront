@@ -3,9 +3,12 @@ import {useTeam} from '@/entities/match'
 import {TicketDetail} from '@/entities/ticket'
 import useProfile from '@/hooks/my/useProfile'
 import React, {memo} from 'react'
-import {StyleSheet, View, Text, ScrollView, Dimensions} from 'react-native'
+import {StyleSheet, View, ScrollView} from 'react-native'
 import dayjs from 'dayjs'
 import FastImage from '@d11/react-native-fast-image'
+import {size} from '@/shared'
+import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 type Props = {
   ticketDetail: TicketDetail
@@ -35,16 +38,24 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
           <View style={styles.matchInfoBox}>
             <View style={styles.scoreBox}>
               <View style={styles.teamScoreBox}>
-                <Text style={styles.scoreText}>{ticketDetail?.score_our}</Text>
-                <Text style={[styles.teamText]}>{hometeam?.short_name}</Text>
+                <Txt size={24} weight="semibold" color={color_token.black}>
+                  {ticketDetail?.score_our}
+                </Txt>
+                <Txt size={14} weight="regular" color={color_token.gray900}>
+                  {hometeam?.short_name}
+                </Txt>
               </View>
               <View style={{gap: 6}}>
                 <Ellipse size={5} />
                 <Ellipse size={5} />
               </View>
               <View style={styles.teamScoreBox}>
-                <Text style={styles.scoreText}>{ticketDetail?.score_opponent}</Text>
-                <Text style={[styles.teamText]}>{awayteam?.short_name}</Text>
+                <Txt size={24} weight="semibold" color={color_token.black}>
+                  {ticketDetail?.score_opponent}
+                </Txt>
+                <Txt size={14} weight="regular" color={color_token.gray900}>
+                  {awayteam?.short_name}
+                </Txt>
               </View>
             </View>
             <View style={styles.matchBox}>
@@ -103,7 +114,9 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
                       return (
                         <View style={styles.thoughtsTextBox}>
                           <ScrollView style={{maxHeight: 140}}>
-                            <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
+                            <Txt size={15} weight="regular" color={color_token.gray800}>
+                              {ticketDetail?.memo}
+                            </Txt>
                           </ScrollView>
                         </View>
                       )
@@ -118,11 +131,15 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
                               style={styles.lockButton}
                               resizeMode="contain"
                             />
-                            <Text style={styles.onlyMeText}>나만보기</Text>
+                            <Txt size={15} weight="bold" color={color_token.gray900}>
+                              나만보기
+                            </Txt>
                           </View>
                           <View style={styles.thoughtsTextBox}>
                             <ScrollView style={{maxHeight: 140}}>
-                              <Text style={styles.thoughtsText}>{ticketDetail?.memo}</Text>
+                              <Txt size={15} weight="regular" color={color_token.gray800}>
+                                {ticketDetail?.memo}
+                              </Txt>
                             </ScrollView>
                           </View>
                         </>
@@ -145,11 +162,13 @@ const _InfoRow = ({label, value}: {label: string; value?: string}) => {
   if (!value) return null
   return (
     <View style={styles.infoBox}>
-      <Text style={styles.infoLabel}>{label}</Text>
+      <Txt size={14} weight="regular" color={color_token.gray900} style={styles.infoLabel}>
+        {label}
+      </Txt>
       <View style={{flex: 1}}>
-        <Text style={[styles.infoValue]} numberOfLines={2}>
+        <Txt size={14} weight="medium" color={color_token.gray800}>
           {value}
-        </Text>
+        </Txt>
       </View>
     </View>
   )
@@ -159,37 +178,32 @@ export {TicketFrame}
 
 const styles = StyleSheet.create({
   editIcon: {
-    width: 24,
-    height: 24,
+    width: size(24),
+    height: size(24),
   },
   resultBox: {
     width: '100%',
     flexDirection: 'row',
     // backgroundColor: '#202020', // 삭제
-    marginTop: 2,
-    gap: 2.5,
+    marginTop: size(2),
+    gap: size(2.5),
   },
   resultImgBox: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: color_token.white,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 44,
-    gap: 8,
+    height: size(44),
+    gap: size(8),
   },
   resultIcon: {
-    width: 27,
-    height: 28,
-  },
-  resultText: {
-    fontWeight: '700',
-    fontSize: 16,
-    lineHeight: 22.4,
+    width: size(27),
+    height: size(28),
   },
   matchInfoBox: {
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: color_token.white,
     flexDirection: 'column',
     // marginVertical: 2, // 삭제
   },
@@ -198,32 +212,16 @@ const styles = StyleSheet.create({
     // height: 90, // 삭제
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    paddingTop: 20,
-    paddingBottom: 24,
+    gap: size(10),
+    paddingTop: size(20),
+    paddingBottom: size(24),
   },
   teamScoreBox: {
     flex: 1,
     flexDirection: 'column',
-    gap: 4,
+    gap: size(4),
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  scoreText: {
-    color: '#000000',
-    fontWeight: '600',
-    fontSize: 24,
-    lineHeight: 33.4,
-  },
-  teamText: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 19.6,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-    // backgroundColor: '#FDD484', // 삭제
-    borderRadius: 4,
-    color: '#171716',
   },
   matchBox: {
     width: '100%',
@@ -237,33 +235,18 @@ const styles = StyleSheet.create({
     width: '100%',
     // paddingHorizontal: 22, // 위치 변경
     alignItems: 'flex-start',
-    gap: 30,
-    paddingVertical: 8,
-    paddingHorizontal: 22,
+    gap: size(30),
+    paddingVertical: size(8),
+    paddingHorizontal: size(22),
   },
   infoLabel: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 19.6,
-    width: 95,
-  },
-  infoValue: {
-    fontWeight: '500',
-    fontSize: 14,
-    lineHeight: 19.6,
-    color: '#353430',
+    width: size(95),
   },
   thoughtsBox: {
     width: '100%',
   },
   thoughtsTextBox: {
-    marginTop: 8,
-  },
-  thoughtsText: {
-    color: '#353430',
-    fontSize: 15,
-    fontWeight: 400,
-    lineHeight: 21,
+    marginTop: size(8),
   },
   ticketBackground: {
     width: '100%',
@@ -283,17 +266,11 @@ const styles = StyleSheet.create({
   onlyMeButtonBox: {
     width: '100%',
     flexDirection: 'row',
-    gap: 5,
+    gap: size(5),
     alignItems: 'center',
   },
   lockButton: {
-    width: 20,
-    height: 20,
-  },
-  onlyMeText: {
-    fontWeight: '700',
-    fontSize: 15,
-    lineHeight: 21,
-    color: '#171716',
+    width: size(20),
+    height: size(20),
   },
 })

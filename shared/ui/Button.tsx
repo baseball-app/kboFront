@@ -1,8 +1,9 @@
 import React, {memo} from 'react'
-import {Pressable, StyleSheet, StyleProp, ViewStyle, TextStyle, ActivityIndicator} from 'react-native'
+import {Pressable, StyleSheet, StyleProp, ViewStyle, TextStyle, View} from 'react-native'
 import {color_token} from '@/constants/theme'
 import {Txt} from './Txt'
 import {size} from '@/shared'
+import LottieView from 'lottie-react-native'
 
 type ButtonType = 'primary' | 'secondary' | 'outline' | 'outline_active' | 'gray'
 type ButtonSize = 'small' | 'medium' | 'large'
@@ -57,18 +58,21 @@ const sizeStyles = {
     paddingHorizontal: size(16),
     fontSize: 14,
     borderRadius: size(8),
+    height: size(36),
   },
   medium: {
     paddingVertical: size(14),
     paddingHorizontal: size(20),
     fontSize: 16,
     borderRadius: size(10),
+    height: size(53),
   },
   large: {
     paddingVertical: size(16),
     paddingHorizontal: size(24),
     fontSize: 18,
     borderRadius: size(12),
+    height: size(58),
   },
 }
 
@@ -103,11 +107,13 @@ const Button = memo(
             paddingHorizontal: sizeStyle.paddingHorizontal,
             borderRadius: sizeStyle.borderRadius,
             opacity: pressed && !isDisabled ? 0.9 : 1,
+            height: sizeStyle.height,
+            maxHeight: sizeStyle.height,
           },
           style,
         ]}>
         {loading ? (
-          <ActivityIndicator color={colors.text} size="small" />
+          <LottieView source={require('@/assets/lottie/loading.json')} autoPlay loop style={styles.lottieView} />
         ) : (
           <Txt weight="semibold" size={sizeStyle.fontSize as 14 | 16 | 18} color={colors.text} style={textStyle}>
             {children}
@@ -124,6 +130,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     flexDirection: 'row',
+  },
+  lottieView: {
+    width: size(90),
+    height: size(90),
   },
 })
 

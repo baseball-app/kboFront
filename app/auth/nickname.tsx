@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native'
+import {StyleSheet, View, TextInput, KeyboardAvoidingView, Platform} from 'react-native'
 import useUserJoin from '@/hooks/auth/useUserJoin'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {color_token} from '@/constants/theme'
