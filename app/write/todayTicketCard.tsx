@@ -196,9 +196,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: size(24),
     backgroundColor: color_token.gray150,
   },
-  backButtonContainer: {
-    minWidth: 28,
-  },
   iconBox: {
     flexDirection: 'row',
     gap: size(24),
@@ -247,12 +244,12 @@ const styles = StyleSheet.create({
   },
   emojiButton: {
     flexDirection: 'row',
-    gap: size(5),
+    gap: size(4),
     borderWidth: 1,
     backgroundColor: color_token.white,
     borderColor: color_token.gray350,
     borderRadius: size(40),
-    paddingHorizontal: size(12.5),
+    paddingHorizontal: size(11),
     paddingVertical: size(4),
   },
   emojiButtonActive: {

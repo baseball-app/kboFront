@@ -16,7 +16,9 @@ interface StatsCardProps {
 
 const _StatsCard = ({image, title, matchResult, onPress}: StatsCardProps) => {
   const totalMatchCount = matchResult.win + matchResult.draw + matchResult.lose
-  const winRate = totalMatchCount === 0 ? 0 : Math.floor(((matchResult.win || 0) / totalMatchCount) * 10000) / 100
+  const winRate = Math.ceil(
+    totalMatchCount === 0 ? 0 : Math.floor(((matchResult.win || 0) / totalMatchCount) * 10000) / 100,
+  )
 
   return (
     <Pressable style={styles.container} onPress={onPress}>

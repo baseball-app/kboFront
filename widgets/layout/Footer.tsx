@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     // iOS 그림자
     shadowColor: '#000',
     shadowOffset: {width: 0, height: -3},
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.04,
     shadowRadius: 8,
     // Android는 elevation이 위쪽 그림자를 지원하지 않아 borderTop으로 대체
     elevation: 8,
