@@ -227,7 +227,7 @@ const TicketPage = () => {
     (writeStore.selectedPlace === '직관' && writeData.matchPlace) || writeStore.selectedPlace === '집관',
   )
 
-  const isEnabled = Boolean(hasScore && hasPlace && hasOpponentTeam)
+  const isEnabled = Boolean(hasScore && (!isDirectWrite || (hasPlace && hasOpponentTeam)))
 
   const inputListRef = useRef<Record<string, TextInput>>({})
   const scrollRef = useRef<ScrollView>(null)
