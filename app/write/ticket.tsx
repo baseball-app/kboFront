@@ -220,7 +220,14 @@ const TicketPage = () => {
     }
   }
 
-  const isEnabled = Boolean(writeData.todayScore.our && writeData.todayScore.opponent)
+  const hasScore = Boolean(writeData.todayScore.our && writeData.todayScore.opponent)
+  const hasOpponentTeam = Boolean(writeStore.selectedMatch?.team_away_info.id || writeData.matchTeam?.id)
+
+  const hasPlace = Boolean(
+    (writeStore.selectedPlace === '직관' && writeData.matchPlace) || writeStore.selectedPlace === '집관',
+  )
+
+  const isEnabled = Boolean(hasScore && hasPlace && hasOpponentTeam)
 
   const inputListRef = useRef<Record<string, TextInput>>({})
   const scrollRef = useRef<ScrollView>(null)
