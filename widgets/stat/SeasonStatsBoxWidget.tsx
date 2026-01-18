@@ -49,7 +49,7 @@ function SeasonStatsBoxWidget({year}: {year: number}) {
         <View style={styles.powerBox}>
           <Txt size={16}>나의 승요력</Txt>
           <Txt size={24} weight="bold">
-            {all_ticket_stats?.total_percent}%
+            {Math.ceil(all_ticket_stats?.total_percent || 0)}%
           </Txt>
         </View>
         <View style={styles.statsRow}>

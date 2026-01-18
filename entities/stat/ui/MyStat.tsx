@@ -22,7 +22,7 @@ const MyStat = ({percentage}: Props) => {
           <View style={styles.progressContent}>
             <Text style={styles.progressText}>나의 승요력</Text>
             <Text style={styles.progressPercentage}>
-              {percentage}
+              {Math.ceil(percentage)}
               <Text style={styles.progressPercentageUnit}>%</Text>
             </Text>
           </View>
