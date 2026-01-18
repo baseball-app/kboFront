@@ -34,26 +34,28 @@ const MatchCard = ({match, onClick, isSelected}: Props) => {
             {time}
           </Txt>
           <Ellipse />
-          <Txt size={14} color={color_token.black} style={{marginLeft: size(3)}}>
+          <Txt size={14} color={color_token.black} style={styles.ballparkText}>
             {match.ballpark_info.name.slice(0, 2)}
           </Txt>
         </View>
         <View style={styles.matchTeamBox}>
-          <View style={styles.matchTeamInfo}>
-            <Image source={homeTeam?.logo} resizeMode="contain" style={{width: size(35), height: size(35)}} />
+          <View style={styles.teamRow}>
+            <View style={styles.teamContainer}>
+              <Image source={homeTeam?.logo} resizeMode="contain" style={styles.teamLogo} />
+              <Txt size={14} color={color_token.black}>
+                {homeTeam?.short_name}
+              </Txt>
+            </View>
             <View style={styles.ellipseBox}>
               <Ellipse size={size(5)} />
               <Ellipse size={size(5)} />
             </View>
-            <Image source={awayTeam?.logo} resizeMode="contain" style={{width: size(35), height: size(35)}} />
-          </View>
-          <View style={styles.teamNameBox}>
-            <Txt size={14} color={color_token.black}>
-              {homeTeam?.short_name}
-            </Txt>
-            <Txt size={14} color={color_token.black}>
-              {awayTeam?.short_name}
-            </Txt>
+            <View style={styles.teamContainer}>
+              <Image source={awayTeam?.logo} resizeMode="contain" style={styles.teamLogo} />
+              <Txt size={14} color={color_token.black}>
+                {awayTeam?.short_name}
+              </Txt>
+            </View>
           </View>
         </View>
       </View>
@@ -92,22 +94,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: size(5),
   },
-  matchTeamInfo: {
+  ballparkText: {
+    marginLeft: size(3),
+  },
+  teamRow: {
     flexDirection: 'row',
-    gap: size(20),
-    width: '100%',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    gap: size(24),
+  },
+  teamContainer: {
+    alignItems: 'center',
+  },
+  teamLogo: {
+    width: size(35),
+    height: size(35),
+    marginBottom: size(4),
   },
   ellipseBox: {
     flexDirection: 'column',
     gap: size(6),
     justifyContent: 'center',
-  },
-  teamNameBox: {
-    width: '100%',
-    marginTop: size(4),
-    flexDirection: 'row',
-    gap: size(45),
-    justifyContent: 'center',
+    marginTop: size(10),
   },
 })

@@ -1,4 +1,5 @@
 import Header from '@/components/common/Header'
+import {color_token} from '@/constants/theme'
 import {MyStatWidget} from '@/widgets'
 import React from 'react'
 import {StyleSheet} from 'react-native'
@@ -16,6 +17,6 @@ export default function MyStatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: color_token.white,
   },
 })
