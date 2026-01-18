@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   profileInfo: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: size(4),
   },
   profileInfoBox: {
     gap: size(4),

@@ -117,7 +117,7 @@ const SelectBox = ({
               style={[
                 styles.list,
                 {
-                  top: layout.y + layout.height - 20,
+                  top: layout.y + layout.height + 4,
                   left: layout.x,
                   minWidth: Math.max(layout.width, 140),
                 },
