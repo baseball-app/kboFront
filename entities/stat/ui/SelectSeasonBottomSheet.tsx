@@ -54,10 +54,16 @@ const SelectSeasonBottomSheet = ({
           />
         </View>
         <View style={styles.buttonBox}>
-          <Button style={{flex: 1}} type="gray" onPress={() => onCancel()}>
+          <Button
+            style={{flex: 1, paddingVertical: size(12), height: size(46)}}
+            type="cancel"
+            onPress={() => onCancel()}>
             취소
           </Button>
-          <Button style={{flex: 1}} type="primary" onPress={() => onConfirm(selectedYear, selectedSeason)}>
+          <Button
+            style={{flex: 1, paddingVertical: size(12), height: size(46)}}
+            type="primary"
+            onPress={() => onConfirm(selectedYear, selectedSeason)}>
             완료
           </Button>
         </View>

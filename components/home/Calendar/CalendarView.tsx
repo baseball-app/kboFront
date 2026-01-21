@@ -160,12 +160,12 @@ const YearMonthPicker = ({
           />
         </View>
         <View style={styles.buttonBox}>
-          <Button type="gray" onPress={onCancel} style={{flex: 1}}>
+          <Button type="cancel" onPress={onCancel} style={{flex: 1, paddingVertical: size(12), height: size(46)}}>
             취소
           </Button>
           <Button
             type="primary"
-            style={{flex: 1}}
+            style={{flex: 1, paddingVertical: size(12), height: size(46)}}
             onPress={() => {
               onConfirm(dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`).toDate())
             }}>

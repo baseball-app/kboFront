@@ -120,12 +120,15 @@ const _BottomSheetController = ({
           />
         </View>
         <View style={styles.buttonBox}>
-          <Button type="gray" style={{flex: 1}} onPress={() => setIsModalVisible(false)}>
+          <Button
+            type="cancel"
+            style={{flex: 1, paddingVertical: size(12), height: size(46)}}
+            onPress={() => setIsModalVisible(false)}>
             취소
           </Button>
           <Button
             type="primary"
-            style={{flex: 1}}
+            style={{flex: 1, paddingVertical: size(12), height: size(46)}}
             onPress={() => {
               setCurrentDate(dayjs(`${selectedYear}-${selectedMonth}-${selectedDay}`).toDate())
               setIsModalVisible(false)

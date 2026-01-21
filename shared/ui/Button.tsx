@@ -5,7 +5,7 @@ import {Txt} from './Txt'
 import {size} from '@/shared'
 import LottieView from 'lottie-react-native'
 
-type ButtonType = 'primary' | 'secondary' | 'outline' | 'outline_active' | 'gray'
+type ButtonType = 'primary' | 'secondary' | 'outline' | 'outline_active' | 'gray' | 'cancel'
 type ButtonSize = 'small' | 'medium' | 'large'
 
 interface ButtonProps {
@@ -49,6 +49,12 @@ const buttonColors = {
     text: color_token.gray600,
     border: color_token.gray300,
     pressed: color_token.gray300,
+  },
+  cancel: {
+    bg: color_token.gray350,
+    text: color_token.gray900,
+    border: color_token.gray350,
+    pressed: color_token.gray350,
   },
 }
 
@@ -96,6 +102,9 @@ const Button = memo(
         onPress={() => {
           if (isDisabled) return
           onPress?.()
+        }}
+        onLayout={({nativeEvent}) => {
+          console.log('height', nativeEvent.layout.height)
         }}
         disabled={isDisabled}
         style={({pressed}) => [
