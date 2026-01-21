@@ -1,7 +1,8 @@
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native'
-import {useAppRouter} from '@/shared'
+import {size, useAppRouter} from '@/shared'
 import {color_token} from '@/constants/theme'
+import {Txt} from '@/shared/ui'
 
 type ButtonType = {
   onPress?: () => void
@@ -13,7 +14,7 @@ type Props = {
   hasBackButton?: boolean
   rightButton?: ButtonType
   leftButton?: ButtonType
-  title?: string
+  title?: string | React.ReactNode
   topInset?: number
 }
 
@@ -52,7 +53,13 @@ const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButt
       ) : (
         <View style={styles.icon} />
       )}
-      <Text style={styles.text}>{title}</Text>
+      {typeof title === 'string' ? (
+        <Txt size={18} weight="semibold" color={color_token.black}>
+          {title}
+        </Txt>
+      ) : (
+        title
+      )}
       {rightButton ? (
         rightButton.onPress ? (
           <TouchableOpacity style={styles.icon} onPress={rightButton.onPress}>
@@ -75,17 +82,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 24,
+    paddingVertical: size(10),
+    paddingHorizontal: size(24),
   },
   icon: {
-    minWidth: 16,
-    minHeight: 28,
-  },
-  text: {
-    color: '#171716',
-    fontSize: 18,
-    fontWeight: 600,
-    lineHeight: 18 * 1.4,
+    minWidth: size(28),
+    minHeight: size(28),
   },
 })

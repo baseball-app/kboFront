@@ -1,7 +1,9 @@
 import {useCommonSlice} from '@/slice/commonSlice'
 import React from 'react'
-import {Text, TouchableOpacity} from 'react-native'
+import {TouchableOpacity} from 'react-native'
 import {useDeleteTicket} from '../model'
+import {Txt} from '@/shared/ui'
+import {color_token} from '@/constants/theme'
 
 const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
   const {modal} = useCommonSlice()
@@ -16,17 +18,17 @@ const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
           text: '취소',
           onPress: modal.hide,
           buttonStyle: {
-            backgroundColor: '#D0CEC7',
+            backgroundColor: color_token.gray300,
           },
         },
         {
           text: '삭제',
           onPress: () => deleteTicket(ticketId),
           buttonStyle: {
-            backgroundColor: '#1E5EF4',
+            backgroundColor: color_token.primary,
           },
           buttonTextStyle: {
-            color: '#fff',
+            color: color_token.white,
           },
         },
       ],
@@ -34,8 +36,12 @@ const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
   }
 
   return (
-    <TouchableOpacity onPress={() => onDeleteTicket()}>
-      <Text style={{color: '#1E5EF4', fontSize: 16, fontWeight: '500', lineHeight: 20 * 1.4}}>삭제</Text>
+    <TouchableOpacity
+      onLayout={({nativeEvent}) => console.log(nativeEvent.layout.width)}
+      onPress={() => onDeleteTicket()}>
+      <Txt size={16} weight="semibold" color={color_token.primary}>
+        삭제
+      </Txt>
     </TouchableOpacity>
   )
 }

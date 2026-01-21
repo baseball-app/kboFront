@@ -103,8 +103,12 @@ export default function GameCard() {
   return (
     <SafeAreaView style={styles.container}>
       <Header
-        title="오늘의 티켓"
-        variants="#F3F2EE"
+        title={
+          <Txt size={20} weight="semibold" color={color_token.black}>
+            오늘의 티켓
+          </Txt>
+        }
+        variants="transparent"
         leftButton={{
           content: <BackButton onPress={onBackButtonClick} />,
         }}
