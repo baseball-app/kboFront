@@ -8,7 +8,10 @@ const MatchNotification = () => {
   return (
     <View style={styles.container}>
       <Txt size={14} weight="medium">
-        <Txt color={color_token.primary}>경기 일정</Txt>을 누르고 직관 일기를 작성해보세요!
+        <Txt size={14} color={color_token.primary}>
+          경기 일정
+        </Txt>
+        을 누르고 직관 일기를 작성해보세요!
       </Txt>
     </View>
   )
