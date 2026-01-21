@@ -18,6 +18,7 @@ import {showToast} from '@/shared'
 import LottieView from 'lottie-react-native'
 import {color_token} from '@/constants/theme'
 import {BackButton, Button, Txt} from '@/shared/ui'
+import Header from '@/components/common/Header'
 
 type Inquiry = {
   email: string
@@ -66,8 +67,12 @@ export default function NicknameScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Pressable style={styles.flex1} onPress={Keyboard.dismiss}>
+        <Header
+          leftButton={{
+            content: <BackButton onPress={router.back} />,
+          }}
+        />
         <View style={styles.header}>
-          <BackButton onPress={router.back} />
           <Txt size={24} weight="semibold" style={styles.title}>
             앱을 사용하면서{'\n'}불편했던 점을 적어주세요
           </Txt>

@@ -6,6 +6,7 @@ import {useQuery} from '@tanstack/react-query'
 import ApiClient from '@/api'
 import React from 'react'
 import {View, StyleSheet} from 'react-native'
+import {size} from '@/shared'
 
 type AllTicketStats = {
   total_percent: number
@@ -37,8 +38,8 @@ function SeasonStatsBoxWidget({year}: {year: number}) {
 
   return (
     <LinearBorderBox
-      borderWidth={1.5}
-      borderRadius={10}
+      borderWidth={size(2)}
+      borderRadius={size(10)}
       backgroundColor={color_token.white}
       colors={
         Number(data?.all_ticket_stats.total_games) > 0
@@ -54,25 +55,25 @@ function SeasonStatsBoxWidget({year}: {year: number}) {
         </View>
         <View style={styles.statsRow}>
           <View style={styles.statItem}>
-            <Txt size={16}>경기</Txt>
+            <Txt size={14}>경기</Txt>
             <Txt size={24} weight="bold">
               {all_ticket_stats?.total_games}
             </Txt>
           </View>
           <View style={styles.statItem}>
-            <Txt size={16}>승</Txt>
+            <Txt size={14}>승</Txt>
             <Txt size={24} weight="bold">
               {all_ticket_stats?.wins}
             </Txt>
           </View>
           <View style={styles.statItem}>
-            <Txt size={16}>패</Txt>
+            <Txt size={14}>패</Txt>
             <Txt size={24} weight="bold">
               {all_ticket_stats?.losses}
             </Txt>
           </View>
           <View style={styles.statItem}>
-            <Txt size={16}>무</Txt>
+            <Txt size={14}>무</Txt>
             <Txt size={24} weight="bold">
               {all_ticket_stats?.draws}
             </Txt>
@@ -89,10 +90,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   powerBox: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: size(20),
+    paddingVertical: size(16),
     alignItems: 'center',
-    borderWidth: 0.7,
+    borderWidth: size(1),
     borderColor: color_token.gray350,
     borderStyle: 'dashed',
     marginLeft: -1,
@@ -100,14 +101,15 @@ const styles = StyleSheet.create({
     marginBottom: -2,
   },
   statsRow: {
-    paddingHorizontal: 16,
+    paddingHorizontal: size(16),
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,
   },
   statItem: {
-    paddingVertical: 16,
+    paddingVertical: size(16),
     alignItems: 'center',
+    gap: size(2),
   },
 })
 

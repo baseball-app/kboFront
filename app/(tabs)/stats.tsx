@@ -40,9 +40,14 @@ const MatchScreen = () => {
             leftButton={{
               content: (
                 <Pressable onPress={() => setOpen(true)} style={styles.headerButton}>
-                  <Txt size={20} weight="bold">
-                    {selectedYear} 시즌
-                  </Txt>
+                  <View style={{flexDirection: 'row', alignItems: 'center', gap: size(3)}}>
+                    <Txt size={20} weight="bold">
+                      {selectedYear}
+                    </Txt>
+                    <Txt size={20} weight="bold">
+                      시즌
+                    </Txt>
+                  </View>
                   <Image source={require('@/assets/icons/arrow_down.png')} style={styles.arrowIcon} />
                 </Pressable>
               ),
@@ -65,7 +70,7 @@ const MatchScreen = () => {
                 onChange={value => onChangeType(value as SelectedStatsType)}
               />
               <Pressable onPress={toggleSort} style={sortStyles.container}>
-                <Txt size={14} weight="medium" color={color_token.gray600}>
+                <Txt size={16} weight="medium" color={color_token.gray700}>
                   {isSortedByHighWinRate ? '승률 높은순' : '승률 낮은순'}
                 </Txt>
                 <Image source={require('@/assets/icons/updown.png')} style={sortStyles.icon} />
@@ -106,8 +111,8 @@ const styles = StyleSheet.create({
     gap: size(8),
   },
   arrowIcon: {
-    width: 18,
-    height: 18,
+    width: size(18),
+    height: size(18),
   },
   scrollView: {},
   contentGap: {
@@ -134,7 +139,7 @@ const sortStyles = StyleSheet.create({
     gap: size(4),
   },
   icon: {
-    width: 16,
-    height: 16,
+    width: size(18),
+    height: size(18),
   },
 })

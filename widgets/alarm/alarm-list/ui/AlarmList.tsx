@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import {useSegments} from 'expo-router'
 import React, {useEffect, useRef} from 'react'
 import {FlatList, StyleSheet, View} from 'react-native'
+import {color_token} from '@/constants/theme'
 
 const AlarmList = () => {
   const {alarmList, fetchNextPage, refetch} = useAlarmList()
@@ -71,19 +72,7 @@ const AlarmList = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: '#F3F2EE',
-  },
-  headerTitleBox: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 24,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#171716',
+    backgroundColor: color_token.gray150,
   },
 })
 
