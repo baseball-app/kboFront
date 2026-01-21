@@ -1,4 +1,6 @@
-import {Pressable} from '@/shared'
+import {color_token} from '@/constants/theme'
+import {Pressable, size} from '@/shared'
+import {Txt} from '@/shared/ui'
 import React, {memo} from 'react'
 import {StyleSheet, Text} from 'react-native'
 
@@ -6,15 +8,18 @@ type Props = {
   name: string
   isActive?: boolean
   onClick?: () => void
-  paddingHorizontal: number
 }
 
-function TeamTag({name, isActive, onClick, paddingHorizontal}: Props) {
+function TeamTag({name, isActive, onClick}: Props) {
   return (
-    <Pressable
-      onPress={onClick}
-      style={[styles.tag, isActive && styles.tagActive, {paddingHorizontal: paddingHorizontal}]}>
-      <Text style={[styles.text, isActive && styles.textActive]}>{name}</Text>
+    <Pressable onPress={onClick} style={[styles.tag, isActive && styles.tagActive]}>
+      <Txt
+        size={16}
+        weight="semibold"
+        color={color_token.gray900}
+        style={[isActive && styles.textActive, {lineHeight: 24}]}>
+        {name}
+      </Txt>
     </Pressable>
   )
 }
@@ -28,23 +33,17 @@ export {MemoizedTeamTag as TeamTag}
 const styles = StyleSheet.create({
   tag: {
     borderWidth: 1,
-    backgroundColor: '#F3F2EE',
-    borderColor: '#E4E2DC',
+    backgroundColor: color_token.gray200,
+    borderColor: color_token.gray300,
     borderRadius: 999,
-    paddingVertical: 4,
-    // paddingHorizontal: 12,
+    paddingVertical: size(4),
+    paddingHorizontal: size(12),
   },
   tagActive: {
-    backgroundColor: '#1E5EF41A',
-    borderColor: '#1E5EF4',
-  },
-  text: {
-    fontWeight: 600,
-    fontSize: 16,
-    lineHeight: 24,
-    color: '#171716',
+    backgroundColor: color_token.primary_10,
+    borderColor: color_token.primary,
   },
   textActive: {
-    color: '#1E5EF4',
+    color: color_token.primary,
   },
 })
