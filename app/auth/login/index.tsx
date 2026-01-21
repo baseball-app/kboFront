@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, View, Text, Image} from 'react-native'
+import {StyleSheet, View, Image} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {AppleLoginButton, KakaoLoginButton, NaverLoginButton} from '@/features/auth/login'
 import {color_token} from '@/constants/theme'

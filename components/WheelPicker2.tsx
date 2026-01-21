@@ -1,3 +1,4 @@
+import {color_token} from '@/constants/theme'
 import React, {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform, View, ViewStyle} from 'react-native'
 
@@ -107,7 +108,7 @@ const WheelItem = ({item, itemHeight, isSelected}: {item: string; itemHeight: nu
     fontSize: 24,
     lineHeight: 24 * 1.4,
     fontWeight: '700',
-    color: interpolateColor(colorAnim.value, [0, 1], ['#95938B', '#171716']),
+    color: interpolateColor(colorAnim.value, [0, 1], [color_token.gray300, color_token.black]),
   }))
 
   if (!item) return <View style={{height: itemHeight}} />

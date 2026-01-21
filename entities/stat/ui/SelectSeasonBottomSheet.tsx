@@ -1,8 +1,9 @@
 import WheelPicker2 from '@/components/WheelPicker2'
-import {BottomSheet} from '@/shared/ui'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {StyleSheet, Text, View} from 'react-native'
-import {Pressable} from '@/shared/ui/Pressable'
+import {BottomSheet, Txt} from '@/shared/ui'
+import React, {useCallback, useMemo, useState} from 'react'
+import {StyleSheet, View} from 'react-native'
+import {Button} from '@/shared/ui'
+import {size} from '@/shared'
 
 const SelectSeasonBottomSheet = ({
   isOpen,
@@ -29,9 +30,9 @@ const SelectSeasonBottomSheet = ({
   }, [value])
 
   return (
-    <BottomSheet isOpen={isOpen} duration={350} height={320}>
+    <BottomSheet isOpen={isOpen} duration={350} height={size(320)}>
       <View style={styles.modalContent}>
-        <Text style={styles.modalTitle}>원하시는 시즌을 선택해주세요</Text>
+        <Txt weight="bold">원하시는 시즌을 선택해주세요</Txt>
         <View style={styles.datePickerContainer}>
           <WheelPicker2
             itemHeight={50}
@@ -53,17 +54,12 @@ const SelectSeasonBottomSheet = ({
           />
         </View>
         <View style={styles.buttonBox}>
-          <Pressable
-            style={styles.cancelButton}
-            onPress={() => {
-              onCancel()
-              initValue()
-            }}>
-            <Text style={styles.cancelText}>취소</Text>
-          </Pressable>
-          <Pressable style={styles.confirmButton} onPress={() => onConfirm(selectedYear, selectedSeason)}>
-            <Text style={styles.confirmText}>완료</Text>
-          </Pressable>
+          <Button style={{flex: 1}} type="gray" onPress={() => onCancel()}>
+            취소
+          </Button>
+          <Button style={{flex: 1}} type="primary" onPress={() => onConfirm(selectedYear, selectedSeason)}>
+            완료
+          </Button>
         </View>
       </View>
     </BottomSheet>
@@ -73,58 +69,24 @@ const SelectSeasonBottomSheet = ({
 const styles = StyleSheet.create({
   modalContent: {
     width: '100%',
-    padding: 24,
+    padding: size(24),
     backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-  },
-  modalTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginBottom: 16,
+    borderTopLeftRadius: size(20),
+    borderTopRightRadius: size(20),
+    borderBottomLeftRadius: size(0),
+    borderBottomRightRadius: size(0),
   },
   datePickerContainer: {
     flexDirection: 'row',
     overflow: 'hidden',
+    paddingTop: size(20),
   },
   buttonBox: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 13,
-    marginTop: 30,
-    marginBottom: 16,
-  },
-  confirmButton: {
-    flex: 1,
-    height: 46,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#1E5EF4',
-  },
-  confirmText: {
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
-    color: '#fff',
-  },
-  cancelButton: {
-    flex: 1,
-    height: 46,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#D0CEC7',
-  },
-  cancelText: {
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 22.4,
-    color: '#000',
+    gap: size(13),
+    marginTop: size(30),
+    marginBottom: size(16),
   },
 })
 
