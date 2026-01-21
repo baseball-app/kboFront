@@ -1,4 +1,5 @@
 import Input from '@/components/common/Input'
+import {color_token} from '@/constants/theme'
 import {MyStat, StatBox, useMyStat} from '@/entities/stat'
 import useProfile from '@/hooks/my/useProfile'
 import {size} from '@/shared'
@@ -31,10 +32,30 @@ function MyStatWidget() {
         />
       </View>
       <View style={styles.summaryContainer}>
-        <Input label="최다 관람구장" editable={false} value={data?.mostWatchStadium} />
-        <Input label="나의 승요 요일" editable={false} value={data?.weekdayMostWin} />
-        <Input label="나의 최다 연승" editable={false} value={data?.longestWinningStreak} />
-        <Input label="최다 승리 구단" editable={false} value={data?.mostWinTeam} />
+        <Input
+          label="최다 관람구장"
+          editable={false}
+          style={{backgroundColor: color_token.gray200}}
+          value={data?.mostWatchStadium}
+        />
+        <Input
+          label="나의 승요 요일"
+          editable={false}
+          style={{backgroundColor: color_token.gray200}}
+          value={data?.weekdayMostWin}
+        />
+        <Input
+          label="나의 최다 연승"
+          editable={false}
+          style={{backgroundColor: color_token.gray200}}
+          value={data?.longestWinningStreak}
+        />
+        <Input
+          label="최다 승리 구단"
+          editable={false}
+          style={{backgroundColor: color_token.gray200}}
+          value={data?.mostWinTeam}
+        />
       </View>
     </ScrollView>
   )

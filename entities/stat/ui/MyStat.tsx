@@ -1,6 +1,8 @@
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
+import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
 
 type Props = {
   percentage: number
@@ -10,12 +12,12 @@ const MyStat = ({percentage}: Props) => {
   return (
     <View style={styles.progressBox}>
       <AnimatedCircularProgress
-        size={170}
-        width={16}
+        size={size(170)}
+        width={size(16)}
         fill={percentage} // percentage
-        tintColor="#1E5EF4"
+        tintColor={color_token.primary}
         arcSweepAngle={270}
-        backgroundColor="#E4E2DC"
+        backgroundColor={color_token.gray200}
         lineCap="round"
         rotation={225}
         children={() => (

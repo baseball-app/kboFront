@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
 import {Modal} from '@/components/common/Modal'
+import {size} from '@/shared'
+import {color_token} from '@/constants/theme'
 
 type Props = {
   title: string
@@ -23,14 +25,14 @@ const modal = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 24,
+    padding: size(24),
   },
   body: {
     width: '100%',
-    maxWidth: 324,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
+    maxWidth: size(324),
+    backgroundColor: color_token.white,
+    borderRadius: size(10),
+    padding: size(20),
   },
 })
 
@@ -44,8 +46,8 @@ const StatBox = ({title, value, win, draw, lose}: Props) => {
           size={40} //
           width={4}
           fill={value}
-          tintColor="#1E5EF4"
-          backgroundColor="#E4E2DC"
+          tintColor={color_token.primary}
+          backgroundColor={color_token.gray200}
           lineCap="round"
           rotation={180}
           children={() => <Text style={styles.graphText}>{value}%</Text>}
@@ -70,8 +72,8 @@ const StatBox = ({title, value, win, draw, lose}: Props) => {
                 size={115}
                 width={10}
                 fill={value}
-                tintColor="#1E5EF4"
-                backgroundColor="#E4E2DC"
+                tintColor={color_token.primary}
+                backgroundColor={color_token.gray200}
                 lineCap="round"
                 rotation={180}
                 children={() => <Text style={modalStyles.graphText}>{value}%</Text>}
