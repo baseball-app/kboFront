@@ -269,8 +269,8 @@ const TicketPage = () => {
                     }}
                   />
                   <View style={styles.ellipseBox}>
-                    <Ellipse />
-                    <Ellipse />
+                    <Ellipse color={color_token.gray350} size={5} />
+                    <Ellipse color={color_token.gray350} size={5} />
                   </View>
                   <TextInput
                     style={styles.scoreInput}
@@ -584,7 +584,7 @@ const styles = StyleSheet.create({
   ellipseBox: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginHorizontal: size(10),
+    marginHorizontal: size(20),
     gap: size(6),
   },
   teamNmBox: {
