@@ -1,56 +1,41 @@
 import {useSegments} from 'expo-router'
 import React, {useEffect, useState} from 'react'
-import {View, Text, StyleSheet, Image} from 'react-native'
+import {View, Text, StyleSheet, Vibration} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {Pressable, ROUTES, useAppRouter} from '@/shared'
+import {CalenderIcon, MatchIcon, TicketIcon, StatsIcon, MyIcon} from '@/shared/ui/tab-icons'
+import {color_token} from '@/constants/theme'
+
 const footerList = [
   {
     name: '캘린더',
     path: ROUTES.CALENDAR_TAB,
-    icon: {
-      active: require('@/assets/icons/tabMenu/calendarMenuActive.png'),
-      inactive: require('@/assets/icons/tabMenu/calendarMenu.png'),
-    },
+    Icon: CalenderIcon,
   },
   {
     name: '경기 일정',
     path: ROUTES.MATCH_TAB,
-    icon: {
-      active: require('@/assets/icons/tabMenu/gameMatchMenuActive.png'),
-      inactive: require('@/assets/icons/tabMenu/gameMatchMenu.png'),
-    },
+    Icon: MatchIcon,
   },
   {
     name: '티켓박스',
     path: ROUTES.TICKET_TAB,
-    icon: {
-      active: require('@/assets/icons/tabMenu/ticketMenuActive.png'),
-      inactive: require('@/assets/icons/tabMenu/ticketMenu.png'),
-    },
+    Icon: TicketIcon,
   },
   // {
   //   name: '알림',
   //   path: ROUTES.ALARM_TAB,
-  //   icon: {
-  //     active: require('@/assets/icons/tabMenu/alarmMenuActive.png'),
-  //     inactive: require('@/assets/icons/tabMenu/alarmMenu.png'),
-  //   },
+  //   Icon: AlarmIcon,
   // },
   {
     name: '경기통계',
     path: ROUTES.STATS_TAB,
-    icon: {
-      active: require('@/assets/icons/tabMenu/rankMenuActive.png'),
-      inactive: require('@/assets/icons/tabMenu/rankMenu.png'),
-    },
+    Icon: StatsIcon,
   },
   {
     name: '마이',
     path: ROUTES.MY_TAB,
-    icon: {
-      active: require('@/assets/icons/tabMenu/myMenuActive.png'),
-      inactive: require('@/assets/icons/tabMenu/myMenu.png'),
-    },
+    Icon: MyIcon,
   },
 ]
 
@@ -72,6 +57,8 @@ const Footer = () => {
       <View style={styles.container}>
         <View style={styles.wrapper}>
           {footerList.map(item => {
+            const isActive = activePath === item.path
+            const IconComponent = item.Icon
             return (
               <Pressable
                 key={item.name}
@@ -79,17 +66,17 @@ const Footer = () => {
                   if (activePath === item.path) {
                     // 현재 경로와 탭 경로가 같으면 스크롤을 맨 위로 이동
                   } else {
+                    // Vibration.vibrate(10)
                     // 다른 탭으로 이동
                     router.navigate(item.path)
                     setActivePath(item.path)
                   }
                 }}
                 style={[styles.tabButton]}>
-                <Image
-                  source={activePath === item.path ? item.icon.active : item.icon.inactive}
-                  style={styles.tabImg}
-                />
-                <Text style={activePath === item.path ? styles.tabTextActive : styles.tabText}>{item.name}</Text>
+                <View style={styles.tabImgContainer}>
+                  <IconComponent color={isActive ? color_token.gray900 : color_token.gray400} width={24} height={24} />
+                </View>
+                <Text style={isActive ? styles.tabTextActive : styles.tabText}>{item.name}</Text>
               </Pressable>
             )
           })}
@@ -132,10 +119,12 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
   },
-  tabImg: {
+  tabImgContainer: {
     height: 24,
     width: 24,
     marginBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tabText: {
     fontSize: 12,

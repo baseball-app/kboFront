@@ -150,7 +150,11 @@ export default function GameCard() {
         ) : null}
 
         <ViewShot style={styles.ticketBox}>
-          {ticketDetail ? <TicketFrame ticketDetail={ticketDetail} /> : <Skeleton width={'100%'} height={500} />}
+          {ticketDetail ? (
+            <TicketFrame ticketDetail={ticketDetail} />
+          ) : (
+            <Skeleton style={{borderRadius: 0}} width={'100%'} height={500} />
+          )}
         </ViewShot>
         <View style={styles.emojiBox}>
           {reactionList.map(reaction => (
