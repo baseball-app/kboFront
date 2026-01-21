@@ -1,5 +1,8 @@
+import {color_token} from '@/constants/theme'
+import {size} from '@/shared'
 import React from 'react'
 import {StyleSheet, Text, TextInput, TextInputProps, View} from 'react-native'
+import {Txt} from '@/shared/ui'
 
 interface InputProps extends TextInputProps {
   variant?: 'default' | 'multiline'
@@ -10,7 +13,11 @@ const Input = React.forwardRef<TextInput, InputProps>(
   ({variant = 'default', editable = true, style, label, ...props}, ref) => {
     return (
       <View style={styles.container}>
-        {label && typeof label === 'string' ? <Text style={styles.label}>{label}</Text> : null}
+        {label && typeof label === 'string' ? (
+          <Txt size={14} weight="medium">
+            {label}
+          </Txt>
+        ) : null}
         {label && typeof label !== 'string' ? label : null}
         <TextInput
           ref={ref}
@@ -34,30 +41,24 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   base: {
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    paddingBottom: 14,
+    paddingHorizontal: size(18),
+    paddingVertical: size(10),
+    paddingBottom: size(14),
     // paddingTop: 8,
-    borderColor: '#D0CEC7',
+    borderColor: color_token.gray350,
     borderWidth: 1,
     textAlign: 'center',
-    borderRadius: 5,
-    backgroundColor: '#fff',
-    color: '#171716',
-    fontSize: 16,
+    borderRadius: size(5),
+    backgroundColor: color_token.white,
+    color: color_token.gray900,
+    fontSize: size(16),
     fontWeight: '500',
-    lineHeight: 22.4,
+    lineHeight: size(16 * 1.4),
     flex: 1,
-    height: 48,
-    minHeight: 48,
+    height: size(48),
+    minHeight: size(48),
   },
   editable: {
-    backgroundColor: '#F3F2EE',
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '500',
-    lineHeight: 20.8,
-    color: '#171716',
+    backgroundColor: color_token.gray150,
   },
 })
