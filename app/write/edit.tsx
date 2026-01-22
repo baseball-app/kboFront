@@ -1,36 +1,36 @@
-import {useLocalSearchParams} from 'expo-router';
-import {useEffect, useRef, useState} from 'react';
-import {TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform} from 'react-native';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
+import { TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import React from 'react';
 import dayjs from 'dayjs';
-import {DAYS_OF_WEEK} from '@/constants/day';
+import { DAYS_OF_WEEK } from '@/constants/day';
 import LocationTypeSelector from '@/components/write/LocationTypeSelector';
 import Ellipse from '@/components/common/Ellipse';
 import Input from '@/components/common/Input';
 import useProfile from '@/hooks/my/useProfile';
-import {useTeam, Team} from '@/entities/match';
+import { useTeam } from '@/entities/match';
 import SelectBox from '@/components/common/SelectBox';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
 import useTicketDetail from '@/hooks/match/useTicketDetail';
 import LottieView from 'lottie-react-native';
 import * as FileSystemLegacy from 'expo-file-system/legacy';
-import {useLogin} from '@/hooks/auth/useLogin';
-import {logEvent} from '@/analytics/func';
-import {EVENTS} from '@/analytics/event';
-import {Config} from '@/config/Config';
-import {size, useKeyboard} from '@/shared';
-import {useAppRouter} from '@/shared';
-import {BottomSheet, Txt} from '@/shared/ui';
-import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard';
-import {PLACE_LIST} from '@/constants/ticket';
-import {TicketImageUploader} from '@/entities/ticket';
-import {color_token} from '@/constants/theme';
+import { useLogin } from '@/hooks/auth/useLogin';
+import { logEvent } from '@/analytics/func';
+import { EVENTS } from '@/analytics/event';
+import { Config } from '@/config/Config';
+import { size, useKeyboard } from '@/shared';
+import { useAppRouter } from '@/shared';
+import { BottomSheet, Txt } from '@/shared/ui';
+import { CustKeyboardAvoidingView } from '@/shared/lib/useKeyboard';
+import { PLACE_LIST } from '@/constants/ticket';
+import { TicketImageUploader } from '@/entities/ticket';
+import { color_token } from '@/constants/theme';
 
 interface ITicketEditData {
   homeTeam: {
-    score: number;
+    score: number | undefined;
     id: number;
   };
   awayTeam: {
@@ -288,8 +288,13 @@ const EditTicketPage = () => {
     }));
   };
 
+  const isFalsy = (value: any) => {
+    return value === undefined || value === null || value === '';
+  };
+
   const isEnabled = Boolean(
-    writeData.homeTeam.score &&
+    !isFalsy(writeData.homeTeam.score) &&
+    !isFalsy(writeData.awayTeam.score) &&
     writeData.awayTeam.score &&
     ((writeData.placeType === '직관' && writeData.place) ||
       (writeData.placeType === '직관' && ticketDetail?.gip_place) ||
@@ -335,7 +340,7 @@ const EditTicketPage = () => {
                     onChangeText={value =>
                       onChangeValue('homeTeam', {
                         ...writeData.homeTeam,
-                        score: Number(value.replaceAll(/\D/g, '')),
+                        score: value ? Number(value.replaceAll(/\D/g, '')) : undefined,
                       })
                     }
                     ref={ref => {
@@ -357,7 +362,7 @@ const EditTicketPage = () => {
                     onChangeText={value =>
                       onChangeValue('awayTeam', {
                         ...writeData.awayTeam,
-                        score: Number(value.replaceAll(/\D/g, '')),
+                        score: value ? Number(value.replaceAll(/\D/g, '')) : undefined,
                       })
                     }
                     ref={ref => {
@@ -642,6 +647,8 @@ const styles = StyleSheet.create({
     marginBottom: size(20),
     backgroundColor: color_token.white,
     paddingBottom: size(32),
+    borderTopWidth: 1,
+    borderColor: color_token.gray300,
   },
   scoreBox: {
     flexDirection: 'row',
@@ -770,7 +777,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: size(59),
     borderTopLeftRadius: size(10),
-    borderBottomWidth: 1,
     borderColor: color_token.gray300,
     borderTopRightRadius: size(10),
   },
