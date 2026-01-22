@@ -1,8 +1,9 @@
-import React, {PropsWithChildren, useEffect, useState, useCallback, useMemo, memo} from 'react';
-import {StyleSheet, Pressable, BackHandler} from 'react-native';
-import {Modal} from '@/components/common/Modal';
-import Animated, {useSharedValue, withTiming, useAnimatedStyle, Easing} from 'react-native-reanimated';
-import {scheduleOnRN} from 'react-native-worklets';
+import React, { PropsWithChildren, useEffect, useState, useCallback } from 'react';
+import { StyleSheet, Pressable } from 'react-native';
+import { Modal } from '@/components/common/Modal';
+import Animated, { useSharedValue, withTiming, useAnimatedStyle, Easing } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type BottomSheetProps = {
   isOpen: boolean;
@@ -21,9 +22,9 @@ const BottomSheetComponent = ({
   onAnimationEnd,
 }: PropsWithChildren<BottomSheetProps>) => {
   const [isRealOpen, setIsRealOpen] = useState(false);
-
+const {bottom} = useSafeAreaInsets()
   const overlayOpacity = useSharedValue(0);
-  const sheetTranslateY = useSharedValue(height);
+  const sheetTranslateY = useSharedValue(height + bottom);
 
   // setIsRealOpen을 useCallback으로 감싸서 runOnJS에서 안정적으로 사용
   const handleAnimationEnd = useCallback(() => {
@@ -52,7 +53,7 @@ const BottomSheetComponent = ({
     });
 
     sheetTranslateY.value = withTiming(
-      height,
+      height + bottom,
       {
         duration,
         easing: Easing.in(Easing.quad),
@@ -82,7 +83,7 @@ const BottomSheetComponent = ({
 
   const sheetStyle = useAnimatedStyle(() => ({
     transform: [{translateY: sheetTranslateY.value}],
-    height,
+    height: height + bottom,
   }));
 
   // onPressOverlay가 undefined인 경우 불필요한 함수 생성 방지

@@ -1,5 +1,11 @@
 {
   "permissions": {
-    "allow": ["Bash(yarn add:*)", "Bash(npx tsc:*)"]
+    "allow": [
+      "Bash(yarn add:*)",
+      "Bash(npx tsc:*)",
+      "Bash(find:*)",
+      "Bash(xargs:*)",
+      "mcp__ide__getDiagnostics"
+    ]
   }
 }

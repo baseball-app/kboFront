@@ -1,9 +1,9 @@
 import WheelPicker2 from '@/components/WheelPicker2';
-import {BottomSheet, Txt} from '@/shared/ui';
-import React, {useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Button} from '@/shared/ui';
-import {size} from '@/shared';
+import { BottomSheet, Txt } from '@/shared/ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button } from '@/shared/ui';
+import { size } from '@/shared';
 
 const SelectSeasonBottomSheet = ({
   isOpen,
@@ -30,7 +30,7 @@ const SelectSeasonBottomSheet = ({
   }, [value]);
 
   return (
-    <BottomSheet isOpen={isOpen} duration={350} height={size(320)}>
+    <BottomSheet isOpen={isOpen} duration={350} height={(320)}>
       <View style={styles.modalContent}>
         <Txt weight="bold">원하시는 시즌을 선택해주세요</Txt>
         <View style={styles.datePickerContainer}>

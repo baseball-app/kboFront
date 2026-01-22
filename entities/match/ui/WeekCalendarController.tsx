@@ -1,12 +1,12 @@
 import WheelPicker2 from '@/components/WheelPicker2';
-import {color_token} from '@/constants/theme';
-import {Pressable, size} from '@/shared';
-import {Button, Txt} from '@/shared/ui';
-import {BottomSheet} from '@/shared/ui/BottomSheet';
-import {Ionicons} from '@expo/vector-icons';
+import { color_token } from '@/constants/theme';
+import { Pressable, size } from '@/shared';
+import { Button, Txt } from '@/shared/ui';
+import { BottomSheet } from '@/shared/ui/BottomSheet';
+import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
-import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 type MatchCalendarHeaderProps = {
   prevMonth: () => void;
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 0,
   },
   modalTitle: {
-    marginBottom: size(28),
+    marginBottom: size(16),
   },
   buttonBox: {
     flexDirection: 'row',
