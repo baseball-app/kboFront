@@ -1,37 +1,37 @@
-import React, {useState} from 'react'
-import {View, StyleSheet, TouchableOpacity, ScrollView, Image} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {useLocalSearchParams} from 'expo-router'
-import {findProfileImageById} from '@/constants/join'
-import Header from '@/components/common/Header'
-import {useFriends, type FriendType} from '@/entities/friend'
-import {useUnfollowFriend} from '@/features/user/friend/unfollow'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
-import {Txt} from '@/shared/ui'
+import React, {useState} from 'react';
+import {View, StyleSheet, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useLocalSearchParams} from 'expo-router';
+import {findProfileImageById} from '@/constants/join';
+import Header from '@/components/common/Header';
+import {useFriends, type FriendType} from '@/entities/friend';
+import {useUnfollowFriend} from '@/features/user/friend/unfollow';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
+import {Txt} from '@/shared/ui';
 
 const FollowerScreen = () => {
-  const {id} = useLocalSearchParams()
+  const {id} = useLocalSearchParams();
 
-  const {openUnfollowPopup} = useUnfollowFriend()
+  const {openUnfollowPopup} = useUnfollowFriend();
 
-  const {followers, followings} = useFriends()
-  const [activeTab, setActiveTab] = useState<FriendType>(id as FriendType)
+  const {followers, followings} = useFriends();
+  const [activeTab, setActiveTab] = useState<FriendType>(id as FriendType);
 
   const friendList = (() => {
     switch (activeTab) {
       case 'followers':
-        return followers
+        return followers;
       case 'followings':
-        return followings
+        return followings;
       default:
-        throw new Error('탭 정보를 확인해 주세요.')
+        throw new Error('탭 정보를 확인해 주세요.');
     }
-  })()
+  })();
 
   const handleTabChange = (tab: FriendType) => {
-    setActiveTab(tab)
-  }
+    setActiveTab(tab);
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -79,8 +79,8 @@ const FollowerScreen = () => {
         ))}
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -147,6 +147,6 @@ const styles = StyleSheet.create({
     width: 9.9,
     height: 9.9,
   },
-})
+});
 
-export default FollowerScreen
+export default FollowerScreen;

@@ -1,17 +1,17 @@
-import Header from '@/components/common/Header'
-import {size, useAppRouter} from '@/shared'
-import useProfile from '@/hooks/my/useProfile'
-import React, {useState} from 'react'
-import {KeyboardAvoidingView, Platform, StyleSheet, TextInput, View} from 'react-native'
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
-import {color_token} from '@/constants/theme'
-import {BottomFloatSection, Button, Txt} from '@/shared/ui'
+import Header from '@/components/common/Header';
+import {size, useAppRouter} from '@/shared';
+import useProfile from '@/hooks/my/useProfile';
+import React, {useState} from 'react';
+import {KeyboardAvoidingView, Platform, StyleSheet, TextInput, View} from 'react-native';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {color_token} from '@/constants/theme';
+import {BottomFloatSection, Button, Txt} from '@/shared/ui';
 
 const ChangeNicknameScreen = () => {
-  const {updateProfile, profile} = useProfile()
-  const [nickname, setNickname] = useState(profile.nickname)
-  const router = useAppRouter()
-  const insets = useSafeAreaInsets()
+  const {updateProfile, profile} = useProfile();
+  const [nickname, setNickname] = useState(profile.nickname);
+  const router = useAppRouter();
+  const insets = useSafeAreaInsets();
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>
@@ -46,10 +46,10 @@ const ChangeNicknameScreen = () => {
         </BottomFloatSection>
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default ChangeNicknameScreen
+export default ChangeNicknameScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
   buttonActive: {
     backgroundColor: color_token.primary,
   },
-})
+});

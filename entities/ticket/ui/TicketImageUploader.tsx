@@ -1,18 +1,18 @@
-import React from 'react'
-import {StyleSheet, Pressable, Image, Text, View} from 'react-native'
-import * as ImagePicker from 'expo-image-picker'
-import {useUploadPhoto} from '../model/useUploadPhoto'
-import {Txt} from '@/shared/ui'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
+import React from 'react';
+import {StyleSheet, Pressable, Image, Text, View} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import {useUploadPhoto} from '../model/useUploadPhoto';
+import {Txt} from '@/shared/ui';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
 
 type Props = {
-  uri?: string
-  onChange: (image: ImagePicker.ImagePickerAsset) => void
-}
+  uri?: string;
+  onChange: (image: ImagePicker.ImagePickerAsset) => void;
+};
 
 function TicketImageUploader({uri, onChange}: Props) {
-  const {uploadPhoto} = useUploadPhoto()
+  const {uploadPhoto} = useUploadPhoto();
 
   return (
     <Pressable
@@ -21,7 +21,7 @@ function TicketImageUploader({uri, onChange}: Props) {
       onPress={() =>
         uploadPhoto() //
           .then(res => {
-            if (res) onChange(res)
+            if (res) onChange(res);
           })
       }>
       {uri ? (
@@ -38,7 +38,7 @@ function TicketImageUploader({uri, onChange}: Props) {
         </View>
       )}
     </Pressable>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: size(2),
   },
-})
+});
 
-export {TicketImageUploader}
+export {TicketImageUploader};

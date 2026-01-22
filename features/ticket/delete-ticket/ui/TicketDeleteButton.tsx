@@ -1,13 +1,13 @@
-import {useCommonSlice} from '@/slice/commonSlice'
-import React from 'react'
-import {TouchableOpacity} from 'react-native'
-import {useDeleteTicket} from '../model'
-import {Txt} from '@/shared/ui'
-import {color_token} from '@/constants/theme'
+import {useCommonSlice} from '@/slice/commonSlice';
+import React from 'react';
+import {TouchableOpacity} from 'react-native';
+import {useDeleteTicket} from '../model';
+import {Txt} from '@/shared/ui';
+import {color_token} from '@/constants/theme';
 
 const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
-  const {modal} = useCommonSlice()
-  const {deleteTicket} = useDeleteTicket()
+  const {modal} = useCommonSlice();
+  const {deleteTicket} = useDeleteTicket();
 
   const onDeleteTicket = () => {
     modal.open({
@@ -32,8 +32,8 @@ const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
           },
         },
       ],
-    })
-  }
+    });
+  };
 
   return (
     <TouchableOpacity
@@ -43,7 +43,7 @@ const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
         삭제
       </Txt>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export {TicketDeleteButton}
+export {TicketDeleteButton};

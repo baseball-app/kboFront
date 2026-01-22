@@ -1,1 +1,1 @@
-export {useNavigateToStatsDetail, StatsDetailType} from './model'
+export {useNavigateToStatsDetail, StatsDetailType} from './model';

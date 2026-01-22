@@ -1,1 +1,1 @@
-export {TicketImageUploader} from './TicketImageUploader'
+export {TicketImageUploader} from './TicketImageUploader';

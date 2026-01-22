@@ -1,1 +1,1 @@
-export {useUnfollowFriend} from './model'
+export {useUnfollowFriend} from './model';

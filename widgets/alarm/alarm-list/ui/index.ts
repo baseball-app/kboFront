@@ -1,1 +1,1 @@
-export {AlarmList} from './AlarmList'
+export {AlarmList} from './AlarmList';

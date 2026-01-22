@@ -1,15 +1,15 @@
-import React from 'react'
-import {View, StyleSheet, Image} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {Ionicons} from '@expo/vector-icons'
-import useUserJoin from '@/hooks/auth/useUserJoin'
-import {color_token, font} from '@/constants/theme'
-import Header from '@/components/common/Header'
-import {BackButton, BottomFloatSection, Button, Pressable, Txt} from '@/shared/ui'
-import {size} from '@/shared'
+import React from 'react';
+import {View, StyleSheet, Image} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Ionicons} from '@expo/vector-icons';
+import useUserJoin from '@/hooks/auth/useUserJoin';
+import {color_token, font} from '@/constants/theme';
+import Header from '@/components/common/Header';
+import {BackButton, BottomFloatSection, Button, Pressable, Txt} from '@/shared/ui';
+import {size} from '@/shared';
 
 const TermUseScreen = () => {
-  const {consent, moveToNextStep, moveToPrevStep} = useUserJoin()
+  const {consent, moveToNextStep, moveToPrevStep} = useUserJoin();
 
   const {
     isAllChecked,
@@ -18,7 +18,7 @@ const TermUseScreen = () => {
     toggleConsent,
     moveToConsentDetail,
     consentList, //
-  } = consent
+  } = consent;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -72,8 +72,8 @@ const TermUseScreen = () => {
         </BottomFloatSection>
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -135,6 +135,6 @@ const styles = StyleSheet.create({
   chevron: {
     marginLeft: 'auto',
   },
-})
+});
 
-export default TermUseScreen
+export default TermUseScreen;

@@ -1,32 +1,32 @@
-import MatchResultCell from '@/components/MatchResultCell'
-import {DAYS_OF_WEEK} from '@/constants/day'
-import {Ionicons} from '@expo/vector-icons'
-import dayjs from 'dayjs'
-import React, {memo, useMemo, useState} from 'react'
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native'
-import {TicketCalendarLog} from './type'
-import {CALENDAR_END_DATE, CALENDAR_START_DATE} from '@/constants/day'
-import {useQuery} from '@tanstack/react-query'
-import ApiClient from '@/api'
-import {groupBy, size} from '@/shared'
-import LottieView from 'lottie-react-native'
+import MatchResultCell from '@/components/MatchResultCell';
+import {DAYS_OF_WEEK} from '@/constants/day';
+import {Ionicons} from '@expo/vector-icons';
+import dayjs from 'dayjs';
+import React, {memo, useMemo, useState} from 'react';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {TicketCalendarLog} from './type';
+import {CALENDAR_END_DATE, CALENDAR_START_DATE} from '@/constants/day';
+import {useQuery} from '@tanstack/react-query';
+import ApiClient from '@/api';
+import {groupBy, size} from '@/shared';
+import LottieView from 'lottie-react-native';
 
-import {BottomSheet, Button, Txt} from '@/shared/ui'
-import WheelPicker2 from '@/components/WheelPicker2'
-import {color_token} from '@/constants/theme'
+import {BottomSheet, Button, Txt} from '@/shared/ui';
+import WheelPicker2 from '@/components/WheelPicker2';
+import {color_token} from '@/constants/theme';
 
 type Props = {
-  date: Date
-  setDate: (date: Date) => void
-  onClick: (day: Date) => void
-  targetId: number
-  isLoading?: boolean
-}
+  date: Date;
+  setDate: (date: Date) => void;
+  onClick: (day: Date) => void;
+  targetId: number;
+  isLoading?: boolean;
+};
 
 const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const currentYearMonth = dayjs(date).format('YYYY-MM')
+  const currentYearMonth = dayjs(date).format('YYYY-MM');
 
   const {data: ticketList, isLoading: isTicketListLoading} = useQuery({
     queryKey: ['tickets', currentYearMonth, targetId],
@@ -34,15 +34,15 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
       return ApiClient.get<TicketCalendarLog[]>('/tickets/ticket_calendar_log/', {
         date: currentYearMonth,
         user_id: targetId,
-      }).then(data => groupBy(data, item => item.date))
+      }).then(data => groupBy(data, item => item.date));
     },
     enabled: Boolean(currentYearMonth && targetId),
-  })
+  });
 
   // const loading = true
-  const loading = isLoading || isTicketListLoading
+  const loading = isLoading || isTicketListLoading;
 
-  const memoizedDays = useMemo(() => dayjs(date).toDate(), [date, ticketList])
+  const memoizedDays = useMemo(() => dayjs(date).toDate(), [date, ticketList]);
 
   return (
     <View style={styles.container}>
@@ -86,14 +86,14 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         onConfirm={date => {
-          setDate(date)
-          setIsModalVisible(false)
+          setDate(date);
+          setIsModalVisible(false);
         }}
         initialYearMonth={dayjs(date).format('YYYY.MM')}
       />
     </View>
-  )
-}
+  );
+};
 
 const CalendarHeader = memo(() => {
   return (
@@ -109,8 +109,8 @@ const CalendarHeader = memo(() => {
         </Txt>
       ))}
     </View>
-  )
-})
+  );
+});
 
 const YearMonthPicker = ({
   open,
@@ -118,20 +118,20 @@ const YearMonthPicker = ({
   onConfirm,
   initialYearMonth,
 }: {
-  open: boolean
-  onCancel: () => void
-  onConfirm: (date: Date) => void
-  initialYearMonth: string
+  open: boolean;
+  onCancel: () => void;
+  onConfirm: (date: Date) => void;
+  initialYearMonth: string;
 }) => {
-  const [selectedYear, setSelectedYear] = useState(Number(initialYearMonth.split('.')[0]))
-  const [selectedMonth, setSelectedMonth] = useState(Number(initialYearMonth.split('.')[1]))
+  const [selectedYear, setSelectedYear] = useState(Number(initialYearMonth.split('.')[0]));
+  const [selectedMonth, setSelectedMonth] = useState(Number(initialYearMonth.split('.')[1]));
 
   const [yearList] = useState(
     Array.from(
       {length: CALENDAR_END_DATE.diff(CALENDAR_START_DATE, 'year') + 1},
       (_, i) => `${CALENDAR_START_DATE.year() + i}년`,
     ),
-  )
+  );
 
   return (
     <BottomSheet isOpen={open} duration={350} height={320}>
@@ -144,7 +144,7 @@ const YearMonthPicker = ({
             itemHeight={50}
             initialItem={`${selectedYear}년`}
             onItemChange={item => {
-              setSelectedYear(Number(item.replaceAll(/\D/g, '')))
+              setSelectedYear(Number(item.replaceAll(/\D/g, '')));
             }}
             items={yearList}
             containerStyle={{width: '49%'}}
@@ -154,7 +154,7 @@ const YearMonthPicker = ({
             itemHeight={50}
             initialItem={`${selectedMonth}월`}
             onItemChange={item => {
-              setSelectedMonth(Number(item.replaceAll(/\D/g, '')))
+              setSelectedMonth(Number(item.replaceAll(/\D/g, '')));
             }}
             containerStyle={{width: '49%'}}
           />
@@ -167,18 +167,18 @@ const YearMonthPicker = ({
             type="primary"
             style={{flex: 1, paddingVertical: size(12), height: size(46)}}
             onPress={() => {
-              onConfirm(dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`).toDate())
+              onConfirm(dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`).toDate());
             }}>
             완료
           </Button>
         </View>
       </View>
     </BottomSheet>
-  )
-}
+  );
+};
 
-const dimensions = Dimensions.get('window')
-const width = dimensions.width - 48
+const dimensions = Dimensions.get('window');
+const width = dimensions.width - 48;
 
 const RenderDays = memo(
   ({
@@ -187,31 +187,31 @@ const RenderDays = memo(
     ticketList,
     isLoading,
   }: {
-    date: Date
-    ticketList: Record<string, TicketCalendarLog[]> | null | undefined
-    dayClick: (day: Date) => void
-    isLoading: boolean
+    date: Date;
+    ticketList: Record<string, TicketCalendarLog[]> | null | undefined;
+    dayClick: (day: Date) => void;
+    isLoading: boolean;
   }) => {
     // UI에 검은 테두리 보여주는 상태
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
     const [days] = useState<Date[]>(() => {
-      const startDate = dayjs(date).startOf('month').startOf('week')
-      const endDate = dayjs(date).endOf('month').endOf('week')
+      const startDate = dayjs(date).startOf('month').startOf('week');
+      const endDate = dayjs(date).endOf('month').endOf('week');
 
       return Array.from(
         {length: endDate.diff(startDate, 'day') + 1}, //
         (_, i) => startDate.add(i, 'day').toDate(),
-      )
-    })
+      );
+    });
 
     return (
       <View style={[styles.daysContainer, {width: width}]}>
         {days.map(day => {
-          const ticketsGroupByDate = ticketList?.[dayjs(day).format('YYYY-MM-DD')] || []
-          const isSameMonth = dayjs(day).isSame(date, 'month')
-          const isSameDay = dayjs(day).isSame(selectedDate, 'day')
-          const isToday = dayjs(day).isSame(dayjs(), 'day')
+          const ticketsGroupByDate = ticketList?.[dayjs(day).format('YYYY-MM-DD')] || [];
+          const isSameMonth = dayjs(day).isSame(date, 'month');
+          const isSameDay = dayjs(day).isSame(selectedDate, 'day');
+          const isToday = dayjs(day).isSame(dayjs(), 'day');
 
           return (
             <View
@@ -233,20 +233,20 @@ const RenderDays = memo(
               <MatchResultCell
                 isLoading={isLoading}
                 onPress={() => {
-                  setSelectedDate(day)
-                  dayClick(day)
+                  setSelectedDate(day);
+                  dayClick(day);
                 }}
                 data={ticketsGroupByDate} //
               />
             </View>
-          )
+          );
         })}
       </View>
-    )
+    );
   },
-)
+);
 
-export {CalendarView}
+export {CalendarView};
 
 const styles = StyleSheet.create({
   container: {
@@ -323,4 +323,4 @@ const styles = StyleSheet.create({
   modalTitle: {
     marginBottom: size(16),
   },
-})
+});

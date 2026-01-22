@@ -1,12 +1,12 @@
-import React from 'react'
-import {StyleSheet, Text, View} from 'react-native'
-import {AnimatedCircularProgress} from 'react-native-circular-progress'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
 
 type Props = {
-  percentage: number
-}
+  percentage: number;
+};
 
 const MyStat = ({percentage}: Props) => {
   return (
@@ -31,10 +31,10 @@ const MyStat = ({percentage}: Props) => {
         )}
       />
     </View>
-  )
-}
+  );
+};
 
-export {MyStat}
+export {MyStat};
 
 const styles = StyleSheet.create({
   progressBox: {
@@ -59,4 +59,4 @@ const styles = StyleSheet.create({
   progressContent: {
     alignItems: 'center',
   },
-})
+});

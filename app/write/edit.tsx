@@ -1,54 +1,54 @@
-import {useLocalSearchParams} from 'expo-router'
-import {useEffect, useRef, useState} from 'react'
-import {TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform} from 'react-native'
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
-import * as ImagePicker from 'expo-image-picker'
-import React from 'react'
-import dayjs from 'dayjs'
-import {DAYS_OF_WEEK} from '@/constants/day'
-import LocationTypeSelector from '@/components/write/LocationTypeSelector'
-import Ellipse from '@/components/common/Ellipse'
-import Input from '@/components/common/Input'
-import useProfile from '@/hooks/my/useProfile'
-import {useTeam, Team} from '@/entities/match'
-import SelectBox from '@/components/common/SelectBox'
-import ImageResizer from '@bam.tech/react-native-image-resizer'
-import useTicketDetail from '@/hooks/match/useTicketDetail'
-import LottieView from 'lottie-react-native'
-import * as FileSystemLegacy from 'expo-file-system/legacy'
-import {useLogin} from '@/hooks/auth/useLogin'
-import {logEvent} from '@/analytics/func'
-import {EVENTS} from '@/analytics/event'
-import {Config} from '@/config/Config'
-import {size, useKeyboard} from '@/shared'
-import {useAppRouter} from '@/shared'
-import {BottomSheet, Txt} from '@/shared/ui'
-import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard'
-import {PLACE_LIST} from '@/constants/ticket'
-import {TicketImageUploader} from '@/entities/ticket'
-import {color_token} from '@/constants/theme'
+import {useLocalSearchParams} from 'expo-router';
+import {useEffect, useRef, useState} from 'react';
+import {TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform} from 'react-native';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import * as ImagePicker from 'expo-image-picker';
+import React from 'react';
+import dayjs from 'dayjs';
+import {DAYS_OF_WEEK} from '@/constants/day';
+import LocationTypeSelector from '@/components/write/LocationTypeSelector';
+import Ellipse from '@/components/common/Ellipse';
+import Input from '@/components/common/Input';
+import useProfile from '@/hooks/my/useProfile';
+import {useTeam, Team} from '@/entities/match';
+import SelectBox from '@/components/common/SelectBox';
+import ImageResizer from '@bam.tech/react-native-image-resizer';
+import useTicketDetail from '@/hooks/match/useTicketDetail';
+import LottieView from 'lottie-react-native';
+import * as FileSystemLegacy from 'expo-file-system/legacy';
+import {useLogin} from '@/hooks/auth/useLogin';
+import {logEvent} from '@/analytics/func';
+import {EVENTS} from '@/analytics/event';
+import {Config} from '@/config/Config';
+import {size, useKeyboard} from '@/shared';
+import {useAppRouter} from '@/shared';
+import {BottomSheet, Txt} from '@/shared/ui';
+import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard';
+import {PLACE_LIST} from '@/constants/ticket';
+import {TicketImageUploader} from '@/entities/ticket';
+import {color_token} from '@/constants/theme';
 
 interface ITicketEditData {
   homeTeam: {
-    score: number
-    id: number
-  }
+    score: number;
+    id: number;
+  };
   awayTeam: {
-    score: number
-    id: number
-  }
-  todayImg: ImagePicker.ImagePickerAsset | undefined | string
-  place: string
-  placeType: string
-  player: string
-  food: string
-  memo: string
-  onlyMe: boolean
-  game: number
-  date: string
-  weather: string
-  result: string
-  direct_yn: boolean
+    score: number;
+    id: number;
+  };
+  todayImg: ImagePicker.ImagePickerAsset | undefined | string;
+  place: string;
+  placeType: string;
+  player: string;
+  food: string;
+  memo: string;
+  onlyMe: boolean;
+  game: number;
+  date: string;
+  weather: string;
+  result: string;
+  direct_yn: boolean;
 }
 
 const Optional = ({label}: {label: string}) => {
@@ -62,15 +62,15 @@ const Optional = ({label}: {label: string}) => {
         (선택)
       </Txt>
     </View>
-  )
-}
+  );
+};
 
 const EditTicketPage = () => {
-  const {isKeyboardVisible} = useKeyboard()
-  const {id} = useLocalSearchParams()
-  const [isPending, setIsPending] = useState(false)
-  const {profile} = useProfile()
-  const {ticketDetail, updateTicket, initializeTicketInfo} = useTicketDetail(Number(id), Number(profile?.id))
+  const {isKeyboardVisible} = useKeyboard();
+  const {id} = useLocalSearchParams();
+  const [isPending, setIsPending] = useState(false);
+  const {profile} = useProfile();
+  const {ticketDetail, updateTicket, initializeTicketInfo} = useTicketDetail(Number(id), Number(profile?.id));
 
   const [writeData, setWriteData] = useState<ITicketEditData>({
     homeTeam: {
@@ -93,7 +93,7 @@ const EditTicketPage = () => {
     date: '',
     weather: '',
     result: '',
-  })
+  });
 
   useEffect(() => {
     if (ticketDetail) {
@@ -117,99 +117,99 @@ const EditTicketPage = () => {
         date: ticketDetail.date,
         weather: ticketDetail.weather,
         result: ticketDetail.result,
-      } as ITicketEditData)
+      } as ITicketEditData);
     }
-  }, [ticketDetail])
+  }, [ticketDetail]);
 
-  const {findTeamById, teams} = useTeam()
+  const {findTeamById, teams} = useTeam();
 
   const title = (() => {
-    const date = dayjs(ticketDetail?.date)
-    return `${date.format(`M월 D일 ${DAYS_OF_WEEK[date.day()]}요일`)}`
-  })()
+    const date = dayjs(ticketDetail?.date);
+    return `${date.format(`M월 D일 ${DAYS_OF_WEEK[date.day()]}요일`)}`;
+  })();
 
-  const teamAwayInfo = findTeamById(writeData?.awayTeam.id)
-  const teamHomeInfo = findTeamById(writeData?.homeTeam.id)
+  const teamAwayInfo = findTeamById(writeData?.awayTeam.id);
+  const teamHomeInfo = findTeamById(writeData?.homeTeam.id);
 
   const opponentTeam = findTeamById(
     writeData?.awayTeam.id === profile.my_team?.id ? writeData?.homeTeam.id : writeData?.awayTeam.id,
-  )?.name
+  )?.name;
 
   // 직접입력 여부
-  const isDirectWrite = !ticketDetail?.game
+  const isDirectWrite = !ticketDetail?.game;
 
   // 마이팀이 포함되어 있는지 여부
-  const isCheer = writeData.awayTeam.id === profile.my_team?.id || writeData.homeTeam.id === profile.my_team?.id
+  const isCheer = writeData.awayTeam.id === profile.my_team?.id || writeData.homeTeam.id === profile.my_team?.id;
 
-  const [teamModalVisible, setTeamModalVisible] = useState(false)
-  const [placeModalVisible, setPlaceModalVisible] = useState(false)
+  const [teamModalVisible, setTeamModalVisible] = useState(false);
+  const [placeModalVisible, setPlaceModalVisible] = useState(false);
 
-  const router = useAppRouter()
+  const router = useAppRouter();
 
-  const {user} = useLogin()
+  const {user} = useLogin();
 
   const onSubmit = async () => {
-    if (isPending) return
-    logEvent(EVENTS.DIARY_EDIT, {entry_id: ticketDetail?.id})
-    setIsPending(true)
+    if (isPending) return;
+    logEvent(EVENTS.DIARY_EDIT, {entry_id: ticketDetail?.id});
+    setIsPending(true);
 
-    const formData = new FormData()
+    const formData = new FormData();
 
     if (typeof writeData?.todayImg === 'string' || !writeData?.todayImg) {
       // formData.append('image', writeData?.todayImg)
 
-      formData.append('id', String(ticketDetail?.id))
+      formData.append('id', String(ticketDetail?.id));
 
-      formData.append('result', writeData?.result === '경기 취소' ? '취소' : writeData?.result || '')
+      formData.append('result', writeData?.result === '경기 취소' ? '취소' : writeData?.result || '');
 
-      formData.append('weather', writeData?.weather || '')
+      formData.append('weather', writeData?.weather || '');
 
-      formData.append('is_ballpark', JSON.stringify(writeData?.placeType === '직관'))
+      formData.append('is_ballpark', JSON.stringify(writeData?.placeType === '직관'));
 
-      formData.append('score_our', String(writeData?.homeTeam.score))
+      formData.append('score_our', String(writeData?.homeTeam.score));
 
-      formData.append('score_opponent', String(writeData?.awayTeam.score))
+      formData.append('score_opponent', String(writeData?.awayTeam.score));
 
       // 선발선수
-      formData.append('starting_pitchers', writeData?.player || '')
+      formData.append('starting_pitchers', writeData?.player || '');
 
       // 관람장소
-      formData.append('gip_place', String(writeData?.place || ''))
+      formData.append('gip_place', String(writeData?.place || ''));
 
       // 직관푸드
-      formData.append('food', writeData?.food || '')
+      formData.append('food', writeData?.food || '');
 
       // 오늘의 소감
-      formData.append('memo', writeData?.memo || '')
+      formData.append('memo', writeData?.memo || '');
 
-      formData.append('is_homeballpark', JSON.stringify(writeData?.placeType === '직관'))
+      formData.append('is_homeballpark', JSON.stringify(writeData?.placeType === '직관'));
 
       //나만보기
-      formData.append('only_me', JSON.stringify(writeData?.onlyMe))
+      formData.append('only_me', JSON.stringify(writeData?.onlyMe));
 
-      formData.append('direct_yn', JSON.stringify(isDirectWrite))
+      formData.append('direct_yn', JSON.stringify(isDirectWrite));
 
       // hometeam_id
-      formData.append('hometeam_id', String(writeData?.homeTeam.id))
+      formData.append('hometeam_id', String(writeData?.homeTeam.id));
 
-      formData.append('awayteam_id', String(writeData?.awayTeam.id))
+      formData.append('awayteam_id', String(writeData?.awayTeam.id));
 
-      formData.append('is_cheer', JSON.stringify(isCheer))
+      formData.append('is_cheer', JSON.stringify(isCheer));
 
-      formData.append('is_double', JSON.stringify(isDirectWrite))
+      formData.append('is_double', JSON.stringify(isDirectWrite));
 
       updateTicket(formData)
         .then(() => {
-          initializeTicketInfo().finally(() => router.back())
+          initializeTicketInfo().finally(() => router.back());
         })
         .catch(err => {
-          console.log('err', err)
+          console.log('err', err);
         })
         .finally(() => {
-          setIsPending(false)
-        })
+          setIsPending(false);
+        });
     } else {
-      const image = writeData?.todayImg
+      const image = writeData?.todayImg;
 
       const resizedImage = await ImageResizer.createResizedImage(
         image?.uri || '', // 원본 이미지
@@ -220,7 +220,7 @@ const EditTicketPage = () => {
         0, // 회전 (0 = 그대로)
         undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
         false, // 메타데이터 유지 여부
-      )
+      );
 
       await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_upd/`, resizedImage?.uri || '', {
         fieldName: 'image',
@@ -249,23 +249,23 @@ const EditTicketPage = () => {
         },
       })
         .then((res: any) => {
-          initializeTicketInfo()
-          console.log('res', res)
+          initializeTicketInfo();
+          console.log('res', res);
         })
         .catch(err => {
-          console.log('err', err)
+          console.log('err', err);
         })
         .finally(() => {
-          initializeTicketInfo()
-          setIsPending(false)
-          router.back()
-        })
+          initializeTicketInfo();
+          setIsPending(false);
+          router.back();
+        });
     }
-  }
+  };
 
   const uploadPhoto = async () => {
     /** 갤러리 접근 권한 요청 */
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     /** 갤러리에서 이미지 선택 */
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -274,30 +274,30 @@ const EditTicketPage = () => {
       quality: 1,
       aspect: [307, 270],
       selectionLimit: 1,
-    } as ImagePicker.ImagePickerOptions)
+    } as ImagePicker.ImagePickerOptions);
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      onChangeValue('todayImg', result.assets[0])
+      onChangeValue('todayImg', result.assets[0]);
     }
-  }
+  };
 
   const onChangeValue = (key: keyof ITicketEditData, value: ITicketEditData[keyof ITicketEditData]) => {
     setWriteData(prevData => ({
       ...prevData,
       [key]: value,
-    }))
-  }
+    }));
+  };
 
   const isEnabled = Boolean(
     writeData.homeTeam.score &&
-      writeData.awayTeam.score &&
-      ((writeData.placeType === '직관' && writeData.place) ||
-        (writeData.placeType === '직관' && ticketDetail?.gip_place) ||
-        writeData.placeType === '집관'),
-  )
+    writeData.awayTeam.score &&
+    ((writeData.placeType === '직관' && writeData.place) ||
+      (writeData.placeType === '직관' && ticketDetail?.gip_place) ||
+      writeData.placeType === '집관'),
+  );
 
-  const inputListRef = useRef<Record<string, TextInput>>({})
-  const scrollRef = useRef<ScrollView>(null)
+  const inputListRef = useRef<Record<string, TextInput>>({});
+  const scrollRef = useRef<ScrollView>(null);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -339,7 +339,7 @@ const EditTicketPage = () => {
                       })
                     }
                     ref={ref => {
-                      if (ref) inputListRef.current['our'] = ref
+                      if (ref) inputListRef.current['our'] = ref;
                     }}
                   />
                   <View style={styles.ellipseBox}>
@@ -361,7 +361,7 @@ const EditTicketPage = () => {
                       })
                     }
                     ref={ref => {
-                      if (ref) inputListRef.current['opponent'] = ref
+                      if (ref) inputListRef.current['opponent'] = ref;
                     }}
                   />
                 </View>
@@ -388,17 +388,17 @@ const EditTicketPage = () => {
                       value={opponentTeam}
                       onPress={() => setTeamModalVisible(true)}
                     />
-                  )
+                  );
                 }
 
-                if (!isCheer) return null
+                if (!isCheer) return null;
                 return (
                   <Input
                     label="오늘의 상대구단"
                     value={opponentTeam} //
                     editable={false}
                   />
-                )
+                );
               })()}
 
               {writeData.placeType === '집관' ? (
@@ -409,7 +409,7 @@ const EditTicketPage = () => {
                   placeholder="집관 장소를 기록해주세요"
                   maxLength={20}
                   ref={ref => {
-                    if (ref) inputListRef.current['gip-place'] = ref
+                    if (ref) inputListRef.current['gip-place'] = ref;
                   }}
                   returnKeyType="next"
                   submitBehavior="newline"
@@ -441,7 +441,7 @@ const EditTicketPage = () => {
                 placeholder="선수 이름을 기록해주세요"
                 maxLength={20}
                 ref={ref => {
-                  if (ref) inputListRef.current['player'] = ref
+                  if (ref) inputListRef.current['player'] = ref;
                 }}
                 returnKeyType="next"
                 submitBehavior="newline"
@@ -455,13 +455,13 @@ const EditTicketPage = () => {
                 placeholder="오늘 먹은 직관푸드를 기록해주세요"
                 maxLength={25}
                 ref={ref => {
-                  if (ref) inputListRef.current['food'] = ref
+                  if (ref) inputListRef.current['food'] = ref;
                 }}
                 returnKeyType="next"
                 submitBehavior="submit"
                 onSubmitEditing={() => {
-                  inputListRef.current['thoughts'].focus()
-                  scrollRef.current?.scrollToEnd()
+                  inputListRef.current['thoughts'].focus();
+                  scrollRef.current?.scrollToEnd();
                 }}
               />
 
@@ -501,7 +501,7 @@ const EditTicketPage = () => {
                 numberOfLines={6}
                 style={styles.thoughtsInput}
                 ref={ref => {
-                  if (ref) inputListRef.current['thoughts'] = ref
+                  if (ref) inputListRef.current['thoughts'] = ref;
                 }}
               />
             </View>
@@ -574,17 +574,17 @@ const EditTicketPage = () => {
         </View>
       </BottomSheet>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const FooterButton = ({
   isEnabled,
   isPending,
   onSubmit,
 }: {
-  isEnabled: boolean
-  isPending: boolean
-  onSubmit: () => void
+  isEnabled: boolean;
+  isPending: boolean;
+  onSubmit: () => void;
 }) => {
   return (
     <View style={styles.footerButtonBox}>
@@ -601,10 +601,10 @@ const FooterButton = ({
         )}
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default EditTicketPage
+export default EditTicketPage;
 
 const styles = StyleSheet.create({
   backImage: {
@@ -781,7 +781,7 @@ const styles = StyleSheet.create({
     width: size(100),
     height: size(100),
   },
-})
+});
 
 const optionalStyles = StyleSheet.create({
   container: {
@@ -791,4 +791,4 @@ const optionalStyles = StyleSheet.create({
   label: {
     lineHeight: size(19.6),
   },
-})
+});

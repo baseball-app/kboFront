@@ -1,1 +1,1 @@
-export {useReadAlarm} from './useReadAlarm'
+export {useReadAlarm} from './useReadAlarm';

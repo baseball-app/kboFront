@@ -176,15 +176,18 @@ yarn build:android:production
 다음 색상들은 특수한 용도로 사용되며 `color_token`으로 대체하지 않습니다:
 
 #### 투명도가 적용된 색상
+
 - `rgba(0, 0, 0, 0.5)` - 모달 오버레이
 - `rgba(0, 0, 0, 0.08)` - 그림자 효과
 
 #### Pressed 상태 색상 (Button 컴포넌트 내부)
+
 - `#1A4FD4` - primary 버튼 pressed 상태
 - `#061436` - secondary 버튼 pressed 상태
 - `#1E5EF430` - outline_active 버튼 pressed 상태
 
 #### 특수 투명도 색상
+
 - 이미 `color_token.primary_10`으로 정의되어 있음 (`#1E5EF41A`)
 
 ---

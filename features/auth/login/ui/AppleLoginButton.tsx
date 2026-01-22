@@ -1,15 +1,15 @@
-import React from 'react'
-import {Image, Platform, StyleSheet, Text, TouchableOpacity} from 'react-native'
-import {useAppleLogin} from '../model'
-import {Pressable} from '@/shared'
-import {size} from '@/shared'
-import {Txt} from '@/shared/ui/Txt'
-import {color_token} from '@/constants/theme'
+import React from 'react';
+import {Image, Platform, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {useAppleLogin} from '../model';
+import {Pressable} from '@/shared';
+import {size} from '@/shared';
+import {Txt} from '@/shared/ui/Txt';
+import {color_token} from '@/constants/theme';
 
 const AppleLoginButton = () => {
-  const {onPressButton} = useAppleLogin()
+  const {onPressButton} = useAppleLogin();
 
-  if (Platform.OS !== 'ios') return null
+  if (Platform.OS !== 'ios') return null;
 
   return (
     <Pressable style={styles.button} onPress={onPressButton}>
@@ -21,8 +21,8 @@ const AppleLoginButton = () => {
         Apple로 시작하기
       </Txt>
     </Pressable>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#000000',
@@ -43,5 +43,5 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: size(8),
   },
-})
-export {AppleLoginButton}
+});
+export {AppleLoginButton};

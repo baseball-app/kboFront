@@ -1,12 +1,12 @@
-import {Image, Pressable, StyleSheet, View} from 'react-native'
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context'
-import {useSheetSlice} from '@/slice/sheetSlice'
-import {Modal} from '@/components/common/Modal'
-import {size} from '@/shared'
+import {Image, Pressable, StyleSheet, View} from 'react-native';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {useSheetSlice} from '@/slice/sheetSlice';
+import {Modal} from '@/components/common/Modal';
+import {size} from '@/shared';
 
 const CommonSheet = () => {
-  const sheetSlice = useSheetSlice()
-  const currentSheet = sheetSlice.currentSheet
+  const sheetSlice = useSheetSlice();
+  const currentSheet = sheetSlice.currentSheet;
 
   return (
     <Modal
@@ -25,8 +25,8 @@ const CommonSheet = () => {
         </SafeAreaView>
       </SafeAreaProvider>
     </Modal>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -44,6 +44,6 @@ const styles = StyleSheet.create({
     width: size(24),
     height: size(24),
   },
-})
+});
 
-export {CommonSheet}
+export {CommonSheet};

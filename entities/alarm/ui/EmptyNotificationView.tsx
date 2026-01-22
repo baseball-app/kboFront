@@ -1,5 +1,5 @@
-import React from 'react'
-import {Image, StyleSheet, Text, View} from 'react-native'
+import React from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
 
 const EmptyNotificationView = () => {
   return (
@@ -7,10 +7,10 @@ const EmptyNotificationView = () => {
       <Image style={styles.image} source={require('@/assets/notification/emptyNotification.png')} />
       <Text style={styles.text}>아직 받은 알림이 없습니다</Text>
     </View>
-  )
-}
+  );
+};
 
-export {EmptyNotificationView}
+export {EmptyNotificationView};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 400,
   },
-})
+});

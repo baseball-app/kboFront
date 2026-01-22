@@ -1,11 +1,11 @@
-import React, {useMemo} from 'react'
-import {StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native'
-import {findMatchResultImage} from '@/constants/match'
-import {useTeam} from '@/entities/match'
-import {TicketCalendarLog} from '@/entities/ticket/types'
-import {Pressable, size} from '@/shared'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import React, {useMemo} from 'react';
+import {StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native';
+import {findMatchResultImage} from '@/constants/match';
+import {useTeam} from '@/entities/match';
+import {TicketCalendarLog} from '@/entities/ticket/types';
+import {Pressable, size} from '@/shared';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
 
 //TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
 const MatchResultCell = ({
@@ -13,21 +13,21 @@ const MatchResultCell = ({
   onPress,
   isLoading,
 }: {
-  data: TicketCalendarLog[]
-  onPress: () => void
-  isLoading: boolean
+  data: TicketCalendarLog[];
+  onPress: () => void;
+  isLoading: boolean;
 }) => {
-  const {findTeamByName} = useTeam()
+  const {findTeamByName} = useTeam();
 
   const {matchResult, opponent, myTeam} = useMemo(() => {
-    const res = data[0]
-    if (!res) return {matchResult: null, myTeam: null, opponent: null}
+    const res = data[0];
+    if (!res) return {matchResult: null, myTeam: null, opponent: null};
     return {
       matchResult: res.result,
       myTeam: findTeamByName(res.home),
       opponent: findTeamByName(res.opponent_name),
-    }
-  }, [data, findTeamByName])
+    };
+  }, [data, findTeamByName]);
 
   return (
     <Pressable style={{alignItems: 'center'}} onPress={onPress}>
@@ -48,10 +48,10 @@ const MatchResultCell = ({
         <View style={[styles.moodContainer]} />
       )}
     </Pressable>
-  )
-}
+  );
+};
 
-export default MatchResultCell
+export default MatchResultCell;
 
 const styles = StyleSheet.create({
   moodContainer: {
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
   },
-})
+});

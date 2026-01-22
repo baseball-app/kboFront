@@ -1,1 +1,1 @@
-export {useDeleteTicket} from './useDeleteTicket'
+export {useDeleteTicket} from './useDeleteTicket';

@@ -1,87 +1,87 @@
-import {Modal} from '@/components/common/Modal'
-import {TicketDetail} from '@/entities/ticket'
-import {getTempBaseballMediumName, showToast, useCaptureView, useShare} from '@/shared'
-import React, {useState} from 'react'
-import {TouchableOpacity, Image, StyleSheet, View, Text, Pressable, Dimensions, Platform} from 'react-native'
-import FastImage from '@d11/react-native-fast-image'
-import {useTeam} from '@/entities/match'
-import {Svg} from 'react-native-svg'
-import {Line} from 'react-native-svg'
-import {BlurView} from 'expo-blur'
-import dayjs from 'dayjs'
+import {Modal} from '@/components/common/Modal';
+import {TicketDetail} from '@/entities/ticket';
+import {getTempBaseballMediumName, showToast, useCaptureView, useShare} from '@/shared';
+import React, {useState} from 'react';
+import {TouchableOpacity, Image, StyleSheet, View, Text, Pressable, Dimensions, Platform} from 'react-native';
+import FastImage from '@d11/react-native-fast-image';
+import {useTeam} from '@/entities/match';
+import {Svg} from 'react-native-svg';
+import {Line} from 'react-native-svg';
+import {BlurView} from 'expo-blur';
+import dayjs from 'dayjs';
 
 // 반응형 스케일링 유틸 함수
-const {width: SCREEN_WIDTH} = Dimensions.get('window')
-const BASE_WIDTH = 375
+const {width: SCREEN_WIDTH} = Dimensions.get('window');
+const BASE_WIDTH = 375;
 
-const scale = (size: number) => (SCREEN_WIDTH / BASE_WIDTH) * size
-const verticalScale = (size: number) => (SCREEN_WIDTH / BASE_WIDTH) * size
-const moderateScale = (size: number, factor = 0.5) => size + (scale(size) - size) * factor
+const scale = (size: number) => (SCREEN_WIDTH / BASE_WIDTH) * size;
+const verticalScale = (size: number) => (SCREEN_WIDTH / BASE_WIDTH) * size;
+const moderateScale = (size: number, factor = 0.5) => size + (scale(size) - size) * factor;
 
 const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | undefined}) => {
-  const {shareInstagramStories, checkCanOpenInstagram} = useShare()
-  const [isOpen, setIsOpen] = useState(false)
-  const {ViewShot, onCaptureView} = useCaptureView()
+  const {shareInstagramStories, checkCanOpenInstagram} = useShare();
+  const [isOpen, setIsOpen] = useState(false);
+  const {ViewShot, onCaptureView} = useCaptureView();
 
   const onShareInstagramStories = async () => {
     try {
-      const viewShot = await onCaptureView()
-      if (!viewShot) throw new Error('이미지 캡처에 실패했어요')
+      const viewShot = await onCaptureView();
+      if (!viewShot) throw new Error('이미지 캡처에 실패했어요');
 
-      const isSupportedInstagram = await checkCanOpenInstagram()
+      const isSupportedInstagram = await checkCanOpenInstagram();
 
       if (!isSupportedInstagram) {
-        setIsOpen(false)
-        showToast('지금은 인스타그램 공유만 지원해요')
-        return
+        setIsOpen(false);
+        showToast('지금은 인스타그램 공유만 지원해요');
+        return;
       }
 
-      shareInstagramStories(viewShot.uri)
+      shareInstagramStories(viewShot.uri);
     } catch (error) {
-      showToast('잠시 후 다시 시도해 주세요')
+      showToast('잠시 후 다시 시도해 주세요');
     }
-  }
+  };
 
   const color = (() => {
-    if (ticketDetail?.result === '승리') return '#00A67D'
-    if (ticketDetail?.result === '패배') return '#F96A63'
-    if (ticketDetail?.result === '무승부') return '#FF9151'
-    if (ticketDetail?.result === '취소') return '#7D8494'
-    return ''
-  })()
+    if (ticketDetail?.result === '승리') return '#00A67D';
+    if (ticketDetail?.result === '패배') return '#F96A63';
+    if (ticketDetail?.result === '무승부') return '#FF9151';
+    if (ticketDetail?.result === '취소') return '#7D8494';
+    return '';
+  })();
 
   const resultEmoji = (() => {
-    if (ticketDetail?.result === '승리') return require('@/assets/icons/share/win.png')
-    if (ticketDetail?.result === '패배') return require('@/assets/icons/share/lose.png')
-    if (ticketDetail?.result === '무승부') return require('@/assets/icons/share/draw.png')
-    if (ticketDetail?.result === '취소') return require('@/assets/icons/share/cancel.png')
-    return ''
-  })()
+    if (ticketDetail?.result === '승리') return require('@/assets/icons/share/win.png');
+    if (ticketDetail?.result === '패배') return require('@/assets/icons/share/lose.png');
+    if (ticketDetail?.result === '무승부') return require('@/assets/icons/share/draw.png');
+    if (ticketDetail?.result === '취소') return require('@/assets/icons/share/cancel.png');
+    return '';
+  })();
 
-  const {findTeamById} = useTeam()
+  const {findTeamById} = useTeam();
 
   const ticketCaption = (() => {
-    const hometeam = findTeamById(ticketDetail?.hometeam_id)
-    const awayteam = findTeamById(ticketDetail?.awayteam_id)
+    const hometeam = findTeamById(ticketDetail?.hometeam_id);
+    const awayteam = findTeamById(ticketDetail?.awayteam_id);
 
     if (ticketDetail?.result === '승리') {
-      const winTeam = ticketDetail.score_our > ticketDetail.score_opponent ? hometeam : awayteam
-      return `${winTeam?.short_name} 승리 WIN!`
+      const winTeam = ticketDetail.score_our > ticketDetail.score_opponent ? hometeam : awayteam;
+      return `${winTeam?.short_name} 승리 WIN!`;
     }
     if (ticketDetail?.result === '패배') {
-      const loseTeam = ticketDetail.score_our < ticketDetail.score_opponent ? hometeam : awayteam
-      return `내일은 이기자 ${loseTeam?.short_name}`
+      const loseTeam = ticketDetail.score_our < ticketDetail.score_opponent ? hometeam : awayteam;
+      return `내일은 이기자 ${loseTeam?.short_name}`;
     }
-    if (ticketDetail?.result === '무승부') return '오늘은 무승부, 내일은 승리로!'
-    if (ticketDetail?.result === '취소') return '아쉽게도 경기 취소'
-    return ''
-  })()
+    if (ticketDetail?.result === '무승부') return '오늘은 무승부, 내일은 승리로!';
+    if (ticketDetail?.result === '취소') return '아쉽게도 경기 취소';
+    return '';
+  })();
 
   return (
     <>
       <TouchableOpacity
         onPress={() => {
-          setIsOpen(true)
+          setIsOpen(true);
         }}>
         <Image
           resizeMode="contain"
@@ -179,8 +179,8 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
         </View>
       </Modal>
     </>
-  )
-}
+  );
+};
 
 const _LabelWithValue = ({
   label,
@@ -188,10 +188,10 @@ const _LabelWithValue = ({
   maxWidth,
   numberOfLines = 1,
 }: {
-  label: string
-  value: string
-  maxWidth?: number
-  numberOfLines?: number
+  label: string;
+  value: string;
+  maxWidth?: number;
+  numberOfLines?: number;
 }) => {
   return (
     <View style={styles.labelContainer}>
@@ -203,10 +203,10 @@ const _LabelWithValue = ({
         {value}
       </Text>
     </View>
-  )
-}
+  );
+};
 
-export {ShareInstagramButton}
+export {ShareInstagramButton};
 
 const styles = StyleSheet.create({
   image: {
@@ -309,4 +309,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: scale(13 * 1.4),
   },
-})
+});

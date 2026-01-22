@@ -1,20 +1,20 @@
-import useFriends from '@/hooks/my/useFriends'
-import React, {memo} from 'react'
-import {View, StyleSheet, FlatList} from 'react-native'
-import FriendStatusProfile from './FriendStatusProfile'
-import useProfile from '@/hooks/my/useProfile'
-import {usePathname} from 'expo-router'
-import Skeleton from '../skeleton/Skeleton'
-import {logEvent} from '@/analytics/func'
-import {EVENTS} from '@/analytics/event'
-import {ROUTES, size, useAppRouter} from '@/shared'
-import {color_token} from '@/constants/theme'
+import useFriends from '@/hooks/my/useFriends';
+import React, {memo} from 'react';
+import {View, StyleSheet, FlatList} from 'react-native';
+import FriendStatusProfile from './FriendStatusProfile';
+import useProfile from '@/hooks/my/useProfile';
+import {usePathname} from 'expo-router';
+import Skeleton from '../skeleton/Skeleton';
+import {logEvent} from '@/analytics/func';
+import {EVENTS} from '@/analytics/event';
+import {ROUTES, size, useAppRouter} from '@/shared';
+import {color_token} from '@/constants/theme';
 
 const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; userId: number | null}) => {
-  const {friend_status, isLoadingFriendStatus} = useFriends()
-  const {profile} = useProfile()
-  const router = useAppRouter()
-  const pathname = usePathname()
+  const {friend_status, isLoadingFriendStatus} = useFriends();
+  const {profile} = useProfile();
+  const router = useAppRouter();
+  const pathname = usePathname();
 
   return (
     <View style={styles.container}>
@@ -29,11 +29,11 @@ const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; u
               onClick={() => {
                 // game id 가 있으면 오늘의 티켓
                 // 없으면 친구의 달력
-                logEvent(EVENTS.FRIEND_PROFILE_VIEW, {friend_id: item.id, screen_name: pathname})
+                logEvent(EVENTS.FRIEND_PROFILE_VIEW, {friend_id: item.id, screen_name: pathname});
                 if (item.ticket_info?.id) {
-                  router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {id: item.ticket_info?.id, target_id: item.id})
+                  router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {id: item.ticket_info?.id, target_id: item.id});
                 } else {
-                  setUserId(item.id)
+                  setUserId(item.id);
                 }
               }}
             />
@@ -50,7 +50,7 @@ const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; u
               }}
               isMyProfile
               onClick={() => {
-                setUserId(profile.id!)
+                setUserId(profile.id!);
               }}
             />
           </View>
@@ -60,8 +60,8 @@ const FriendList = ({setUserId, userId}: {setUserId: (userId: number) => void; u
         showsHorizontalScrollIndicator={false}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   friendItem: {
     marginLeft: size(20),
   },
-})
+});
 
 const LoadingFriendList = memo(() => {
   return (
@@ -96,7 +96,7 @@ const LoadingFriendList = memo(() => {
         <Skeleton height={15} width={50} />
       </View>
     </View>
-  )
-})
+  );
+});
 
-export default FriendList
+export default FriendList;

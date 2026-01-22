@@ -1,1 +1,1 @@
-export {useNavigateWriteTicket} from './useNavigateWriteTicket'
+export {useNavigateWriteTicket} from './useNavigateWriteTicket';

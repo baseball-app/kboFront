@@ -1,26 +1,26 @@
-import WheelPicker2 from '@/components/WheelPicker2'
-import {color_token} from '@/constants/theme'
-import {Pressable, size} from '@/shared'
-import {Button, Txt} from '@/shared/ui'
-import {BottomSheet} from '@/shared/ui/BottomSheet'
-import {Ionicons} from '@expo/vector-icons'
-import dayjs from 'dayjs'
-import React, {useEffect, useMemo, useState} from 'react'
-import {StyleSheet, View} from 'react-native'
+import WheelPicker2 from '@/components/WheelPicker2';
+import {color_token} from '@/constants/theme';
+import {Pressable, size} from '@/shared';
+import {Button, Txt} from '@/shared/ui';
+import {BottomSheet} from '@/shared/ui/BottomSheet';
+import {Ionicons} from '@expo/vector-icons';
+import dayjs from 'dayjs';
+import React, {useEffect, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 
 type MatchCalendarHeaderProps = {
-  prevMonth: () => void
-  nextMonth: () => void
-  currentDate: Date
-  setCurrentDate: (date: Date) => void
-}
+  prevMonth: () => void;
+  nextMonth: () => void;
+  currentDate: Date;
+  setCurrentDate: (date: Date) => void;
+};
 
 const WeekCalendarController = ({setCurrentDate, prevMonth, nextMonth, currentDate}: MatchCalendarHeaderProps) => {
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleMonthYearChange = () => {
-    setIsModalVisible(prev => !prev)
-  }
+    setIsModalVisible(prev => !prev);
+  };
 
   return (
     <>
@@ -37,8 +37,8 @@ const WeekCalendarController = ({setCurrentDate, prevMonth, nextMonth, currentDa
         setIsModalVisible={setIsModalVisible}
       />
     </>
-  )
-}
+  );
+};
 
 const _HeaderController = ({
   prevMonth,
@@ -60,8 +60,8 @@ const _HeaderController = ({
         <Ionicons name="chevron-forward" size={size(24)} color={color_token.gray900} />
       </Pressable>
     </View>
-  )
-}
+  );
+};
 
 const _BottomSheetController = ({
   isModalVisible,
@@ -69,26 +69,26 @@ const _BottomSheetController = ({
   setCurrentDate,
   currentDate,
 }: {
-  isModalVisible: boolean
-  setIsModalVisible: (isModalVisible: boolean) => void
-  setCurrentDate: (date: Date) => void
-  currentDate: Date
+  isModalVisible: boolean;
+  setIsModalVisible: (isModalVisible: boolean) => void;
+  setCurrentDate: (date: Date) => void;
+  currentDate: Date;
 }) => {
-  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
-  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1)
-  const [selectedDay, setSelectedDay] = useState(currentDate.getDate())
+  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1);
+  const [selectedDay, setSelectedDay] = useState(currentDate.getDate());
 
   useEffect(() => {
-    setSelectedYear(currentDate.getFullYear())
-    setSelectedMonth(currentDate.getMonth() + 1)
-    setSelectedDay(currentDate.getDate())
-  }, [currentDate])
+    setSelectedYear(currentDate.getFullYear());
+    setSelectedMonth(currentDate.getMonth() + 1);
+    setSelectedDay(currentDate.getDate());
+  }, [currentDate]);
 
-  const selectedDayjs = useMemo(() => dayjs(`${selectedYear}-${selectedMonth}-01`), [selectedYear, selectedMonth])
+  const selectedDayjs = useMemo(() => dayjs(`${selectedYear}-${selectedMonth}-01`), [selectedYear, selectedMonth]);
   const dayList = useMemo(
     () => Array.from({length: selectedDayjs.daysInMonth()}, (_, i) => `${i + 1}일`),
     [selectedDayjs],
-  )
+  );
 
   return (
     <BottomSheet isOpen={isModalVisible} duration={350} height={320}>
@@ -130,18 +130,18 @@ const _BottomSheetController = ({
             type="primary"
             style={{flex: 1, paddingVertical: size(12), height: size(46)}}
             onPress={() => {
-              setCurrentDate(dayjs(`${selectedYear}-${selectedMonth}-${selectedDay}`).toDate())
-              setIsModalVisible(false)
+              setCurrentDate(dayjs(`${selectedYear}-${selectedMonth}-${selectedDay}`).toDate());
+              setIsModalVisible(false);
             }}>
             완료
           </Button>
         </View>
       </View>
     </BottomSheet>
-  )
-}
+  );
+};
 
-export {WeekCalendarController}
+export {WeekCalendarController};
 
 const styles = StyleSheet.create({
   header: {
@@ -187,4 +187,4 @@ const styles = StyleSheet.create({
     marginTop: size(40),
     marginBottom: size(16),
   },
-})
+});

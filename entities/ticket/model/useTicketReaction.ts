@@ -1,6 +1,6 @@
-import {useQuery} from '@tanstack/react-query'
-import {ReactionType} from '../types'
-import * as api from '../api'
+import {useQuery} from '@tanstack/react-query';
+import {ReactionType} from '../types';
+import * as api from '../api';
 const REACTION_TYPE_LIST: {key: ReactionType; title: string; count: number}[] = [
   {key: 'laugh', title: '😁', count: 0},
   {key: 'wink', title: '🤣', count: 0},
@@ -11,22 +11,22 @@ const REACTION_TYPE_LIST: {key: ReactionType; title: string; count: number}[] = 
   {key: 'petulance', title: '✌️', count: 0},
   {key: 'dislike', title: '👎', count: 0},
   {key: 'point_up', title: '👍', count: 0},
-]
+];
 
 const useTicketReaction = ({id}: {id: number}) => {
   const {data: my_reaction} = useQuery({
     queryKey: ['ticket', id, 'reaction'],
     queryFn: () => api.findTicketReaction({id}),
     enabled: Boolean(id),
-  })
+  });
 
   const reactionList = REACTION_TYPE_LIST.map(reaction => ({
     ...reaction,
     count: 0,
     isPressed: Boolean(my_reaction?.[reaction.key]),
-  }))
+  }));
 
-  return {reactionList}
+  return {reactionList};
 
   // const toggleReaction = (reaction: ReactionType) => {
   //   if (!ticketDetail) return
@@ -37,6 +37,6 @@ const useTicketReaction = ({id}: {id: number}) => {
 
   //   addReaction({reaction_pos: my_reaction?.[reaction] ? 'del' : 'add', reaction_type: reaction})
   // }
-}
+};
 
-export {useTicketReaction}
+export {useTicketReaction};

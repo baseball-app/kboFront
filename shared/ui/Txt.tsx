@@ -1,7 +1,7 @@
-import {color_token} from '@/constants/theme'
-import React, {memo} from 'react'
-import {Text, TextStyle, StyleProp} from 'react-native'
-import {size as scaleSize} from '..'
+import {color_token} from '@/constants/theme';
+import React, {memo} from 'react';
+import {Text, TextStyle, StyleProp} from 'react-native';
+import {size as scaleSize} from '..';
 
 const fontWeight = {
   light: 300,
@@ -10,7 +10,7 @@ const fontWeight = {
   semibold: 600,
   bold: 700,
   extraBold: 800,
-} as const
+} as const;
 
 const fontSize = {
   10: 10,
@@ -25,18 +25,18 @@ const fontSize = {
   24: 24,
   26: 26,
   32: 32,
-} as const
+} as const;
 
-type FontWeight = keyof typeof fontWeight
-type FontSize = keyof typeof fontSize
+type FontWeight = keyof typeof fontWeight;
+type FontSize = keyof typeof fontSize;
 
 interface TxtProps {
-  weight?: FontWeight
-  size?: FontSize
-  style?: StyleProp<TextStyle>
-  color?: string
-  children?: React.ReactNode
-  numberOfLines?: number
+  weight?: FontWeight;
+  size?: FontSize;
+  style?: StyleProp<TextStyle>;
+  color?: string;
+  children?: React.ReactNode;
+  numberOfLines?: number;
 }
 
 const Txt = memo(
@@ -46,14 +46,14 @@ const Txt = memo(
       fontSize: scaleSize(fontSize[size]),
       lineHeight: fontSize[size] * 1.4,
       color,
-    }
+    };
 
     return (
       <Text style={[textStyle, style]} numberOfLines={numberOfLines}>
         {children}
       </Text>
-    )
+    );
   },
-)
+);
 
-export {Txt}
+export {Txt};

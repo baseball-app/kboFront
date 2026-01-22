@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react'
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native'
-import {BottomSheet} from '@/shared/ui'
-import {size} from '@/shared'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import React, {useEffect, useState} from 'react';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {BottomSheet} from '@/shared/ui';
+import {size} from '@/shared';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
 
 type Props = {
-  value: string
-  onChange: (value: string) => void
-}
+  value: string;
+  onChange: (value: string) => void;
+};
 
 const tabMenuConfig = [
   {
@@ -21,15 +21,15 @@ const tabMenuConfig = [
     value: 'home',
     title: '집관',
   },
-]
+];
 
 const LocationTypeSelector = ({value, onChange}: Props) => {
-  const [tabMenuModalVisible, setTabMenuModalVisible] = useState(false)
-  const [tempValue, setTempValue] = useState(value)
+  const [tabMenuModalVisible, setTabMenuModalVisible] = useState(false);
+  const [tempValue, setTempValue] = useState(value);
 
   useEffect(() => {
-    setTempValue(value)
-  }, [value])
+    setTempValue(value);
+  }, [value]);
 
   return (
     <>
@@ -74,8 +74,8 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
             <TouchableOpacity
               style={styles.confirmButton}
               onPress={() => {
-                onChange(tempValue)
-                setTabMenuModalVisible(false)
+                onChange(tempValue);
+                setTabMenuModalVisible(false);
               }}>
               <Txt size={16} weight="semibold" color={color_token.white}>
                 완료
@@ -85,10 +85,10 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
         </View>
       </BottomSheet>
     </>
-  )
-}
+  );
+};
 
-export default LocationTypeSelector
+export default LocationTypeSelector;
 
 const styles = StyleSheet.create({
   selectedOption: {
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
   },
-})
+});
 
 export const modal = StyleSheet.create({
   bottomSheetOverlay: {
@@ -183,4 +183,4 @@ export const modal = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
   },
-})
+});

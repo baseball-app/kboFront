@@ -1,6 +1,6 @@
-import {useQuery} from '@tanstack/react-query'
-import {useState} from 'react'
-import * as api from '../api'
+import {useQuery} from '@tanstack/react-query';
+import {useState} from 'react';
+import * as api from '../api';
 
 /**
  * 티켓 상세 조회
@@ -11,26 +11,26 @@ import * as api from '../api'
  */
 const useTicketDetail = ({id, target_id, date}: {id?: number; date?: string; target_id: number}) => {
   // 1차 2차 선택하는 state
-  const [ticketIndex, setTicketIndex] = useState<number>(0)
+  const [ticketIndex, setTicketIndex] = useState<number>(0);
   const onChangeTicket = (index: number) => {
-    setTicketIndex(index)
-  }
+    setTicketIndex(index);
+  };
 
   const {data, isSuccess} = useQuery({
     queryKey: ['ticket', id, target_id],
     queryFn: () => {
-      if (!id && !date) throw new Error('id 또는 date가 필요합니다.')
-      if (id && date) throw new Error('id와 date는 동시에 사용할 수 없습니다.')
-      if (date) return api.findTicketDetailByDate({date, target_id})
-      if (id) return api.findTicketDetailById({id, target_id})
+      if (!id && !date) throw new Error('id 또는 date가 필요합니다.');
+      if (id && date) throw new Error('id와 date는 동시에 사용할 수 없습니다.');
+      if (date) return api.findTicketDetailByDate({date, target_id});
+      if (id) return api.findTicketDetailById({id, target_id});
     },
     enabled: Boolean(target_id && (id || date)),
     retry: false,
-  })
+  });
 
-  const ticketDetail = data?.[ticketIndex]
+  const ticketDetail = data?.[ticketIndex];
 
-  const hasDoubleTicket = (data?.length || 0) > 1
+  const hasDoubleTicket = (data?.length || 0) > 1;
 
   return {
     ticketDetail,
@@ -39,7 +39,7 @@ const useTicketDetail = ({id, target_id, date}: {id?: number; date?: string; tar
     isSuccess,
     hasDoubleTicket,
     data,
-  }
-}
+  };
+};
 
-export {useTicketDetail}
+export {useTicketDetail};

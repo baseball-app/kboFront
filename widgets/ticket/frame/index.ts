@@ -1,1 +1,1 @@
-export {TicketFrame} from './ui'
+export {TicketFrame} from './ui';

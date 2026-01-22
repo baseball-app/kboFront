@@ -1,15 +1,15 @@
-import {Notification} from '../types'
-import React from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {color_token} from '@/constants/theme'
+import {Notification} from '../types';
+import React from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {color_token} from '@/constants/theme';
 
 type Props = {
-  type: Notification['type']
-  userName: string
-  onClick: VoidFunction
-  isRead: boolean
-  date: string
-}
+  type: Notification['type'];
+  userName: string;
+  onClick: VoidFunction;
+  isRead: boolean;
+  date: string;
+};
 
 const NotificationCard = ({type, userName, isRead, date, onClick}: Props) => {
   const notificationCard = (() => {
@@ -18,14 +18,14 @@ const NotificationCard = ({type, userName, isRead, date, onClick}: Props) => {
         return {
           style: reaction,
           info: {title: '친구의 반응', body: `님이 반응을 남겼습니다.`},
-        }
+        };
       case 'FRIEND_UPDATE':
         return {
           style: news,
           info: {title: '친구의 새소식', body: `님이 새로운 티켓 발권을 했습니다.`},
-        }
+        };
     }
-  })()
+  })();
 
   return (
     <TouchableOpacity activeOpacity={0.7} style={[styles.card, !isRead && styles.active]} onPress={onClick}>
@@ -41,10 +41,10 @@ const NotificationCard = ({type, userName, isRead, date, onClick}: Props) => {
         <Text>{notificationCard.info.body}</Text>
       </View>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export {NotificationCard}
+export {NotificationCard};
 
 const styles = StyleSheet.create({
   card: {
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: color_token.gray400,
   },
-})
+});
 
 const reaction = StyleSheet.create({
   bg: {
@@ -96,7 +96,7 @@ const reaction = StyleSheet.create({
   color: {
     color: color_token.red,
   },
-})
+});
 
 const news = StyleSheet.create({
   bg: {
@@ -105,4 +105,4 @@ const news = StyleSheet.create({
   color: {
     color: color_token.primary,
   },
-})
+});

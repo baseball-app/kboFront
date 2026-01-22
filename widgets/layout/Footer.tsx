@@ -1,10 +1,10 @@
-import {useSegments} from 'expo-router'
-import React, {useEffect, useState} from 'react'
-import {View, Text, StyleSheet, Vibration} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {Pressable, ROUTES, useAppRouter} from '@/shared'
-import {CalenderIcon, MatchIcon, TicketIcon, StatsIcon, MyIcon} from '@/shared/ui/tab-icons'
-import {color_token} from '@/constants/theme'
+import {useSegments} from 'expo-router';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Vibration} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Pressable, ROUTES, useAppRouter} from '@/shared';
+import {CalenderIcon, MatchIcon, TicketIcon, StatsIcon, MyIcon} from '@/shared/ui/tab-icons';
+import {color_token} from '@/constants/theme';
 
 const footerList = [
   {
@@ -37,28 +37,28 @@ const footerList = [
     path: ROUTES.MY_TAB,
     Icon: MyIcon,
   },
-]
+];
 
 /** Footer Tab Menu 컴포넌트 */
 const Footer = () => {
-  const router = useAppRouter()
-  const segments = useSegments()
+  const router = useAppRouter();
+  const segments = useSegments();
 
-  const [activePath, setActivePath] = useState<string>(ROUTES.CALENDAR_TAB)
+  const [activePath, setActivePath] = useState<string>(ROUTES.CALENDAR_TAB);
 
   useEffect(() => {
-    const currentPath = `/${segments.join('/')}`
-    const tab = footerList.find(item => item.path === currentPath)
-    if (tab && tab.path !== activePath) setActivePath(currentPath)
-  }, [segments])
+    const currentPath = `/${segments.join('/')}`;
+    const tab = footerList.find(item => item.path === currentPath);
+    if (tab && tab.path !== activePath) setActivePath(currentPath);
+  }, [segments]);
 
   return (
     <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.footerContainer}>
       <View style={styles.container}>
         <View style={styles.wrapper}>
           {footerList.map(item => {
-            const isActive = activePath === item.path
-            const IconComponent = item.Icon
+            const isActive = activePath === item.path;
+            const IconComponent = item.Icon;
             return (
               <Pressable
                 key={item.name}
@@ -68,8 +68,8 @@ const Footer = () => {
                   } else {
                     // Vibration.vibrate(10)
                     // 다른 탭으로 이동
-                    router.navigate(item.path)
-                    setActivePath(item.path)
+                    router.navigate(item.path);
+                    setActivePath(item.path);
                   }
                 }}
                 style={[styles.tabButton]}>
@@ -78,13 +78,13 @@ const Footer = () => {
                 </View>
                 <Text style={isActive ? styles.tabTextActive : styles.tabText}>{item.name}</Text>
               </Pressable>
-            )
+            );
           })}
         </View>
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 /** Footer Tab Menu Style Css */
 const styles = StyleSheet.create({
@@ -136,6 +136,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 700,
   },
-})
+});
 
-export {Footer}
+export {Footer};

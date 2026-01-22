@@ -1,12 +1,12 @@
-import ApiClient from '@/api'
-import {useQuery, useQueryClient} from '@tanstack/react-query'
-import dayjs from 'dayjs'
-import {Match} from '../types'
-import {getMatchByDate} from '../api'
+import ApiClient from '@/api';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import {Match} from '../types';
+import {getMatchByDate} from '../api';
 
 const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
-  const startDate = dayjs(selectedDate).format('YYYY-MM-DD')
-  const queryClient = useQueryClient()
+  const startDate = dayjs(selectedDate).format('YYYY-MM-DD');
+  const queryClient = useQueryClient();
 
   const {
     data: matchingList,
@@ -16,13 +16,13 @@ const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
     queryKey: ['matchTeam', startDate],
     queryFn: () => getMatchByDate(startDate),
     enabled: Boolean(selectedDate),
-  })
+  });
 
   const prefetchMatchList = async (date: string) => {
-    const queryKey = ['matchTeam', date]
-    const data = queryClient.getQueryData<Match[]>(queryKey)
+    const queryKey = ['matchTeam', date];
+    const data = queryClient.getQueryData<Match[]>(queryKey);
 
-    if (data) return
+    if (data) return;
 
     return queryClient.prefetchQuery({
       queryKey,
@@ -31,15 +31,15 @@ const useMatch = ({selectedDate}: {selectedDate: Date | null}) => {
           end_date: date,
           start_date: date,
         }),
-    })
-  }
+    });
+  };
 
   return {
     matchingList: matchingList || [],
     isSuccess,
     prefetchMatchList,
     isPending,
-  }
-}
+  };
+};
 
-export {useMatch}
+export {useMatch};

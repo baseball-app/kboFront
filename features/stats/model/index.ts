@@ -1,1 +1,1 @@
-export {useNavigateToStatsDetail, StatsDetailType} from './useNavigateToStatsDetail'
+export {useNavigateToStatsDetail, StatsDetailType} from './useNavigateToStatsDetail';

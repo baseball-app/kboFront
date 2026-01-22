@@ -1,9 +1,10 @@
-import {NativeModules, Platform} from 'react-native'
+import {NativeModules, Platform} from 'react-native';
 
 interface InstagramModuleInterface {
-  isInstagramInstalled(): Promise<boolean>
+  isInstagramInstalled(): Promise<boolean>;
 }
 
-const {InstagramModule} = NativeModules
+const {InstagramModule} = NativeModules;
 
-export const InstagramModuleNative: InstagramModuleInterface | null = Platform.OS === 'android' ? InstagramModule : null
+export const InstagramModuleNative: InstagramModuleInterface | null =
+  Platform.OS === 'android' ? InstagramModule : null;

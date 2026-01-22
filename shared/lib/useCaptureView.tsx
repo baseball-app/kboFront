@@ -1,20 +1,20 @@
-import React, {useCallback, useMemo, useRef} from 'react'
-import ViewShotComponent from 'react-native-view-shot'
-import {StyleProp, ViewStyle} from 'react-native'
+import React, {useCallback, useMemo, useRef} from 'react';
+import ViewShotComponent from 'react-native-view-shot';
+import {StyleProp, ViewStyle} from 'react-native';
 
 const useCaptureView = () => {
-  const ref = useRef<any>(null)
+  const ref = useRef<any>(null);
   const onCaptureView = async () => {
     try {
       if (ref.current) {
-        const uri = await ref.current?.capture()
-        return {uri}
+        const uri = await ref.current?.capture();
+        return {uri};
       }
     } catch (error) {
-      console.log('error', error)
-      throw error
+      console.log('error', error);
+      throw error;
     }
-  }
+  };
 
   const ViewShot = useCallback(({children, style}: {children: React.ReactNode; style?: StyleProp<ViewStyle>}) => {
     return (
@@ -24,10 +24,10 @@ const useCaptureView = () => {
         style={style}>
         {children}
       </ViewShotComponent>
-    )
-  }, [])
+    );
+  }, []);
 
-  return {onCaptureView, ref, ViewShot}
-}
+  return {onCaptureView, ref, ViewShot};
+};
 
-export {useCaptureView}
+export {useCaptureView};

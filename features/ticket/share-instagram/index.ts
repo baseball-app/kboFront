@@ -1,1 +1,1 @@
-export {ShareInstagramButton} from './ui'
+export {ShareInstagramButton} from './ui';

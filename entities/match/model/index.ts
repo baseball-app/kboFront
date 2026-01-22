@@ -1,2 +1,2 @@
-export {useTeam} from './useTeam'
-export {useMatch} from './useMatch'
+export {useTeam} from './useTeam';
+export {useMatch} from './useMatch';

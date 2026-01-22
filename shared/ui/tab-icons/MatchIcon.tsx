@@ -1,11 +1,11 @@
-import React from 'react'
-import Svg, {Path} from 'react-native-svg'
-import {color_token} from '@/constants/theme'
+import React from 'react';
+import Svg, {Path} from 'react-native-svg';
+import {color_token} from '@/constants/theme';
 
 interface MatchIconProps {
-  color?: string
-  width?: number
-  height?: number
+  color?: string;
+  width?: number;
+  height?: number;
 }
 export const MatchIcon = ({color = color_token.gray400, width = 23, height = 23}: MatchIconProps) => {
   return (
@@ -15,5 +15,5 @@ export const MatchIcon = ({color = color_token.gray400, width = 23, height = 23}
         fill={color}
       />
     </Svg>
-  )
-}
+  );
+};

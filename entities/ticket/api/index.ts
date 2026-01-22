@@ -1,14 +1,14 @@
-import ApiClient from '@/api'
-import * as schema from '../types'
-import {Reaction} from '../types'
+import ApiClient from '@/api';
+import * as schema from '../types';
+import {Reaction} from '../types';
 
 /**
  * 월별 티켓 목록 조회
  * @param req {date: 'YYYY-MM', user_id: number}
  */
 export const getTicketCalendarLog = async (req: schema.TicketCalendarLogReq) => {
-  return ApiClient.get<schema.TicketCalendarLog[]>('/tickets/ticket_calendar_log/', req)
-}
+  return ApiClient.get<schema.TicketCalendarLog[]>('/tickets/ticket_calendar_log/', req);
+};
 
 /**
  * 티켓 상세 조회
@@ -16,8 +16,8 @@ export const getTicketCalendarLog = async (req: schema.TicketCalendarLogReq) => 
  * @returns
  */
 export const findTicketDetailById = async ({id, target_id}: {id: number; target_id: number}) => {
-  return ApiClient.get<schema.TicketDetail[]>('/tickets/ticket_detail/', {id, target_id})
-}
+  return ApiClient.get<schema.TicketDetail[]>('/tickets/ticket_detail/', {id, target_id});
+};
 
 /**
  * 티켓 상세 조회
@@ -25,8 +25,8 @@ export const findTicketDetailById = async ({id, target_id}: {id: number; target_
  * @returns
  */
 export const findTicketDetailByDate = async ({date, target_id}: {date: string; target_id: number}) => {
-  return ApiClient.get<schema.TicketDetail[]>('/tickets/ticket_detail/', {date, target_id})
-}
+  return ApiClient.get<schema.TicketDetail[]>('/tickets/ticket_detail/', {date, target_id});
+};
 
 /**
  * 티켓 반응 조회
@@ -34,18 +34,18 @@ export const findTicketDetailByDate = async ({date, target_id}: {date: string; t
  * @returns
  */
 export const findTicketReaction = async ({id}: {id: number}) => {
-  return ApiClient.get<Reaction>(`/tickets/ticket_reaction_view/`, {id})
-}
+  return ApiClient.get<Reaction>(`/tickets/ticket_reaction_view/`, {id});
+};
 
 export const findTicketListByTeam = async ({teamId}: {teamId: number}) => {
   const params = (() => {
     // 타구단
-    if (teamId === 999) return {is_cheer: false}
+    if (teamId === 999) return {is_cheer: false};
     // 팀 선택
-    if (teamId) return {team_id: teamId, is_cheer: true}
+    if (teamId) return {team_id: teamId, is_cheer: true};
     // 최애 경기
-    return {favorite: true}
-  })()
+    return {favorite: true};
+  })();
 
-  return ApiClient.get<schema.TicketListByTeam[]>('/tickets/ticket_list/', params)
-}
+  return ApiClient.get<schema.TicketListByTeam[]>('/tickets/ticket_list/', params);
+};

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,33 +8,33 @@ import {
   Platform,
   Pressable,
   Keyboard,
-} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {useMutation} from '@tanstack/react-query'
-import ApiClient from '@/api'
-import {usePopup} from '@/slice/commonSlice'
-import {size, useAppRouter} from '@/shared'
-import {showToast} from '@/shared'
-import LottieView from 'lottie-react-native'
-import {color_token} from '@/constants/theme'
-import {BackButton, Button, Txt} from '@/shared/ui'
-import Header from '@/components/common/Header'
+} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useMutation} from '@tanstack/react-query';
+import ApiClient from '@/api';
+import {usePopup} from '@/slice/commonSlice';
+import {size, useAppRouter} from '@/shared';
+import {showToast} from '@/shared';
+import LottieView from 'lottie-react-native';
+import {color_token} from '@/constants/theme';
+import {BackButton, Button, Txt} from '@/shared/ui';
+import Header from '@/components/common/Header';
 
 type Inquiry = {
-  email: string
-  title: string
-  content: string
-}
+  email: string;
+  title: string;
+  content: string;
+};
 
 export default function NicknameScreen() {
-  const router = useAppRouter()
+  const router = useAppRouter();
   const [inquiry, setInquiry] = useState<Inquiry>({
     email: '',
     title: '문의하기',
     content: '',
-  })
+  });
 
-  const {openCommonPopup} = usePopup()
+  const {openCommonPopup} = usePopup();
 
   const {mutate: submitInquiry, isPending} = useMutation({
     mutationFn: async (inquiry: Inquiry) => ApiClient.post('/users/submission-inquiry/', inquiry),
@@ -42,27 +42,27 @@ export default function NicknameScreen() {
       openCommonPopup(
         `적어주신 메일로 답변 보내드릴게요.\n답변까지 시간이 다소 걸릴 수 있으니\n조금만 기다려주세요!`,
         router.back,
-      )
+      );
     },
     onError: () => showToast('오류가 발생했습니다. 다시 시도해주세요.'),
-  })
+  });
 
   const onSubmit = () => {
-    if (isPending) return
+    if (isPending) return;
     // email 유효성 검사
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(inquiry.email)) {
-      showToast('이메일을 확인해 주세요')
-      return
+      showToast('이메일을 확인해 주세요');
+      return;
     }
 
     if (!inquiry.content.trim()) {
-      showToast('내용을 입력해주세요')
-      return
+      showToast('내용을 입력해주세요');
+      return;
     }
 
-    submitInquiry(inquiry)
-  }
+    submitInquiry(inquiry);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -109,7 +109,7 @@ export default function NicknameScreen() {
         </View>
       </Pressable>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -167,4 +167,4 @@ const styles = StyleSheet.create({
     width: size(100),
     height: size(100),
   },
-})
+});

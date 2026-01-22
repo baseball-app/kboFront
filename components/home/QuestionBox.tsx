@@ -1,19 +1,19 @@
-import {Pressable, size} from '@/shared'
-import React from 'react'
-import {StyleSheet, View, Image, ImageSourcePropType} from 'react-native'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import {Pressable, size} from '@/shared';
+import React from 'react';
+import {StyleSheet, View, Image, ImageSourcePropType} from 'react-native';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
 
 interface IQuestionBox {
-  title: string
-  questionData: {image: ImageSourcePropType; text: string}[]
-  onQuestionClick: (p: string) => void
-  selectedQuestion: string
-  type: string
+  title: string;
+  questionData: {image: ImageSourcePropType; text: string}[];
+  onQuestionClick: (p: string) => void;
+  selectedQuestion: string;
+  type: string;
 }
 
 const QuestionBox = (props: IQuestionBox) => {
-  const {title, questionData, onQuestionClick, selectedQuestion} = props
+  const {title, questionData, onQuestionClick, selectedQuestion} = props;
   return (
     <View style={styles.container}>
       <Txt size={20} weight="semibold" color={color_token.gray900}>
@@ -41,8 +41,8 @@ const QuestionBox = (props: IQuestionBox) => {
         ))}
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
     width: size(30),
     height: size(30),
   },
-})
+});
 
-export default QuestionBox
+export default QuestionBox;

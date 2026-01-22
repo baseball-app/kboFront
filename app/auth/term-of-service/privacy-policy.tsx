@@ -1,15 +1,15 @@
-import React from 'react'
-import {ScrollView, StyleSheet} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import useConsent from '@/hooks/auth/useConsent'
-import {Privacy} from '@/entities/terms'
-import {useAppRouter} from '@/shared'
-import {color_token} from '@/constants/theme'
-import Header from '@/components/common/Header'
-import {BottomFloatSection, Button, Pressable} from '@/shared/ui'
+import React from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import useConsent from '@/hooks/auth/useConsent';
+import {Privacy} from '@/entities/terms';
+import {size, useAppRouter} from '@/shared';
+import {color_token} from '@/constants/theme';
+import Header from '@/components/common/Header';
+import {BottomFloatSection, Button} from '@/shared/ui';
 const PrivacyPolicyScreen = () => {
-  const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent()
-  const router = useAppRouter()
+  const {agreeConsent, isScrolledToBottom, handleScroll, scrollViewRef} = useConsent();
+  const router = useAppRouter();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,34 +26,31 @@ const PrivacyPolicyScreen = () => {
         <Button
           onPress={() => {
             if (isScrolledToBottom) {
-              agreeConsent('privacy-policy')
-              router.back()
+              agreeConsent('privacy-policy');
+              router.back();
             } else {
-              ;(scrollViewRef.current as any)?.scrollToEnd({animated: true})
+              (scrollViewRef.current as any)?.scrollToEnd({animated: true});
             }
           }}>
           {isScrolledToBottom ? '동의하기' : '아래로 스크롤하기'}
         </Button>
       </BottomFloatSection>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color_token.white,
   },
-  header: {
-    padding: 16,
-  },
   content: {
     flex: 1,
-    padding: 16,
+    padding: size(16),
   },
   buttonContainer: {
     backgroundColor: color_token.white,
   },
-})
+});
 
-export default PrivacyPolicyScreen
+export default PrivacyPolicyScreen;

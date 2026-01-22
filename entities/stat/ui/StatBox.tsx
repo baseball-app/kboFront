@@ -1,17 +1,17 @@
-import React, {useState} from 'react'
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
-import {AnimatedCircularProgress} from 'react-native-circular-progress'
-import {Modal} from '@/components/common/Modal'
-import {size} from '@/shared'
-import {color_token} from '@/constants/theme'
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
+import {Modal} from '@/components/common/Modal';
+import {size} from '@/shared';
+import {color_token} from '@/constants/theme';
 
 type Props = {
-  title: string
-  value: number
-  win: number
-  draw: number
-  lose: number
-}
+  title: string;
+  value: number;
+  win: number;
+  draw: number;
+  lose: number;
+};
 
 const modal = StyleSheet.create({
   bottomSheetOverlay: {
@@ -34,10 +34,10 @@ const modal = StyleSheet.create({
     borderRadius: size(10),
     padding: size(20),
   },
-})
+});
 
 const StatBox = ({title, value, win, draw, lose}: Props) => {
-  const [openModal, setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <>
@@ -100,10 +100,10 @@ const StatBox = ({title, value, win, draw, lose}: Props) => {
         </View>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export {StatBox}
+export {StatBox};
 
 const modalStyles = StyleSheet.create({
   header: {
@@ -164,7 +164,7 @@ const modalStyles = StyleSheet.create({
     gap: 18,
     width: '100%',
   },
-})
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -197,4 +197,4 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     lineHeight: 16.8,
   },
-})
+});

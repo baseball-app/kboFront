@@ -1,14 +1,14 @@
-import Input from '@/components/common/Input'
-import {color_token} from '@/constants/theme'
-import {MyStat, StatBox, useMyStat} from '@/entities/stat'
-import useProfile from '@/hooks/my/useProfile'
-import {size} from '@/shared'
-import React from 'react'
-import {ScrollView, StyleSheet, View} from 'react-native'
+import Input from '@/components/common/Input';
+import {color_token} from '@/constants/theme';
+import {MyStat, StatBox, useMyStat} from '@/entities/stat';
+import useProfile from '@/hooks/my/useProfile';
+import {size} from '@/shared';
+import React from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
 
 function MyStatWidget() {
-  const {data} = useMyStat()
-  const {profile} = useProfile()
+  const {data} = useMyStat();
+  const {profile} = useProfile();
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -58,10 +58,10 @@ function MyStatWidget() {
         />
       </View>
     </ScrollView>
-  )
+  );
 }
 
-export {MyStatWidget}
+export {MyStatWidget};
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
     marginTop: size(40),
     marginBottom: size(40),
   },
-})
+});

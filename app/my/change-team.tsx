@@ -1,19 +1,19 @@
-import React, {useState} from 'react'
-import {StyleSheet, View, TouchableOpacity, ScrollView, Image} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import useProfile from '@/hooks/my/useProfile'
-import Header from '@/components/common/Header'
-import {useTeam} from '@/entities/match'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
-import {BottomFloatSection, Button, Txt} from '@/shared/ui'
+import React, {useState} from 'react';
+import {StyleSheet, View, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import useProfile from '@/hooks/my/useProfile';
+import Header from '@/components/common/Header';
+import {useTeam} from '@/entities/match';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
+import {BottomFloatSection, Button, Txt} from '@/shared/ui';
 
 export default function ChangeScreen() {
-  const {updateMyTeam, profile} = useProfile()
-  const {teams} = useTeam()
-  const [selectedTeamId, setSelectedTeamId] = useState(profile.my_team?.id)
+  const {updateMyTeam, profile} = useProfile();
+  const {teams} = useTeam();
+  const [selectedTeamId, setSelectedTeamId] = useState(profile.my_team?.id);
 
-  const isChanged = selectedTeamId !== profile.my_team?.id
+  const isChanged = selectedTeamId !== profile.my_team?.id;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,7 +50,7 @@ export default function ChangeScreen() {
         </BottomFloatSection>
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -118,4 +118,4 @@ const styles = StyleSheet.create({
   nextButtonActive: {
     backgroundColor: color_token.primary,
   },
-})
+});

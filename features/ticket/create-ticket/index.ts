@@ -1,1 +1,1 @@
-export {TicketFormDataMapper, type TicketRegisterRequestDto} from './model'
+export {TicketFormDataMapper, type TicketRegisterRequestDto} from './model';

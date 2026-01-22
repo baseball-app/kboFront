@@ -1,8 +1,8 @@
-import {userJoinSlice} from '@/slice/userJoinSlice'
-import {useSegments} from 'expo-router'
-import useConsent from './useConsent'
-import useProfile from '../my/useProfile'
-import {ROUTES, useAppRouter} from '@/shared'
+import {userJoinSlice} from '@/slice/userJoinSlice';
+import {useSegments} from 'expo-router';
+import useConsent from './useConsent';
+import useProfile from '../my/useProfile';
+import {ROUTES, useAppRouter} from '@/shared';
 
 // 유저의 회원가입 프로세스
 const userJoinProcess = [
@@ -10,23 +10,23 @@ const userJoinProcess = [
   ROUTES.AUTH_NICKNAME,
   ROUTES.AUTH_TEAM,
   ROUTES.AUTH_PROFILE,
-] as const
+] as const;
 
-type JoinProcess = (typeof userJoinProcess)[number]
+type JoinProcess = (typeof userJoinProcess)[number];
 
 /**
  * 회원가입 화면에서 사용하는 hook
  */
 const useUserJoin = () => {
-  const router = useAppRouter()
-  const segments = useSegments()
+  const router = useAppRouter();
+  const segments = useSegments();
   // 현재 step 경로
-  const currentStep = `/${segments.join('/')}` as JoinProcess
+  const currentStep = `/${segments.join('/')}` as JoinProcess;
 
-  const joinSlice = userJoinSlice()
-  const consent = useConsent()
+  const joinSlice = userJoinSlice();
+  const consent = useConsent();
 
-  const {updateProfileWithSignUp} = useProfile()
+  const {updateProfileWithSignUp} = useProfile();
 
   /**
    * 회원가입
@@ -34,18 +34,18 @@ const useUserJoin = () => {
   const signUp = async () => {
     try {
       // 회원가입 로직
-      await updateProfileWithSignUp(joinSlice)
+      await updateProfileWithSignUp(joinSlice);
 
-      router.dismissTo(ROUTES.CALENDAR_TAB)
+      router.dismissTo(ROUTES.CALENDAR_TAB);
     } catch (error) {
-      console.error('회원가입 정보 수정 오류 :: ', error)
+      console.error('회원가입 정보 수정 오류 :: ', error);
       console.error('data :: ', {
         nickname: joinSlice.nickname,
         profile_image: joinSlice.profile,
         my_team: joinSlice.myTeam,
-      })
+      });
     }
-  }
+  };
 
   /**
    *
@@ -53,17 +53,17 @@ const useUserJoin = () => {
    * @returns 다음 step 경로
    */
   const getNextStep = (currentStep: JoinProcess): JoinProcess | undefined => {
-    const currentIndex = userJoinProcess.indexOf(currentStep)
-    const isInvalidPath = currentIndex === -1
-    if (isInvalidPath) throw new Error(`${currentStep}은 잘못된 경로입니다.`)
+    const currentIndex = userJoinProcess.indexOf(currentStep);
+    const isInvalidPath = currentIndex === -1;
+    if (isInvalidPath) throw new Error(`${currentStep}은 잘못된 경로입니다.`);
 
-    return userJoinProcess[currentIndex + 1]
-  }
+    return userJoinProcess[currentIndex + 1];
+  };
 
   // 회원가입 첫 페이지 진입하는 함수
   const startSignUpProcessWithCode = async (code: string) => {
-    router.navigate(userJoinProcess[0])
-  }
+    router.navigate(userJoinProcess[0]);
+  };
 
   /**
    * 다음 step으로 이동
@@ -71,17 +71,17 @@ const useUserJoin = () => {
    */
   const moveToNextStep = async () => {
     try {
-      const nextStep = getNextStep(currentStep)
+      const nextStep = getNextStep(currentStep);
       if (!nextStep) {
-        await signUp()
+        await signUp();
       } else {
-        router.navigate(nextStep)
+        router.navigate(nextStep);
       }
     } catch (error) {
       // 경로 잘못 설정했을 때, 발생하는 에러
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   // const moveTo
 
@@ -89,12 +89,12 @@ const useUserJoin = () => {
   const moveToPrevStep = () => {
     // 첫번째 페이지라면 로그인 화면으로 이동해야 함
     if (currentStep === userJoinProcess[0]) {
-      router.navigate(ROUTES.AUTH_LOGIN)
-      return
+      router.navigate(ROUTES.AUTH_LOGIN);
+      return;
     }
 
-    router.back()
-  }
+    router.back();
+  };
 
   return {
     ...joinSlice,
@@ -102,7 +102,7 @@ const useUserJoin = () => {
     moveToNextStep,
     moveToPrevStep,
     startSignUpProcessWithCode,
-  }
-}
+  };
+};
 
-export default useUserJoin
+export default useUserJoin;

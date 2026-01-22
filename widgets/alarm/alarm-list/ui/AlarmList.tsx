@@ -1,24 +1,24 @@
-import {useAlarmList, Notification, EmptyNotificationView, NotificationCard} from '@/entities/alarm'
-import {useReadAlarm} from '@/features/alarm/read-alarm'
-import {ROUTES, useAppRouter} from '@/shared'
-import useProfile from '@/hooks/my/useProfile'
-import dayjs from 'dayjs'
-import {useSegments} from 'expo-router'
-import React, {useEffect, useRef} from 'react'
-import {FlatList, StyleSheet, View} from 'react-native'
-import {color_token} from '@/constants/theme'
+import {useAlarmList, Notification, EmptyNotificationView, NotificationCard} from '@/entities/alarm';
+import {useReadAlarm} from '@/features/alarm/read-alarm';
+import {ROUTES, useAppRouter} from '@/shared';
+import useProfile from '@/hooks/my/useProfile';
+import dayjs from 'dayjs';
+import {useSegments} from 'expo-router';
+import React, {useEffect, useRef} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {color_token} from '@/constants/theme';
 
 const AlarmList = () => {
-  const {alarmList, fetchNextPage, refetch} = useAlarmList()
-  const {readAlarm} = useReadAlarm()
-  const {profile} = useProfile()
+  const {alarmList, fetchNextPage, refetch} = useAlarmList();
+  const {readAlarm} = useReadAlarm();
+  const {profile} = useProfile();
 
-  const segments = useSegments()
-  const router = useAppRouter()
-  const ref = useRef<FlatList>(null)
+  const segments = useSegments();
+  const router = useAppRouter();
+  const ref = useRef<FlatList>(null);
   useEffect(() => {
-    ref.current?.scrollToOffset({offset: 0})
-  }, [segments])
+    ref.current?.scrollToOffset({offset: 0});
+  }, [segments]);
 
   /**
    * 알림을 클릭했을 때 호출하는 함수
@@ -31,16 +31,16 @@ const AlarmList = () => {
         {
           onSuccess: () => refetch(),
         },
-      )
+      );
     }
 
-    const targetId = notification.type === 'FRIEND_FEEDBACK' ? profile.id : notification.user_info.id
+    const targetId = notification.type === 'FRIEND_FEEDBACK' ? profile.id : notification.user_info.id;
 
     router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {
       id: notification.ticket,
       target_id: targetId,
-    })
-  }
+    });
+  };
   return (
     <View style={styles.wrapper}>
       <FlatList
@@ -66,14 +66,14 @@ const AlarmList = () => {
         )}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: color_token.gray150,
   },
-})
+});
 
-export {AlarmList}
+export {AlarmList};

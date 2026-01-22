@@ -1,31 +1,31 @@
-import React from 'react'
-import {DetailSummary} from './DetailSummary'
-import {StyleSheet, View} from 'react-native'
-import {Txt} from '@/shared/ui'
-import {useTeam} from '@/entities/match'
-import {MyTicketList} from '@/widgets/ticket/my-ticket-list'
-import {useQuery} from '@tanstack/react-query'
-import ApiClient from '@/api'
-import * as schema from '@/entities/ticket/types'
-import {useOpponentWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
+import React from 'react';
+import {DetailSummary} from './DetailSummary';
+import {StyleSheet, View} from 'react-native';
+import {Txt} from '@/shared/ui';
+import {useTeam} from '@/entities/match';
+import {MyTicketList} from '@/widgets/ticket/my-ticket-list';
+import {useQuery} from '@tanstack/react-query';
+import ApiClient from '@/api';
+import * as schema from '@/entities/ticket/types';
+import {useOpponentWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat';
 
 type Props = {
-  parameter_id: number
-}
+  parameter_id: number;
+};
 
 function TeamStatsDetail({parameter_id}: Props) {
-  const {teams} = useTeam()
-  const team = teams?.find(team => team.id === parameter_id)
+  const {teams} = useTeam();
+  const team = teams?.find(team => team.id === parameter_id);
 
-  const {selectedStatsFilter} = useSelectedStatsFilter()
-  const {data: opponentWinPercentByYear} = useOpponentWinPercentByYear({year: selectedStatsFilter.year})
+  const {selectedStatsFilter} = useSelectedStatsFilter();
+  const {data: opponentWinPercentByYear} = useOpponentWinPercentByYear({year: selectedStatsFilter.year});
 
-  const opponentMatch = opponentWinPercentByYear?.opponent_win_stat?.find(item => item.opponent_id === parameter_id)
-  const opponentWin = opponentMatch?.wins ?? 0
-  const opponentDraw = opponentMatch?.draws ?? 0
-  const opponentLoss = opponentMatch?.losses ?? 0
-  const opponentTotal = opponentWin + opponentDraw + opponentLoss
-  const opponentPercent = Math.floor((opponentWin / opponentTotal) * 100)
+  const opponentMatch = opponentWinPercentByYear?.opponent_win_stat?.find(item => item.opponent_id === parameter_id);
+  const opponentWin = opponentMatch?.wins ?? 0;
+  const opponentDraw = opponentMatch?.draws ?? 0;
+  const opponentLoss = opponentMatch?.losses ?? 0;
+  const opponentTotal = opponentWin + opponentDraw + opponentLoss;
+  const opponentPercent = Math.floor((opponentWin / opponentTotal) * 100);
 
   const {data, isLoading} = useQuery({
     queryKey: ['teamStatsDetail', parameter_id],
@@ -34,7 +34,7 @@ function TeamStatsDetail({parameter_id}: Props) {
         parameter_id: parameter_id,
         view_gbn: 'team',
       }),
-  })
+  });
 
   return (
     <View style={styles.container}>
@@ -55,7 +55,7 @@ function TeamStatsDetail({parameter_id}: Props) {
         <MyTicketList isLoading={isLoading} ticketList={data} />
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
   contentsTitle: {
     paddingBottom: 20,
   },
-})
+});
 
-export {TeamStatsDetail}
+export {TeamStatsDetail};

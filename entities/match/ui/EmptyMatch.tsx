@@ -1,5 +1,5 @@
-import React from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import React from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 const EmptyMatchView = ({onClick}: {onClick: () => void}) => {
   return (
@@ -11,10 +11,10 @@ const EmptyMatchView = ({onClick}: {onClick: () => void}) => {
         </TouchableOpacity>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export {EmptyMatchView}
+export {EmptyMatchView};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   doubleHeaderBox: {
     alignItems: 'center',
   },
-})
+});

@@ -1,4 +1,4 @@
-import {TextStyle} from 'react-native'
+import {TextStyle} from 'react-native';
 
 const color_token = {
   primary: '#1E5EF4',
@@ -35,7 +35,7 @@ const color_token = {
   red: '#EF4B87',
 
   //
-} as const
+} as const;
 
 const color = {
   title: color_token.gray900,
@@ -115,7 +115,7 @@ const color = {
   team_tag_active_bg: color_token.primary_10,
   team_tag_active_border: color_token.primary,
   team_tag_active_text: color_token.primary,
-}
+};
 
 const fontWeight = {
   light: 300,
@@ -124,7 +124,7 @@ const fontWeight = {
   semibold: 600,
   bold: 700,
   extraBold: 800,
-} as const
+} as const;
 
 const fontSize = {
   12: 12,
@@ -134,22 +134,22 @@ const fontSize = {
   20: 20,
   24: 24,
   32: 32,
-} as const
+} as const;
 
-type FontWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'extraBold'
-type FontSize = 12 | 14 | 16 | 18 | 20 | 24 | 32
-type LineHeight = 100 | 120 | 140
+type FontWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'extraBold';
+type FontSize = 12 | 14 | 16 | 18 | 20 | 24 | 32;
+type LineHeight = 100 | 120 | 140;
 
-type Font = `${FontWeight}-${FontSize}` | `${FontWeight}-${FontSize}-${LineHeight}`
+type Font = `${FontWeight}-${FontSize}` | `${FontWeight}-${FontSize}-${LineHeight}`;
 
 const font = (font: Font): TextStyle => {
-  const [weight, size, lineHeight] = font.split('-') as [FontWeight, FontSize, LineHeight]
+  const [weight, size, lineHeight] = font.split('-') as [FontWeight, FontSize, LineHeight];
 
   return {
     fontWeight: fontWeight[weight],
     fontSize: fontSize[size],
     lineHeight: ((lineHeight ?? 140) / 100) * fontSize[size],
-  }
-}
+  };
+};
 
-export {font, color_token}
+export {font, color_token};

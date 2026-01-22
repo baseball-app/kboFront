@@ -1,14 +1,14 @@
-import {color_token} from '@/constants/theme'
-import {Pressable, size} from '@/shared'
-import {Txt} from '@/shared/ui'
-import React, {memo} from 'react'
-import {StyleSheet, Text} from 'react-native'
+import {color_token} from '@/constants/theme';
+import {Pressable, size} from '@/shared';
+import {Txt} from '@/shared/ui';
+import React, {memo} from 'react';
+import {StyleSheet, Text} from 'react-native';
 
 type Props = {
-  name: string
-  isActive?: boolean
-  onClick?: () => void
-}
+  name: string;
+  isActive?: boolean;
+  onClick?: () => void;
+};
 
 function TeamTag({name, isActive, onClick}: Props) {
   return (
@@ -21,14 +21,14 @@ function TeamTag({name, isActive, onClick}: Props) {
         {name}
       </Txt>
     </Pressable>
-  )
+  );
 }
 
 const MemoizedTeamTag = memo(TeamTag, (prevProps, nextProps) => {
-  return prevProps.isActive === nextProps.isActive
-})
+  return prevProps.isActive === nextProps.isActive;
+});
 
-export {MemoizedTeamTag as TeamTag}
+export {MemoizedTeamTag as TeamTag};
 
 const styles = StyleSheet.create({
   tag: {
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
   textActive: {
     color: color_token.primary,
   },
-})
+});

@@ -1,20 +1,20 @@
-import React, {useCallback, useMemo} from 'react'
-import {useBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
-import {StadiumStatsCard} from '@/entities/stat/ui'
-import {StatsList} from './StatsList'
-import {useNavigateToStatsDetail} from '@/features/stats'
+import React, {useCallback, useMemo} from 'react';
+import {useBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat';
+import {StadiumStatsCard} from '@/entities/stat/ui';
+import {StatsList} from './StatsList';
+import {useNavigateToStatsDetail} from '@/features/stats';
 
 const StadiumStatsCardList = () => {
-  const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter()
-  const year = selectedStatsFilter?.year ?? 2025
-  const {data, isLoading, isError} = useBallparkWinPercentByYear({year})
+  const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter();
+  const year = selectedStatsFilter?.year ?? 2025;
+  const {data, isLoading, isError} = useBallparkWinPercentByYear({year});
 
-  const {navigateToBallparkStatsDetail} = useNavigateToStatsDetail()
+  const {navigateToBallparkStatsDetail} = useNavigateToStatsDetail();
 
   const sortedData = useMemo(() => {
-    if (!data?.by_user_ballpark_win_stat) return []
-    return sortDataByWinRate([...data.by_user_ballpark_win_stat])
-  }, [data, sortDataByWinRate])
+    if (!data?.by_user_ballpark_win_stat) return [];
+    return sortDataByWinRate([...data.by_user_ballpark_win_stat]);
+  }, [data, sortDataByWinRate]);
 
   const renderItem = useCallback(({item}: {item: (typeof sortedData)[0]}) => {
     return (
@@ -28,8 +28,8 @@ const StadiumStatsCardList = () => {
           lose: item.losses,
         }}
       />
-    )
-  }, [])
+    );
+  }, []);
   return (
     <StatsList
       data={sortedData}
@@ -37,7 +37,7 @@ const StadiumStatsCardList = () => {
       isError={isError} //
       renderItem={renderItem}
     />
-  )
-}
+  );
+};
 
-export {StadiumStatsCardList}
+export {StadiumStatsCardList};

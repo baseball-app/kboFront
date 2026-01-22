@@ -1,11 +1,11 @@
-import React from 'react'
-import {Image, StyleSheet} from 'react-native'
-import {useKakaoLogin} from '../model'
-import {Txt} from '@/shared/ui/Txt'
-import {Pressable, size} from '@/shared'
+import React from 'react';
+import {Image, StyleSheet} from 'react-native';
+import {useKakaoLogin} from '../model';
+import {Txt} from '@/shared/ui/Txt';
+import {Pressable, size} from '@/shared';
 
 const KakaoLoginButton = () => {
-  const {onPressButton} = useKakaoLogin()
+  const {onPressButton} = useKakaoLogin();
 
   return (
     <Pressable style={styles.button} onPress={onPressButton}>
@@ -14,8 +14,8 @@ const KakaoLoginButton = () => {
         카카오로 시작하기
       </Txt>
     </Pressable>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   button: {
@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     width: size(14),
     height: size(14),
   },
-})
+});
 
-export {KakaoLoginButton}
+export {KakaoLoginButton};

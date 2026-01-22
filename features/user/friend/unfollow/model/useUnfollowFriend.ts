@@ -1,24 +1,24 @@
-import * as api from '../api'
-import {useMutation} from '@tanstack/react-query'
-import useProfile from '@/hooks/my/useProfile'
-import {Friend, useFriends} from '@/entities/friend'
-import {usePopup} from '@/slice/commonSlice'
+import * as api from '../api';
+import {useMutation} from '@tanstack/react-query';
+import useProfile from '@/hooks/my/useProfile';
+import {Friend, useFriends} from '@/entities/friend';
+import {usePopup} from '@/slice/commonSlice';
 
 const useUnfollowFriend = () => {
-  const {profile, refetch: refetchProfile} = useProfile()
-  const {reloadFriendList} = useFriends()
-  const {modal} = usePopup()
+  const {profile, refetch: refetchProfile} = useProfile();
+  const {reloadFriendList} = useFriends();
+  const {modal} = usePopup();
 
   const {mutateAsync: unfollowFriend} = useMutation({
     mutationFn: (targetId: number) => api.unfollow(Number(profile.id), targetId),
     onError: error => {
-      console.error('친구 추가 실패', error)
+      console.error('친구 추가 실패', error);
     },
     onSuccess: () => {
-      reloadFriendList()
-      refetchProfile()
+      reloadFriendList();
+      refetchProfile();
     },
-  })
+  });
 
   const openUnfollowPopup = (friend: Friend) => {
     modal.open({
@@ -43,10 +43,10 @@ const useUnfollowFriend = () => {
           },
         },
       ],
-    })
-  }
+    });
+  };
 
-  return {openUnfollowPopup}
-}
+  return {openUnfollowPopup};
+};
 
-export {useUnfollowFriend}
+export {useUnfollowFriend};

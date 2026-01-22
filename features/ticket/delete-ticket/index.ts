@@ -1,1 +1,1 @@
-export {TicketDeleteButton} from './ui'
+export {TicketDeleteButton} from './ui';

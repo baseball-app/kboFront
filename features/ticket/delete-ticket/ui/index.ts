@@ -1,1 +1,1 @@
-export {TicketDeleteButton} from './TicketDeleteButton'
+export {TicketDeleteButton} from './TicketDeleteButton';

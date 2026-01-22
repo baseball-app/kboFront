@@ -1,1 +1,1 @@
-export {AddFriendInput} from './ui'
+export {AddFriendInput} from './ui';

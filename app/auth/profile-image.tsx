@@ -1,15 +1,15 @@
-import React from 'react'
-import {StyleSheet, View, ScrollView, Image} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import useUserJoin from '@/hooks/auth/useUserJoin'
-import {DEFAULT_PROFILE_IMAGE, PROFILE_IMAGES} from '@/constants/join'
-import Header from '@/components/common/Header'
-import {color_token} from '@/constants/theme'
-import {BackButton, BottomFloatSection, Button, Pressable, Txt} from '@/shared/ui'
-import {size} from '@/shared'
+import React from 'react';
+import {StyleSheet, View, ScrollView, Image} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import useUserJoin from '@/hooks/auth/useUserJoin';
+import {DEFAULT_PROFILE_IMAGE, PROFILE_IMAGES} from '@/constants/join';
+import Header from '@/components/common/Header';
+import {color_token} from '@/constants/theme';
+import {BackButton, BottomFloatSection, Button, Pressable, Txt} from '@/shared/ui';
+import {size} from '@/shared';
 
 export default function ProfileImageScreen() {
-  const {profile, setProfile, moveToNextStep, moveToPrevStep} = useUserJoin()
+  const {profile, setProfile, moveToNextStep, moveToPrevStep} = useUserJoin();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,7 +56,7 @@ export default function ProfileImageScreen() {
         </BottomFloatSection>
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -123,4 +123,4 @@ const styles = StyleSheet.create({
     height: '70%',
     resizeMode: 'contain',
   },
-})
+});

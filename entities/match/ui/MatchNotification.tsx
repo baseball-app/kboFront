@@ -1,8 +1,8 @@
-import type * as React from 'react'
-import {StyleSheet, Text, View, ViewProps} from 'react-native'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
-import {Txt} from '@/shared/ui'
+import type * as React from 'react';
+import {StyleSheet, Text, View, ViewProps} from 'react-native';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
+import {Txt} from '@/shared/ui';
 
 const MatchNotification = () => {
   return (
@@ -14,8 +14,8 @@ const MatchNotification = () => {
         을 누르고 직관 일기를 작성해보세요!
       </Txt>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +25,6 @@ const styles = StyleSheet.create({
     paddingVertical: size(10),
     backgroundColor: '#6C98FF33',
   },
-})
+});
 
-export {MatchNotification}
+export {MatchNotification};

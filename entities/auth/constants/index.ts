@@ -1,1 +1,1 @@
-export {AUTH_URL} from './auth'
+export {AUTH_URL} from './auth';

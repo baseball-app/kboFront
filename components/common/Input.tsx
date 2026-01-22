@@ -1,12 +1,12 @@
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
-import React from 'react'
-import {StyleSheet, Text, TextInput, TextInputProps, View} from 'react-native'
-import {Txt} from '@/shared/ui'
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
+import React from 'react';
+import {StyleSheet, Text, TextInput, TextInputProps, View} from 'react-native';
+import {Txt} from '@/shared/ui';
 
 interface InputProps extends TextInputProps {
-  variant?: 'default' | 'multiline'
-  label?: string | React.ReactNode
+  variant?: 'default' | 'multiline';
+  label?: string | React.ReactNode;
 }
 
 const Input = React.forwardRef<TextInput, InputProps>(
@@ -27,11 +27,11 @@ const Input = React.forwardRef<TextInput, InputProps>(
           {...props}
         />
       </View>
-    )
+    );
   },
-)
+);
 
-export default Input
+export default Input;
 
 const styles = StyleSheet.create({
   container: {
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
   editable: {
     backgroundColor: color_token.gray150,
   },
-})
+});

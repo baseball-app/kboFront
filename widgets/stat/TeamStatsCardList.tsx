@@ -1,20 +1,20 @@
-import React, {useCallback, useMemo} from 'react'
-import {useOpponentWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
-import {TeamStatsCard} from '@/entities/stat/ui'
-import {StatsList} from './StatsList'
-import {useNavigateToStatsDetail} from '@/features/stats'
+import React, {useCallback, useMemo} from 'react';
+import {useOpponentWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat';
+import {TeamStatsCard} from '@/entities/stat/ui';
+import {StatsList} from './StatsList';
+import {useNavigateToStatsDetail} from '@/features/stats';
 
 const TeamStatsCardList = () => {
-  const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter()
-  const year = selectedStatsFilter.year
-  const {data, isLoading, isError} = useOpponentWinPercentByYear({year})
+  const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter();
+  const year = selectedStatsFilter.year;
+  const {data, isLoading, isError} = useOpponentWinPercentByYear({year});
 
-  const {navigateToOpponentStatsDetail} = useNavigateToStatsDetail()
+  const {navigateToOpponentStatsDetail} = useNavigateToStatsDetail();
 
   const sortedData = useMemo(() => {
-    if (!data?.opponent_win_stat) return []
-    return sortDataByWinRate([...data.opponent_win_stat])
-  }, [data, sortDataByWinRate])
+    if (!data?.opponent_win_stat) return [];
+    return sortDataByWinRate([...data.opponent_win_stat]);
+  }, [data, sortDataByWinRate]);
 
   const renderItem = useCallback(({item}: {item: (typeof sortedData)[0]}) => {
     return (
@@ -28,8 +28,8 @@ const TeamStatsCardList = () => {
           lose: item.losses,
         }}
       />
-    )
-  }, [])
+    );
+  }, []);
 
   return (
     <StatsList
@@ -38,7 +38,7 @@ const TeamStatsCardList = () => {
       isError={isError} //
       renderItem={renderItem}
     />
-  )
-}
+  );
+};
 
-export {TeamStatsCardList}
+export {TeamStatsCardList};

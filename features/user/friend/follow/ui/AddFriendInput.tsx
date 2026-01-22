@@ -1,14 +1,14 @@
-import React, {useRef, useState} from 'react'
-import {StyleSheet, TextInput, View} from 'react-native'
-import {useFollowFriend} from '../model'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
-import {Pressable, Txt} from '@/shared/ui'
+import React, {useRef, useState} from 'react';
+import {StyleSheet, TextInput, View} from 'react-native';
+import {useFollowFriend} from '../model';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
+import {Pressable, Txt} from '@/shared/ui';
 
 const AddFriendInput = () => {
-  const inputRef = useRef<TextInput>(null)
-  const [inviteCode, setInviteCode] = useState<string | undefined>(undefined)
-  const {follow} = useFollowFriend()
+  const inputRef = useRef<TextInput>(null);
+  const [inviteCode, setInviteCode] = useState<string | undefined>(undefined);
+  const {follow} = useFollowFriend();
 
   return (
     <View style={styles.inviteCodeInputBox}>
@@ -24,19 +24,19 @@ const AddFriendInput = () => {
         style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: color_token.gray350}]} //
         disabled={!inviteCode}
         onPress={() => {
-          inputRef.current?.blur()
+          inputRef.current?.blur();
           inviteCode &&
             follow(inviteCode).finally(() => {
-              setInviteCode(undefined)
-            })
+              setInviteCode(undefined);
+            });
         }}>
         <Txt size={14} weight="medium" color={!inviteCode ? color_token.gray600 : color_token.white}>
           확인
         </Txt>
       </Pressable>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   inviteCodeInputBox: {
@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: size(14),
     borderRadius: size(4),
   },
-})
+});
 
-export {AddFriendInput}
+export {AddFriendInput};

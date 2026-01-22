@@ -1,1 +1,1 @@
-export {useFollowFriend} from './useFollowFriend'
+export {useFollowFriend} from './useFollowFriend';

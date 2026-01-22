@@ -1,24 +1,24 @@
-import {color_token} from '@/constants/theme'
-import {useTeam} from '@/entities/match'
-import {useProfile} from '@/entities/user'
-import {LinearBorderBox, Txt} from '@/shared/ui'
-import {useQuery} from '@tanstack/react-query'
-import ApiClient from '@/api'
-import React from 'react'
-import {View, StyleSheet} from 'react-native'
-import {size} from '@/shared'
+import {color_token} from '@/constants/theme';
+import {useTeam} from '@/entities/match';
+import {useProfile} from '@/entities/user';
+import {LinearBorderBox, Txt} from '@/shared/ui';
+import {useQuery} from '@tanstack/react-query';
+import ApiClient from '@/api';
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
+import {size} from '@/shared';
 
 type AllTicketStats = {
-  total_percent: number
-  total_games: number
-  wins: number
-  losses: number
-  draws: number
-}
+  total_percent: number;
+  total_games: number;
+  wins: number;
+  losses: number;
+  draws: number;
+};
 
 function SeasonStatsBoxWidget({year}: {year: number}) {
-  const {profile} = useProfile()
-  const {findTeamById} = useTeam()
+  const {profile} = useProfile();
+  const {findTeamById} = useTeam();
 
   const {data} = useQuery({
     queryKey: ['ticket_total_percent', year],
@@ -32,9 +32,9 @@ function SeasonStatsBoxWidget({year}: {year: number}) {
         draws: 0,
       },
     },
-  })
+  });
 
-  const all_ticket_stats = data?.all_ticket_stats
+  const all_ticket_stats = data?.all_ticket_stats;
 
   return (
     <LinearBorderBox
@@ -81,7 +81,7 @@ function SeasonStatsBoxWidget({year}: {year: number}) {
         </View>
       </View>
     </LinearBorderBox>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: size(2),
   },
-})
+});
 
-export {SeasonStatsBoxWidget}
+export {SeasonStatsBoxWidget};

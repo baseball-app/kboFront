@@ -1,1 +1,1 @@
-export {useWithdraw} from './model'
+export {useWithdraw} from './model';

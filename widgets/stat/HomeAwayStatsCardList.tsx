@@ -1,20 +1,20 @@
-import React, {useCallback, useMemo} from 'react'
-import {useHomeAwayWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
-import {HomeAwayStatsCard} from '@/entities/stat/ui'
-import {StatsList} from './StatsList'
-import {useNavigateToStatsDetail} from '@/features/stats'
+import React, {useCallback, useMemo} from 'react';
+import {useHomeAwayWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat';
+import {HomeAwayStatsCard} from '@/entities/stat/ui';
+import {StatsList} from './StatsList';
+import {useNavigateToStatsDetail} from '@/features/stats';
 
 const HomeAwayStatsCardList = () => {
-  const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter()
-  const year = selectedStatsFilter?.year ?? 2025
-  const {data, isLoading, isError} = useHomeAwayWinPercentByYear({year})
+  const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter();
+  const year = selectedStatsFilter?.year ?? 2025;
+  const {data, isLoading, isError} = useHomeAwayWinPercentByYear({year});
 
-  const {navigateToAwayStatsDetail, navigateToHomeStatsDetail} = useNavigateToStatsDetail()
+  const {navigateToAwayStatsDetail, navigateToHomeStatsDetail} = useNavigateToStatsDetail();
 
   const sortedData = useMemo(() => {
-    if (!data?.home_away_win_stat) return []
-    return sortDataByWinRate([...data.home_away_win_stat])
-  }, [data, selectedStatsFilter?.sort])
+    if (!data?.home_away_win_stat) return [];
+    return sortDataByWinRate([...data.home_away_win_stat]);
+  }, [data, selectedStatsFilter?.sort]);
 
   const renderItem = useCallback(({item}: {item: (typeof sortedData)[0]}) => {
     return (
@@ -28,8 +28,8 @@ const HomeAwayStatsCardList = () => {
           lose: item.losses,
         }}
       />
-    )
-  }, [])
+    );
+  }, []);
 
   return (
     <StatsList
@@ -38,7 +38,7 @@ const HomeAwayStatsCardList = () => {
       isError={isError} //
       renderItem={renderItem}
     />
-  )
-}
+  );
+};
 
-export {HomeAwayStatsCardList}
+export {HomeAwayStatsCardList};

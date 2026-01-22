@@ -1,29 +1,29 @@
-import React from 'react'
-import {DetailSummary} from './DetailSummary'
-import {StyleSheet, View} from 'react-native'
-import {Txt} from '@/shared/ui'
-import {MyTicketList} from '@/widgets/ticket/my-ticket-list'
-import {useQuery} from '@tanstack/react-query'
-import ApiClient from '@/api'
-import * as schema from '@/entities/ticket/types'
-import {useBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
-import {getTempBaseballMediumName} from '@/shared'
+import React from 'react';
+import {DetailSummary} from './DetailSummary';
+import {StyleSheet, View} from 'react-native';
+import {Txt} from '@/shared/ui';
+import {MyTicketList} from '@/widgets/ticket/my-ticket-list';
+import {useQuery} from '@tanstack/react-query';
+import ApiClient from '@/api';
+import * as schema from '@/entities/ticket/types';
+import {useBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat';
+import {getTempBaseballMediumName} from '@/shared';
 
 type Props = {
-  parameter_id: number
-}
+  parameter_id: number;
+};
 
 function StadiumStatsDetail({parameter_id}: Props) {
-  const {selectedStatsFilter} = useSelectedStatsFilter()
-  const {data: ballparkWinPercentByYear} = useBallparkWinPercentByYear({year: selectedStatsFilter.year})
+  const {selectedStatsFilter} = useSelectedStatsFilter();
+  const {data: ballparkWinPercentByYear} = useBallparkWinPercentByYear({year: selectedStatsFilter.year});
 
-  const ballpark = ballparkWinPercentByYear?.by_user_ballpark_win_stat?.find(item => item.ballpark_id === parameter_id)
-  const ballparkName = ballpark?.ballpark_nm
-  const ballparkWin = ballpark?.wins ?? 0
-  const ballparkDraw = ballpark?.draws ?? 0
-  const ballparkLoss = ballpark?.losses ?? 0
-  const ballparkTotal = ballparkWin + ballparkDraw + ballparkLoss
-  const ballparkPercent = Math.floor((ballparkWin / ballparkTotal) * 100)
+  const ballpark = ballparkWinPercentByYear?.by_user_ballpark_win_stat?.find(item => item.ballpark_id === parameter_id);
+  const ballparkName = ballpark?.ballpark_nm;
+  const ballparkWin = ballpark?.wins ?? 0;
+  const ballparkDraw = ballpark?.draws ?? 0;
+  const ballparkLoss = ballpark?.losses ?? 0;
+  const ballparkTotal = ballparkWin + ballparkDraw + ballparkLoss;
+  const ballparkPercent = Math.floor((ballparkWin / ballparkTotal) * 100);
 
   const {data, isLoading} = useQuery({
     queryKey: ['stadiumStatsDetail', parameter_id],
@@ -32,7 +32,7 @@ function StadiumStatsDetail({parameter_id}: Props) {
         parameter_id: parameter_id,
         view_gbn: 'ballpark',
       }),
-  })
+  });
 
   return (
     <View style={styles.container}>
@@ -53,7 +53,7 @@ function StadiumStatsDetail({parameter_id}: Props) {
         <MyTicketList isLoading={isLoading} ticketList={data} />
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
   contentsTitle: {
     paddingBottom: 20,
   },
-})
+});
 
-export {StadiumStatsDetail}
+export {StadiumStatsDetail};

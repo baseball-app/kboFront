@@ -1,7 +1,7 @@
-import React from 'react'
-import {View, StyleSheet} from 'react-native'
-import {EmptyStatsList} from './EmptyStatsList'
-import {LoadingStatsList} from './LoadingStatsList'
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
+import {EmptyStatsList} from './EmptyStatsList';
+import {LoadingStatsList} from './LoadingStatsList';
 
 function StatsList<T>({
   data,
@@ -9,17 +9,17 @@ function StatsList<T>({
   isError,
   renderItem,
 }: {
-  data: T[]
-  isLoading: boolean
-  isError: boolean
-  renderItem: ({item}: {item: T}) => React.ReactElement
+  data: T[];
+  isLoading: boolean;
+  isError: boolean;
+  renderItem: ({item}: {item: T}) => React.ReactElement;
 }) {
   if (isLoading || isError) {
-    return <LoadingStatsList />
+    return <LoadingStatsList />;
   }
 
   if (data.length === 0) {
-    return <EmptyStatsList />
+    return <EmptyStatsList />;
   }
 
   return (
@@ -30,10 +30,10 @@ function StatsList<T>({
         </View>
       ))}
     </View>
-  )
+  );
 }
 
-export {StatsList}
+export {StatsList};
 
 const styles = StyleSheet.create({
   container: {
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   item: {
     // 각 아이템에 대한 스타일이 필요하면 추가
   },
-})
+});

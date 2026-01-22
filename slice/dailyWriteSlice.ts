@@ -1,21 +1,21 @@
-import {Match} from '@/entities/match'
-import {create, StateCreator} from 'zustand'
+import {Match} from '@/entities/match';
+import {create, StateCreator} from 'zustand';
 
 export interface IDailyLogWriteState {
-  selectedMatch: Match | null
-  selectedMatchResult: string
-  selectedWeather: string
-  selectedPlace: string
-  selectedDate: Date | null
+  selectedMatch: Match | null;
+  selectedMatchResult: string;
+  selectedWeather: string;
+  selectedPlace: string;
+  selectedDate: Date | null;
 }
 
 export interface IDailyLogWriteAction {
-  setSelectedMatch: (pM: Match | null) => void
-  setSelectedMatchResult: (pR: string) => void
-  setSelectedWeather: (pW: string) => void
-  setSelectedPlace: (pP: string) => void
-  setSelectedDate: (pD: Date) => void
-  clearState: () => void
+  setSelectedMatch: (pM: Match | null) => void;
+  setSelectedMatchResult: (pR: string) => void;
+  setSelectedWeather: (pW: string) => void;
+  setSelectedPlace: (pP: string) => void;
+  setSelectedDate: (pD: Date) => void;
+  clearState: () => void;
 }
 
 export const dailyWriteSlice: StateCreator<IDailyLogWriteState & IDailyLogWriteAction> = set => ({
@@ -37,6 +37,6 @@ export const dailyWriteSlice: StateCreator<IDailyLogWriteState & IDailyLogWriteA
       selectedPlace: '',
       selectedDate: null,
     }),
-})
+});
 
-export const useDailyWriteStore = create<IDailyLogWriteState & IDailyLogWriteAction>(dailyWriteSlice)
+export const useDailyWriteStore = create<IDailyLogWriteState & IDailyLogWriteAction>(dailyWriteSlice);

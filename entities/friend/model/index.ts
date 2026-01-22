@@ -1,1 +1,1 @@
-export {useFriends} from './useFriends'
+export {useFriends} from './useFriends';

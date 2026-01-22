@@ -5,18 +5,18 @@
 
 export const theme = {
   colors: {
-    backgroundPrimary: "#FFFCF3",
-    borderColor: "#D0CEC7",
+    backgroundPrimary: '#FFFCF3',
+    borderColor: '#D0CEC7',
   },
   buttonColors: {
-    primary: "#1E5EF4",
-    secondary: "#D0CEC7",
-    disabled: "#E4E2DC",
-    white: "#FFF",
-    black: "#000",
+    primary: '#1E5EF4',
+    secondary: '#D0CEC7',
+    disabled: '#E4E2DC',
+    white: '#FFF',
+    black: '#000',
   },
   fonts: {
-    regular: "Helvetica",
-    bold: "Helvetica-Bold",
+    regular: 'Helvetica',
+    bold: 'Helvetica-Bold',
   },
 };

@@ -1,1 +1,1 @@
-export {AddDoubleHeaderTicketButton} from './AddDoubleHeaderTicketButton'
+export {AddDoubleHeaderTicketButton} from './AddDoubleHeaderTicketButton';

@@ -1,1 +1,1 @@
-export {TestQueryClientWrapper} from './TestQueryClientWrapper'
+export {TestQueryClientWrapper} from './TestQueryClientWrapper';

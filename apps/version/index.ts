@@ -1,1 +1,1 @@
-export {VersionGuard} from './provider'
+export {VersionGuard} from './provider';

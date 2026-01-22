@@ -1,6 +1,6 @@
-import {MMKV} from 'react-native-mmkv'
+import {MMKV} from 'react-native-mmkv';
 
-const storage = new MMKV()
+const storage = new MMKV();
 
 /**
  * mmkv store getter
@@ -8,8 +8,8 @@ const storage = new MMKV()
  * @returns {string | null} - value
  */
 export function getItem<T>(key: string): T | null {
-    const value = storage.getString(key)
-    return value ? (JSON.parse(value || '') as T) : null
+  const value = storage.getString(key);
+  return value ? (JSON.parse(value || '') as T) : null;
 }
 
 /**
@@ -18,7 +18,7 @@ export function getItem<T>(key: string): T | null {
  * @param {string} value - value
  */
 export function setItem<T>(key: string, value: T): void {
-    storage.set(key, JSON.stringify(value))
+  storage.set(key, JSON.stringify(value));
 }
 
 /**
@@ -26,16 +26,15 @@ export function setItem<T>(key: string, value: T): void {
  * @param {string} key - key
  */
 export function removeItem(key: string): void {
-    storage.delete(key)
+  storage.delete(key);
 }
 
 /**
  * mmkv store clear
  */
 export function clearAll(): void {
-    storage.clearAll()
+  storage.clearAll();
 }
-
 
 /*
     ex)

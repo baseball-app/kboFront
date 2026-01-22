@@ -1,24 +1,24 @@
-import {useTeam} from '@/entities/match'
-import {Pressable} from '@/shared'
-import React, {useMemo} from 'react'
-import {Image, StyleSheet, Text, View} from 'react-native'
+import {useTeam} from '@/entities/match';
+import {Pressable} from '@/shared';
+import React, {useMemo} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
 
 interface StatsCardProps {
-  image: React.ReactNode
-  title: React.ReactNode
+  image: React.ReactNode;
+  title: React.ReactNode;
   matchResult: {
-    win: number
-    lose: number
-    draw: number
-  }
-  onPress?: () => void
+    win: number;
+    lose: number;
+    draw: number;
+  };
+  onPress?: () => void;
 }
 
 const _StatsCard = ({image, title, matchResult, onPress}: StatsCardProps) => {
-  const totalMatchCount = matchResult.win + matchResult.draw + matchResult.lose
+  const totalMatchCount = matchResult.win + matchResult.draw + matchResult.lose;
   const winRate = Math.ceil(
     totalMatchCount === 0 ? 0 : Math.floor(((matchResult.win || 0) / totalMatchCount) * 10000) / 100,
-  )
+  );
 
   return (
     <Pressable style={styles.container} onPress={onPress}>
@@ -36,8 +36,8 @@ const _StatsCard = ({image, title, matchResult, onPress}: StatsCardProps) => {
         <Image source={require('@/assets/icons/chevron_right_gray.png')} style={styles.chevronIcon} />
       </View>
     </Pressable>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -81,20 +81,20 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
   },
-})
+});
 
 const HomeAwayStatsCard = ({
   title,
   matchResult,
   onPress,
 }: {
-  title: '홈' | '원정'
+  title: '홈' | '원정';
   matchResult: {
-    win: number
-    draw: number
-    lose: number
-  }
-  onPress: () => void
+    win: number;
+    draw: number;
+    lose: number;
+  };
+  onPress: () => void;
 }) => {
   const image = useMemo(() => {
     return (
@@ -112,8 +112,8 @@ const HomeAwayStatsCard = ({
           style={{width: 24, height: 24}}
         />
       </View>
-    )
-  }, [title])
+    );
+  }, [title]);
 
   return (
     <_StatsCard
@@ -122,30 +122,30 @@ const HomeAwayStatsCard = ({
       title={<Text style={styles.title}>{title} 승률</Text>}
       matchResult={matchResult}
     />
-  )
-}
+  );
+};
 
 const TeamStatsCard = ({
   onPress,
   teamName,
   matchResult,
 }: {
-  onPress: () => void
-  teamName: string
+  onPress: () => void;
+  teamName: string;
   matchResult: {
-    win: number
-    draw: number
-    lose: number
-  }
+    win: number;
+    draw: number;
+    lose: number;
+  };
 }) => {
-  const {findTeamByName} = useTeam()
-  const team = findTeamByName(teamName)
+  const {findTeamByName} = useTeam();
+  const team = findTeamByName(teamName);
 
   const image = useMemo(() => {
-    return <Image source={team?.logo} style={{width: 35, height: 35}} />
-  }, [team])
+    return <Image source={team?.logo} style={{width: 35, height: 35}} />;
+  }, [team]);
 
-  if (!team) return null
+  if (!team) return null;
 
   return (
     <_StatsCard
@@ -159,23 +159,23 @@ const TeamStatsCard = ({
       }
       matchResult={matchResult}
     />
-  )
-}
+  );
+};
 
 const StadiumStatsCard = ({
   stadiumName,
   matchResult,
   onPress,
 }: {
-  stadiumName: string
+  stadiumName: string;
   matchResult: {
-    win: number
-    draw: number
-    lose: number
-  }
-  onPress: () => void
+    win: number;
+    draw: number;
+    lose: number;
+  };
+  onPress: () => void;
 }) => {
-  const stadium = stadiumList.find(stadium => stadium.name === stadiumName)
+  const stadium = stadiumList.find(stadium => stadium.name === stadiumName);
   const image = useMemo(
     () => (
       <View
@@ -191,9 +191,9 @@ const StadiumStatsCard = ({
       </View>
     ),
     [stadiumName],
-  )
+  );
 
-  if (!stadium) return null
+  if (!stadium) return null;
 
   return (
     <_StatsCard
@@ -202,10 +202,10 @@ const StadiumStatsCard = ({
       title={<Text style={styles.title}>{stadiumName} 승률</Text>}
       matchResult={matchResult}
     />
-  )
-}
+  );
+};
 
-export {HomeAwayStatsCard, TeamStatsCard, StadiumStatsCard}
+export {HomeAwayStatsCard, TeamStatsCard, StadiumStatsCard};
 
 const stadiumList = [
   {name: '부산 사직 야구장', color: '#4EB7E7'},
@@ -241,4 +241,4 @@ const stadiumList = [
     name: '창원 NC파크',
     color: '#16C9CE',
   },
-]
+];

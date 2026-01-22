@@ -1,24 +1,24 @@
-import React from 'react'
-import {Alert, Linking} from 'react-native'
-import VersionCheck from 'react-native-version-check'
+import React from 'react';
+import {Alert, Linking} from 'react-native';
+import VersionCheck from 'react-native-version-check';
 
-type CheckVersionFunc = () => Promise<[isNeeded: boolean, storeUrl: string]>
+type CheckVersionFunc = () => Promise<[isNeeded: boolean, storeUrl: string]>;
 
 interface AppVersionGuard {
-  checkVersion: CheckVersionFunc
-  showNeedUpdateAlert: (storeUrl: string) => void
+  checkVersion: CheckVersionFunc;
+  showNeedUpdateAlert: (storeUrl: string) => void;
 }
 
 function useAppVersionGuard(): AppVersionGuard {
   const checkVersion: CheckVersionFunc = async () => {
     try {
-      const result = await VersionCheck.needUpdate({depth: 2, forceUpdate: true})
-      return [result.isNeeded, result.storeUrl]
+      const result = await VersionCheck.needUpdate({depth: 2, forceUpdate: true});
+      return [result.isNeeded, result.storeUrl];
     } catch (e) {
       // error logging
-      return [false, '']
+      return [false, ''];
     }
-  }
+  };
 
   const showNeedUpdateAlert = (storeUrl: string) => {
     Alert.alert('업데이트 필요', '최신 버전으로 업데이트 해주세요.', [
@@ -27,13 +27,13 @@ function useAppVersionGuard(): AppVersionGuard {
         style: 'default',
         onPress: () => Linking.openURL(storeUrl),
       },
-    ])
-  }
+    ]);
+  };
 
-  return {checkVersion, showNeedUpdateAlert}
+  return {checkVersion, showNeedUpdateAlert};
 }
 
-export {useAppVersionGuard}
+export {useAppVersionGuard};
 
 // const main = async () => {
 //     const [isNeeded, storeUrl] = await checkVersion()

@@ -1,7 +1,7 @@
-import React from 'react'
-import {StyleSheet, View} from 'react-native'
-import {Txt} from '@/shared/ui/Txt'
-import {color_token} from '@/constants/theme'
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Txt} from '@/shared/ui/Txt';
+import {color_token} from '@/constants/theme';
 
 const MatchCalendarTitle = ({selectedUserName}: {selectedUserName: string}) => {
   return (
@@ -10,8 +10,8 @@ const MatchCalendarTitle = ({selectedUserName}: {selectedUserName: string}) => {
         {selectedUserName ? `${selectedUserName}님의 야구 캘린더` : '오늘의 야구'}
       </Txt>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   tabMenu: {
@@ -19,6 +19,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+});
 
-export {MatchCalendarTitle}
+export {MatchCalendarTitle};

@@ -1,5 +1,5 @@
-import ApiClient from '@/api'
+import ApiClient from '@/api';
 
 export const logout = async () => {
-  return ApiClient.post('/auths/token/revoke/', {})
-}
+  return ApiClient.post('/auths/token/revoke/', {});
+};

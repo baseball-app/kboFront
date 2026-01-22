@@ -1,19 +1,19 @@
-import * as ReactNative from 'react-native'
-import {jest} from '@jest/globals'
+import * as ReactNative from 'react-native';
+import {jest} from '@jest/globals';
 
 // Mock global NativeUnimoduleProxy
-;(global as any).NativeUnimoduleProxy = {
+(global as any).NativeUnimoduleProxy = {
   modulesConstants: {},
   callMethod: jest.fn(),
   addListener: jest.fn(),
   removeListeners: jest.fn(),
-}
+};
 
 // Mocking dependencies
 jest.mock('expo-router', () => ({
   useRouter: jest.fn(),
   useSegments: jest.fn(),
-}))
+}));
 
 // Mock expo-media-library
 jest.mock('expo-media-library', () => ({
@@ -39,7 +39,7 @@ jest.mock('expo-media-library', () => ({
     modificationTime: 'modificationTime',
     duration: 'duration',
   },
-}))
+}));
 
 // Mock expo modules
 jest.mock('expo-modules-core', () => ({
@@ -51,7 +51,7 @@ jest.mock('expo-modules-core', () => ({
     launchImageLibraryAsync: jest.fn(),
   })),
   UnavailabilityError: jest.fn(),
-}))
+}));
 
 // Mock expo constants
 jest.mock('expo-constants', () => ({
@@ -74,7 +74,7 @@ jest.mock('expo-constants', () => ({
       },
     },
   },
-}))
+}));
 
 // Mock expo-file-system
 jest.mock('expo-file-system', () => ({
@@ -86,22 +86,22 @@ jest.mock('expo-file-system', () => ({
   makeDirectoryAsync: jest.fn(() => Promise.resolve()),
   readDirectoryAsync: jest.fn(() => Promise.resolve([])),
   getInfoAsync: jest.fn(() => Promise.resolve({exists: true, isDirectory: false})),
-}))
+}));
 
 // Mock react-native-view-shot
 jest.mock('react-native-view-shot', () => {
-  const React = require('react')
-  const {View} = require('react-native')
+  const React = require('react');
+  const {View} = require('react-native');
 
   return {
     __esModule: true,
     default: React.forwardRef((props: any, ref: any) => {
-      return React.createElement(View, {...props, ref})
+      return React.createElement(View, {...props, ref});
     }),
     captureRef: jest.fn(() => Promise.resolve('mock-image-uri')),
     captureScreen: jest.fn(() => Promise.resolve('mock-image-uri')),
-  }
-})
+  };
+});
 
 // Mock react-native-toast-message
 jest.mock('react-native-toast-message', () => ({
@@ -114,7 +114,7 @@ jest.mock('react-native-toast-message', () => ({
   ErrorToast: jest.fn(),
   InfoToast: jest.fn(),
   SuccessToast: jest.fn(),
-}))
+}));
 
 // Mock react-native-share
 jest.mock('react-native-share', () => ({
@@ -125,7 +125,7 @@ jest.mock('react-native-share', () => ({
     TWITTER: 'twitter',
     WHATSAPP: 'whatsapp',
   },
-}))
+}));
 
 // Mock react-native-config
 jest.mock('react-native-config', () => ({
@@ -134,7 +134,7 @@ jest.mock('react-native-config', () => ({
     API_URL: 'http://localhost:3000',
     ENV: 'test',
   },
-}))
+}));
 
 // Mock @react-native-firebase/messaging
 jest.mock('@react-native-firebase/messaging', () => ({
@@ -170,32 +170,32 @@ jest.mock('@react-native-firebase/messaging', () => ({
       OPENED: 2,
     },
   },
-}))
+}));
 
 // Avoid log pollution with emulator URL remap messages during testing
 // eslint-disable-next-line no-console
-const logOrig = console.log
+const logOrig = console.log;
 const logWithRemapMessageRemoved = (message?: any, ...optionalParams: any[]): void => {
   if (
     // Make sure it is a string before attempting to filter it out
     (typeof message !== 'string' && !(message instanceof String)) ||
     !message.includes('android_bypass_emulator_url_remap')
   ) {
-    logOrig(message, ...optionalParams)
+    logOrig(message, ...optionalParams);
   }
-}
+};
 // eslint-disable-next-line no-console
-console.log = logWithRemapMessageRemoved
+console.log = logWithRemapMessageRemoved;
 
 jest.doMock('react-native', () => {
   // @ts-ignore - react-native empty bridge config so native modules at least default init
-  global.__fbBatchedBridgeConfig = {}
+  global.__fbBatchedBridgeConfig = {};
 
   // @ts-ignore - react-native new architecture interop flag to true
-  global.RN$TurboInterop = true
+  global.RN$TurboInterop = true;
 
   // make sure PlatformConstants is visible otherwise turbo modules default init fails
-  ReactNative.NativeModules['PlatformConstants'] = {}
+  ReactNative.NativeModules['PlatformConstants'] = {};
 
   return Object.setPrototypeOf(
     {
@@ -282,8 +282,8 @@ jest.doMock('react-native', () => {
       },
     },
     ReactNative,
-  )
-})
+  );
+});
 
 // '@react-native-firebase/messaging'
 
@@ -329,4 +329,4 @@ jest.mock('expo-image-picker', () => ({
     Videos: 'videos',
     All: 'all',
   },
-}))
+}));

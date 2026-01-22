@@ -1,1 +1,1 @@
-export {TicketFrame} from './TicketFrame'
+export {TicketFrame} from './TicketFrame';

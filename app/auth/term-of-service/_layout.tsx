@@ -1,5 +1,4 @@
-import {View} from 'react-native'
-import {Stack} from 'expo-router'
+import {Stack} from 'expo-router';
 
 export default function RootLayout() {
   return (
@@ -8,5 +7,5 @@ export default function RootLayout() {
       <Stack.Screen name="privacy-policy" options={{headerShown: false}} />
       <Stack.Screen name="terms-of-service" options={{headerShown: false}} />
     </Stack>
-  )
+  );
 }

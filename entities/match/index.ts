@@ -11,6 +11,6 @@ export {
   LoseEmoji,
   DrawEmoji,
   CancelEmoji,
-} from './ui'
-export type {Team, TeamWithInfo, Match} from './types'
-export {useTeam, useMatch} from './model'
+} from './ui';
+export type {Team, TeamWithInfo, Match} from './types';
+export {useTeam, useMatch} from './model';

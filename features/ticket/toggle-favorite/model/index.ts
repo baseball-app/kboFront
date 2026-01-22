@@ -1,1 +1,1 @@
-export {useToggleFavorite} from './useToggleFavorite'
+export {useToggleFavorite} from './useToggleFavorite';

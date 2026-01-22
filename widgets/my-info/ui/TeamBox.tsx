@@ -1,13 +1,13 @@
-import {ROUTES, size, useAppRouter} from '@/shared'
-import useProfile from '@/hooks/my/useProfile'
-import React from 'react'
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import {ROUTES, size, useAppRouter} from '@/shared';
+import useProfile from '@/hooks/my/useProfile';
+import React from 'react';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
 
 const TeamBox = () => {
-  const router = useAppRouter()
-  const {profile} = useProfile()
+  const router = useAppRouter();
+  const {profile} = useProfile();
   return (
     <View style={styles.teamCard}>
       <View style={styles.teamInfo}>
@@ -21,10 +21,10 @@ const TeamBox = () => {
         <Image source={require('@/assets/icons/gear.png')} style={styles.teamSettingsIcon} />
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export {TeamBox}
+export {TeamBox};
 
 const styles = StyleSheet.create({
   teamCard: {
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
     width: size(16),
     height: size(16),
   },
-})
+});

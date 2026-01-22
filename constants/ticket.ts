@@ -10,7 +10,7 @@ export const CLUB_LIST = [
   {name: '삼성', value: '삼성', id: 8},
   {name: '한화', value: '한화', id: 9},
   {name: '키움', value: '키움', id: 10},
-]
+];
 
 export const PLACE_LIST = [
   {label: '대구 삼성 라이온즈 파크', value: '대구 삼성 라이온즈 파크'},
@@ -22,4 +22,4 @@ export const PLACE_LIST = [
   {label: '대전 한화생명 볼파크', value: '대전 한화생명 볼파크'},
   {label: '창원 NC파크', value: '창원 NC파크'},
   {label: '광주 기아 챔피언스 필드', value: '광주 기아 챔피언스 필드'},
-]
+];

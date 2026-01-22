@@ -1,5 +1,5 @@
-import {Stack, Tabs} from 'expo-router'
-import React from 'react'
+import {Stack, Tabs} from 'expo-router';
+import React from 'react';
 
 export default function TabLayout() {
   return (
@@ -9,5 +9,5 @@ export default function TabLayout() {
       <Stack.Screen name="edit" options={{headerShown: false}} />
       <Stack.Screen name="todayTicketCard" options={{headerShown: false}} />
     </Stack>
-  )
+  );
 }

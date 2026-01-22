@@ -2,7 +2,7 @@
  * FormDataEntryValue 타입 정의
  * React Native 환경에서 사용 가능한 FormData 값 타입
  */
-export type FormDataEntryValue = string | File | Blob | {uri: string; type?: string; name?: string} | any
+export type FormDataEntryValue = string | File | Blob | {uri: string; type?: string; name?: string} | any;
 
 /**
  * React Native FormData를 확장한 타입 안전한 인터페이스
@@ -37,14 +37,14 @@ export interface IFormData<T extends Record<string, FormDataEntryValue> = any> {
    * @param name 필드 이름 (T의 키로 제한됨)
    * @param value 필드 값 (T[name] 타입으로 제한됨)
    */
-  append<K extends keyof T>(name: K, value: FormDataEntryValue): void
+  append<K extends keyof T>(name: K, value: FormDataEntryValue): void;
 
   /**
    * FormData에서 특정 필드를 제거합니다.
    *
    * @param name 제거할 필드 이름 (T의 키로 제한됨)
    */
-  delete<K extends keyof T>(name: K): void
+  delete<K extends keyof T>(name: K): void;
 
   /**
    * FormData에서 특정 필드의 첫 번째 값을 반환합니다.
@@ -52,7 +52,7 @@ export interface IFormData<T extends Record<string, FormDataEntryValue> = any> {
    * @param name 필드 이름 (T의 키로 제한됨)
    * @returns 필드 값 (T[name] 타입) 또는 null
    */
-  get<K extends keyof T>(name: K): FormDataEntryValue | null
+  get<K extends keyof T>(name: K): FormDataEntryValue | null;
 
   /**
    * FormData에서 특정 필드의 모든 값을 반환합니다.
@@ -60,7 +60,7 @@ export interface IFormData<T extends Record<string, FormDataEntryValue> = any> {
    * @param name 필드 이름 (T의 키로 제한됨)
    * @returns 필드 값 배열 (T[name][] 타입)
    */
-  getAll<K extends keyof T>(name: K): FormDataEntryValue[]
+  getAll<K extends keyof T>(name: K): FormDataEntryValue[];
 
   /**
    * FormData에 특정 필드가 있는지 확인합니다.
@@ -68,22 +68,22 @@ export interface IFormData<T extends Record<string, FormDataEntryValue> = any> {
    * @param name 필드 이름 (T의 키로 제한됨)
    * @returns 필드 존재 여부
    */
-  has<K extends keyof T>(name: K): boolean
+  has<K extends keyof T>(name: K): boolean;
 
   /**
    * FormData의 모든 키-값 쌍을 순회할 수 있는 이터레이터를 반환합니다.
    */
-  entries(): IterableIterator<[keyof T, FormDataEntryValue]>
+  entries(): IterableIterator<[keyof T, FormDataEntryValue]>;
 
   /**
    * FormData의 모든 키를 순회할 수 있는 이터레이터를 반환합니다.
    */
-  keys(): IterableIterator<keyof T>
+  keys(): IterableIterator<keyof T>;
 
   /**
    * FormData의 모든 값을 순회할 수 있는 이터레이터를 반환합니다.
    */
-  values(): IterableIterator<FormDataEntryValue>
+  values(): IterableIterator<FormDataEntryValue>;
 
   /**
    * FormData의 모든 키-값 쌍을 순회합니다.
@@ -91,7 +91,7 @@ export interface IFormData<T extends Record<string, FormDataEntryValue> = any> {
   forEach(
     callbackfn: <K extends keyof T>(value: FormDataEntryValue, key: K, parent: IFormData<T>) => void,
     thisArg?: any,
-  ): void
+  ): void;
 }
 
 /**
@@ -119,48 +119,48 @@ export class CustomFormData<T extends Record<string, FormDataEntryValue> = Recor
   implements IFormData<T>
 {
   constructor() {
-    super()
+    super();
   }
 
   // - React Native FormData는 {uri: string} 객체를 받을 수 있지만 타입 정의가 다릅니다
   override append<K extends keyof T>(name: K, value: FormDataEntryValue): void {
     // number, boolean 등 string이 아닌 값이면 자동으로 string으로 변환
-    const v = typeof value === 'number' || typeof value === 'boolean' ? JSON.stringify(value) : value
-    super.append(name as string, v as any)
+    const v = typeof value === 'number' || typeof value === 'boolean' ? JSON.stringify(value) : value;
+    super.append(name as string, v as any);
   }
 
   override delete<K extends keyof T>(name: K): void {
-    super.delete(name as string)
+    super.delete(name as string);
   }
 
   // - 반환 타입이 더 구체적이지만 런타임에서는 호환됩니다
   override get<K extends keyof T>(name: K): FormDataEntryValue | null {
-    const value = super.get(name as string)
-    return (value as FormDataEntryValue) || null
+    const value = super.get(name as string);
+    return (value as FormDataEntryValue) || null;
   }
 
   // - 반환 타입이 더 구체적이지만 런타임에서는 호환됩니다
   override getAll<K extends keyof T>(name: K): FormDataEntryValue[] {
-    return super.getAll(name as string) as FormDataEntryValue[]
+    return super.getAll(name as string) as FormDataEntryValue[];
   }
 
   override has<K extends keyof T>(name: K): boolean {
-    return super.has(name as string)
+    return super.has(name as string);
   }
 
   // @ts-expect-error - 반환 타입이 더 구체적이지만 런타임에서는 호환됩니다
   override entries(): IterableIterator<[keyof T, FormDataEntryValue]> {
-    return super.entries() as unknown as IterableIterator<[keyof T, FormDataEntryValue]>
+    return super.entries() as unknown as IterableIterator<[keyof T, FormDataEntryValue]>;
   }
 
   // @ts-expect-error - 반환 타입이 더 구체적이지만 런타임에서는 호환됩니다
   override keys(): IterableIterator<keyof T> {
-    return super.keys() as unknown as IterableIterator<keyof T>
+    return super.keys() as unknown as IterableIterator<keyof T>;
   }
 
   // @ts-expect-error - 반환 타입이 더 구체적이지만 런타임에서는 호환됩니다
   override values(): IterableIterator<FormDataEntryValue> {
-    return super.values() as IterableIterator<FormDataEntryValue>
+    return super.values() as IterableIterator<FormDataEntryValue>;
   }
 
   // @ts-expect-error - 콜백 시그니처가 더 구체적이지만 런타임에서는 호환됩니다
@@ -169,7 +169,7 @@ export class CustomFormData<T extends Record<string, FormDataEntryValue> = Recor
     thisArg?: any,
   ): void {
     super.forEach((value, key) => {
-      callbackfn.call(thisArg, value as T[Extract<keyof T, string>], key as keyof T, this as IFormData<T>)
-    })
+      callbackfn.call(thisArg, value as T[Extract<keyof T, string>], key as keyof T, this as IFormData<T>);
+    });
   }
 }

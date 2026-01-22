@@ -1,13 +1,13 @@
-import {ProfileImage} from '@/entities/user'
-import React from 'react'
-import {StyleSheet, View} from 'react-native'
-import useProfile from '@/hooks/my/useProfile'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
-import {Txt} from '@/shared/ui'
+import {ProfileImage} from '@/entities/user';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import useProfile from '@/hooks/my/useProfile';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
+import {Txt} from '@/shared/ui';
 
 const StatProfileBox = () => {
-  const {profile} = useProfile()
+  const {profile} = useProfile();
 
   return (
     <View style={styles.infoBox}>
@@ -18,14 +18,13 @@ const StatProfileBox = () => {
             {profile.nickname} 님
           </Txt>
           <Txt color={color_token.gray600}>
-            {profile.my_team?.name} 팬 · 승요력{' '}
-            <Txt color={color_token.primary}>{profile.predict_ratio}%</Txt>
+            {profile.my_team?.name} 팬 · 승요력 <Txt color={color_token.primary}>{profile.predict_ratio}%</Txt>
           </Txt>
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   infoBox: {
@@ -44,6 +43,6 @@ const styles = StyleSheet.create({
   name: {
     marginBottom: size(4),
   },
-})
+});
 
-export {StatProfileBox}
+export {StatProfileBox};

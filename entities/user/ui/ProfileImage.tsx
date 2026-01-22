@@ -1,16 +1,16 @@
-import {Image, StyleSheet, View} from 'react-native'
-import {size} from '@/shared'
-import {color_token} from '@/constants/theme'
+import {Image, StyleSheet, View} from 'react-native';
+import {size} from '@/shared';
+import {color_token} from '@/constants/theme';
 
 const ProfileImage = ({source}: {source: any}) => {
   return (
     <View style={styles.profileImageBox}>
       <Image source={source} style={styles.profileImage} resizeMode="contain" />
     </View>
-  )
-}
+  );
+};
 
-export {ProfileImage}
+export {ProfileImage};
 
 const styles = StyleSheet.create({
   profileImageBox: {
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
     width: size(46.44),
     height: size(50.58),
   },
-})
+});

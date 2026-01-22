@@ -1,26 +1,26 @@
-import {Match} from '@/entities/match'
-import React from 'react'
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native'
-import Ellipse from '@/components/common/Ellipse'
-import {useTeam} from '../model'
-import dayjs from 'dayjs'
-import {size} from '@/shared'
-import {color_token} from '@/constants/theme'
-import {Pressable, Txt} from '@/shared/ui'
+import {Match} from '@/entities/match';
+import React from 'react';
+import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import Ellipse from '@/components/common/Ellipse';
+import {useTeam} from '../model';
+import dayjs from 'dayjs';
+import {size} from '@/shared';
+import {color_token} from '@/constants/theme';
+import {Pressable, Txt} from '@/shared/ui';
 
 type Props = {
-  match: Match
-  onClick: () => void
-  isSelected?: boolean
-}
+  match: Match;
+  onClick: () => void;
+  isSelected?: boolean;
+};
 
 /** 매치 팀 경기 카드 컴포넌트 */
 const MatchCard = ({match, onClick, isSelected}: Props) => {
-  const time = dayjs(match.game_date).format('HH:mm')
-  const {findTeamById} = useTeam()
+  const time = dayjs(match.game_date).format('HH:mm');
+  const {findTeamById} = useTeam();
 
-  const homeTeam = findTeamById(match.team_home_info.id)
-  const awayTeam = findTeamById(match.team_away_info.id)
+  const homeTeam = findTeamById(match.team_home_info.id);
+  const awayTeam = findTeamById(match.team_away_info.id);
 
   return (
     <Pressable onPress={onClick}>
@@ -60,10 +60,10 @@ const MatchCard = ({match, onClick, isSelected}: Props) => {
         </View>
       </View>
     </Pressable>
-  )
-}
+  );
+};
 
-export {MatchCard}
+export {MatchCard};
 
 const styles = StyleSheet.create({
   gameInfoBox: {
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: size(10),
   },
-})
+});

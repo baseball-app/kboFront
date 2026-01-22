@@ -1,21 +1,21 @@
-import React, {useCallback, useMemo} from 'react'
-import {View, StyleSheet} from 'react-native'
-import {useNotBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat'
-import {TeamStatsCard} from '@/entities/stat/ui'
-import {StatsList} from './StatsList'
-import {useNavigateToStatsDetail} from '@/features/stats'
+import React, {useCallback, useMemo} from 'react';
+import {View, StyleSheet} from 'react-native';
+import {useNotBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat';
+import {TeamStatsCard} from '@/entities/stat/ui';
+import {StatsList} from './StatsList';
+import {useNavigateToStatsDetail} from '@/features/stats';
 
 const MyHomeStatsCardList = () => {
-  const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter()
-  const year = selectedStatsFilter?.year ?? 2025
-  const {data, isLoading, isError} = useNotBallparkWinPercentByYear({year})
+  const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter();
+  const year = selectedStatsFilter?.year ?? 2025;
+  const {data, isLoading, isError} = useNotBallparkWinPercentByYear({year});
 
-  const {navigateToMyHomeStatsDetail} = useNavigateToStatsDetail()
+  const {navigateToMyHomeStatsDetail} = useNavigateToStatsDetail();
 
   const sortedData = useMemo(() => {
-    if (!data?.my_home_win_stat) return []
-    return sortDataByWinRate([...data.my_home_win_stat])
-  }, [data, sortDataByWinRate])
+    if (!data?.my_home_win_stat) return [];
+    return sortDataByWinRate([...data.my_home_win_stat]);
+  }, [data, sortDataByWinRate]);
 
   const renderItem = useCallback(({item}: {item: (typeof sortedData)[0]}) => {
     return (
@@ -29,8 +29,8 @@ const MyHomeStatsCardList = () => {
           lose: item.losses,
         }}
       />
-    )
-  }, [])
+    );
+  }, []);
 
   return (
     <StatsList
@@ -39,13 +39,13 @@ const MyHomeStatsCardList = () => {
       isError={isError} //
       renderItem={renderItem}
     />
-  )
-}
+  );
+};
 
-export {MyHomeStatsCardList}
+export {MyHomeStatsCardList};
 
 const styles = StyleSheet.create({
   container: {
     gap: 12,
   },
-})
+});

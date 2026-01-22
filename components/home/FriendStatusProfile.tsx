@@ -1,18 +1,18 @@
-import {findProfileImageById} from '@/constants/join'
-import {color_token} from '@/constants/theme'
-import {FriendStatus} from '@/hooks/my/useFriends'
-import {Pressable, size} from '@/shared'
-import {Txt} from '@/shared/ui/Txt'
-import {Image, StyleSheet, View} from 'react-native'
+import {findProfileImageById} from '@/constants/join';
+import {color_token} from '@/constants/theme';
+import {FriendStatus} from '@/hooks/my/useFriends';
+import {Pressable, size} from '@/shared';
+import {Txt} from '@/shared/ui/Txt';
+import {Image, StyleSheet, View} from 'react-native';
 
 type Props = {
-  friendStatus: FriendStatus
-  isMyProfile?: boolean
-  onClick?: () => void
+  friendStatus: FriendStatus;
+  isMyProfile?: boolean;
+  onClick?: () => void;
   choice?: {
-    id: number
-  }
-}
+    id: number;
+  };
+};
 
 /**
  * 조건
@@ -22,16 +22,16 @@ type Props = {
 
 const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props) => {
   const getFirendStatus = () => {
-    if (friendStatus.ticket_info?.writer_id) return 'HAS_TICKET'
+    if (friendStatus.ticket_info?.writer_id) return 'HAS_TICKET';
 
     if (choice?.id === friendStatus.id) {
-      return 'CHOICE'
+      return 'CHOICE';
     }
 
-    return 'OTHER'
-  }
+    return 'OTHER';
+  };
 
-  const type = getFirendStatus()
+  const type = getFirendStatus();
 
   const getStyle = () => {
     switch (type) {
@@ -39,24 +39,24 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
         return {
           borderWidth: 2,
           borderColor: color_token.primary,
-        }
+        };
       case 'OTHER':
         return {
           borderWidth: 1,
           borderColor: color_token.gray350,
-        }
+        };
       case 'HAS_TICKET':
         return {
           borderWidth: 2,
           borderColor: color_token.secondary_10,
-        }
+        };
       default:
         return {
           borderWidth: 1,
           borderColor: color_token.gray350,
-        }
+        };
     }
-  }
+  };
 
   const getTextColor = () => {
     switch (type) {
@@ -64,17 +64,17 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
         return {
           color: color_token.primary,
           fontWeight: 700 as const,
-        }
+        };
       case 'OTHER':
         return {
           color: color_token.gray900,
-        }
+        };
       case 'HAS_TICKET':
         return {
           color: color_token.gray900,
-        }
+        };
     }
-  }
+  };
 
   return (
     <Pressable onPress={onClick} style={styles.friendItem}>
@@ -96,10 +96,10 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
         {friendStatus.nickname}
       </Txt>
     </Pressable>
-  )
-}
+  );
+};
 
-export default FriendStatusProfile
+export default FriendStatusProfile;
 
 const styles = StyleSheet.create({
   profileImageBox: {
@@ -133,4 +133,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 10,
   },
-})
+});

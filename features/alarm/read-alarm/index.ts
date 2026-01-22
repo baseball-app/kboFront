@@ -1,1 +1,1 @@
-export {useReadAlarm} from './model'
+export {useReadAlarm} from './model';

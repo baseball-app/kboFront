@@ -5,7 +5,7 @@ export {
   getBallparkMostView,
   getWinRateCalculation,
   getWeekdayMostWin,
-} from './detail'
+} from './detail';
 
 export {
   getBallparkWinPercentByYear,
@@ -13,4 +13,4 @@ export {
   getNotBallparkWinPercentByYear,
   getOpponentWinPercentByYear,
   getTotalWinPercentByYear,
-} from './summary'
+} from './summary';

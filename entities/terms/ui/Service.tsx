@@ -1,6 +1,6 @@
-import {View, Text} from 'react-native'
-import React from 'react'
-import {StyleSheet} from 'react-native'
+import {View, Text} from 'react-native';
+import React from 'react';
+import {StyleSheet} from 'react-native';
 
 const Service = () => {
   return (
@@ -87,10 +87,10 @@ const Service = () => {
         </Text>
       </View>
     </>
-  )
-}
+  );
+};
 
-export {Service}
+export {Service};
 
 const styles = StyleSheet.create({
   headerTitle: {
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-})
+});

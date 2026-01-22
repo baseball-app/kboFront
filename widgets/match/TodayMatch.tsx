@@ -1,33 +1,33 @@
-import {DAYS_OF_WEEK} from '@/constants/day'
-import dayjs from 'dayjs'
-import React from 'react'
-import {StyleSheet, View, TouchableOpacity, Image, Pressable} from 'react-native'
-import {ROUTES, size, useAppRouter} from '@/shared'
-import {TeamWithInfo, useMatch, useTeam} from '@/entities/match'
-import useProfile from '@/hooks/my/useProfile'
-import Ellipse from '@/components/common/Ellipse'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui/Txt'
+import {DAYS_OF_WEEK} from '@/constants/day';
+import dayjs from 'dayjs';
+import React from 'react';
+import {StyleSheet, View, TouchableOpacity, Image, Pressable} from 'react-native';
+import {ROUTES, size, useAppRouter} from '@/shared';
+import {TeamWithInfo, useMatch, useTeam} from '@/entities/match';
+import useProfile from '@/hooks/my/useProfile';
+import Ellipse from '@/components/common/Ellipse';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui/Txt';
 
 const TodayMatch = () => {
-  const {matchingList} = useMatch({selectedDate: new Date()})
-  const {profile} = useProfile()
+  const {matchingList} = useMatch({selectedDate: new Date()});
+  const {profile} = useProfile();
 
   const todayMyTeamMatch = matchingList //
     .find(({team_away_info, team_home_info}) => {
-      return team_away_info.id === profile.my_team?.id || team_home_info.id === profile.my_team?.id
-    })
+      return team_away_info.id === profile.my_team?.id || team_home_info.id === profile.my_team?.id;
+    });
 
-  const {findTeamById} = useTeam()
+  const {findTeamById} = useTeam();
 
-  const router = useAppRouter()
+  const router = useAppRouter();
 
-  const home_info = findTeamById(todayMyTeamMatch?.team_home_info.id)
-  const away_info = findTeamById(todayMyTeamMatch?.team_away_info.id)
+  const home_info = findTeamById(todayMyTeamMatch?.team_home_info.id);
+  const away_info = findTeamById(todayMyTeamMatch?.team_away_info.id);
 
-  const game_date = dayjs(todayMyTeamMatch?.game_date)
-  const weekDay = DAYS_OF_WEEK[game_date.day()]
-  const title = `${game_date.format(`M월D일(${weekDay}) HH:mm`)}`
+  const game_date = dayjs(todayMyTeamMatch?.game_date);
+  const weekDay = DAYS_OF_WEEK[game_date.day()];
+  const title = `${game_date.format(`M월D일(${weekDay}) HH:mm`)}`;
 
   return (
     <View style={styles.container}>
@@ -55,8 +55,8 @@ const TodayMatch = () => {
         </Txt>
       </Pressable>
     </View>
-  )
-}
+  );
+};
 
 const MatchInfo = ({
   title,
@@ -64,10 +64,10 @@ const MatchInfo = ({
   away_info,
   ballpark_name,
 }: {
-  title: string
-  home_info: TeamWithInfo | undefined
-  away_info: TeamWithInfo | undefined
-  ballpark_name: string
+  title: string;
+  home_info: TeamWithInfo | undefined;
+  away_info: TeamWithInfo | undefined;
+  ballpark_name: string;
 }) => {
   return (
     <View style={styles.gameInfoBox}>
@@ -98,8 +98,8 @@ const MatchInfo = ({
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const EmptyMatch = ({myTeamName}: {myTeamName: string}) => {
   return (
@@ -111,8 +111,8 @@ const EmptyMatch = ({myTeamName}: {myTeamName: string}) => {
         의 경기 일정이 없어요.
       </Txt>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -195,6 +195,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: size(35),
   },
-})
+});
 
-export {TodayMatch}
+export {TodayMatch};

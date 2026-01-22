@@ -1,11 +1,11 @@
-import ApiClient, {uploadFile} from '@/api'
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
-import {useState} from 'react'
-import useProfile from '../my/useProfile'
-import {usePopup} from '@/slice/commonSlice'
-import {logEvent} from '@/analytics/func'
-import {EVENTS} from '@/analytics/event'
-import {TicketDetail} from '@/entities/ticket'
+import ApiClient, {uploadFile} from '@/api';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {useState} from 'react';
+import useProfile from '../my/useProfile';
+import {usePopup} from '@/slice/commonSlice';
+import {logEvent} from '@/analytics/func';
+import {EVENTS} from '@/analytics/event';
+import {TicketDetail} from '@/entities/ticket';
 
 //
 export type ReactionType =
@@ -17,11 +17,11 @@ export type ReactionType =
   | 'petulance'
   | 'point_up'
   | 'rage'
-  | 'wink'
+  | 'wink';
 
-export type Reaction = Record<ReactionType, number>
+export type Reaction = Record<ReactionType, number>;
 
-type UpdateReactionParam = {reaction_pos: 'add' | 'del'; reaction_type: ReactionType}
+type UpdateReactionParam = {reaction_pos: 'add' | 'del'; reaction_type: ReactionType};
 
 const reactionTypeList: {key: ReactionType; title: string; count: number}[] = [
   {key: 'laugh', title: '😁', count: 0},
@@ -33,25 +33,25 @@ const reactionTypeList: {key: ReactionType; title: string; count: number}[] = [
   {key: 'petulance', title: '✌️', count: 0},
   {key: 'dislike', title: '👎', count: 0},
   {key: 'point_up', title: '👍', count: 0},
-]
+];
 
 const useTicketDetail = (id: number | string, targetId: number) => {
-  const queryClient = useQueryClient()
-  const {profile} = useProfile()
-  const {openCommonPopup} = usePopup()
+  const queryClient = useQueryClient();
+  const {profile} = useProfile();
+  const {openCommonPopup} = usePopup();
 
-  const isDate = typeof id === 'string'
+  const isDate = typeof id === 'string';
   // 1차 2차 선택하는 state
-  const [ticketIndex, setTicketIndex] = useState<number>(0)
+  const [ticketIndex, setTicketIndex] = useState<number>(0);
   const onChangeTicket = (index: number) => {
-    setTicketIndex(index)
-  }
+    setTicketIndex(index);
+  };
 
   const initializeTicketInfo = () => {
-    queryClient.invalidateQueries({queryKey: ['ticket']})
-    queryClient.invalidateQueries({queryKey: ['myStat']})
-    return refetch()
-  }
+    queryClient.invalidateQueries({queryKey: ['ticket']});
+    queryClient.invalidateQueries({queryKey: ['myStat']});
+    return refetch();
+  };
 
   /**
    * 직관일기 반응 추가 시 최적화 업데이트
@@ -67,14 +67,14 @@ const useTicketDetail = (id: number | string, targetId: number) => {
             }
           : ticket,
       ),
-    )
+    );
     queryClient.setQueryData(['ticket', id, 'reaction'], (old: Reaction) => {
       return {
         ...old,
         [reaction_type]: reaction_pos === 'add' ? old[reaction_type] + 1 : old[reaction_type] - 1,
-      }
-    })
-  }
+      };
+    });
+  };
 
   const {data, isSuccess, refetch} = useQuery({
     queryKey: ['ticket', id, targetId],
@@ -90,30 +90,30 @@ const useTicketDetail = (id: number | string, targetId: number) => {
               id: id,
               target_id: targetId,
             },
-      )
+      );
     },
     enabled: Boolean(id) && Boolean(targetId),
     retry: false,
-  })
-  const ticketDetail = data?.[ticketIndex]
+  });
+  const ticketDetail = data?.[ticketIndex];
 
   const {data: my_reaction} = useQuery({
     queryKey: ['ticket', id, 'reaction'],
     queryFn: () => ApiClient.get<Reaction>(`/tickets/ticket_reaction_view/`, {target_id: ticketDetail?.id}),
     enabled: Boolean(ticketDetail?.id),
-  })
+  });
 
   // 직관일기 삭제
   const {mutateAsync: deleteTicket} = useMutation({
     mutationFn: () => ApiClient.post(`/tickets/ticket_del/`, {id}),
     onSuccess: initializeTicketInfo,
-  })
+  });
 
   // 직관일기 수정
   const {mutateAsync: updateTicket, isPending: isUpdating} = useMutation({
     mutationFn: (data: any) => uploadFile(`/tickets/ticket_upd/`, data),
     onSuccess: initializeTicketInfo,
-  })
+  });
 
   // 직관일기 반응 추가
   const {mutateAsync: addReaction} = useMutation({
@@ -121,20 +121,20 @@ const useTicketDetail = (id: number | string, targetId: number) => {
       ApiClient.post(`/tickets/ticket_reaction/`, {...data, id: Number(ticketDetail?.id)}),
     onMutate: optimisticUpdateReaction,
     onSuccess: (_, variables) => {
-      initializeTicketInfo()
+      initializeTicketInfo();
       if (variables.reaction_pos === 'add') {
         logEvent(EVENTS.TICKET_REACTION, {
           ticket_id: ticketDetail?.id, //
           reaction_type: variables.reaction_type,
-        })
+        });
       }
-      queryClient.invalidateQueries({queryKey: ['ticket', id, 'reaction']})
+      queryClient.invalidateQueries({queryKey: ['ticket', id, 'reaction']});
     },
     onError: (error, variables, context) => {
-      console.log('error', error)
-      console.log('variables', variables, Number(ticketDetail?.id))
+      console.log('error', error);
+      console.log('variables', variables, Number(ticketDetail?.id));
     },
-  })
+  });
 
   /**
    * 직관일기 최애경기 선정 및 해제
@@ -144,29 +144,29 @@ const useTicketDetail = (id: number | string, targetId: number) => {
     mutationFn: ({favorite_status}: {favorite_status: 'clear' | 'excute'}) =>
       ApiClient.post(`/tickets/ticket_favorite/`, {id: ticketDetail?.id, favorite_status}),
     onMutate: ({favorite_status}) => {
-      const favorite = favorite_status === 'clear' ? false : true
+      const favorite = favorite_status === 'clear' ? false : true;
 
       queryClient.setQueryData(['ticket', id, targetId], (old: TicketDetail[]) =>
         old.map((ticket, index) => (index === ticketIndex ? {...ticket, favorite} : ticket)),
-      )
+      );
     },
     onError: (error, variables, context) => {
-      const favorite = variables.favorite_status === 'clear' ? true : false
+      const favorite = variables.favorite_status === 'clear' ? true : false;
 
       queryClient.setQueryData(['ticket', id, targetId], (old: TicketDetail[]) =>
         old.map((ticket, index) => (index === ticketIndex ? {...ticket, favorite} : ticket)),
-      )
+      );
     },
     onSuccess: () => {
-      queryClient.removeQueries({queryKey: ['ticketListByTeam']})
-      queryClient.invalidateQueries({queryKey: ['ticketListByTeam']})
+      queryClient.removeQueries({queryKey: ['ticketListByTeam']});
+      queryClient.invalidateQueries({queryKey: ['ticketListByTeam']});
     },
-  })
+  });
 
   const toggleFavorite = () => {
-    if (!data?.[ticketIndex]) return
-    updateFavorite({favorite_status: data?.[ticketIndex]?.favorite ? 'clear' : 'excute'})
-  }
+    if (!data?.[ticketIndex]) return;
+    updateFavorite({favorite_status: data?.[ticketIndex]?.favorite ? 'clear' : 'excute'});
+  };
 
   const reactionList = reactionTypeList
     .map(reaction => {
@@ -174,19 +174,19 @@ const useTicketDetail = (id: number | string, targetId: number) => {
         ...reaction,
         count: ticketDetail?.[reaction.key] || 0,
         isPressed: my_reaction?.[reaction.key] ? true : false,
-      }
+      };
     })
-    .sort((a, b) => b.count - a.count)
+    .sort((a, b) => b.count - a.count);
 
   const toggleReaction = (reaction: ReactionType) => {
-    if (!ticketDetail) return
+    if (!ticketDetail) return;
     if (ticketDetail.writer === profile.id) {
-      openCommonPopup('반응은 친구만 남길 수 있어요!')
-      return
+      openCommonPopup('반응은 친구만 남길 수 있어요!');
+      return;
     }
 
-    addReaction({reaction_pos: my_reaction?.[reaction] ? 'del' : 'add', reaction_type: reaction})
-  }
+    addReaction({reaction_pos: my_reaction?.[reaction] ? 'del' : 'add', reaction_type: reaction});
+  };
 
   return {
     ticketDetail: ticketDetail,
@@ -203,7 +203,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
     isSuccess,
     isUpdating,
     initializeTicketInfo,
-  }
-}
+  };
+};
 
-export default useTicketDetail
+export default useTicketDetail;

@@ -1,18 +1,18 @@
-import Header from '@/components/common/Header'
-import {StatsDetailType, useNavigateToStatsDetail} from '@/features/stats'
+import Header from '@/components/common/Header';
+import {StatsDetailType, useNavigateToStatsDetail} from '@/features/stats';
 import {
   AwayStatsDetail,
   HomeStatsDetail,
   StadiumStatsDetail,
   TeamStatsByHomeDetail,
   TeamStatsDetail,
-} from '@/widgets/stats-detail/ui'
-import React from 'react'
-import {SafeAreaView} from 'react-native-safe-area-context'
+} from '@/widgets/stats-detail/ui';
+import React from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export default function StatsDetailScreen() {
-  const {getQuery} = useNavigateToStatsDetail()
-  const query = getQuery()
+  const {getQuery} = useNavigateToStatsDetail();
+  const query = getQuery();
 
   return (
     <SafeAreaView>
@@ -23,5 +23,5 @@ export default function StatsDetailScreen() {
       {query.type === StatsDetailType.AWAY && <AwayStatsDetail is_homeballpark={false} />}
       {query.type === StatsDetailType.MY_HOME && <TeamStatsByHomeDetail parameter_id={query.parameter_id} />}
     </SafeAreaView>
-  )
+  );
 }

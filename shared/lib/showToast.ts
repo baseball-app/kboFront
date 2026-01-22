@@ -1,4 +1,4 @@
-import Toast from 'react-native-toast-message'
+import Toast from 'react-native-toast-message';
 
 export const showToast = (text: string) => {
   Toast.show({
@@ -7,5 +7,5 @@ export const showToast = (text: string) => {
     visibilityTime: 2000,
     autoHide: true,
     position: 'bottom',
-  })
-}
+  });
+};

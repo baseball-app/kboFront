@@ -1,7 +1,7 @@
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
-import React, {memo} from 'react'
-import {StyleSheet, View} from 'react-native'
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
+import React, {memo} from 'react';
+import {StyleSheet, View} from 'react-native';
 
 const EmptyStatsList = memo(() => {
   return (
@@ -11,8 +11,8 @@ const EmptyStatsList = memo(() => {
         티켓을 작성해야 통계를 볼 수 있어요!
       </Txt>
     </View>
-  )
-})
+  );
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+});
 
-export {EmptyStatsList}
+export {EmptyStatsList};

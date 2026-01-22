@@ -1,26 +1,26 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native'
-import {TeamWithInfo} from '../types'
-import Ellipse from '@/components/common/Ellipse'
-import dayjs from 'dayjs'
-import {getTempBaseballMediumName, size} from '@/shared'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {TeamWithInfo} from '../types';
+import Ellipse from '@/components/common/Ellipse';
+import dayjs from 'dayjs';
+import {getTempBaseballMediumName, size} from '@/shared';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
 
 type TicketCardProps = {
   ticket: {
-    score_our: number
-    score_opponent: number
+    score_our: number;
+    score_opponent: number;
     ballpark: {
-      name: string
-    }
-    date: string
-    gip_place: string
-  }
-  homeTeam?: TeamWithInfo
-  awayTeam?: TeamWithInfo
-  opponentTeam?: TeamWithInfo
-  onClick: () => void
-}
+      name: string;
+    };
+    date: string;
+    gip_place: string;
+  };
+  homeTeam?: TeamWithInfo;
+  awayTeam?: TeamWithInfo;
+  opponentTeam?: TeamWithInfo;
+  onClick: () => void;
+};
 
 const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketCardProps) => {
   return (
@@ -64,10 +64,10 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
         </TouchableOpacity>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export {TicketCard}
+export {TicketCard};
 
 const styles = StyleSheet.create({
   teamCard: {
@@ -138,4 +138,4 @@ const styles = StyleSheet.create({
     width: 'auto',
     alignSelf: 'center',
   },
-})
+});

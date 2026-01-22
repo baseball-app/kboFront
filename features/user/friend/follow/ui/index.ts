@@ -1,1 +1,1 @@
-export {AddFriendInput} from './AddFriendInput'
+export {AddFriendInput} from './AddFriendInput';

@@ -1,2 +1,2 @@
-export {MatchList} from './MatchList'
-export {TodayMatch} from './TodayMatch'
+export {MatchList} from './MatchList';
+export {TodayMatch} from './TodayMatch';

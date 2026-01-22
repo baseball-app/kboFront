@@ -1,40 +1,40 @@
-import {Config} from '@/config/Config'
-import {TUser} from '@/hooks/auth/useLogin'
-import {MmkvStoreKeys} from '@/store/mmkv-store/constants'
-import {getItem} from '@/store/mmkv-store/mmkvStore'
-import {IFormData} from '@/types/IFormData'
-import axios, {AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
+import {Config} from '@/config/Config';
+import {TUser} from '@/hooks/auth/useLogin';
+import {MmkvStoreKeys} from '@/store/mmkv-store/constants';
+import {getItem} from '@/store/mmkv-store/mmkvStore';
+import {IFormData} from '@/types/IFormData';
+import axios, {AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 
 const axiosInstance: AxiosInstance = axios.create({
   /** Api Server url 적용  */
   baseURL: Config.API_URL,
-})
+});
 
 /** 모든 Api 요청에 자동으로 헤더에 토큰을 추가하는 요청 인터셉터 */
 axiosInstance.interceptors.request.use(
   async (req: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
     try {
       /** 토큰 처리 로직 */
-      const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN)
-      if (token?.accessToken) req.headers['X-KBOAPP-TOKEN'] = `${token.accessToken}`
+      const token = getItem<TUser>(MmkvStoreKeys.USER_LOGIN);
+      if (token?.accessToken) req.headers['X-KBOAPP-TOKEN'] = `${token.accessToken}`;
       // console.log(req.url, token?.accessToken)
-      return req
+      return req;
     } catch (error) {
-      return Promise.reject(error)
+      return Promise.reject(error);
     }
   },
   (err: AxiosError) => {
-    return Promise.reject(err)
+    return Promise.reject(err);
   },
-)
+);
 
-let lock = false
+let lock = false;
 
 /** Api 요청 결과값에 대한 응답 인터셉터 */
 axiosInstance.interceptors.response.use(
   async (res: AxiosResponse): Promise<AxiosResponse> => {
     /** 토큰 처리 로직 */
-    return res
+    return res;
   },
   async (err: AxiosError) => {
     console.error(
@@ -43,11 +43,11 @@ axiosInstance.interceptors.response.use(
       URL :: ${err.request.responseURL}
       ERROR :: ${JSON.stringify(err.response?.data)}
       `,
-    )
+    );
 
-    return Promise.reject(err)
+    return Promise.reject(err);
   },
-)
+);
 
 /** Api 통신 객체 */
 const ApiClient = {
@@ -61,11 +61,11 @@ const ApiClient = {
    */
   get: async <T>(url: string, params?: any): Promise<T> => {
     try {
-      const response = await axiosInstance.get<T>(url, {params})
-      return response.data
+      const response = await axiosInstance.get<T>(url, {params});
+      return response.data;
     } catch (error) {
-      console.error('Error occurred during GET request:', error, '\n URL :: ', url)
-      return Promise.reject(error)
+      console.error('Error occurred during GET request:', error, '\n URL :: ', url);
+      return Promise.reject(error);
     }
   },
 
@@ -79,11 +79,11 @@ const ApiClient = {
    */
   post: async <T>(url: string, data: any): Promise<T> => {
     try {
-      const response = await axiosInstance.post<T>(url, data)
-      return response.data
+      const response = await axiosInstance.post<T>(url, data);
+      return response.data;
     } catch (error) {
-      console.error('Error occurred during POST request:', error)
-      return Promise.reject(error)
+      console.error('Error occurred during POST request:', error);
+      return Promise.reject(error);
     }
   },
 
@@ -97,11 +97,11 @@ const ApiClient = {
    */
   put: async <T>(url: string, data: any): Promise<T> => {
     try {
-      const response = await axiosInstance.put<T>(url, data)
-      return response.data
+      const response = await axiosInstance.put<T>(url, data);
+      return response.data;
     } catch (error) {
-      console.error('Error occurred during PUT request:', error)
-      return Promise.reject(error)
+      console.error('Error occurred during PUT request:', error);
+      return Promise.reject(error);
     }
   },
 
@@ -115,11 +115,11 @@ const ApiClient = {
    */
   patch: async <T>(url: string, data: any): Promise<T> => {
     try {
-      const response = await axiosInstance.patch<T>(url, data)
-      return response.data
+      const response = await axiosInstance.patch<T>(url, data);
+      return response.data;
     } catch (error) {
-      console.error('Error occurred during PATCH request:', error)
-      return Promise.reject(error)
+      console.error('Error occurred during PATCH request:', error);
+      return Promise.reject(error);
     }
   },
 
@@ -132,14 +132,14 @@ const ApiClient = {
    */
   delete: async <T>(url: string): Promise<T> => {
     try {
-      const response = await axiosInstance.delete<T>(url)
-      return response.data
+      const response = await axiosInstance.delete<T>(url);
+      return response.data;
     } catch (error) {
-      console.error('Error occurred during DELETE request:', error)
-      return Promise.reject(error)
+      console.error('Error occurred during DELETE request:', error);
+      return Promise.reject(error);
     }
   },
-}
+};
 
 export const uploadFile = async <T>(url: string, data: IFormData): Promise<T> => {
   try {
@@ -149,12 +149,12 @@ export const uploadFile = async <T>(url: string, data: IFormData): Promise<T> =>
         'Content-Type': 'multipart/form-data;',
       },
       maxBodyLength: Infinity, // ✅ 큰 파일 허용
-    })
+    });
 
-    return response.data
+    return response.data;
   } catch (error) {
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-}
+};
 
-export default ApiClient
+export default ApiClient;

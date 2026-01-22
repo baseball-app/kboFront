@@ -1,12 +1,12 @@
-import React from 'react'
-import {Image, Pressable, StyleSheet, Text, TouchableOpacity} from 'react-native'
-import {useNaverLogin} from '../model'
-import {Txt} from '@/shared/ui/Txt'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
+import React from 'react';
+import {Image, Pressable, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {useNaverLogin} from '../model';
+import {Txt} from '@/shared/ui/Txt';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
 
 const NaverLoginButton = () => {
-  const {onPressButton} = useNaverLogin()
+  const {onPressButton} = useNaverLogin();
 
   return (
     <Pressable style={styles.button} onPress={onPressButton}>
@@ -15,8 +15,8 @@ const NaverLoginButton = () => {
         네이버로 시작하기
       </Txt>
     </Pressable>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   button: {
@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
     width: size(14),
     height: size(14),
   },
-})
+});
 
-export {NaverLoginButton}
+export {NaverLoginButton};

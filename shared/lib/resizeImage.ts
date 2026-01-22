@@ -1,4 +1,4 @@
-import ImageResizer from '@bam.tech/react-native-image-resizer'
+import ImageResizer from '@bam.tech/react-native-image-resizer';
 
 async function resizeImage(uri: string, format: 'PNG' | 'JPEG' = 'PNG') {
   const resizedImage = await ImageResizer.createResizedImage(
@@ -10,9 +10,9 @@ async function resizeImage(uri: string, format: 'PNG' | 'JPEG' = 'PNG') {
     0, // 회전 (0 = 그대로)
     undefined, // outputPath (설정하지 않으면 기본 캐시에 저장됨)
     false, // 메타데이터 유지 여부
-  )
+  );
 
-  return resizedImage
+  return resizedImage;
 }
 
-export {resizeImage}
+export {resizeImage};

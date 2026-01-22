@@ -1,53 +1,53 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {CalendarView} from './CalendarView'
-import {TicketCalendarLog} from './type'
-import dayjs from 'dayjs'
-import {useQueryClient} from '@tanstack/react-query'
-import {TicketDetail} from '@/entities/ticket'
-import ApiClient from '@/api'
-import {Match} from '@/entities/match'
-import {useAnalyticsStore} from '@/analytics/event'
-import useProfile from '@/hooks/my/useProfile'
-import {useIsFocused} from '@react-navigation/native'
-import {Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, View} from 'react-native'
-import {ROUTES, useAppRouter} from '@/shared'
-import {CALENDAR_START_DATE, CALENDAR_END_DATE} from '@/constants/day'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {CalendarView} from './CalendarView';
+import {TicketCalendarLog} from './type';
+import dayjs from 'dayjs';
+import {useQueryClient} from '@tanstack/react-query';
+import {TicketDetail} from '@/entities/ticket';
+import ApiClient from '@/api';
+import {Match} from '@/entities/match';
+import {useAnalyticsStore} from '@/analytics/event';
+import useProfile from '@/hooks/my/useProfile';
+import {useIsFocused} from '@react-navigation/native';
+import {Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, View} from 'react-native';
+import {ROUTES, useAppRouter} from '@/shared';
+import {CALENDAR_START_DATE, CALENDAR_END_DATE} from '@/constants/day';
 
 type Props = {
-  targetId: number
-}
+  targetId: number;
+};
 
-const width = Dimensions.get('window').width - 48
+const width = Dimensions.get('window').width - 48;
 
-const START_DATE = CALENDAR_START_DATE
-const END_DATE = CALENDAR_END_DATE
+const START_DATE = CALENDAR_START_DATE;
+const END_DATE = CALENDAR_END_DATE;
 
 const CalendarContainer = ({targetId}: Props) => {
-  const {profile} = useProfile()
-  const isMyDiary = profile.id === targetId
+  const {profile} = useProfile();
+  const isMyDiary = profile.id === targetId;
 
-  const {setScreenName, setDiaryCreate} = useAnalyticsStore()
-  const queryClient = useQueryClient()
+  const {setScreenName, setDiaryCreate} = useAnalyticsStore();
+  const queryClient = useQueryClient();
 
-  const router = useAppRouter()
+  const router = useAppRouter();
 
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const prefetchTicket = async (date: string) => {
-    const queryKey = ['ticket', date, targetId]
+    const queryKey = ['ticket', date, targetId];
 
-    if (queryClient.getQueryData<TicketDetail[]>(queryKey)) return
+    if (queryClient.getQueryData<TicketDetail[]>(queryKey)) return;
 
     return queryClient.prefetchQuery({
       queryKey,
       queryFn: () => ApiClient.get<TicketDetail[]>(`/tickets/ticket_detail/`, {date, target_id: targetId}),
-    })
-  }
+    });
+  };
 
   const prefetchMatchList = async (date: string) => {
-    const queryKey = ['matchTeam', date]
+    const queryKey = ['matchTeam', date];
 
-    if (queryClient.getQueryData<Match[]>(queryKey)) return
+    if (queryClient.getQueryData<Match[]>(queryKey)) return;
 
     return queryClient.prefetchQuery({
       queryKey,
@@ -56,19 +56,19 @@ const CalendarContainer = ({targetId}: Props) => {
           end_date: date,
           start_date: date,
         }),
-    })
-  }
+    });
+  };
 
   const dayClick = (pDay: Date) => {
-    const targetDate = dayjs(pDay).format('YYYY-MM-DD')
-    const ticketsGroupByDate = getTicketList(dayjs(pDay).format('YYYY-MM'))?.[targetDate] || []
+    const targetDate = dayjs(pDay).format('YYYY-MM-DD');
+    const ticketsGroupByDate = getTicketList(dayjs(pDay).format('YYYY-MM'))?.[targetDate] || [];
 
     if (ticketsGroupByDate?.length) {
       // 해당 날짜 직관일기 prefetch
       prefetchTicket(targetDate).finally(() => {
-        router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {date: targetDate, target_id: targetId})
-      })
-      return
+        router.push(ROUTES.WRITE_TODAY_TICKET_CARD, {date: targetDate, target_id: targetId});
+      });
+      return;
     }
 
     // 없다면 작성화면으로 이동인데, 내 다이어리일 때에만 이동할 수 있어야 함
@@ -76,13 +76,13 @@ const CalendarContainer = ({targetId}: Props) => {
       // 해당 날짜 경기 일정 prefetch
       prefetchMatchList(targetDate).finally(() => {
         // ga 데이터 수집용도
-        setScreenName('/')
-        setDiaryCreate('메인 버튼')
+        setScreenName('/');
+        setDiaryCreate('메인 버튼');
         // ga 데이터 수집용도
-        router.push(ROUTES.WRITE, {date: targetDate})
-      })
+        router.push(ROUTES.WRITE, {date: targetDate});
+      });
     }
-  }
+  };
 
   const [list, setList] = useState(
     Array.from({length: 3}, (_, i) =>
@@ -95,116 +95,116 @@ const CalendarContainer = ({targetId}: Props) => {
         .add(i - 1, 'month')
         .toDate(),
     ),
-  )
+  );
 
-  const [scrollDirection, setScrollDirection] = useState<'front' | 'back' | null>(null)
-  const [isSync, setIsSync] = useState(true)
-  const throttle = useRef(false)
-  const flatListRef = useRef<FlatList>(null)
+  const [scrollDirection, setScrollDirection] = useState<'front' | 'back' | null>(null);
+  const [isSync, setIsSync] = useState(true);
+  const throttle = useRef(false);
+  const flatListRef = useRef<FlatList>(null);
 
-  const setAsync = (func: () => void) => setTimeout(func, 0)
+  const setAsync = (func: () => void) => setTimeout(func, 0);
   const moveToIndex = (index: number) => {
-    flatListRef.current?.scrollToIndex({index, animated: false})
-  }
+    flatListRef.current?.scrollToIndex({index, animated: false});
+  };
 
   const onChangeList = (func: (list: Date[]) => Date[]) => {
-    if (throttle.current) return
-    throttle.current = true
+    if (throttle.current) return;
+    throttle.current = true;
 
-    setList(func)
+    setList(func);
 
     setTimeout(() => {
-      throttle.current = false
-    }, 200)
-  }
+      throttle.current = false;
+    }, 200);
+  };
 
   const onAddFrontDate = (targetDate: Date) => {
-    setScrollDirection('front')
-    setSelectedDate(targetDate)
+    setScrollDirection('front');
+    setSelectedDate(targetDate);
     onChangeList(prev => {
       const newList = Array.from({length: Math.ceil(Math.abs(dayjs(targetDate).diff(prev[0], 'month', true))) + 1}) //
         .map((_, i) =>
           dayjs(targetDate)
             .add(i - 1, 'month')
             .toDate(),
-        )
+        );
 
       // 중복 제거를 위해 YYYY-MM 기준으로 유니크하게 필터링
-      const combined = newList.concat(prev)
-      const uniqueMap = new Map(combined.map(date => [dayjs(date).format('YYYY-MM'), date]))
-      return Array.from(uniqueMap.values()).filter(date => !dayjs(date).isBefore(START_DATE))
-    })
-  }
+      const combined = newList.concat(prev);
+      const uniqueMap = new Map(combined.map(date => [dayjs(date).format('YYYY-MM'), date]));
+      return Array.from(uniqueMap.values()).filter(date => !dayjs(date).isBefore(START_DATE));
+    });
+  };
 
   const onAddBackDate = (targetDate: Date) => {
-    setScrollDirection('back')
-    setSelectedDate(targetDate)
+    setScrollDirection('back');
+    setSelectedDate(targetDate);
     onChangeList(prev => {
       const newList = Array.from({length: dayjs(targetDate).diff(prev.at(-1), 'month') + 1}) //
         .map((_, i) =>
           dayjs(prev.at(-1))
             .add(i + 1, 'month')
             .toDate(),
-        )
+        );
 
       // 중복 제거를 위해 YYYY-MM 기준으로 유니크하게 필터링
-      const combined = prev.concat(newList)
-      const uniqueMap = new Map(combined.map(date => [dayjs(date).format('YYYY-MM'), date]))
-      return Array.from(uniqueMap.values()).filter(date => !dayjs(date).isAfter(END_DATE))
-    })
-  }
+      const combined = prev.concat(newList);
+      const uniqueMap = new Map(combined.map(date => [dayjs(date).format('YYYY-MM'), date]));
+      return Array.from(uniqueMap.values()).filter(date => !dayjs(date).isAfter(END_DATE));
+    });
+  };
 
   const onChangeDateByHeader = (date: Date) => {
-    setSelectedDate(date)
-    setIsSync(false)
+    setSelectedDate(date);
+    setIsSync(false);
 
-    const targetIndex = list.findIndex(item => dayjs(item).format('YYYY-MM') === dayjs(date).format('YYYY-MM'))
-    const hasTargetDate = targetIndex !== -1
+    const targetIndex = list.findIndex(item => dayjs(item).format('YYYY-MM') === dayjs(date).format('YYYY-MM'));
+    const hasTargetDate = targetIndex !== -1;
 
     // 이미 존재하는 날짜라면 그대로 이동
     if (hasTargetDate) {
-      moveToIndex(targetIndex)
-      return
+      moveToIndex(targetIndex);
+      return;
     }
 
     // 존재하지 않는 날짜라면 추가 후 이동
     // 날짜가 오늘보다 앞쪽이라면 앞쪽에 추가 (사이사이도 다 추가해야 함)
     // 날짜가 오늘보다 뒤쪽이라면 뒤쪽에 추가 (사이사이도 다 추가해야 함)
     // 기준이 오늘인 이유는 기본적으로 오늘 날짜 -1, 0, +1 이렇게 설정되어 있기 때문임
-    const targetDate = dayjs(date).toDate()
+    const targetDate = dayjs(date).toDate();
     if (dayjs(targetDate).isBefore(dayjs())) {
-      onAddFrontDate(targetDate)
+      onAddFrontDate(targetDate);
     } else {
-      onAddBackDate(targetDate)
+      onAddBackDate(targetDate);
     }
-  }
+  };
 
   useEffect(() => {
-    if (!scrollDirection) return
-    setScrollDirection(null)
+    if (!scrollDirection) return;
+    setScrollDirection(null);
     if (scrollDirection === 'front') {
-      const isSameWithStart = dayjs(selectedDate).format('YYYY-MM') === dayjs(START_DATE).format('YYYY-MM')
-      const index = isSameWithStart ? 0 : 1
+      const isSameWithStart = dayjs(selectedDate).format('YYYY-MM') === dayjs(START_DATE).format('YYYY-MM');
+      const index = isSameWithStart ? 0 : 1;
       // 2020-01이라면 0번으로 이동
-      isSync ? moveToIndex(index) : setAsync(() => moveToIndex(index))
+      isSync ? moveToIndex(index) : setAsync(() => moveToIndex(index));
     } else {
-      const isSameWithEnd = dayjs(selectedDate).format('YYYY-MM') === END_DATE.format('YYYY-MM')
-      const index = isSameWithEnd ? list.length - 1 : list.length - 2
+      const isSameWithEnd = dayjs(selectedDate).format('YYYY-MM') === END_DATE.format('YYYY-MM');
+      const index = isSameWithEnd ? list.length - 1 : list.length - 2;
       // 2029-12이라면 마지막 인덱스로 이동
-      isSync ? moveToIndex(index) : setAsync(() => moveToIndex(index))
+      isSync ? moveToIndex(index) : setAsync(() => moveToIndex(index));
     }
-  }, [list])
+  }, [list]);
 
   const getTicketList = (yearMonth: string) => {
-    return queryClient.getQueryData<Record<string, TicketCalendarLog[]>>(['tickets', yearMonth, targetId])
-  }
+    return queryClient.getQueryData<Record<string, TicketCalendarLog[]>>(['tickets', yearMonth, targetId]);
+  };
 
-  const [hideCalendar, setHideCalendar] = useState(false)
-  const isFocused = useIsFocused()
+  const [hideCalendar, setHideCalendar] = useState(false);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    setHideCalendar(!isFocused)
-  }, [isFocused])
+    setHideCalendar(!isFocused);
+  }, [isFocused]);
 
   const renderCalendar = useCallback(
     ({item}: {item: Date}) => {
@@ -215,17 +215,17 @@ const CalendarContainer = ({targetId}: Props) => {
           targetId={targetId}
           onClick={dayClick}
         />
-      )
+      );
     },
     [hideCalendar, targetId],
-  )
+  );
 
   const initialScrollIndex = useMemo(() => {
-    const index = list.findIndex(item => dayjs(item).format('YYYY-MM') === dayjs(selectedDate).format('YYYY-MM'))
-    return index
-  }, [list, selectedDate])
+    const index = list.findIndex(item => dayjs(item).format('YYYY-MM') === dayjs(selectedDate).format('YYYY-MM'));
+    return index;
+  }, [list, selectedDate]);
 
-  const ref = useRef<any>(null)
+  const ref = useRef<any>(null);
 
   return (
     <View style={{width: width}}>
@@ -247,23 +247,23 @@ const CalendarContainer = ({targetId}: Props) => {
           snapToAlignment="center"
           initialScrollIndex={initialScrollIndex}
           onMomentumScrollEnd={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
-            const offsetX = event.nativeEvent.contentOffset.x
-            if (ref.current) clearTimeout(ref.current)
+            const offsetX = event.nativeEvent.contentOffset.x;
+            if (ref.current) clearTimeout(ref.current);
 
             ref.current = setTimeout(() => {
-              const index = Math.round(offsetX / width)
-              setSelectedDate(list[index])
-            }, 100)
+              const index = Math.round(offsetX / width);
+              setSelectedDate(list[index]);
+            }, 100);
           }}
           onStartReached={() => {
-            if (dayjs(list[0]).format('YYYY-MM') === dayjs(START_DATE).format('YYYY-MM')) return
-            onAddFrontDate(dayjs(list[0]).toDate())
-            setIsSync(true)
+            if (dayjs(list[0]).format('YYYY-MM') === dayjs(START_DATE).format('YYYY-MM')) return;
+            onAddFrontDate(dayjs(list[0]).toDate());
+            setIsSync(true);
           }}
           onEndReached={() => {
-            if (dayjs(list.at(-1)).format('YYYY-MM') === END_DATE.format('YYYY-MM')) return
-            onAddBackDate(dayjs(list.at(-1)).toDate())
-            setIsSync(true)
+            if (dayjs(list.at(-1)).format('YYYY-MM') === END_DATE.format('YYYY-MM')) return;
+            onAddBackDate(dayjs(list.at(-1)).toDate());
+            setIsSync(true);
           }}
           onStartReachedThreshold={0.1}
           onEndReachedThreshold={0.1}
@@ -282,7 +282,7 @@ const CalendarContainer = ({targetId}: Props) => {
         />
       )}
     </View>
-  )
-}
+  );
+};
 
-export {CalendarContainer}
+export {CalendarContainer};

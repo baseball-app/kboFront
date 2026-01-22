@@ -1,10 +1,10 @@
-import React from 'react'
-import {StyleSheet, View, Image} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {AppleLoginButton, KakaoLoginButton, NaverLoginButton} from '@/features/auth/login'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
-import {Txt} from '@/shared/ui/Txt'
+import React from 'react';
+import {StyleSheet, View, Image} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {AppleLoginButton, KakaoLoginButton, NaverLoginButton} from '@/features/auth/login';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
+import {Txt} from '@/shared/ui/Txt';
 
 export default function LoginScreen() {
   return (
@@ -27,7 +27,7 @@ export default function LoginScreen() {
         </View>
       </SafeAreaView>
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
     width: size(140),
     marginBottom: size(20),
   },
-})
+});

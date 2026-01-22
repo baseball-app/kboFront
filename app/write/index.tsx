@@ -1,15 +1,15 @@
-import Header from '@/components/common/Header'
-import Progress from '@/components/common/Progress'
-import QuestionBox from '@/components/home/QuestionBox'
-import useWriteTicket from '@/hooks/match/useWriteTicket'
-import {useLocalSearchParams} from 'expo-router'
-import React, {useEffect, useMemo, useState} from 'react'
-import {StyleSheet, ScrollView, Image, TouchableOpacity, View} from 'react-native'
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
-import {ROUTES, size, useAppRouter} from '@/shared'
-import {Match, MatchCard, useMatch} from '@/entities/match'
-import {color_token} from '@/constants/theme'
-import {BackButton, Txt} from '@/shared/ui'
+import Header from '@/components/common/Header';
+import Progress from '@/components/common/Progress';
+import QuestionBox from '@/components/home/QuestionBox';
+import useWriteTicket from '@/hooks/match/useWriteTicket';
+import {useLocalSearchParams} from 'expo-router';
+import React, {useEffect, useMemo, useState} from 'react';
+import {StyleSheet, ScrollView, Image, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {ROUTES, size, useAppRouter} from '@/shared';
+import {Match, MatchCard, useMatch} from '@/entities/match';
+import {color_token} from '@/constants/theme';
+import {BackButton, Txt} from '@/shared/ui';
 
 /** 경기 결과 목업데이터 */
 const matchResult = [
@@ -29,7 +29,7 @@ const matchResult = [
     image: require('@/assets/icons/emo/cancel.png'),
     text: '경기 취소',
   },
-]
+];
 /** 날씨 목업 데이터 */
 const weatherResult = [
   {
@@ -48,7 +48,7 @@ const weatherResult = [
     image: require('@/assets/icons/emo/wind.png'),
     text: '바람',
   },
-]
+];
 
 const DailyLogWriteScreen = () => {
   /** 스토어에서 가져온 상태와 set 함수 */
@@ -63,96 +63,96 @@ const DailyLogWriteScreen = () => {
     setSelectedWeather,
     selectedPlace,
     setSelectedPlace,
-  } = useWriteTicket()
-  const insets = useSafeAreaInsets()
+  } = useWriteTicket();
+  const insets = useSafeAreaInsets();
 
-  const router = useAppRouter()
-  const params = useLocalSearchParams()
+  const router = useAppRouter();
+  const params = useLocalSearchParams();
 
   /** 현재 단계를 나타내는 상태 */
-  const [currentStep, setCurrentStep] = useState(Number(params?.step) || 1)
+  const [currentStep, setCurrentStep] = useState(Number(params?.step) || 1);
 
   /** 자동 다음 버튼 클릭 여부 */
-  const [autoSkipToNext, setAutoSkipToNext] = useState<Record<number, boolean>>({})
+  const [autoSkipToNext, setAutoSkipToNext] = useState<Record<number, boolean>>({});
   const skipToNextStep = (currentStep: number) => {
     if (!autoSkipToNext[currentStep]) {
-      nextButtonClick()
-      setAutoSkipToNext({...autoSkipToNext, [currentStep]: true})
+      nextButtonClick();
+      setAutoSkipToNext({...autoSkipToNext, [currentStep]: true});
     }
-  }
+  };
 
   /** 경기 결과 이미지를 클릭하는 함수 */
   const onMatchResultClick = (pR: string) => {
-    setSelectedMatchResult(pR)
-    if (selectedWeather) skipToNextStep(currentStep)
-  }
+    setSelectedMatchResult(pR);
+    if (selectedWeather) skipToNextStep(currentStep);
+  };
 
   /** 오늘의 날씨 이미지를 클릭하는 함수 */
   const onWeatherClick = (pW: string) => {
-    setSelectedWeather(pW)
-    if (selectedMatchResult) skipToNextStep(currentStep)
-  }
+    setSelectedWeather(pW);
+    if (selectedMatchResult) skipToNextStep(currentStep);
+  };
 
   /** 경기를 본 장소를 클릭하는 함수 */
   const onPlaceClick = (pP: string) => {
-    setSelectedPlace(pP)
-  }
+    setSelectedPlace(pP);
+  };
 
   /** 다음 버튼을 제어하는 변수 */
   const nextButtonEnabled = useMemo(() => {
     if (currentStep === 1) {
-      return selectedMatch && Object.keys(selectedMatch).length > 0
+      return selectedMatch && Object.keys(selectedMatch).length > 0;
     }
     if (currentStep === 2) {
-      return !!selectedMatchResult && !!selectedWeather
+      return !!selectedMatchResult && !!selectedWeather;
     }
     if (currentStep === 3) {
-      return !!selectedPlace
+      return !!selectedPlace;
     }
-  }, [currentStep, selectedMatch, selectedMatchResult, selectedWeather, selectedPlace])
+  }, [currentStep, selectedMatch, selectedMatchResult, selectedWeather, selectedPlace]);
 
   /** 다음 버튼 클릭 */
   const nextButtonClick = () => {
     if (currentStep < 3) {
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(currentStep + 1);
     } else {
       // router.dismiss()
-      router.dismissTo(ROUTES.WRITE_TICKET)
+      router.dismissTo(ROUTES.WRITE_TICKET);
     }
-  }
+  };
 
   const onClickDoubleHeaderMatch = () => {
-    setCurrentStep(currentStep + 1)
-    setSelectedMatch(null)
-  }
+    setCurrentStep(currentStep + 1);
+    setSelectedMatch(null);
+  };
 
   /** 이전 화살표 클릭 */
   const goToPreviousStep = () => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
+      setCurrentStep(currentStep - 1);
     } else {
-      router.back()
+      router.back();
     }
-  }
+  };
 
-  const {matchingList, isSuccess} = useMatch({selectedDate})
+  const {matchingList, isSuccess} = useMatch({selectedDate});
 
-  const date = params?.date
+  const date = params?.date;
 
   useEffect(() => {
-    if (date) setSelectedDate(new Date(date as string))
+    if (date) setSelectedDate(new Date(date as string));
     if (params.matchId && matchingList) {
-      const targetMatch = matchingList?.find(match => match.id === Number(params.matchId))
-      console.log(targetMatch)
+      const targetMatch = matchingList?.find(match => match.id === Number(params.matchId));
+      console.log(targetMatch);
       if (targetMatch) {
         // 경기가 종료되지 않은 경우, 결과를 undefined로 설정
         const match: Match = targetMatch.is_finished
           ? targetMatch
-          : {...targetMatch, score_home: undefined, score_away: undefined}
-        setSelectedMatch(match)
+          : {...targetMatch, score_home: undefined, score_away: undefined};
+        setSelectedMatch(match);
       }
     }
-  }, [date, isSuccess])
+  }, [date, isSuccess]);
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -178,8 +178,8 @@ const DailyLogWriteScreen = () => {
                     isSelected={selectedMatch?.id === match.id}
                     match={match}
                     onClick={() => {
-                      setSelectedMatch(match)
-                      nextButtonClick()
+                      setSelectedMatch(match);
+                      nextButtonClick();
                     }}
                   />
                 ))}
@@ -279,10 +279,10 @@ const DailyLogWriteScreen = () => {
         </View>
       ) : null}
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default DailyLogWriteScreen
+export default DailyLogWriteScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -397,4 +397,4 @@ const styles = StyleSheet.create({
     borderRadius: size(10),
     paddingVertical: size(40),
   },
-})
+});

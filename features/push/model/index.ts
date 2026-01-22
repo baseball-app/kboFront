@@ -1,1 +1,1 @@
-export {useUpdateDeviceToken} from './useUpdateDeviceToken'
+export {useUpdateDeviceToken} from './useUpdateDeviceToken';

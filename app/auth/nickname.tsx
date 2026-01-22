@@ -1,14 +1,14 @@
-import React from 'react'
-import {StyleSheet, View, TextInput, KeyboardAvoidingView, Platform} from 'react-native'
-import useUserJoin from '@/hooks/auth/useUserJoin'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {color_token} from '@/constants/theme'
-import Header from '@/components/common/Header'
-import {BackButton, BottomFloatSection, Button, Txt} from '@/shared/ui'
-import {size} from '@/shared'
+import React from 'react';
+import {StyleSheet, View, TextInput, KeyboardAvoidingView, Platform} from 'react-native';
+import useUserJoin from '@/hooks/auth/useUserJoin';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {color_token} from '@/constants/theme';
+import Header from '@/components/common/Header';
+import {BackButton, BottomFloatSection, Button, Txt} from '@/shared/ui';
+import {size} from '@/shared';
 
 export default function NicknameScreen() {
-  const {nickname, setNickname, moveToNextStep, moveToPrevStep} = useUserJoin()
+  const {nickname, setNickname, moveToNextStep, moveToPrevStep} = useUserJoin();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,7 +44,7 @@ export default function NicknameScreen() {
         </BottomFloatSection>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
     height: size(2),
     backgroundColor: '#000000',
   },
-})
+});

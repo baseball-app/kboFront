@@ -1,46 +1,46 @@
-import {useAnalyticsStore} from '@/analytics/event'
-import {EmptyMatchView, LoadingMatchList, Match, MatchCard, MatchWeekCalendar, useMatch} from '@/entities/match'
-import {AddDoubleHeaderTicketButton, useNavigateWriteTicket} from '@/features/match'
-import {size} from '@/shared'
-import dayjs from 'dayjs'
-import {usePathname} from 'expo-router'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {FlatList, StyleSheet, View} from 'react-native'
+import {useAnalyticsStore} from '@/analytics/event';
+import {EmptyMatchView, LoadingMatchList, Match, MatchCard, MatchWeekCalendar, useMatch} from '@/entities/match';
+import {AddDoubleHeaderTicketButton, useNavigateWriteTicket} from '@/features/match';
+import {size} from '@/shared';
+import dayjs from 'dayjs';
+import {usePathname} from 'expo-router';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
 
 const MatchList = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const date = dayjs(selectedDate).format('YYYY-MM-DD')
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const date = dayjs(selectedDate).format('YYYY-MM-DD');
 
   // 경기 목록
-  const {matchingList, isPending} = useMatch({selectedDate})
+  const {matchingList, isPending} = useMatch({selectedDate});
 
   // validation 이후, 티켓 작성 페이지로 이동
-  const {moveToDoubleHeaderWriteTicket, moveToMatchWriteTicket} = useNavigateWriteTicket()
+  const {moveToDoubleHeaderWriteTicket, moveToMatchWriteTicket} = useNavigateWriteTicket();
 
-  const {setScreenName, setDiaryCreate} = useAnalyticsStore()
-  const pathname = usePathname()
+  const {setScreenName, setDiaryCreate} = useAnalyticsStore();
+  const pathname = usePathname();
 
   // 페이지 이동 시, 날짜 초기화
   useEffect(() => {
-    if (dayjs().isSame(selectedDate, 'date')) return
-    if (pathname !== '/match' && !pathname.includes('write')) setSelectedDate(new Date())
-  }, [pathname])
+    if (dayjs().isSame(selectedDate, 'date')) return;
+    if (pathname !== '/match' && !pathname.includes('write')) setSelectedDate(new Date());
+  }, [pathname]);
 
   const renderItem = useCallback(
     ({item: match}: {item: Match}) => (
       <MatchCard
         match={match} //
         onClick={() => {
-          setScreenName(pathname)
-          setDiaryCreate('경기 일정')
-          moveToMatchWriteTicket(date, match.id)
+          setScreenName(pathname);
+          setDiaryCreate('경기 일정');
+          moveToMatchWriteTicket(date, match.id);
         }}
       />
     ),
     [moveToMatchWriteTicket, date],
-  )
+  );
 
-  const keyExtractor = useCallback((item: Match) => `${item.id}`, [])
+  const keyExtractor = useCallback((item: Match) => `${item.id}`, []);
 
   return (
     <>
@@ -66,10 +66,10 @@ const MatchList = () => {
         keyExtractor={keyExtractor}
       />
     </>
-  )
-}
+  );
+};
 
-export {MatchList}
+export {MatchList};
 
 const styles = StyleSheet.create({
   flatList: {
@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     rowGap: 20,
   },
-})
+});

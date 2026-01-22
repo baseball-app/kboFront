@@ -1,6 +1,6 @@
-import React from 'react'
-import {StyleSheet, Text} from 'react-native'
-import {View} from 'react-native'
+import React from 'react';
+import {StyleSheet, Text} from 'react-native';
+import {View} from 'react-native';
 
 const Privacy = () => {
   return (
@@ -121,8 +121,8 @@ const Privacy = () => {
         </Text>
       </View>
     </>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
@@ -154,6 +154,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-})
+});
 
-export {Privacy}
+export {Privacy};

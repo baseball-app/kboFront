@@ -1,44 +1,44 @@
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
-import {TextStyle, ViewStyle} from 'react-native'
-import {create, StateCreator} from 'zustand'
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
+import {TextStyle, ViewStyle} from 'react-native';
+import {create, StateCreator} from 'zustand';
 
 /** 모달데이터 구조 */
 export interface IModalConfig {
-  header: string
-  content: string
-  button: IButton[]
+  header: string;
+  content: string;
+  button: IButton[];
 }
 /** 모달데이터 버튼 구조 */
 interface IButton {
-  text: string
-  onPress: () => void
-  buttonStyle?: ViewStyle
-  buttonTextStyle?: TextStyle
+  text: string;
+  onPress: () => void;
+  buttonStyle?: ViewStyle;
+  buttonTextStyle?: TextStyle;
 }
 
 interface ICommonSlice {
-  currentModal: IModalConfig | null
+  currentModal: IModalConfig | null;
   modal: {
-    open: (pModalConfig: IModalConfig) => void
-    hide: () => void
-  }
+    open: (pModalConfig: IModalConfig) => void;
+    hide: () => void;
+  };
 }
 export const commonSlice: StateCreator<ICommonSlice> = set => ({
   currentModal: null,
   modal: {
     open: (pModalConfig: IModalConfig) => {
-      set({currentModal: pModalConfig})
+      set({currentModal: pModalConfig});
     },
     hide: () => {
-      set({currentModal: null})
+      set({currentModal: null});
     },
   },
-})
-export const useCommonSlice = create<ICommonSlice>(commonSlice)
+});
+export const useCommonSlice = create<ICommonSlice>(commonSlice);
 
 export const usePopup = () => {
-  const commonSlice = useCommonSlice()
+  const commonSlice = useCommonSlice();
 
   const openCommonPopup = (content: string, onSuccess?: () => void) => {
     commonSlice.modal.open({
@@ -48,8 +48,8 @@ export const usePopup = () => {
         {
           text: '확인',
           onPress: () => {
-            commonSlice.modal.hide()
-            onSuccess?.()
+            commonSlice.modal.hide();
+            onSuccess?.();
           },
           buttonStyle: {
             width: '100%',
@@ -61,8 +61,8 @@ export const usePopup = () => {
           },
         },
       ],
-    })
-  }
+    });
+  };
 
-  return {...commonSlice, openCommonPopup}
-}
+  return {...commonSlice, openCommonPopup};
+};

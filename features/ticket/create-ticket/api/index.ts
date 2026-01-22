@@ -1,12 +1,12 @@
-import {uploadFile} from '@/api'
+import {uploadFile} from '@/api';
 
 export const createTicket = async (data: FormData) => {
   try {
-    return uploadFile<{id: number}>(`/tickets/ticket_add/`, data)
+    return uploadFile<{id: number}>(`/tickets/ticket_add/`, data);
   } catch (error) {
     //
   }
-}
+};
 
 await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage.uri, {
   fieldName: 'image',
@@ -34,4 +34,4 @@ await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resi
   headers: {
     'X-KBOAPP-TOKEN': user?.accessToken || '',
   },
-})
+});

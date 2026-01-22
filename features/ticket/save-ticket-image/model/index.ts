@@ -1,1 +1,1 @@
-export {useSaveTicketImage} from './useSaveTicketImage'
+export {useSaveTicketImage} from './useSaveTicketImage';

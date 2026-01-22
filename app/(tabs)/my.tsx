@@ -1,21 +1,21 @@
-import React from 'react'
-import {View, Image, StyleSheet, Platform, KeyboardAvoidingView, ScrollView, Dimensions} from 'react-native'
-import {theme} from '@/constants/Colors'
-import useMyInfo from '@/hooks/my/useMyInfo'
+import React from 'react';
+import {View, Image, StyleSheet, Platform, KeyboardAvoidingView, ScrollView, Dimensions} from 'react-native';
+import {theme} from '@/constants/Colors';
+import useMyInfo from '@/hooks/my/useMyInfo';
 
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {ROUTES, size, useAppRouter} from '@/shared'
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {ROUTES, size, useAppRouter} from '@/shared';
 
-import {AccountMenuWidget} from '@/widgets/account-menu'
-import {ProfileBox, TeamBox} from '@/widgets/my-info'
-import {AddFriendInput} from '@/features/user/friend/follow'
-import {AlarmIcon} from '@/entities/alarm'
-import {color_token} from '@/constants/theme'
-import {Pressable, Txt} from '@/shared/ui'
+import {AccountMenuWidget} from '@/widgets/account-menu';
+import {ProfileBox, TeamBox} from '@/widgets/my-info';
+import {AddFriendInput} from '@/features/user/friend/follow';
+import {AlarmIcon} from '@/entities/alarm';
+import {color_token} from '@/constants/theme';
+import {Pressable, Txt} from '@/shared/ui';
 
 const ProfileScreen = () => {
-  const {profile, onPasteInviteCode} = useMyInfo()
-  const router = useAppRouter()
+  const {profile, onPasteInviteCode} = useMyInfo();
+  const router = useAppRouter();
 
   return (
     <SafeAreaView style={[styles.container, {flex: 1}]}>
@@ -83,8 +83,8 @@ const ProfileScreen = () => {
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const PressableButton = ({onPress, label, value}: {onPress: () => void; label: string; value: React.ReactNode}) => {
   return (
@@ -100,8 +100,8 @@ const PressableButton = ({onPress, label, value}: {onPress: () => void; label: s
         )}
       </View>
     </Pressable>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -133,6 +133,6 @@ const styles = StyleSheet.create({
     width: size(32),
     height: size(32),
   },
-})
+});
 
-export default ProfileScreen
+export default ProfileScreen;

@@ -1,22 +1,22 @@
-import {IModalConfig, useCommonSlice} from '@/slice/commonSlice'
-import React, {useEffect, useState} from 'react'
-import {View, TouchableOpacity, StyleSheet} from 'react-native'
-import {Modal} from '@/components/common/Modal'
-import {Pressable, Txt} from '@/shared/ui'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
+import {IModalConfig, useCommonSlice} from '@/slice/commonSlice';
+import React, {useEffect, useState} from 'react';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import {Modal} from '@/components/common/Modal';
+import {Pressable, Txt} from '@/shared/ui';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
 const CommonModal = () => {
-  const {currentModal, modal} = useCommonSlice()
-  const [modalState, setModalState] = useState<IModalConfig | null>(null)
+  const {currentModal, modal} = useCommonSlice();
+  const [modalState, setModalState] = useState<IModalConfig | null>(null);
   useEffect(() => {
     if (currentModal) {
-      setModalState(currentModal)
+      setModalState(currentModal);
     } else {
       setTimeout(() => {
-        setModalState(null)
-      }, 1000)
+        setModalState(null);
+      }, 1000);
     }
-  }, [currentModal])
+  }, [currentModal]);
 
   return (
     <Modal //
@@ -47,8 +47,8 @@ const CommonModal = () => {
         </View>
       </View>
     </Modal>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   overlay: {
@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
     paddingBottom: size(13),
     borderRadius: size(10),
   },
-})
+});
 
-export default CommonModal
+export default CommonModal;

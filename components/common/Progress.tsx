@@ -1,24 +1,24 @@
-import React, {useEffect, useRef} from 'react'
-import {View, StyleSheet, Animated, ViewStyle} from 'react-native'
+import React, {useEffect, useRef} from 'react';
+import {View, StyleSheet, Animated, ViewStyle} from 'react-native';
 
 interface ProgressProps {
-  current: number
-  max: number
-  duration?: number
-  containerStyle?: ViewStyle
-  progressStyle?: ViewStyle
+  current: number;
+  max: number;
+  duration?: number;
+  containerStyle?: ViewStyle;
+  progressStyle?: ViewStyle;
 }
 
 const Progress = ({current, max, duration = 300, containerStyle, progressStyle}: ProgressProps) => {
-  const progressAnim = useRef(new Animated.Value(0)).current
+  const progressAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(progressAnim, {
       toValue: current / max,
       duration: duration,
       useNativeDriver: false,
-    }).start()
-  }, [current, max, duration])
+    }).start();
+  }, [current, max, duration]);
 
   return (
     <View style={[styles.progressBarContainer, containerStyle]}>
@@ -35,10 +35,10 @@ const Progress = ({current, max, duration = 300, containerStyle, progressStyle}:
         ]}
       />
     </View>
-  )
-}
+  );
+};
 
-export default Progress
+export default Progress;
 
 const styles = StyleSheet.create({
   progressBarContainer: {
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 2,
     borderBottomRightRadius: 2,
   },
-})
+});

@@ -1,6 +1,6 @@
-import {create} from 'zustand'
-import {SelectedStatsFilterStore, SelectedStatsType} from './type'
-import {useCallback} from 'react'
+import {create} from 'zustand';
+import {SelectedStatsFilterStore, SelectedStatsType} from './type';
+import {useCallback} from 'react';
 
 const useSelectedStatsFilterStore = create<SelectedStatsFilterStore>(set => ({
   selectedStatsFilter: {
@@ -23,19 +23,19 @@ const useSelectedStatsFilterStore = create<SelectedStatsFilterStore>(set => ({
         sort: state.selectedStatsFilter!.sort === '승률 높은순' ? '승률 낮은순' : '승률 높은순',
       },
     })),
-}))
+}));
 
 const useSelectedStatsFilter = () => {
   const {selectedStatsFilter, onChangeSeasonYear, onChangeSeason, onChangeType, toggleSort} =
-    useSelectedStatsFilterStore()
+    useSelectedStatsFilterStore();
 
   const sortDataByWinRate = useCallback<<T extends {win_percent: number}>(data: T[]) => T[]>(
     data => {
-      const isAscending = selectedStatsFilter?.sort === '승률 높은순'
-      return data.sort((a, b) => (isAscending ? b.win_percent - a.win_percent : a.win_percent - b.win_percent))
+      const isAscending = selectedStatsFilter?.sort === '승률 높은순';
+      return data.sort((a, b) => (isAscending ? b.win_percent - a.win_percent : a.win_percent - b.win_percent));
     },
     [selectedStatsFilter?.sort],
-  )
+  );
 
   return {
     selectedStatsFilter,
@@ -44,7 +44,7 @@ const useSelectedStatsFilter = () => {
     onChangeType,
     toggleSort,
     sortDataByWinRate,
-  }
-}
+  };
+};
 
-export {useSelectedStatsFilter}
+export {useSelectedStatsFilter};

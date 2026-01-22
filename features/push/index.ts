@@ -1,1 +1,1 @@
-export {useUpdateDeviceToken} from './model'
+export {useUpdateDeviceToken} from './model';

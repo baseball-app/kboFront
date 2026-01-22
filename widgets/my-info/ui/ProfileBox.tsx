@@ -1,14 +1,14 @@
-import {ProfileImage} from '@/entities/user'
-import {ROUTES, size, useAppRouter} from '@/shared'
-import useProfile from '@/hooks/my/useProfile'
-import React from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {Pressable, Txt} from '@/shared/ui'
-import {color_token} from '@/constants/theme'
+import {ProfileImage} from '@/entities/user';
+import {ROUTES, size, useAppRouter} from '@/shared';
+import useProfile from '@/hooks/my/useProfile';
+import React from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Pressable, Txt} from '@/shared/ui';
+import {color_token} from '@/constants/theme';
 
 const ProfileBox = () => {
-  const router = useAppRouter()
-  const {profile} = useProfile()
+  const router = useAppRouter();
+  const {profile} = useProfile();
 
   return (
     <View style={styles.profileHeader}>
@@ -36,10 +36,10 @@ const ProfileBox = () => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export {ProfileBox}
+export {ProfileBox};
 
 const styles = StyleSheet.create({
   profileHeader: {
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: size(2),
   },
-})
+});

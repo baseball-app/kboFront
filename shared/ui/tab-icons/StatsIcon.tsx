@@ -1,11 +1,11 @@
-import React from 'react'
-import Svg, {Path} from 'react-native-svg'
-import {color_token} from '@/constants/theme'
+import React from 'react';
+import Svg, {Path} from 'react-native-svg';
+import {color_token} from '@/constants/theme';
 
 interface StatsIconProps {
-  color?: string
-  width?: number
-  height?: number
+  color?: string;
+  width?: number;
+  height?: number;
 }
 
 export const StatsIcon = ({color = color_token.gray900, width = 24, height = 24}: StatsIconProps) => {
@@ -24,5 +24,5 @@ export const StatsIcon = ({color = color_token.gray900, width = 24, height = 24}
         fill={color}
       />
     </Svg>
-  )
-}
+  );
+};

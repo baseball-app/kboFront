@@ -1,25 +1,25 @@
-import {usePopup} from '@/slice/commonSlice'
-import * as api from '../api'
-import {useAuthStore} from '@/entities/auth'
-import {ROUTES, useAppRouter} from '@/shared'
+import {usePopup} from '@/slice/commonSlice';
+import * as api from '../api';
+import {useAuthStore} from '@/entities/auth';
+import {ROUTES, useAppRouter} from '@/shared';
 
 const useWithdraw = () => {
-  const {clear} = useAuthStore()
-  const {modal} = usePopup()
-  const router = useAppRouter()
+  const {clear} = useAuthStore();
+  const {modal} = usePopup();
+  const router = useAppRouter();
 
   const withdraw = async () => {
     try {
-      await api.withdraw()
+      await api.withdraw();
       // TODO: logout이 좀 안 맞긴 하는데
-      await clear()
+      await clear();
 
-      router.dismissAll()
-      router.replace(ROUTES.AUTH_LOGIN)
+      router.dismissAll();
+      router.replace(ROUTES.AUTH_LOGIN);
     } catch (error) {
-      console.error('회원 탈퇴 오류 :: ', error)
+      console.error('회원 탈퇴 오류 :: ', error);
     }
-  }
+  };
 
   const withdrawUser = () => {
     modal.open({
@@ -41,8 +41,8 @@ const useWithdraw = () => {
         {
           text: '회원탈퇴',
           onPress: () => {
-            withdraw()
-            modal.hide()
+            withdraw();
+            modal.hide();
           },
           buttonStyle: {
             backgroundColor: '#1E5EF4',
@@ -53,10 +53,10 @@ const useWithdraw = () => {
           },
         },
       ],
-    })
-  }
+    });
+  };
 
-  return {withdraw: withdrawUser}
-}
+  return {withdraw: withdrawUser};
+};
 
-export {useWithdraw}
+export {useWithdraw};

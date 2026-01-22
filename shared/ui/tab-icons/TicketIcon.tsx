@@ -1,11 +1,11 @@
-import {color_token} from '@/constants/theme'
-import React from 'react'
-import Svg, {Path, G, Defs, ClipPath, Rect} from 'react-native-svg'
+import {color_token} from '@/constants/theme';
+import React from 'react';
+import Svg, {Path, G, Defs, ClipPath, Rect} from 'react-native-svg';
 
 interface TicketIconProps {
-  color?: string
-  width?: number
-  height?: number
+  color?: string;
+  width?: number;
+  height?: number;
 }
 
 export const TicketIcon = ({color = color_token.gray400, width = 24, height = 24}: TicketIconProps) => {
@@ -25,5 +25,5 @@ export const TicketIcon = ({color = color_token.gray400, width = 24, height = 24
         </ClipPath>
       </Defs>
     </Svg>
-  )
-}
+  );
+};

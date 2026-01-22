@@ -1,4 +1,4 @@
-import {useAppRouter} from './useAppRouter'
+import {useAppRouter} from './useAppRouter';
 
-export {useAppRouter}
-export * from './constants'
+export {useAppRouter};
+export * from './constants';

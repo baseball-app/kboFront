@@ -1,29 +1,29 @@
-import {useEffect, useState} from 'react'
-import {Keyboard, KeyboardAvoidingView, KeyboardEvent, Platform} from 'react-native'
+import {useEffect, useState} from 'react';
+import {Keyboard, KeyboardAvoidingView, KeyboardEvent, Platform} from 'react-native';
 
 export const useKeyboard = () => {
-  const [keyboardHeight, setKeyboardHeight] = useState(0)
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e: KeyboardEvent) => {
-      setKeyboardHeight(e.endCoordinates.height)
-      setIsKeyboardVisible(true)
-    })
+      setKeyboardHeight(e.endCoordinates.height);
+      setIsKeyboardVisible(true);
+    });
 
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardHeight(0)
-      setIsKeyboardVisible(false)
-    })
+      setKeyboardHeight(0);
+      setIsKeyboardVisible(false);
+    });
 
     return () => {
-      keyboardDidShowListener?.remove()
-      keyboardDidHideListener?.remove()
-    }
-  }, [])
+      keyboardDidShowListener?.remove();
+      keyboardDidHideListener?.remove();
+    };
+  }, []);
 
-  return {keyboardHeight, isKeyboardVisible}
-}
+  return {keyboardHeight, isKeyboardVisible};
+};
 
 export const CustKeyboardAvoidingView = ({children}: {children: React.ReactNode}) => {
   return (
@@ -33,5 +33,5 @@ export const CustKeyboardAvoidingView = ({children}: {children: React.ReactNode}
       keyboardVerticalOffset={30}>
       {children}
     </KeyboardAvoidingView>
-  )
-}
+  );
+};

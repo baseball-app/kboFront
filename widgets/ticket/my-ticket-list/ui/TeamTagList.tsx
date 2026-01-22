@@ -1,29 +1,29 @@
-import {TeamTag, useTeam} from '@/entities/match'
-import useProfile from '@/hooks/my/useProfile'
-import React, {useMemo} from 'react'
-import {View, StyleSheet} from 'react-native'
-import {size} from '@/shared'
-import {Txt} from '@/shared/ui'
+import {TeamTag, useTeam} from '@/entities/match';
+import useProfile from '@/hooks/my/useProfile';
+import React, {useMemo} from 'react';
+import {View, StyleSheet} from 'react-native';
+import {size} from '@/shared';
+import {Txt} from '@/shared/ui';
 
 const TeamTagList = ({
   selectedTeamId,
   onChangeTeam,
 }: {
-  selectedTeamId: number
-  onChangeTeam: (teamId: number) => void
+  selectedTeamId: number;
+  onChangeTeam: (teamId: number) => void;
 }) => {
-  const {teams} = useTeam()
-  const {profile} = useProfile()
+  const {teams} = useTeam();
+  const {profile} = useProfile();
 
   const tagLines = useMemo(() => {
     const teamList = [
       {id: 0, short_name: '최애 경기'}, //
       ...(teams || []),
       {id: 999, short_name: '타구단'},
-    ].filter(club => club.id !== profile.my_team?.id)
+    ].filter(club => club.id !== profile.my_team?.id);
 
-    return [teamList.slice(0, 5), teamList.slice(5, 10), teamList.slice(10)]
-  }, [teams, profile.my_team?.id])
+    return [teamList.slice(0, 5), teamList.slice(5, 10), teamList.slice(10)];
+  }, [teams, profile.my_team?.id]);
 
   return (
     <View style={styles.ticketBox}>
@@ -45,8 +45,8 @@ const TeamTagList = ({
         ))}
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   ticketBox: {
@@ -61,6 +61,6 @@ const styles = StyleSheet.create({
     gap: size(8),
     rowGap: size(12),
   },
-})
+});
 
-export {TeamTagList}
+export {TeamTagList};

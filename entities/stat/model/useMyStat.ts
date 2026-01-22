@@ -1,5 +1,5 @@
-import {useQueries} from '@tanstack/react-query'
-import {DAYS_OF_WEEK} from '@/constants/day'
+import {useQueries} from '@tanstack/react-query';
+import {DAYS_OF_WEEK} from '@/constants/day';
 import {
   getWinPercent,
   getWeekdayMostWin,
@@ -7,7 +7,7 @@ import {
   getMostWinTeam,
   getBallparkMostView,
   getWinRateCalculation,
-} from '../api'
+} from '../api';
 
 const useMyStat = () => {
   const {data, isLoading, isSuccess} = useQueries({
@@ -64,22 +64,22 @@ const useMyStat = () => {
         mostWinTeam,
         mostWatchStadium,
         winRateCalculation,
-      ] = result
+      ] = result;
 
-      const isLoading = result.some(item => item.isLoading)
-      const isSuccess = result.every(item => item.isSuccess)
+      const isLoading = result.some(item => item.isLoading);
+      const isSuccess = result.every(item => item.isSuccess);
 
       const weekdayMostWinDay = (() => {
-        const day = weekdayMostWin?.data?.most_wins_day
-        if (day === undefined || day === null) return '-'
-        return DAYS_OF_WEEK[Number(day)]
-      })()
+        const day = weekdayMostWin?.data?.most_wins_day;
+        if (day === undefined || day === null) return '-';
+        return DAYS_OF_WEEK[Number(day)];
+      })();
 
       const longestWinningStreakText = (() => {
-        const streak = longestWinningStreak?.data?.longest_winning_streak
-        if (streak === undefined || streak === null) return '-'
-        return `${streak}연승`
-      })()
+        const streak = longestWinningStreak?.data?.longest_winning_streak;
+        if (streak === undefined || streak === null) return '-';
+        return `${streak}연승`;
+      })();
 
       return {
         data: {
@@ -111,15 +111,15 @@ const useMyStat = () => {
         },
         isLoading,
         isSuccess,
-      }
+      };
     },
-  })
+  });
 
   return {
     data,
     isLoading,
     isSuccess,
-  }
-}
+  };
+};
 
-export {useMyStat}
+export {useMyStat};

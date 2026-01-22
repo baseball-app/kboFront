@@ -1,27 +1,27 @@
-import {Tabs} from 'expo-router'
-import React, {useEffect} from 'react'
-import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs'
+import {Tabs} from 'expo-router';
+import React, {useEffect} from 'react';
+import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 
-import Header from '@/components/common/Header'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import {usePushMessage} from '@/shared'
-import {Footer} from '@/widgets'
-import {useUpdateDeviceToken} from '@/features/push'
+import Header from '@/components/common/Header';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {usePushMessage} from '@/shared';
+import {Footer} from '@/widgets';
+import {useUpdateDeviceToken} from '@/features/push';
 
 export default function TabLayout() {
   const tabScreenOptions: BottomTabNavigationOptions = {
     tabBarHideOnKeyboard: true,
     headerShadowVisible: false,
     tabBarStyle: {display: 'none'},
-  }
+  };
 
-  const {top} = useSafeAreaInsets()
+  const {top} = useSafeAreaInsets();
 
-  const {deviceToken} = usePushMessage(async remoteMessage => {})
-  const {mutate: updateDeviceToken} = useUpdateDeviceToken()
+  const {deviceToken} = usePushMessage(async remoteMessage => {});
+  const {mutate: updateDeviceToken} = useUpdateDeviceToken();
   useEffect(() => {
-    if (deviceToken) updateDeviceToken({token: deviceToken})
-  }, [deviceToken])
+    if (deviceToken) updateDeviceToken({token: deviceToken});
+  }, [deviceToken]);
 
   return (
     <Tabs screenOptions={tabScreenOptions} tabBar={() => <Footer />}>
@@ -47,5 +47,5 @@ export default function TabLayout() {
       {/* 마이 페이지 탭 화면 */}
       <Tabs.Screen name="my" options={{headerShown: false}} />
     </Tabs>
-  )
+  );
 }

@@ -1,1 +1,1 @@
-export {AlarmList} from './ui'
+export {AlarmList} from './ui';

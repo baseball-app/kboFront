@@ -1,12 +1,12 @@
-import {Href} from 'expo-router'
+import {Href} from 'expo-router';
 
 interface ITabRoutes {
-  CALENDAR: Href
-  MATCH: Href
-  TICKET: Href
-  ALARM: Href
-  RANK: Href
-  MY: Href
+  CALENDAR: Href;
+  MATCH: Href;
+  TICKET: Href;
+  ALARM: Href;
+  RANK: Href;
+  MY: Href;
 }
 /** 라우터 경로 관련 상수 */
 export const router_address: {TAB: ITabRoutes} = {
@@ -18,4 +18,4 @@ export const router_address: {TAB: ITabRoutes} = {
     RANK: '/(tabs)/rank',
     MY: '/(tabs)/my',
   },
-}
+};

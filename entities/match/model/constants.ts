@@ -69,6 +69,6 @@ const TEAMS = [
     color: '#810924',
     gradient: ['#EB008A', '#EB008A', '#820024'],
   },
-]
+];
 
-export {TEAMS}
+export {TEAMS};

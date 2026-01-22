@@ -1,25 +1,25 @@
-import {useAuthStore} from '@/entities/auth'
-import {useAppRouter, ROUTES} from '@/shared'
-import * as api from '../api'
+import {useAuthStore} from '@/entities/auth';
+import {useAppRouter, ROUTES} from '@/shared';
+import * as api from '../api';
 
 const useLogout = () => {
-  const {clear} = useAuthStore()
-  const router = useAppRouter()
+  const {clear} = useAuthStore();
+  const router = useAppRouter();
 
   const logout = async () => {
     try {
-      await api.logout()
+      await api.logout();
     } catch (error) {
-      console.error('토큰 무효화 실패', error)
+      console.error('토큰 무효화 실패', error);
     } finally {
-      await clear()
+      await clear();
 
-      router.dismissAll()
-      router.replace(ROUTES.AUTH_LOGIN)
+      router.dismissAll();
+      router.replace(ROUTES.AUTH_LOGIN);
     }
-  }
+  };
 
-  return {logout}
-}
+  return {logout};
+};
 
-export {useLogout}
+export {useLogout};

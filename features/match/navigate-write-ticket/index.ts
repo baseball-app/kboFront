@@ -1,2 +1,2 @@
-export {useNavigateWriteTicket} from './model'
-export {AddDoubleHeaderTicketButton} from './ui'
+export {useNavigateWriteTicket} from './model';
+export {AddDoubleHeaderTicketButton} from './ui';

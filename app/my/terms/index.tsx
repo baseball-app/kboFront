@@ -1,17 +1,17 @@
-import React from 'react'
-import {StyleSheet, TouchableOpacity} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import Header from '@/components/common/Header'
-import {Ionicons} from '@expo/vector-icons'
-import {size, useAppRouter} from '@/shared'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import React from 'react';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Header from '@/components/common/Header';
+import {Ionicons} from '@expo/vector-icons';
+import {size, useAppRouter} from '@/shared';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
 
 const TermsScreen = () => {
-  const router = useAppRouter()
+  const router = useAppRouter();
   const moveToDetail = (value: 'privacy-policy' | 'terms-of-service') => {
-    router.push(`/my/terms/${value}`)
-  }
+    router.push(`/my/terms/${value}`);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,10 +30,10 @@ const TermsScreen = () => {
         <Ionicons name="chevron-forward" size={24} color={color_token.gray500} />
       </TouchableOpacity>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default TermsScreen
+export default TermsScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
     padding: size(15),
     marginVertical: 1,
   },
-})
+});

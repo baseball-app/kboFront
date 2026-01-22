@@ -1,12 +1,12 @@
-import React, {useState} from 'react'
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import React, {useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 type Props = {
-  label?: string | React.ReactNode
-  placeholder?: string
-  value?: string
-  onPress?: () => void
-}
+  label?: string | React.ReactNode;
+  placeholder?: string;
+  value?: string;
+  onPress?: () => void;
+};
 
 const SelectBox = ({label, placeholder, value, onPress}: Props) => {
   // const [isOpen, setIsOpen] = useState(false)
@@ -17,7 +17,7 @@ const SelectBox = ({label, placeholder, value, onPress}: Props) => {
       style={styles.container}
       onPress={() => {
         // setIsOpen(true)
-        onPress?.()
+        onPress?.();
       }}>
       {label && typeof label === 'string' ? <Text style={styles.label}>{label}</Text> : null}
       {label && typeof label !== 'string' ? label : null}
@@ -31,10 +31,10 @@ const SelectBox = ({label, placeholder, value, onPress}: Props) => {
         />
       </View>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default SelectBox
+export default SelectBox;
 
 const styles = StyleSheet.create({
   container: {
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 4,
   },
-})
+});

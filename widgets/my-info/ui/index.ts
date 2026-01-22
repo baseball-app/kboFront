@@ -1,2 +1,2 @@
-export {ProfileBox} from './ProfileBox'
-export {TeamBox} from './TeamBox'
+export {ProfileBox} from './ProfileBox';
+export {TeamBox} from './TeamBox';

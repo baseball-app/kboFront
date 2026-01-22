@@ -1,11 +1,11 @@
-import React from 'react'
-import Svg, {Path} from 'react-native-svg'
-import {color_token} from '@/constants/theme'
+import React from 'react';
+import Svg, {Path} from 'react-native-svg';
+import {color_token} from '@/constants/theme';
 
 interface CalenderIconProps {
-  color?: string
-  width?: number
-  height?: number
+  color?: string;
+  width?: number;
+  height?: number;
 }
 
 export const CalenderIcon = ({color = color_token.gray400, width = 23, height = 23}: CalenderIconProps) => {
@@ -20,5 +20,5 @@ export const CalenderIcon = ({color = color_token.gray400, width = 23, height = 
         fill={color}
       />
     </Svg>
-  )
-}
+  );
+};

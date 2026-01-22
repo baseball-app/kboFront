@@ -1,1 +1,1 @@
-export {useSaveTicketImage} from './model'
+export {useSaveTicketImage} from './model';

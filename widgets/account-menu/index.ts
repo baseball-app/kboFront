@@ -1,1 +1,1 @@
-export {AccountMenuWidget} from './AccountMenuWidget'
+export {AccountMenuWidget} from './AccountMenuWidget';

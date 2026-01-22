@@ -1,9 +1,9 @@
-import WheelPicker2 from '@/components/WheelPicker2'
-import {BottomSheet, Txt} from '@/shared/ui'
-import React, {useCallback, useMemo, useState} from 'react'
-import {StyleSheet, View} from 'react-native'
-import {Button} from '@/shared/ui'
-import {size} from '@/shared'
+import WheelPicker2 from '@/components/WheelPicker2';
+import {BottomSheet, Txt} from '@/shared/ui';
+import React, {useCallback, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Button} from '@/shared/ui';
+import {size} from '@/shared';
 
 const SelectSeasonBottomSheet = ({
   isOpen,
@@ -11,23 +11,23 @@ const SelectSeasonBottomSheet = ({
   onConfirm,
   onCancel,
 }: {
-  isOpen: boolean
-  value: number
-  onConfirm: (year: number, season: string) => void
-  onCancel: () => void
+  isOpen: boolean;
+  value: number;
+  onConfirm: (year: number, season: string) => void;
+  onCancel: () => void;
 }) => {
-  const [selectedYear, setSelectedYear] = useState(value)
-  const yearList = useMemo(() => Array.from({length: 2}, (_, i) => `${2025 + i}년`), [])
+  const [selectedYear, setSelectedYear] = useState(value);
+  const yearList = useMemo(() => Array.from({length: 2}, (_, i) => `${2025 + i}년`), []);
 
-  const [selectedSeason, setSelectedSeason] = useState('시즌')
-  const seasonList = useMemo(() => ['시즌'], [])
+  const [selectedSeason, setSelectedSeason] = useState('시즌');
+  const seasonList = useMemo(() => ['시즌'], []);
 
   const initValue = useCallback(() => {
     setTimeout(() => {
-      setSelectedYear(value)
-      setSelectedSeason('시즌')
-    }, 300)
-  }, [value])
+      setSelectedYear(value);
+      setSelectedSeason('시즌');
+    }, 300);
+  }, [value]);
 
   return (
     <BottomSheet isOpen={isOpen} duration={350} height={size(320)}>
@@ -38,7 +38,7 @@ const SelectSeasonBottomSheet = ({
             itemHeight={50}
             initialItem={`${selectedYear}년`}
             onItemChange={item => {
-              setSelectedYear(Number(item.replaceAll(/\D/g, '')))
+              setSelectedYear(Number(item.replaceAll(/\D/g, '')));
             }}
             items={yearList}
             containerStyle={{width: '49%'}}
@@ -48,7 +48,7 @@ const SelectSeasonBottomSheet = ({
             itemHeight={50}
             initialItem={selectedSeason}
             onItemChange={item => {
-              setSelectedSeason(item)
+              setSelectedSeason(item);
             }}
             containerStyle={{width: '49%'}}
           />
@@ -69,8 +69,8 @@ const SelectSeasonBottomSheet = ({
         </View>
       </View>
     </BottomSheet>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   modalContent: {
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
     marginTop: size(30),
     marginBottom: size(16),
   },
-})
+});
 
-export {SelectSeasonBottomSheet}
+export {SelectSeasonBottomSheet};

@@ -1,1 +1,1 @@
-export {ShareInstagramButton} from './ShareInstagramButton'
+export {ShareInstagramButton} from './ShareInstagramButton';

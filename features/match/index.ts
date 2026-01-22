@@ -1,1 +1,1 @@
-export {useNavigateWriteTicket, AddDoubleHeaderTicketButton} from './navigate-write-ticket'
+export {useNavigateWriteTicket, AddDoubleHeaderTicketButton} from './navigate-write-ticket';

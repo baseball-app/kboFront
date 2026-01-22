@@ -1,1 +1,1 @@
-export {ProfileBox, TeamBox} from './ui'
+export {ProfileBox, TeamBox} from './ui';

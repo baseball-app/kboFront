@@ -1,16 +1,16 @@
-import React from 'react'
-import {DetailSummary} from './DetailSummary'
-import {StyleSheet, View} from 'react-native'
-import {Txt} from '@/shared/ui'
-import {useTeam} from '@/entities/match'
-import {MyTicketList} from '@/widgets/ticket/my-ticket-list'
+import React from 'react';
+import {DetailSummary} from './DetailSummary';
+import {StyleSheet, View} from 'react-native';
+import {Txt} from '@/shared/ui';
+import {useTeam} from '@/entities/match';
+import {MyTicketList} from '@/widgets/ticket/my-ticket-list';
 type Props = {
-  parameter_id: number
-}
+  parameter_id: number;
+};
 
 function TeamStatsByHomeDetail({parameter_id}: Props) {
-  const {teams} = useTeam()
-  const team = teams?.find(team => team.id === parameter_id)
+  const {teams} = useTeam();
+  const team = teams?.find(team => team.id === parameter_id);
 
   return (
     <View style={styles.container}>
@@ -25,7 +25,7 @@ function TeamStatsByHomeDetail({parameter_id}: Props) {
         <MyTicketList isLoading ticketList={[]} />
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
   contentsTitle: {
     paddingBottom: 20,
   },
-})
+});
 
-export {TeamStatsByHomeDetail}
+export {TeamStatsByHomeDetail};

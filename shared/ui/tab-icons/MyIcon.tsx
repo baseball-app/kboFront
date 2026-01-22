@@ -1,11 +1,11 @@
-import {color_token} from '@/constants/theme'
-import React from 'react'
-import Svg, {Path} from 'react-native-svg'
+import {color_token} from '@/constants/theme';
+import React from 'react';
+import Svg, {Path} from 'react-native-svg';
 
 interface MyIconProps {
-  color?: string
-  width?: number
-  height?: number
+  color?: string;
+  width?: number;
+  height?: number;
 }
 
 export const MyIcon = ({color = color_token.gray400, width = 24, height = 24}: MyIconProps) => {
@@ -16,5 +16,5 @@ export const MyIcon = ({color = color_token.gray400, width = 24, height = 24}: M
         fill={color}
       />
     </Svg>
-  )
-}
+  );
+};

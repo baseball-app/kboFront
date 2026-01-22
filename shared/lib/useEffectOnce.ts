@@ -1,13 +1,13 @@
-import {useEffect, useRef} from 'react'
+import {useEffect, useRef} from 'react';
 
 const useEffectOnce = (callback: () => void) => {
-  const isCalled = useRef(false)
+  const isCalled = useRef(false);
   useEffect(() => {
     if (!isCalled.current) {
-      callback()
-      isCalled.current = true
+      callback();
+      isCalled.current = true;
     }
-  }, [])
-}
+  }, []);
+};
 
-export {useEffectOnce}
+export {useEffectOnce};

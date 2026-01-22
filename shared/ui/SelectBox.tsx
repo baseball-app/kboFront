@@ -1,15 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {Modal, Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
-import {Pressable} from './Pressable'
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated'
-import {scheduleOnRN} from 'react-native-worklets'
+import React, {useEffect, useRef, useState} from 'react';
+import {Modal, Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {Pressable} from './Pressable';
+import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
+import {scheduleOnRN} from 'react-native-worklets';
 
 type Props = {
-  list?: {label: string; value: string}[]
-  value?: string
-  onChange?: (value: string) => void
-  placeholder?: string
-}
+  list?: {label: string; value: string}[];
+  value?: string;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+};
 const SelectBox = ({
   list = [
     {
@@ -21,50 +21,50 @@ const SelectBox = ({
   onChange,
   placeholder = '선택해주세요',
 }: Props) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
-  const [layout, setLayout] = useState({x: 0, y: 0, width: 0, height: 0})
-  const ref = useRef<View>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [layout, setLayout] = useState({x: 0, y: 0, width: 0, height: 0});
+  const ref = useRef<View>(null);
 
-  const rotation = useSharedValue(0)
-  const listTranslateY = useSharedValue(-20)
-  const listOpacity = useSharedValue(0)
+  const rotation = useSharedValue(0);
+  const listTranslateY = useSharedValue(-20);
+  const listOpacity = useSharedValue(0);
 
   const handleClose = () => {
-    setIsVisible(false)
-  }
+    setIsVisible(false);
+  };
 
   const handlePress = () => {
     if (!isOpen) {
       ref.current?.measure((x, y, width, height, pageX, pageY) => {
-        setLayout({x: pageX, y: pageY, width, height})
-        setIsOpen(true)
-        setIsVisible(true)
-      })
+        setLayout({x: pageX, y: pageY, width, height});
+        setIsOpen(true);
+        setIsVisible(true);
+      });
     } else {
-      setIsOpen(false)
+      setIsOpen(false);
     }
-  }
+  };
 
   const handleSelect = (selectedValue: string) => {
-    onChange?.(selectedValue)
-    setIsOpen(false)
-  }
+    onChange?.(selectedValue);
+    setIsOpen(false);
+  };
 
-  const isActive = (selectedValue: string) => selectedValue === value
+  const isActive = (selectedValue: string) => selectedValue === value;
 
-  const selectedLabel = list.find(item => item.value === value)?.label || placeholder
+  const selectedLabel = list.find(item => item.value === value)?.label || placeholder;
 
   useEffect(() => {
     rotation.value = withTiming(isOpen ? 180 : 360, {
       duration: 300,
       easing: Easing.out(Easing.quad),
-    })
-  }, [isOpen, rotation])
+    });
+  }, [isOpen, rotation]);
 
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [{rotate: `${rotation.value}deg`}],
-  }))
+  }));
 
   useEffect(() => {
     if (isOpen && isVisible) {
@@ -72,17 +72,17 @@ const SelectBox = ({
       listTranslateY.value = withTiming(0, {
         duration: 300,
         easing: Easing.out(Easing.quad),
-      })
+      });
       listOpacity.value = withTiming(1, {
         duration: 300,
         easing: Easing.out(Easing.quad),
-      })
+      });
     } else if (!isOpen && isVisible) {
       // 닫힐 때 애니메이션
       listTranslateY.value = withTiming(-20, {
         duration: 200,
         easing: Easing.in(Easing.quad),
-      })
+      });
       listOpacity.value = withTiming(
         0,
         {
@@ -91,17 +91,17 @@ const SelectBox = ({
         },
         finished => {
           if (finished) {
-            scheduleOnRN(handleClose)
+            scheduleOnRN(handleClose);
           }
         },
-      )
+      );
     }
-  }, [isOpen, isVisible, listTranslateY, listOpacity])
+  }, [isOpen, isVisible, listTranslateY, listOpacity]);
 
   const listStyle = useAnimatedStyle(() => ({
     transform: [{translateY: listTranslateY.value}],
     opacity: listOpacity.value,
-  }))
+  }));
 
   return (
     <>
@@ -124,8 +124,8 @@ const SelectBox = ({
                 listStyle,
               ]}>
               {list.map((item, index) => {
-                const isLast = index === list.length - 1
-                const isFirst = index === 0
+                const isLast = index === list.length - 1;
+                const isFirst = index === 0;
 
                 return (
                   <Pressable
@@ -140,15 +140,15 @@ const SelectBox = ({
                     onPress={() => handleSelect(item.value)}>
                     <Text style={styles.listItemLabelText}>{item.label}</Text>
                   </Pressable>
-                )
+                );
               })}
             </Animated.View>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
     </>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -205,6 +205,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     lineHeight: 16 * 1.4,
   },
-})
+});
 
-export {SelectBox}
+export {SelectBox};

@@ -1,22 +1,22 @@
-import React, {memo} from 'react'
-import {Pressable, StyleSheet, StyleProp, ViewStyle, TextStyle, View} from 'react-native'
-import {color_token} from '@/constants/theme'
-import {Txt} from './Txt'
-import {size} from '@/shared'
-import LottieView from 'lottie-react-native'
+import React, {memo} from 'react';
+import {Pressable, StyleSheet, StyleProp, ViewStyle, TextStyle, View} from 'react-native';
+import {color_token} from '@/constants/theme';
+import {Txt} from './Txt';
+import {size} from '@/shared';
+import LottieView from 'lottie-react-native';
 
-type ButtonType = 'primary' | 'secondary' | 'outline' | 'outline_active' | 'gray' | 'cancel'
-type ButtonSize = 'small' | 'medium' | 'large'
+type ButtonType = 'primary' | 'secondary' | 'outline' | 'outline_active' | 'gray' | 'cancel';
+type ButtonSize = 'small' | 'medium' | 'large';
 
 interface ButtonProps {
-  children: React.ReactNode
-  onPress?: () => void
-  type?: ButtonType
-  size?: ButtonSize
-  disabled?: boolean
-  loading?: boolean
-  style?: StyleProp<ViewStyle>
-  textStyle?: StyleProp<TextStyle>
+  children: React.ReactNode;
+  onPress?: () => void;
+  type?: ButtonType;
+  size?: ButtonSize;
+  disabled?: boolean;
+  loading?: boolean;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 const buttonColors = {
@@ -56,7 +56,7 @@ const buttonColors = {
     border: color_token.gray350,
     pressed: color_token.gray350,
   },
-}
+};
 
 const sizeStyles = {
   small: {
@@ -80,7 +80,7 @@ const sizeStyles = {
     borderRadius: size(12),
     height: size(58),
   },
-}
+};
 
 const Button = memo(
   ({
@@ -93,18 +93,18 @@ const Button = memo(
     style,
     textStyle,
   }: ButtonProps) => {
-    const isDisabled = disabled || loading
-    const colors = buttonColors[type]
-    const sizeStyle = sizeStyles[size]
+    const isDisabled = disabled || loading;
+    const colors = buttonColors[type];
+    const sizeStyle = sizeStyles[size];
 
     return (
       <Pressable
         onPress={() => {
-          if (isDisabled) return
-          onPress?.()
+          if (isDisabled) return;
+          onPress?.();
         }}
         onLayout={({nativeEvent}) => {
-          console.log('height', nativeEvent.layout.height)
+          console.log('height', nativeEvent.layout.height);
         }}
         disabled={isDisabled}
         style={({pressed}) => [
@@ -129,9 +129,9 @@ const Button = memo(
           </Txt>
         )}
       </Pressable>
-    )
+    );
   },
-)
+);
 
 const styles = StyleSheet.create({
   button: {
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     width: size(90),
     height: size(90),
   },
-})
+});
 
-export {Button}
-export type {ButtonProps, ButtonType, ButtonSize}
+export {Button};
+export type {ButtonProps, ButtonType, ButtonSize};

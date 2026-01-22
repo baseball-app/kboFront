@@ -1,14 +1,14 @@
-import React from 'react'
-import {Image, View} from 'react-native'
-import {useCheckUnReadAlarm} from '../model'
-import {Pressable} from '@/shared'
+import React from 'react';
+import {Image, View} from 'react-native';
+import {useCheckUnReadAlarm} from '../model';
+import {Pressable} from '@/shared';
 
 type AlarmIconProps = {
-  onPress?: () => void
-}
+  onPress?: () => void;
+};
 
 const AlarmIcon = ({onPress}: AlarmIconProps) => {
-  const {data} = useCheckUnReadAlarm()
+  const {data} = useCheckUnReadAlarm();
 
   return (
     <Pressable style={{position: 'relative'}} onPress={onPress}>
@@ -27,7 +27,7 @@ const AlarmIcon = ({onPress}: AlarmIconProps) => {
         />
       ) : null}
     </Pressable>
-  )
-}
+  );
+};
 
-export {AlarmIcon}
+export {AlarmIcon};

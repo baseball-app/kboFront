@@ -1,12 +1,12 @@
-import React from 'react'
-import {StyleSheet, Text, TouchableOpacity} from 'react-native'
+import React from 'react';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 type Props = {
-  name: string
-  isActive?: boolean
-  onClick?: () => void
-  paddingHorizontal: number
-}
+  name: string;
+  isActive?: boolean;
+  onClick?: () => void;
+  paddingHorizontal: number;
+};
 
 const Tag = ({name, isActive, onClick, paddingHorizontal}: Props) => {
   return (
@@ -16,10 +16,10 @@ const Tag = ({name, isActive, onClick, paddingHorizontal}: Props) => {
       style={[styles.tag, isActive && styles.tagActive, {paddingHorizontal: paddingHorizontal}]}>
       <Text style={[styles.text, isActive && styles.textActive]}>{name}</Text>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default Tag
+export default Tag;
 
 const styles = StyleSheet.create({
   tag: {
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
   textActive: {
     color: '#1E5EF4',
   },
-})
+});

@@ -1,4 +1,4 @@
-import EnvConfig from 'react-native-config'
+import EnvConfig from 'react-native-config';
 
 export const Config = {
   KAKAO_LOGIN_CLIENT_ID: EnvConfig.EXPO_PUBLIC_KAKAO_LOGIN_CLIENT_ID,
@@ -10,4 +10,4 @@ export const Config = {
   APPLE_LOGIN_CLIENT_ID: EnvConfig.EXPO_PUBLIC_APPLE_LOGIN_CLIENT_ID,
   APPLE_LOGIN_REDIRECT_URI: EnvConfig.EXPO_PUBLIC_APPLE_LOGIN_REDIRECT_URI,
   MODE: EnvConfig.EXPO_PUBLIC_MODE,
-}
+};

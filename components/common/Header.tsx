@@ -1,32 +1,32 @@
-import React from 'react'
-import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native'
-import {size, useAppRouter} from '@/shared'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import React from 'react';
+import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import {size, useAppRouter} from '@/shared';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
 
 type ButtonType = {
-  onPress?: () => void
-  content: React.ReactNode
-}
+  onPress?: () => void;
+  content: React.ReactNode;
+};
 
 type Props = {
-  variants?: 'white' | 'transparent' | '#F3F2EE'
-  hasBackButton?: boolean
-  rightButton?: ButtonType
-  leftButton?: ButtonType
-  title?: string | React.ReactNode
-  topInset?: number
-}
+  variants?: 'white' | 'transparent' | '#F3F2EE';
+  hasBackButton?: boolean;
+  rightButton?: ButtonType;
+  leftButton?: ButtonType;
+  title?: string | React.ReactNode;
+  topInset?: number;
+};
 
 /**
  * TODO: variants 변경해야 함
  */
 const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButton, title, topInset = 0}: Props) => {
-  const router = useAppRouter()
+  const router = useAppRouter();
 
   const onBackButtonClick = () => {
-    router.back()
-  }
+    router.back();
+  };
 
   return (
     <View
@@ -72,10 +72,10 @@ const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButt
         <View style={styles.icon} />
       )}
     </View>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
 
 const styles = StyleSheet.create({
   container: {
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
     minWidth: size(28),
     minHeight: size(28),
   },
-})
+});

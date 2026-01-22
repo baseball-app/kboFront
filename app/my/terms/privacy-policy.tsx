@@ -1,10 +1,10 @@
-import React from 'react'
-import {ScrollView, StyleSheet} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import Header from '@/components/common/Header'
-import {Privacy} from '@/entities/terms'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
+import React from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Header from '@/components/common/Header';
+import {Privacy} from '@/entities/terms';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
 
 const PrivacyPolicyScreen = () => {
   return (
@@ -15,8 +15,8 @@ const PrivacyPolicyScreen = () => {
         <Privacy />
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: size(16),
   },
-})
+});
 
-export default PrivacyPolicyScreen
+export default PrivacyPolicyScreen;

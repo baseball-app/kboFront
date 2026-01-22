@@ -1,1 +1,1 @@
-export {MyTicketBox, MyTicketList, TeamTagList} from './ui'
+export {MyTicketBox, MyTicketList, TeamTagList} from './ui';

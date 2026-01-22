@@ -1,15 +1,15 @@
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
-import React from 'react'
-import {StyleSheet, View} from 'react-native'
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 
 type Props = {
-  title: string
-  percent: number
-  win: number
-  draw: number
-  lose: number
-}
+  title: string;
+  percent: number;
+  win: number;
+  draw: number;
+  lose: number;
+};
 
 function DetailSummary({title, percent, win, draw, lose}: Props) {
   return (
@@ -47,10 +47,10 @@ function DetailSummary({title, percent, win, draw, lose}: Props) {
         </View>
       </View>
     </View>
-  )
+  );
 }
 
-export {DetailSummary}
+export {DetailSummary};
 
 const styles = StyleSheet.create({
   container: {
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
   },
-})
+});

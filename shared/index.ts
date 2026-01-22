@@ -1,2 +1,2 @@
-export * from './lib'
-export {Pressable, AnimatedPressable} from './ui'
+export * from './lib';
+export {Pressable, AnimatedPressable} from './ui';

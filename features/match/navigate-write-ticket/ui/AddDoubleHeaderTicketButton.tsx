@@ -1,8 +1,8 @@
-import React from 'react'
-import {StyleSheet} from 'react-native'
-import {Pressable, Txt} from '@/shared/ui'
-import {color_token} from '@/constants/theme'
-import {size} from '@/shared'
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {Pressable, Txt} from '@/shared/ui';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
 
 const AddDoubleHeaderTicketButton = ({onPress}: {onPress: () => void}) => {
   return (
@@ -13,10 +13,10 @@ const AddDoubleHeaderTicketButton = ({onPress}: {onPress: () => void}) => {
         더블헤더 작성하기
       </Txt>
     </Pressable>
-  )
-}
+  );
+};
 
-export {AddDoubleHeaderTicketButton}
+export {AddDoubleHeaderTicketButton};
 
 const styles = StyleSheet.create({
   doubleHeaderButton: {
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start', // fit-content 효과
     marginInline: 'auto',
   },
-})
+});

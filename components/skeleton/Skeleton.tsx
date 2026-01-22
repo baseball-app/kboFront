@@ -1,17 +1,17 @@
-import React, {useEffect, useRef} from 'react'
-import {View, StyleSheet, DimensionValue, Animated, StyleProp, ViewStyle} from 'react-native'
-import {size} from '@/shared'
-import {color_token} from '@/constants/theme'
+import React, {useEffect, useRef} from 'react';
+import {View, StyleSheet, DimensionValue, Animated, StyleProp, ViewStyle} from 'react-native';
+import {size} from '@/shared';
+import {color_token} from '@/constants/theme';
 
 type SkeletonProps = {
-  width: DimensionValue
-  height: DimensionValue
-  type?: 'circle' | 'rect'
-  style?: StyleProp<ViewStyle>
-}
+  width: DimensionValue;
+  height: DimensionValue;
+  type?: 'circle' | 'rect';
+  style?: StyleProp<ViewStyle>;
+};
 
 const Skeleton = ({width, height, type = 'rect', style}: SkeletonProps) => {
-  const opacityAnim = useRef(new Animated.Value(1)).current
+  const opacityAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     const startAnimation = () => {
@@ -28,16 +28,16 @@ const Skeleton = ({width, height, type = 'rect', style}: SkeletonProps) => {
         }),
       ]).start(() => {
         // 1초 후에 애니메이션 다시 시작
-        setTimeout(startAnimation, 1000)
-      })
-    }
+        setTimeout(startAnimation, 1000);
+      });
+    };
 
-    startAnimation()
+    startAnimation();
 
     return () => {
-      opacityAnim.stopAnimation()
-    }
-  }, [])
+      opacityAnim.stopAnimation();
+    };
+  }, []);
 
   return (
     <Animated.View
@@ -48,8 +48,8 @@ const Skeleton = ({width, height, type = 'rect', style}: SkeletonProps) => {
         style,
       ]}
     />
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
     backgroundColor: color_token.gray300,
     borderRadius: size(10),
   },
-})
+});
 
-export default Skeleton
+export default Skeleton;

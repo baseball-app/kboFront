@@ -1,10 +1,10 @@
-import Header from '@/components/common/Header'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
-import {MyStatWidget} from '@/widgets'
-import React from 'react'
-import {StyleSheet} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import Header from '@/components/common/Header';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
+import {MyStatWidget} from '@/widgets';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export default function MyStatScreen() {
   return (
@@ -19,7 +19,7 @@ export default function MyStatScreen() {
       />
       <MyStatWidget />
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color_token.white,
   },
-})
+});

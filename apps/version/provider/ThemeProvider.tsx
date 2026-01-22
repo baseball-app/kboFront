@@ -1,5 +1,5 @@
-import React, {createContext, useContext, useMemo, useState} from 'react'
-import {StyleSheet, TextStyle, useColorScheme} from 'react-native'
+import React, {createContext, useContext, useMemo, useState} from 'react';
+import {StyleSheet, TextStyle, useColorScheme} from 'react-native';
 
 // const ThemeContext = createContext<{
 //   mode: 'light' | 'dark'

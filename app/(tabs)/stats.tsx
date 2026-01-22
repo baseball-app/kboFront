@@ -1,36 +1,36 @@
-import {Image, ScrollView, StyleSheet} from 'react-native'
-import {View} from 'react-native'
-import React, {useState} from 'react'
-import {logEvent} from '@/analytics/func'
-import {EVENTS} from '@/analytics/event'
-import {ROUTES, size, useAppRouter} from '@/shared'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import Header from '@/components/common/Header'
-import {Button, Pressable, SelectBox, Txt} from '@/shared/ui'
-import {SelectedStatsType, SelectSeasonBottomSheet, STATS_TYPE_LIST, useSelectedStatsFilter} from '@/entities/stat'
-import {color_token} from '@/constants/theme'
+import {Image, ScrollView, StyleSheet} from 'react-native';
+import {View} from 'react-native';
+import React, {useState} from 'react';
+import {logEvent} from '@/analytics/func';
+import {EVENTS} from '@/analytics/event';
+import {ROUTES, size, useAppRouter} from '@/shared';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Header from '@/components/common/Header';
+import {Button, Pressable, SelectBox, Txt} from '@/shared/ui';
+import {SelectedStatsType, SelectSeasonBottomSheet, STATS_TYPE_LIST, useSelectedStatsFilter} from '@/entities/stat';
+import {color_token} from '@/constants/theme';
 import {
   SeasonStatsBoxWidget,
   TeamStatsCardList,
   StadiumStatsCardList,
   HomeAwayStatsCardList,
   MyHomeStatsCardList,
-} from '@/widgets/stat'
+} from '@/widgets/stat';
 
 const MatchScreen = () => {
-  const router = useAppRouter()
+  const router = useAppRouter();
   const {
     selectedStatsFilter,
     onChangeSeasonYear, //
     onChangeType,
     toggleSort,
-  } = useSelectedStatsFilter()
+  } = useSelectedStatsFilter();
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const selectedYear = selectedStatsFilter.year
-  const selectedType = selectedStatsFilter.type
-  const isSortedByHighWinRate = selectedStatsFilter.sort === '승률 높은순'
+  const selectedYear = selectedStatsFilter.year;
+  const selectedType = selectedStatsFilter.type;
+  const isSortedByHighWinRate = selectedStatsFilter.sort === '승률 높은순';
 
   return (
     <>
@@ -57,8 +57,8 @@ const MatchScreen = () => {
             <SeasonStatsBoxWidget year={selectedYear} />
             <Button
               onPress={() => {
-                logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: ROUTES.TICKET_MY_STAT})
-                router.push(ROUTES.TICKET_MY_STAT)
+                logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: ROUTES.TICKET_MY_STAT});
+                router.push(ROUTES.TICKET_MY_STAT);
               }}
               type="secondary">
               나의 승요력 보러가기
@@ -88,17 +88,17 @@ const MatchScreen = () => {
           isOpen={open}
           value={selectedYear}
           onConfirm={(year, season) => {
-            onChangeSeasonYear(year)
-            setOpen(false)
+            onChangeSeasonYear(year);
+            setOpen(false);
           }}
           onCancel={() => setOpen(false)}
         />
       </SafeAreaView>
     </>
-  )
-}
+  );
+};
 
-export default MatchScreen
+export default MatchScreen;
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: size(12),
     paddingBottom: size(70),
   },
-})
+});
 
 const sortStyles = StyleSheet.create({
   container: {
@@ -142,4 +142,4 @@ const sortStyles = StyleSheet.create({
     width: size(18),
     height: size(18),
   },
-})
+});

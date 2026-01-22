@@ -1,12 +1,12 @@
-import React from 'react'
-import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native'
-import {size} from '@/shared'
+import React from 'react';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {size} from '@/shared';
 
 function BottomFloatSection({children, style}: {children: React.ReactNode; style?: StyleProp<ViewStyle>}) {
-  return <View style={[styles.buttonContainer, style]}>{children}</View>
+  return <View style={[styles.buttonContainer, style]}>{children}</View>;
 }
 
-export {BottomFloatSection}
+export {BottomFloatSection};
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
     padding: size(16),
     paddingBottom: size(24),
   },
-})
+});

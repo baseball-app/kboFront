@@ -1,4 +1,4 @@
-import * as ROUTES from './routes'
-type RouterAddress = (typeof ROUTES)[keyof typeof ROUTES]
+import * as ROUTES from './routes';
+type RouterAddress = (typeof ROUTES)[keyof typeof ROUTES];
 
-export {ROUTES, type RouterAddress}
+export {ROUTES, type RouterAddress};

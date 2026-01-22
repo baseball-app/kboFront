@@ -1,25 +1,25 @@
-import Ellipse from '@/components/common/Ellipse'
-import {useTeam} from '@/entities/match'
-import {TicketDetail} from '@/entities/ticket'
-import useProfile from '@/hooks/my/useProfile'
-import React, {memo} from 'react'
-import {StyleSheet, View, ScrollView} from 'react-native'
-import dayjs from 'dayjs'
-import FastImage from '@d11/react-native-fast-image'
-import {size} from '@/shared'
-import {color_token} from '@/constants/theme'
-import {Txt} from '@/shared/ui'
+import Ellipse from '@/components/common/Ellipse';
+import {useTeam} from '@/entities/match';
+import {TicketDetail} from '@/entities/ticket';
+import useProfile from '@/hooks/my/useProfile';
+import React, {memo} from 'react';
+import {StyleSheet, View, ScrollView} from 'react-native';
+import dayjs from 'dayjs';
+import FastImage from '@d11/react-native-fast-image';
+import {size} from '@/shared';
+import {color_token} from '@/constants/theme';
+import {Txt} from '@/shared/ui';
 
 type Props = {
-  ticketDetail: TicketDetail
-}
+  ticketDetail: TicketDetail;
+};
 
 const TicketFrame = memo(({ticketDetail}: Props) => {
-  const {findTeamById} = useTeam()
-  const {profile} = useProfile()
+  const {findTeamById} = useTeam();
+  const {profile} = useProfile();
 
-  const hometeam = findTeamById(Number(ticketDetail.hometeam_id))
-  const awayteam = findTeamById(Number(ticketDetail.awayteam_id))
+  const hometeam = findTeamById(Number(ticketDetail.hometeam_id));
+  const awayteam = findTeamById(Number(ticketDetail.awayteam_id));
 
   return (
     <>
@@ -119,7 +119,7 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
                             </Txt>
                           </ScrollView>
                         </View>
-                      )
+                      );
                     }
 
                     if (ticketDetail?.only_me && profile.id === ticketDetail.writer) {
@@ -143,10 +143,10 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
                             </ScrollView>
                           </View>
                         </>
-                      )
+                      );
                     }
 
-                    return null
+                    return null;
                   })()}
                 </View>
               </View>
@@ -155,11 +155,11 @@ const TicketFrame = memo(({ticketDetail}: Props) => {
         </View>
       </View>
     </>
-  )
-})
+  );
+});
 
 const _InfoRow = ({label, value}: {label: string; value?: string}) => {
-  if (!value) return null
+  if (!value) return null;
   return (
     <View style={styles.infoBox}>
       <Txt size={14} weight="regular" color={color_token.gray900} style={styles.infoLabel}>
@@ -171,10 +171,10 @@ const _InfoRow = ({label, value}: {label: string; value?: string}) => {
         </Txt>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export {TicketFrame}
+export {TicketFrame};
 
 const styles = StyleSheet.create({
   editIcon: {
@@ -273,4 +273,4 @@ const styles = StyleSheet.create({
     width: size(20),
     height: size(20),
   },
-})
+});

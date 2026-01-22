@@ -1,64 +1,64 @@
-import {useLocalSearchParams, usePathname} from 'expo-router'
-import React from 'react'
-import {View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import useProfile from '@/hooks/my/useProfile'
-import Header from '@/components/common/Header'
-import {useAnalyticsStore} from '@/analytics/event'
-import * as MediaLibrary from 'expo-media-library'
-import {ROUTES, size, useAppRouter} from '@/shared'
-import {TicketFrame} from '@/widgets/ticket/frame'
-import {NoPermissionError, useCaptureView, useShare, useMediaPermission, showToast} from '@/shared'
-import {TicketDeleteButton} from '@/features/ticket/delete-ticket'
-import useTicketDetail from '@/hooks/match/useTicketDetail'
-import {ShareInstagramButton} from '@/features/ticket/share-instagram'
-import Skeleton from '@/components/skeleton/Skeleton'
-import {color_token} from '@/constants/theme'
-import {BackButton, Button, Pressable, Txt} from '@/shared/ui'
+import {useLocalSearchParams, usePathname} from 'expo-router';
+import React from 'react';
+import {View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import useProfile from '@/hooks/my/useProfile';
+import Header from '@/components/common/Header';
+import {useAnalyticsStore} from '@/analytics/event';
+import * as MediaLibrary from 'expo-media-library';
+import {ROUTES, size, useAppRouter} from '@/shared';
+import {TicketFrame} from '@/widgets/ticket/frame';
+import {NoPermissionError, useCaptureView, useShare, useMediaPermission, showToast} from '@/shared';
+import {TicketDeleteButton} from '@/features/ticket/delete-ticket';
+import useTicketDetail from '@/hooks/match/useTicketDetail';
+import {ShareInstagramButton} from '@/features/ticket/share-instagram';
+import Skeleton from '@/components/skeleton/Skeleton';
+import {color_token} from '@/constants/theme';
+import {BackButton, Button, Pressable, Txt} from '@/shared/ui';
 
 export default function GameCard() {
-  const router = useAppRouter()
-  const {id, date, target_id, from_ticket_box} = useLocalSearchParams()
+  const router = useAppRouter();
+  const {id, date, target_id, from_ticket_box} = useLocalSearchParams();
 
-  const {openSettingModal, checkMediaPermission} = useMediaPermission()
-  const {ViewShot, onCaptureView} = useCaptureView()
+  const {openSettingModal, checkMediaPermission} = useMediaPermission();
+  const {ViewShot, onCaptureView} = useCaptureView();
 
-  const {shareInstagramStories, checkCanOpenInstagram} = useShare()
+  const {shareInstagramStories, checkCanOpenInstagram} = useShare();
 
   const onSaveTicketImage = async () => {
     try {
-      const viewShot = await onCaptureView()
-      if (!viewShot) throw new Error('이미지 캡처에 실패했어요')
-      const {isGranted} = await checkMediaPermission()
-      if (!isGranted) throw new Error('저장 권한이 없어요')
-      const asset = await MediaLibrary.createAssetAsync(viewShot.uri)
-      showToast('이미지가 저장되었습니다')
+      const viewShot = await onCaptureView();
+      if (!viewShot) throw new Error('이미지 캡처에 실패했어요');
+      const {isGranted} = await checkMediaPermission();
+      if (!isGranted) throw new Error('저장 권한이 없어요');
+      const asset = await MediaLibrary.createAssetAsync(viewShot.uri);
+      showToast('이미지가 저장되었습니다');
     } catch (error) {
       if (error instanceof NoPermissionError) {
-        openSettingModal()
+        openSettingModal();
       } else {
-        showToast('잠시 후 다시 시도해 주세요')
+        showToast('잠시 후 다시 시도해 주세요');
       }
     }
-  }
+  };
 
   const onShareInstagramStories = async () => {
     try {
-      const viewShot = await onCaptureView()
-      if (!viewShot) throw new Error('이미지 캡처에 실패했어요')
+      const viewShot = await onCaptureView();
+      if (!viewShot) throw new Error('이미지 캡처에 실패했어요');
 
-      const isSupportedInstagram = await checkCanOpenInstagram()
+      const isSupportedInstagram = await checkCanOpenInstagram();
 
       if (!isSupportedInstagram) {
-        showToast('지금은 인스타그램 공유만 지원해요')
-        return
+        showToast('지금은 인스타그램 공유만 지원해요');
+        return;
       }
 
-      shareInstagramStories(viewShot.uri)
+      shareInstagramStories(viewShot.uri);
     } catch (error) {
-      showToast('잠시 후 다시 시도해 주세요')
+      showToast('잠시 후 다시 시도해 주세요');
     }
-  }
+  };
 
   const {
     ticketDetail,
@@ -68,8 +68,8 @@ export default function GameCard() {
     toggleFavorite, //
     reactionList,
     toggleReaction,
-  } = useTicketDetail(Number(id) || (date as string), Number(target_id))
-  const hasDoubleTicket = (data?.length || 0) > 1
+  } = useTicketDetail(Number(id) || (date as string), Number(target_id));
+  const hasDoubleTicket = (data?.length || 0) > 1;
 
   // const {
   //   ticketDetail,
@@ -85,20 +85,20 @@ export default function GameCard() {
 
   // const {reactionList} = useTicketReaction({id: Number(id)})
 
-  const {setScreenName, setDiaryCreate} = useAnalyticsStore()
-  const pathname = usePathname()
+  const {setScreenName, setDiaryCreate} = useAnalyticsStore();
+  const pathname = usePathname();
 
-  const {profile} = useProfile()
+  const {profile} = useProfile();
 
-  const isMyTicket = profile?.id === ticketDetail?.writer
+  const isMyTicket = profile?.id === ticketDetail?.writer;
 
   const heartIcon = ticketDetail?.favorite
     ? require('@/assets/icons/heart_fill.png')
-    : require('@/assets/icons/heart.png')
+    : require('@/assets/icons/heart.png');
 
   const onBackButtonClick = () => {
-    router.back()
-  }
+    router.back();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -128,7 +128,7 @@ export default function GameCard() {
             </Pressable>
             <Pressable
               onPress={() => {
-                router.push(ROUTES.WRITE_EDIT, {id: ticketDetail?.id})
+                router.push(ROUTES.WRITE_EDIT, {id: ticketDetail?.id});
               }}>
               <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
             </Pressable>
@@ -179,9 +179,9 @@ export default function GameCard() {
             {!hasDoubleTicket && isMyTicket && (
               <Button
                 onPress={() => {
-                  setScreenName(pathname)
-                  setDiaryCreate('메인 버튼')
-                  router.push(ROUTES.WRITE, {date: ticketDetail?.date})
+                  setScreenName(pathname);
+                  setDiaryCreate('메인 버튼');
+                  router.push(ROUTES.WRITE, {date: ticketDetail?.date});
                 }}
                 style={styles.doubleHeaderButton}>
                 더블헤더 티켓 추가하기
@@ -191,7 +191,7 @@ export default function GameCard() {
         )}
       </ScrollView>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -271,4 +271,4 @@ const styles = StyleSheet.create({
     marginTop: size(10),
     marginBottom: size(32),
   },
-})
+});

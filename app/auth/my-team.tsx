@@ -1,12 +1,12 @@
-import React from 'react'
-import {StyleSheet, View, ScrollView, Image, Pressable} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import useUserJoin from '@/hooks/auth/useUserJoin'
-import {useTeam} from '@/entities/match'
-import {color_token} from '@/constants/theme'
-import Header from '@/components/common/Header'
-import {BackButton, BottomFloatSection, Button, Txt} from '@/shared/ui'
-import {size} from '@/shared'
+import React from 'react';
+import {StyleSheet, View, ScrollView, Image, Pressable} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import useUserJoin from '@/hooks/auth/useUserJoin';
+import {useTeam} from '@/entities/match';
+import {color_token} from '@/constants/theme';
+import Header from '@/components/common/Header';
+import {BackButton, BottomFloatSection, Button, Txt} from '@/shared/ui';
+import {size} from '@/shared';
 
 export default function MyTeamScreen() {
   const {
@@ -14,9 +14,9 @@ export default function MyTeamScreen() {
     myTeam,
     moveToNextStep, //
     moveToPrevStep,
-  } = useUserJoin()
+  } = useUserJoin();
 
-  const {teams} = useTeam()
+  const {teams} = useTeam();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,7 +54,7 @@ export default function MyTeamScreen() {
         </BottomFloatSection>
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: size(8),
   },
-})
+});
