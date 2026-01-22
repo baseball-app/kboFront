@@ -11,8 +11,7 @@ import ApiClient from '@/api';
 import {groupBy, size} from '@/shared';
 import LottieView from 'lottie-react-native';
 
-import {BottomSheet, Button, Txt} from '@/shared/ui';
-import WheelPicker2 from '@/components/WheelPicker2';
+import {Txt, YearMonthPicker} from '@/shared/ui';
 import {color_token} from '@/constants/theme';
 
 type Props = {
@@ -83,13 +82,18 @@ const CalendarView = ({date, setDate, onClick, targetId, isLoading}: Props) => {
         </View>
       </View>
       <YearMonthPicker
-        open={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        onConfirm={date => {
-          setDate(date);
+        isOpen={isModalVisible}
+        initialYear={dayjs(date).year()}
+        initialMonth={dayjs(date).month() + 1}
+        yearRange={{
+          start: CALENDAR_START_DATE.year(),
+          end: CALENDAR_END_DATE.year(),
+        }}
+        onConfirm={(year, month) => {
+          setDate(dayjs(`${year}-${String(month).padStart(2, '0')}-01`).toDate());
           setIsModalVisible(false);
         }}
-        initialYearMonth={dayjs(date).format('YYYY.MM')}
+        onCancel={() => setIsModalVisible(false)}
       />
     </View>
   );
@@ -111,71 +115,6 @@ const CalendarHeader = memo(() => {
     </View>
   );
 });
-
-const YearMonthPicker = ({
-  open,
-  onCancel,
-  onConfirm,
-  initialYearMonth,
-}: {
-  open: boolean;
-  onCancel: () => void;
-  onConfirm: (date: Date) => void;
-  initialYearMonth: string;
-}) => {
-  const [selectedYear, setSelectedYear] = useState(Number(initialYearMonth.split('.')[0]));
-  const [selectedMonth, setSelectedMonth] = useState(Number(initialYearMonth.split('.')[1]));
-
-  const [yearList] = useState(
-    Array.from(
-      {length: CALENDAR_END_DATE.diff(CALENDAR_START_DATE, 'year') + 1},
-      (_, i) => `${CALENDAR_START_DATE.year() + i}년`,
-    ),
-  );
-
-  return (
-    <BottomSheet isOpen={open} duration={350} height={320}>
-      <View style={styles.modalContent}>
-        <Txt size={16} weight="bold" color={color_token.gray900} style={styles.modalTitle}>
-          원하시는 날짜를 선택해주세요
-        </Txt>
-        <View style={styles.datePickerContainer}>
-          <WheelPicker2
-            itemHeight={50}
-            initialItem={`${selectedYear}년`}
-            onItemChange={item => {
-              setSelectedYear(Number(item.replaceAll(/\D/g, '')));
-            }}
-            items={yearList}
-            containerStyle={{width: '49%'}}
-          />
-          <WheelPicker2
-            items={Array.from({length: 12}, (_, i) => `${i + 1}월`)}
-            itemHeight={50}
-            initialItem={`${selectedMonth}월`}
-            onItemChange={item => {
-              setSelectedMonth(Number(item.replaceAll(/\D/g, '')));
-            }}
-            containerStyle={{width: '49%'}}
-          />
-        </View>
-        <View style={styles.buttonBox}>
-          <Button type="cancel" onPress={onCancel} style={{flex: 1, paddingVertical: size(12), height: size(46)}}>
-            취소
-          </Button>
-          <Button
-            type="primary"
-            style={{flex: 1, paddingVertical: size(12), height: size(46)}}
-            onPress={() => {
-              onConfirm(dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`).toDate());
-            }}>
-            완료
-          </Button>
-        </View>
-      </View>
-    </BottomSheet>
-  );
-};
 
 const dimensions = Dimensions.get('window');
 const width = dimensions.width - 48;
@@ -299,28 +238,5 @@ const styles = StyleSheet.create({
   },
   selectedDay: {
     borderColor: color_token.gray500,
-  },
-  datePickerContainer: {
-    flexDirection: 'row',
-    overflow: 'hidden',
-  },
-  modalContent: {
-    width: '100%',
-    padding: size(24),
-    backgroundColor: color_token.white,
-    borderTopLeftRadius: size(20),
-    borderTopRightRadius: size(20),
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-  },
-  buttonBox: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: size(13),
-    marginTop: size(30),
-    marginBottom: size(16),
-  },
-  modalTitle: {
-    marginBottom: size(16),
   },
 });
