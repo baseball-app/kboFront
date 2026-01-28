@@ -1,11 +1,11 @@
-import ApiClient, {uploadFile} from '@/api';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {useState} from 'react';
+import ApiClient, { uploadFile } from '@/api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import useProfile from '../my/useProfile';
-import {usePopup} from '@/slice/commonSlice';
-import {logEvent} from '@/analytics/func';
-import {EVENTS} from '@/analytics/event';
-import {TicketDetail} from '@/entities/ticket';
+import { usePopup } from '@/slice/commonSlice';
+import { logEvent } from '@/analytics/func';
+import { EVENTS } from '@/analytics/event';
+import { TicketDetail } from '@/entities/ticket';
 
 //
 export type ReactionType =
@@ -50,6 +50,7 @@ const useTicketDetail = (id: number | string, targetId: number) => {
   const initializeTicketInfo = () => {
     queryClient.invalidateQueries({queryKey: ['ticket']});
     queryClient.invalidateQueries({queryKey: ['myStat']});
+    queryClient.invalidateQueries({queryKey: ['ticketListByTeam']});
     return refetch();
   };
 

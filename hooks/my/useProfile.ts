@@ -1,15 +1,15 @@
-import {MmkvStoreKeys} from '@/store/mmkv-store/constants';
-import {useMMKVObject} from 'react-native-mmkv';
-import {useLogin} from '@/hooks/auth/useLogin';
-import {useQuery, useQueryClient} from '@tanstack/react-query';
+import { MmkvStoreKeys } from '@/store/mmkv-store/constants';
+import { useMMKVObject } from 'react-native-mmkv';
+import { useLogin } from '@/hooks/auth/useLogin';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ApiClient from '@/api';
-import {PROFILE_IMAGES} from '@/constants/join';
-import {useEffect} from 'react';
-import {IUserJoinSlice} from '@/slice/userJoinSlice';
-import {useCommonSlice} from '@/slice/commonSlice';
-import {useTeam} from '@/entities/match';
-import {useAppRouter} from '@/shared';
-import {hashKey} from '@/shared';
+import { PROFILE_IMAGES } from '@/constants/join';
+import { useEffect } from 'react';
+import { IUserJoinSlice } from '@/slice/userJoinSlice';
+import { usePopup } from '@/slice/commonSlice';
+import { useTeam } from '@/entities/match';
+import { useAppRouter } from '@/shared';
+import { hashKey } from '@/shared';
 
 export type Team = {
   id: number; // 3
@@ -32,7 +32,7 @@ const useProfile = () => {
   const queryClient = useQueryClient();
   const {user, isLogined} = useLogin();
   const [profile, updateProfileCacheData] = useMMKVObject<Profile>(MmkvStoreKeys.USER_PROFILE);
-  const {modal} = useCommonSlice();
+  const {modal, openConfirmPopup} = usePopup();
   const router = useAppRouter();
 
   const {findTeamById} = useTeam();
@@ -84,24 +84,11 @@ const useProfile = () => {
   const updateMyTeam = (teamId?: number) => {
     if (!teamId) return;
 
-    modal.open({
-      header: '안내',
-      content: `마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n변경하시겠습니까?`,
-      button: [
-        {
-          text: '취소',
-          onPress: modal.hide,
-          buttonStyle: {
-            borderRadius: 10,
-            backgroundColor: '#EEEEEE',
-          },
-          buttonTextStyle: {
-            color: '#000000',
-          },
-        },
-        {
-          text: '팀 변경',
-          onPress: async () => {
+    openConfirmPopup({
+      content: '마이팀 변경시, 기존의 데이터는 삭제가 됩니다.\n변경하시겠습니까?',
+      confirm: {
+        text: '팀 변경',
+        onPress: async () => {
             try {
               await updateProfile({my_team: teamId});
               router.back();
@@ -111,16 +98,12 @@ const useProfile = () => {
               modal.hide();
             }
           },
-          buttonStyle: {
-            backgroundColor: '#1E5EF4',
-            borderRadius: 10,
-          },
-          buttonTextStyle: {
-            color: 'white',
-          },
-        },
-      ],
-    });
+      },
+      cancel: {
+        text: '취소',
+        onPress: modal.hide,
+      },
+    })
   };
 
   useEffect(() => {

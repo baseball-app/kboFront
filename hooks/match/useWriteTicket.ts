@@ -1,12 +1,12 @@
-import {useDailyWriteStore} from '@/slice/dailyWriteSlice';
-import {Match} from '@/entities/match';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {uploadFile} from '@/api';
+import { useDailyWriteStore } from '@/slice/dailyWriteSlice';
+import { Match } from '@/entities/match';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { uploadFile } from '@/api';
 import useProfile from '../my/useProfile';
-import {ROUTES, useAppRouter} from '@/shared';
+import { ROUTES, useAppRouter } from '@/shared';
 import dayjs from 'dayjs';
-import {IFormData} from '@/types/IFormData';
-import {TicketRegisterRequestDto} from '@/features/ticket/create-ticket';
+import { IFormData } from '@/types/IFormData';
+import { TicketRegisterRequestDto } from '@/features/ticket/create-ticket';
 
 export type RegisterTicket = {
   starting_pitchers: string;
@@ -36,6 +36,7 @@ const useWriteTicket = () => {
     writeStore.clearState();
     queryClient.refetchQueries({queryKey: ['tickets']});
     queryClient.invalidateQueries({queryKey: ['myStat']});
+    queryClient.invalidateQueries({queryKey: ['ticketListByTeam']});
 
     router.dismissTo(ROUTES.WRITE_TODAY_TICKET_CARD, {
       id: id,
