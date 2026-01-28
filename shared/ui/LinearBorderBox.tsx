@@ -1,6 +1,6 @@
-import {ReactNode, useEffect} from 'react';
-import {StyleSheet, View, ViewStyle, LayoutChangeEvent} from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient';
+import { ReactNode, useEffect } from 'react';
+import { StyleSheet, View, ViewStyle, LayoutChangeEvent } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -34,8 +34,8 @@ interface LinearBorderBoxProps {
 
 export const LinearBorderBox = ({
   children,
-  colors = ['#EF4B87', '#EF4B87', '#1E5EF4'],
-  locations = [0, 0.45, 1],
+  colors = ['#EF4B87', '#EF4B87', '#1E5EF4', '#1E5EF4'],
+  locations = [0, 0.35, 0.65, 1],
   animated = true,
   duration = 3000,
   borderWidth = 2,
