@@ -1,7 +1,7 @@
-import {color_token} from '@/constants/theme';
-import {size} from '@/shared';
-import {TextStyle, ViewStyle} from 'react-native';
-import {create, StateCreator} from 'zustand';
+import { color_token } from '@/constants/theme';
+import { size } from '@/shared';
+import { TextStyle, ViewStyle } from 'react-native';
+import { create, StateCreator } from 'zustand';
 
 /** 모달데이터 구조 */
 export interface IModalConfig {
@@ -64,5 +64,49 @@ export const usePopup = () => {
     });
   };
 
-  return {...commonSlice, openCommonPopup};
+  const openConfirmPopup = (content: string, confirm: {
+    text: string;
+    onPress: () => void;
+    buttonStyle?: ViewStyle;
+    buttonTextStyle?: TextStyle;
+  }, cancel: {
+    text: string;
+    onPress: () => void;
+    buttonStyle?: ViewStyle;
+    buttonTextStyle?: TextStyle;
+  }) => {
+    commonSlice.modal.open({
+      header: '안내',
+      content: content,
+      button: [
+        {
+          text: cancel.text,
+          onPress: cancel.onPress,
+          buttonStyle: {
+            backgroundColor: color_token.gray300,
+            ...cancel.buttonStyle,
+          },
+          buttonTextStyle: {
+            color: color_token.gray900,
+            ...cancel.buttonTextStyle,
+          },
+        },
+        {
+          text: confirm.text,
+          onPress: confirm.onPress,
+          buttonStyle: {
+            backgroundColor: color_token.primary,
+            ...confirm.buttonStyle,
+            },
+          buttonTextStyle: {
+            color: color_token.white,
+            ...confirm.buttonTextStyle,
+            },
+        },
+      ]
+    });
+  };
+
+
+  return {...commonSlice, openCommonPopup, openConfirmPopup};
 };
