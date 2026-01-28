@@ -64,7 +64,12 @@ export const usePopup = () => {
     });
   };
 
-  const openConfirmPopup = (content: string, confirm: {
+  const openConfirmPopup = ({
+    content, confirm, cancel, title = '안내'
+  }: {
+    title?: string;
+    content: string;
+    confirm: {
     text: string;
     onPress: () => void;
     buttonStyle?: ViewStyle;
@@ -74,9 +79,10 @@ export const usePopup = () => {
     onPress: () => void;
     buttonStyle?: ViewStyle;
     buttonTextStyle?: TextStyle;
+  }
   }) => {
     commonSlice.modal.open({
-      header: '안내',
+      header: title,
       content: content,
       button: [
         {
