@@ -1,3 +1,4 @@
+import {HOME_BALLPARK_LIST} from '@/constants/ticket';
 import {Team} from '@/entities/match';
 import {IDailyLogWriteState} from '@/slice/dailyWriteSlice';
 import {CustomFormData, IFormData} from '@/types/IFormData';
@@ -84,11 +85,14 @@ class TicketFormDataMapper {
     const only_me = writeData.onlyMeCheck;
     const image = writeData.todayImg?.uri || '';
 
-    const is_cheer = teamAwayInfo?.id === myTeamId || teamHomeInfo?.id === myTeamId;
+    const is_cheer = hometeam_id === myTeamId || awayteam_id === myTeamId;
     const direct_yn = !writeStore.selectedMatch;
     const is_double = !writeStore.selectedMatch;
     const is_ballpark = isBallpark;
-    const is_homeballpark = writeStore.selectedPlace === '집관';
+
+    // TODO: 수정 필요
+    const homeBallpark = HOME_BALLPARK_LIST.find(ballpark => ballpark.teamId === myTeamId)?.value;
+    const is_homeballpark = homeBallpark === gip_place;
 
     return {
       date,

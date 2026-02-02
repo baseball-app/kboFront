@@ -23,3 +23,16 @@ export const PLACE_LIST = [
   {label: '창원 NC파크', value: '창원 NC파크'},
   {label: '광주 기아 챔피언스 필드', value: '광주 기아 챔피언스 필드'},
 ];
+
+export const HOME_BALLPARK_LIST = [
+  {teamId: 1, teamName: 'LG', value: '잠실 종합운동장 야구장'},
+  {teamId: 2, teamName: 'KT', value: '수원 KT위즈파크'},
+  {teamId: 3, teamName: 'SSG', value: '인천 SSG 랜더스필드'},
+  {teamId: 4, teamName: 'NC', value: '창원 NC파크'},
+  {teamId: 5, teamName: '두산', value: '잠실 종합운동장 야구장'},
+  {teamId: 6, teamName: 'KIA', value: '광주 기아 챔피언스 필드'},
+  {teamId: 7, teamName: '롯데', value: '부산 사직 야구장'},
+  {teamId: 8, teamName: '삼성', value: '대구 삼성 라이온즈 파크'},
+  {teamId: 9, teamName: '한화', value: '대전 한화생명 볼파크'},
+  {teamId: 10, teamName: '키움', value: '고척 스카이돔'},
+];

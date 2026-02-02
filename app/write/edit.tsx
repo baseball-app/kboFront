@@ -1,32 +1,32 @@
-import { useLocalSearchParams } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
-import { TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {useLocalSearchParams} from 'expo-router';
+import {useEffect, useRef, useState} from 'react';
+import {TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import React from 'react';
 import dayjs from 'dayjs';
-import { DAYS_OF_WEEK } from '@/constants/day';
+import {DAYS_OF_WEEK} from '@/constants/day';
 import LocationTypeSelector from '@/components/write/LocationTypeSelector';
 import Ellipse from '@/components/common/Ellipse';
 import Input from '@/components/common/Input';
 import useProfile from '@/hooks/my/useProfile';
-import { useTeam } from '@/entities/match';
+import {useTeam} from '@/entities/match';
 import SelectBox from '@/components/common/SelectBox';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
 import useTicketDetail from '@/hooks/match/useTicketDetail';
 import LottieView from 'lottie-react-native';
 import * as FileSystemLegacy from 'expo-file-system/legacy';
-import { useLogin } from '@/hooks/auth/useLogin';
-import { logEvent } from '@/analytics/func';
-import { EVENTS } from '@/analytics/event';
-import { Config } from '@/config/Config';
-import { size, useKeyboard } from '@/shared';
-import { useAppRouter } from '@/shared';
-import { BottomSheet, Txt } from '@/shared/ui';
-import { CustKeyboardAvoidingView } from '@/shared/lib/useKeyboard';
-import { PLACE_LIST } from '@/constants/ticket';
-import { TicketImageUploader } from '@/entities/ticket';
-import { color_token } from '@/constants/theme';
+import {useLogin} from '@/hooks/auth/useLogin';
+import {logEvent} from '@/analytics/func';
+import {EVENTS} from '@/analytics/event';
+import {Config} from '@/config/Config';
+import {size, useKeyboard} from '@/shared';
+import {useAppRouter} from '@/shared';
+import {BottomSheet, Txt} from '@/shared/ui';
+import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard';
+import {HOME_BALLPARK_LIST, PLACE_LIST} from '@/constants/ticket';
+import {TicketImageUploader} from '@/entities/ticket';
+import {color_token} from '@/constants/theme';
 
 interface ITicketEditData {
   homeTeam: {
@@ -94,6 +94,9 @@ const EditTicketPage = () => {
     weather: '',
     result: '',
   });
+
+  const homeBallpark = HOME_BALLPARK_LIST.find(ballpark => ballpark.teamId === profile.my_team?.id)?.value;
+  const is_homeballpark = homeBallpark === writeData.place;
 
   useEffect(() => {
     if (ticketDetail) {
@@ -182,7 +185,7 @@ const EditTicketPage = () => {
       // 오늘의 소감
       formData.append('memo', writeData?.memo || '');
 
-      formData.append('is_homeballpark', JSON.stringify(writeData?.placeType === '직관'));
+      formData.append('is_homeballpark', JSON.stringify(is_homeballpark));
 
       //나만보기
       formData.append('only_me', JSON.stringify(writeData?.onlyMe));
@@ -236,7 +239,7 @@ const EditTicketPage = () => {
           gip_place: String(writeData?.place || ''),
           food: writeData?.food || '',
           memo: writeData?.memo || '',
-          is_homeballpark: JSON.stringify(writeData?.placeType === '직관'),
+          is_homeballpark: JSON.stringify(is_homeballpark),
           only_me: JSON.stringify(writeData?.onlyMe),
           direct_yn: JSON.stringify(isDirectWrite),
           hometeam_id: String(writeData?.homeTeam.id),
@@ -295,7 +298,6 @@ const EditTicketPage = () => {
   const isEnabled = Boolean(
     !isFalsy(writeData.homeTeam.score) &&
     !isFalsy(writeData.awayTeam.score) &&
-    writeData.awayTeam.score &&
     ((writeData.placeType === '직관' && writeData.place) ||
       (writeData.placeType === '직관' && ticketDetail?.gip_place) ||
       writeData.placeType === '집관'),
