@@ -441,7 +441,7 @@
 				CODE_SIGN_ENTITLEMENTS = kboFront/kboFront.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 83;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = 3377LPQ56P;
 				DISPLAY_NAME = "DEV_오늘의야구";
 				INFOPLIST_FILE = kboFront/Info.plist;
@@ -452,7 +452,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.5.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -560,7 +560,7 @@
 				CODE_SIGN_ENTITLEMENTS = kboFront/kboFront.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 83;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = 3377LPQ56P;
 				DISPLAY_NAME = "DEV_오늘의야구";
 				ENABLE_BITCODE = NO;
@@ -576,7 +576,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.5.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -685,7 +685,7 @@
 				CODE_SIGN_ENTITLEMENTS = kboFront/kboFront.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 83;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = 3377LPQ56P;
 				DISPLAY_NAME = "오늘의야구";
 				ENABLE_BITCODE = NO;
@@ -701,7 +701,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.5.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -802,7 +802,7 @@
 				CODE_SIGN_ENTITLEMENTS = kboFront/kboFront.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 83;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = 3377LPQ56P;
 				DISPLAY_NAME = "오늘의야구";
 				INFOPLIST_FILE = kboFront/Info.plist;
@@ -813,7 +813,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.5.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

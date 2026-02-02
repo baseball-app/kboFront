@@ -5,7 +5,9 @@
       "Bash(npx tsc:*)",
       "Bash(find:*)",
       "Bash(xargs:*)",
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }
