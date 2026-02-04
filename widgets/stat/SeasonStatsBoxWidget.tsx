@@ -1,12 +1,13 @@
-import { color_token } from '@/constants/theme';
-import { useTeam } from '@/entities/match';
-import { useProfile } from '@/entities/user';
-import { LinearBorderBox, Txt } from '@/shared/ui';
-import { useQuery } from '@tanstack/react-query';
+import {color_token} from '@/constants/theme';
+import {useTeam} from '@/entities/match';
+import {useProfile} from '@/entities/user';
+import {LinearBorderBox, Txt} from '@/shared/ui';
+import {useQuery} from '@tanstack/react-query';
 import ApiClient from '@/api';
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { size } from '@/shared';
+import {View, StyleSheet} from 'react-native';
+import {size} from '@/shared';
+import Skeleton from '@/components/skeleton/Skeleton';
 
 type AllTicketStats = {
   total_percent: number;
@@ -20,8 +21,8 @@ function SeasonStatsBoxWidget({year}: {year: number}) {
   const {profile} = useProfile();
   const {findTeamById} = useTeam();
 
-  const {data} = useQuery({
-    queryKey: ['myStat','ticket_total_percent', year],
+  const {data, isLoading, isFetched} = useQuery({
+    queryKey: ['myStat', 'ticket_total_percent', year],
     queryFn: () => ApiClient.get<{all_ticket_stats: AllTicketStats}>(`/statistics/ticket_total_percent/?year=${year}`),
     placeholderData: {
       all_ticket_stats: {
@@ -35,6 +36,8 @@ function SeasonStatsBoxWidget({year}: {year: number}) {
   });
 
   const all_ticket_stats = data?.all_ticket_stats;
+
+  if (!isFetched || isLoading) return <Skeleton width="100%" height={size(89.5)} />;
 
   return (
     <LinearBorderBox

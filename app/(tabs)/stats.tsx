@@ -70,7 +70,7 @@ const MatchScreen = () => {
                 onChange={value => onChangeType(value as SelectedStatsType)}
               />
               <Pressable onPress={toggleSort} style={sortStyles.container}>
-                <Txt size={16} weight="medium" color={color_token.gray700}>
+                <Txt size={15} weight="medium" color={color_token.gray600}>
                   {isSortedByHighWinRate ? '승률 높은순' : '승률 낮은순'}
                 </Txt>
                 <Image source={require('@/assets/icons/updown.png')} style={sortStyles.icon} />
@@ -139,7 +139,7 @@ const sortStyles = StyleSheet.create({
     gap: size(4),
   },
   icon: {
-    width: size(18),
-    height: size(18),
+    width: size(16),
+    height: size(16),
   },
 });

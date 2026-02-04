@@ -3,6 +3,8 @@ import {Modal, Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from 
 import {Pressable} from './Pressable';
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import {scheduleOnRN} from 'react-native-worklets';
+import {Txt} from './Txt';
+import {color_token} from '@/constants/theme';
 
 type Props = {
   list?: {label: string; value: string}[];
@@ -106,7 +108,9 @@ const SelectBox = ({
   return (
     <>
       <Pressable ref={ref} style={styles.container} onPress={handlePress}>
-        <Text style={styles.value}>{selectedLabel}</Text>
+        <Txt size={15} weight="medium" color={color_token.gray800}>
+          {selectedLabel}
+        </Txt>
         <Animated.Image source={require('@/assets/icons/arrow_down.png')} style={[styles.arrow, animatedStyles]} />
       </Pressable>
 

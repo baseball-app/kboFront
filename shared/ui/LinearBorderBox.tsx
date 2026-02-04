@@ -1,6 +1,6 @@
-import { ReactNode, useEffect } from 'react';
-import { StyleSheet, View, ViewStyle, LayoutChangeEvent } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import {ReactNode, useEffect} from 'react';
+import {StyleSheet, View, ViewStyle, LayoutChangeEvent} from 'react-native';
+import {LinearGradient} from 'expo-linear-gradient';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,

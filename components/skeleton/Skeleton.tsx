@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {View, StyleSheet, DimensionValue, Animated, StyleProp, ViewStyle} from 'react-native';
+import {StyleSheet, DimensionValue, Animated, StyleProp, ViewStyle} from 'react-native';
 import {size} from '@/shared';
 import {color_token} from '@/constants/theme';
 
