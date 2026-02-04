@@ -1,5 +1,6 @@
 import Header from '@/components/common/Header';
 import {StatsDetailType, useNavigateToStatsDetail} from '@/features/stats';
+import {size} from '@/shared';
 import {
   AwayStatsDetail,
   HomeStatsDetail,
@@ -17,7 +18,7 @@ export default function StatsDetailScreen() {
 
   return (
     <SafeAreaView>
-      <ScrollView contentContainerStyle={{paddingBottom: 24}}>
+      <ScrollView contentContainerStyle={{paddingBottom: size(24)}}>
         <Header hasBackButton variants="transparent" />
         {query.type === StatsDetailType.OPPONENT && <TeamStatsDetail parameter_id={query.parameter_id} />}
         {query.type === StatsDetailType.BALLPARK && <StadiumStatsDetail parameter_id={query.parameter_id} />}

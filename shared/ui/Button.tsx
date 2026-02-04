@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {Pressable, StyleSheet, StyleProp, ViewStyle, TextStyle, View} from 'react-native';
+import {Pressable, StyleSheet, StyleProp, ViewStyle, TextStyle} from 'react-native';
 import {color_token} from '@/constants/theme';
 import {Txt} from './Txt';
 import {size} from '@/shared';
@@ -102,9 +102,6 @@ const Button = memo(
         onPress={() => {
           if (isDisabled) return;
           onPress?.();
-        }}
-        onLayout={({nativeEvent}) => {
-          console.log('height', nativeEvent.layout.height);
         }}
         disabled={isDisabled}
         style={({pressed}) => [
