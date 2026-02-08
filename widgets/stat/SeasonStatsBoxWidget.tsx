@@ -24,24 +24,15 @@ function SeasonStatsBoxWidget({year}: {year: number}) {
   const {data, isLoading, isFetched} = useQuery({
     queryKey: ['myStat', 'ticket_total_percent', year],
     queryFn: () => ApiClient.get<{all_ticket_stats: AllTicketStats}>(`/statistics/ticket_total_percent/?year=${year}`),
-    placeholderData: {
-      all_ticket_stats: {
-        total_percent: 0,
-        total_games: 0,
-        wins: 0,
-        losses: 0,
-        draws: 0,
-      },
-    },
   });
 
   const all_ticket_stats = data?.all_ticket_stats;
 
-  if (!isFetched || isLoading) return <Skeleton width="100%" height={size(89.5)} />;
+  if (!isFetched || isLoading) return <Skeleton width="100%" height={size(88)} style={{borderRadius: size(10)}} />;
 
   return (
     <LinearBorderBox
-      borderWidth={size(1.5)}
+      borderWidth={1}
       borderRadius={size(10)}
       backgroundColor={color_token.white}
       colors={

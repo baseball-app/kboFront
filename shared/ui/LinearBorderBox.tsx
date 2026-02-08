@@ -118,7 +118,17 @@ export const LinearBorderBox = ({
           />
         </Animated.View>
       </Animated.View>
-      <View style={[styles.content, {backgroundColor, borderRadius: innerBorderRadius}, contentStyle]}>{children}</View>
+      <View
+        style={[
+          styles.content,
+          {
+            backgroundColor,
+            borderRadius: innerBorderRadius,
+          },
+          contentStyle,
+        ]}>
+        {children}
+      </View>
     </View>
   );
 };
@@ -132,7 +142,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  content: {
-    // padding: 16,
-  },
+  content: {},
 });
