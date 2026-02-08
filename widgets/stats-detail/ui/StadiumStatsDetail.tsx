@@ -26,7 +26,7 @@ function StadiumStatsDetail({parameter_id}: Props) {
   const ballparkPercent = Math.floor((ballparkWin / ballparkTotal) * 100);
 
   const {data, isLoading} = useQuery({
-    queryKey: ['stadiumStatsDetail', parameter_id],
+    queryKey: ['tickets', 'stadiumStatsDetail', parameter_id],
     queryFn: () =>
       ApiClient.get<schema.TicketListByTeam[]>('/tickets/ticket_based_view_list/', {
         parameter_id: parameter_id,

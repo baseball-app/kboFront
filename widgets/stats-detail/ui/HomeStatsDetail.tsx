@@ -21,7 +21,7 @@ function HomeStatsDetail({is_homeballpark}: {is_homeballpark: boolean}) {
   const homePercent = Math.floor((homeWin / homeTotal) * 100);
 
   const {data, isLoading} = useQuery({
-    queryKey: ['homeStatsDetail', is_homeballpark],
+    queryKey: ['tickets', 'homeStatsDetail', is_homeballpark],
     queryFn: () =>
       ApiClient.get<schema.TicketListByTeam[]>('/tickets/ticket_is_homeballpark_view_list/', {
         is_homeballpark: is_homeballpark,

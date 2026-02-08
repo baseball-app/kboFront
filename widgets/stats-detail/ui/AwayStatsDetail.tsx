@@ -21,7 +21,7 @@ function AwayStatsDetail({is_homeballpark}: {is_homeballpark: boolean}) {
   const awayPercent = Math.floor((awayWin / awayTotal) * 100);
 
   const {data, isLoading} = useQuery({
-    queryKey: ['awayStatsDetail', is_homeballpark],
+    queryKey: ['tickets', 'awayStatsDetail', is_homeballpark],
     queryFn: () =>
       ApiClient.get<schema.TicketListByTeam[]>('/tickets/ticket_is_homeballpark_view_list/', {
         is_homeballpark: is_homeballpark,

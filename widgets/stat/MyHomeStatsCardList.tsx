@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useNotBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat';
 import {TeamStatsCard} from '@/entities/stat/ui';
 import {StatsList} from './StatsList';
