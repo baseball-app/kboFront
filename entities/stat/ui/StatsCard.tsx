@@ -1,5 +1,7 @@
+import {color_token} from '@/constants/theme';
 import {useTeam} from '@/entities/match';
-import {Pressable} from '@/shared';
+import {Pressable, size} from '@/shared';
+import {Txt} from '@/shared/ui';
 import React, {useMemo} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 
@@ -43,12 +45,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EEEFF3',
-    gap: 14,
-    padding: 16,
-    paddingRight: 8,
-    paddingBottom: 18,
-    borderRadius: 16,
+    backgroundColor: color_token.gray200,
+    gap: size(14),
+    padding: size(16),
+    paddingRight: size(8),
+    paddingBottom: size(18),
+    borderRadius: size(16),
   },
   contents: {
     flexDirection: 'row',
@@ -56,14 +58,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
   },
-  title: {
-    fontSize: 14,
-    fontWeight: 400,
-    lineHeight: 14 * 1.4,
-  },
   body: {gap: 4},
   resultBox: {
-    gap: 6,
+    gap: size(6),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -100,16 +97,16 @@ const HomeAwayStatsCard = ({
     return (
       <View
         style={{
-          width: 35,
-          height: 35,
-          backgroundColor: '#fff',
+          width: size(35),
+          height: size(35),
+          backgroundColor: color_token.white,
           borderRadius: 100,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
         <Image
           source={title === '홈' ? require('@/assets/icons/home_stats.png') : require('@/assets/icons/away_stats.png')}
-          style={{width: 24, height: 24}}
+          style={{width: size(24), height: size(24)}}
         />
       </View>
     );
@@ -119,7 +116,11 @@ const HomeAwayStatsCard = ({
     <_StatsCard
       onPress={onPress}
       image={image}
-      title={<Text style={styles.title}>{title} 승률</Text>}
+      title={
+        <Txt size={14} weight="regular">
+          {title} 승률
+        </Txt>
+      }
       matchResult={matchResult}
     />
   );
@@ -153,8 +154,12 @@ const TeamStatsCard = ({
       onPress={onPress}
       title={
         <View style={{flexDirection: 'row', gap: 1}}>
-          <Text style={[styles.title, {fontWeight: 700}]}>{teamName}</Text>
-          <Text style={styles.title}>와의 경기 승률</Text>
+          <Txt size={14} weight="bold">
+            {teamName}
+          </Txt>
+          <Txt size={14} weight="regular">
+            와의 경기 승률
+          </Txt>
         </View>
       }
       matchResult={matchResult}
@@ -175,19 +180,19 @@ const StadiumStatsCard = ({
   };
   onPress: () => void;
 }) => {
-  const stadium = stadiumList.find(stadium => stadium.name === stadiumName);
+  const stadium = stadiumList.find(stadium => stadium.name.replaceAll(/\s/g, '') === stadiumName.replaceAll(/\s/g, ''));
   const image = useMemo(
     () => (
       <View
         style={{
-          width: 35,
-          height: 35,
+          width: size(35),
+          height: size(35),
           backgroundColor: stadium?.color,
           borderRadius: 100,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Image source={require('@/assets/icons/ic_stadium.png')} style={{width: 24, height: 24}} />
+        <Image source={require('@/assets/icons/ic_stadium.png')} style={{width: size(24), height: size(24)}} />
       </View>
     ),
     [stadiumName],
@@ -199,7 +204,11 @@ const StadiumStatsCard = ({
     <_StatsCard
       onPress={onPress}
       image={image}
-      title={<Text style={styles.title}>{stadiumName} 승률</Text>}
+      title={
+        <Txt size={14} weight="regular">
+          {stadiumName} 승률
+        </Txt>
+      }
       matchResult={matchResult}
     />
   );
