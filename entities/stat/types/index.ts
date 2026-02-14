@@ -77,6 +77,8 @@ export type OpponentWinStat = {
   losses: number;
   draws: number;
   win_percent: number;
+  ballpark_win_percent: number;
+  non_ballpark_win_percent: number;
 };
 
 export type OpponentWinPercentByYearResponse = {
