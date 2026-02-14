@@ -496,7 +496,7 @@ const EditTicketPage = () => {
                         resizeMode="contain"
                         style={styles.checkboxIcon}
                       />
-                      <Txt>나만보기</Txt>
+                      <Txt size={12}>나만보기</Txt>
                     </TouchableOpacity>
                   </View>
                 }

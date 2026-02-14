@@ -1,6 +1,6 @@
 import {useSegments} from 'expo-router';
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Vibration} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Pressable, ROUTES, useAppRouter} from '@/shared';
 import {CalenderIcon, MatchIcon, TicketIcon, StatsIcon, MyIcon} from '@/shared/ui/tab-icons';

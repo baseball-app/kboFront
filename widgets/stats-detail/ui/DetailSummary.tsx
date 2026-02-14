@@ -1,4 +1,5 @@
 import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
 import {Txt} from '@/shared/ui';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -56,30 +57,30 @@ const styles = StyleSheet.create({
   container: {
     borderColor: color_token.gray350,
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: size(10),
     backgroundColor: color_token.white,
     flexDirection: 'row',
     overflow: 'hidden',
   },
   powerBox: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: size(20),
+    paddingVertical: size(16),
     alignItems: 'center',
-    borderWidth: 0.7,
+    borderWidth: size(0.7),
     borderColor: color_token.gray350,
     borderStyle: 'dashed',
-    marginLeft: -1,
-    marginTop: -1,
-    marginBottom: -2,
+    marginLeft: -size(1),
+    marginTop: -size(1),
+    marginBottom: -size(2),
   },
   statsRow: {
-    paddingHorizontal: 24,
+    paddingHorizontal: size(24),
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,
   },
   statItem: {
-    paddingVertical: 16,
+    paddingVertical: size(16),
     alignItems: 'center',
   },
 });

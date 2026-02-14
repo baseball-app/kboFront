@@ -1,33 +1,33 @@
-import { useLocalSearchParams } from 'expo-router';
-import { useRef, useState } from 'react';
-import { TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useLocalSearchParams} from 'expo-router';
+import {useRef, useState} from 'react';
+import {TouchableOpacity, View, Image, StyleSheet, ScrollView, TextInput, Platform} from 'react-native';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import useWriteTicket from '@/hooks/match/useWriteTicket';
 import React from 'react';
 import dayjs from 'dayjs';
-import { DAYS_OF_WEEK } from '@/constants/day';
+import {DAYS_OF_WEEK} from '@/constants/day';
 import LocationTypeSelector from '@/components/write/LocationTypeSelector';
 import Ellipse from '@/components/common/Ellipse';
 import Input from '@/components/common/Input';
 import useProfile from '@/hooks/my/useProfile';
-import { useTeam, Team } from '@/entities/match';
+import {useTeam, Team} from '@/entities/match';
 import SelectBox from '@/components/common/SelectBox';
 import LottieView from 'lottie-react-native';
 import * as FileSystemLegacy from 'expo-file-system/legacy';
-import { useLogin } from '@/hooks/auth/useLogin';
+import {useLogin} from '@/hooks/auth/useLogin';
 import Toast from 'react-native-toast-message';
-import { logEvent } from '@/analytics/func';
-import { EVENTS, useAnalyticsStore } from '@/analytics/event';
-import { Config } from '@/config/Config';
-import { resizeImage, size, useAppRouter } from '@/shared';
-import { useKeyboard } from '@/shared';
-import { BottomSheet, Txt } from '@/shared/ui';
-import { CustKeyboardAvoidingView } from '@/shared/lib/useKeyboard';
-import { PLACE_LIST } from '@/constants/ticket';
-import { TicketFormDataMapper } from '@/features/ticket/create-ticket';
-import { TicketImageUploader } from '@/entities/ticket';
-import { color_token } from '@/constants/theme';
+import {logEvent} from '@/analytics/func';
+import {EVENTS, useAnalyticsStore} from '@/analytics/event';
+import {Config} from '@/config/Config';
+import {resizeImage, size, useAppRouter} from '@/shared';
+import {useKeyboard} from '@/shared';
+import {BottomSheet, Txt} from '@/shared/ui';
+import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard';
+import {PLACE_LIST} from '@/constants/ticket';
+import {TicketFormDataMapper} from '@/features/ticket/create-ticket';
+import {TicketImageUploader} from '@/entities/ticket';
+import {color_token} from '@/constants/theme';
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined;
   matchTeam: Team | null;
@@ -420,7 +420,7 @@ const TicketPage = () => {
                         resizeMode="contain"
                         style={styles.checkboxIcon}
                       />
-                      <Txt>나만보기</Txt>
+                      <Txt size={12}>나만보기</Txt>
                     </TouchableOpacity>
                   </View>
                 }
