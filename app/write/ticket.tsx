@@ -138,6 +138,8 @@ const TicketPage = () => {
 
   const insets = useSafeAreaInsets();
 
+  console.log(profile.my_team);
+
   const onSubmit = async () => {
     if (isPending) return;
     setIsPending(true);
@@ -148,6 +150,7 @@ const TicketPage = () => {
       writeStore,
       writeData,
       myTeamId: profile.my_team?.id || 0,
+      myTeamShortName: profile.my_team?.short_name || '',
     });
 
     registerTicket(formData)
@@ -175,6 +178,7 @@ const TicketPage = () => {
         writeStore,
         writeData,
         myTeamId: profile?.my_team?.id || 0,
+        myTeamShortName: profile.my_team?.short_name || '',
       });
 
       await FileSystemLegacy.uploadAsync(`${Config.API_URL}/tickets/ticket_add/`, resizedImage, {

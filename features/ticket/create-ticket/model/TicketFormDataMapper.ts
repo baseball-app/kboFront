@@ -57,8 +57,9 @@ class TicketFormDataMapper {
     writeStore: IDailyLogWriteState;
     writeData: IWriteDataInterface;
     myTeamId: number;
+    myTeamShortName: string;
   }): TicketRegisterRequestDto => {
-    const {writeStore, writeData, myTeamId} = params;
+    const {writeStore, writeData, myTeamId, myTeamShortName} = params;
 
     const ballparkInfo = writeStore.selectedMatch?.ballpark_info;
     const teamAwayInfo = writeStore.selectedMatch?.team_away_info;
@@ -91,8 +92,9 @@ class TicketFormDataMapper {
     const is_ballpark = isBallpark;
 
     // TODO: 수정 필요
-    const homeBallpark = HOME_BALLPARK_LIST.find(ballpark => ballpark.teamId === myTeamId)?.value;
+    const homeBallpark = HOME_BALLPARK_LIST.find(ballpark => ballpark.teamName === myTeamShortName)?.value;
     const is_homeballpark = homeBallpark === gip_place;
+    console.log('homeBallpark', homeBallpark, is_homeballpark);
 
     return {
       date,
@@ -121,6 +123,7 @@ class TicketFormDataMapper {
     writeStore: IDailyLogWriteState;
     writeData: IWriteDataInterface;
     myTeamId: number;
+    myTeamShortName: string;
   }): Promise<TicketRegisterRequestDto> => {
     const data = this._transform(params);
 
@@ -136,6 +139,7 @@ class TicketFormDataMapper {
     writeStore: IDailyLogWriteState;
     writeData: IWriteDataInterface;
     myTeamId: number;
+    myTeamShortName: string;
   }): Promise<Record<keyof TicketRegisterRequestDto, string>> => {
     let result = {} as Record<keyof TicketRegisterRequestDto, string>;
     const {image, ...rest} = await this.toDto(params);
@@ -159,6 +163,7 @@ class TicketFormDataMapper {
     writeStore: IDailyLogWriteState;
     writeData: IWriteDataInterface;
     myTeamId: number;
+    myTeamShortName: string;
   }): Promise<IFormData<TicketRegisterRequestDto>> => {
     const {image, ...rest} = await this.toDto(params);
     const formData = new CustomFormData<TicketRegisterRequestDto>();

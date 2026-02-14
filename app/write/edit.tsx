@@ -95,7 +95,7 @@ const EditTicketPage = () => {
     result: '',
   });
 
-  const homeBallpark = HOME_BALLPARK_LIST.find(ballpark => ballpark.teamId === profile.my_team?.id)?.value;
+  const homeBallpark = HOME_BALLPARK_LIST.find(ballpark => ballpark.teamName === profile.my_team?.short_name)?.value;
   const is_homeballpark = homeBallpark === writeData.place;
 
   useEffect(() => {
