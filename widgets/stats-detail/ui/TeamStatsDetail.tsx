@@ -8,6 +8,8 @@ import {useQuery} from '@tanstack/react-query';
 import ApiClient from '@/api';
 import * as schema from '@/entities/ticket/types';
 import {useOpponentWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat';
+import {size} from '@/shared';
+import {color_token} from '@/constants/theme';
 
 type Props = {
   parameter_id: number;
@@ -26,6 +28,10 @@ function TeamStatsDetail({parameter_id}: Props) {
   const opponentLoss = opponentMatch?.losses ?? 0;
   const opponentTotal = opponentWin + opponentDraw + opponentLoss;
   const opponentPercent = Math.floor((opponentWin / opponentTotal) * 100);
+  // 직관승률
+  const directMatchPercent = opponentMatch?.ballpark_win_percent ?? '-';
+  // 집관승률
+  const notDirectMatchPercent = opponentMatch?.non_ballpark_win_percent ?? '-';
 
   const {data, isLoading} = useQuery({
     queryKey: ['tickets', 'teamStatsDetail', parameter_id],
@@ -41,6 +47,21 @@ function TeamStatsDetail({parameter_id}: Props) {
       <Txt weight="bold" size={22} style={styles.title}>
         {team?.name} 상대 경기 통계
       </Txt>
+      <View style={styles.powerBoxContainer}>
+        <View style={styles.powerBox}>
+          <Txt size={16}>직관승률</Txt>
+          <Txt size={24} weight="bold">
+            {directMatchPercent}%
+          </Txt>
+        </View>
+        <View style={styles.powerBox}>
+          <Txt size={16}>직관승률</Txt>
+          <Txt size={24} weight="bold">
+            {notDirectMatchPercent}%
+          </Txt>
+        </View>
+      </View>
+
       <DetailSummary
         title={`${team?.short_name}전 승요력`}
         percent={opponentPercent}
@@ -59,16 +80,30 @@ function TeamStatsDetail({parameter_id}: Props) {
 }
 
 const styles = StyleSheet.create({
-  title: {paddingBottom: 24},
+  title: {paddingBottom: size(24)},
   container: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
+    paddingHorizontal: size(24),
+    paddingTop: size(16),
   },
   contents: {
-    paddingTop: 28,
+    paddingTop: size(28),
   },
   contentsTitle: {
-    paddingBottom: 20,
+    paddingBottom: size(20),
+  },
+  powerBox: {
+    alignItems: 'center',
+    paddingVertical: size(8),
+    borderRadius: size(8),
+    backgroundColor: color_token.white,
+    borderWidth: 1,
+    borderColor: color_token.gray350,
+    flex: 1,
+  },
+  powerBoxContainer: {
+    flexDirection: 'row',
+    gap: size(15),
+    marginBottom: size(12),
   },
 });
 
