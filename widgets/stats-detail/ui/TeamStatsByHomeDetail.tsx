@@ -8,6 +8,7 @@ import {useNotBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities
 import {useQuery} from '@tanstack/react-query';
 import ApiClient from '@/api';
 import * as schema from '@/entities/ticket/types';
+import {size} from '@/shared';
 
 type Props = {
   parameter_id: number;
@@ -58,16 +59,17 @@ function TeamStatsByHomeDetail({parameter_id}: Props) {
 }
 
 const styles = StyleSheet.create({
-  title: {paddingBottom: 24},
+  title: {paddingBottom: size(24)},
   container: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
+    paddingHorizontal: size(24),
+    paddingTop: size(16),
+    flex: 1,
   },
   contents: {
-    paddingTop: 28,
+    paddingTop: size(28),
   },
   contentsTitle: {
-    paddingBottom: 20,
+    paddingBottom: size(20),
   },
 });
 
