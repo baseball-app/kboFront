@@ -1,9 +1,10 @@
-import React, { PropsWithChildren, useEffect, useState, useCallback } from 'react';
-import { StyleSheet, Pressable } from 'react-native';
-import { Modal } from '@/components/common/Modal';
-import Animated, { useSharedValue, withTiming, useAnimatedStyle, Easing } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, {PropsWithChildren, useEffect, useState, useCallback} from 'react';
+import {StyleSheet, Pressable, Platform} from 'react-native';
+import {Modal} from '@/components/common/Modal';
+import Animated, {useSharedValue, withTiming, useAnimatedStyle, Easing} from 'react-native-reanimated';
+import {scheduleOnRN} from 'react-native-worklets';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {size} from '../lib';
 
 type BottomSheetProps = {
   isOpen: boolean;
@@ -22,9 +23,9 @@ const BottomSheetComponent = ({
   onAnimationEnd,
 }: PropsWithChildren<BottomSheetProps>) => {
   const [isRealOpen, setIsRealOpen] = useState(false);
-const {bottom} = useSafeAreaInsets()
+  const {bottom} = useSafeAreaInsets();
   const overlayOpacity = useSharedValue(0);
-  const sheetTranslateY = useSharedValue(height + bottom);
+  const sheetTranslateY = useSharedValue(height + (Platform.OS === 'android' ? 0 : bottom));
 
   // setIsRealOpen을 useCallback으로 감싸서 runOnJS에서 안정적으로 사용
   const handleAnimationEnd = useCallback(() => {
@@ -53,7 +54,7 @@ const {bottom} = useSafeAreaInsets()
     });
 
     sheetTranslateY.value = withTiming(
-      height + bottom,
+      height + (Platform.OS === 'android' ? 0 : bottom),
       {
         duration,
         easing: Easing.in(Easing.quad),
@@ -83,7 +84,7 @@ const {bottom} = useSafeAreaInsets()
 
   const sheetStyle = useAnimatedStyle(() => ({
     transform: [{translateY: sheetTranslateY.value}],
-    height: height + bottom,
+    height: height + (Platform.OS === 'android' ? 0 : bottom),
   }));
 
   // onPressOverlay가 undefined인 경우 불필요한 함수 생성 방지
@@ -135,8 +136,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 10,
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    // backgroundColor: '#fff',
+    borderTopLeftRadius: size(16),
+    borderTopRightRadius: size(16),
   },
 });
