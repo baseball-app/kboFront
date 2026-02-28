@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
 import {size, useAppRouter} from '@/shared';
 import {color_token} from '@/constants/theme';
 import {Txt} from '@/shared/ui';
@@ -48,7 +48,7 @@ const Header = ({variants = 'white', leftButton, hasBackButton = true, rightButt
         )
       ) : hasBackButton ? (
         <TouchableOpacity style={styles.icon} onPress={onBackButtonClick}>
-          <Image source={require('@/assets/icons/back.png')} style={{width: 16, height: 28}} />
+          <Image source={require('@/assets/icons/back.png')} style={{width: size(28), height: size(28)}} />
         </TouchableOpacity>
       ) : (
         <View style={styles.icon} />

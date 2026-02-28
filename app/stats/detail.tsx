@@ -17,8 +17,8 @@ export default function StatsDetailScreen() {
   const query = getQuery();
 
   return (
-    <SafeAreaView>
-      <ScrollView contentContainerStyle={{paddingBottom: size(24)}}>
+    <SafeAreaView style={{flex: 1}} edges={['top']}>
+      <ScrollView contentContainerStyle={{paddingBottom: size(24), flex: 1}}>
         <Header hasBackButton variants="transparent" />
         {query.type === StatsDetailType.OPPONENT && <TeamStatsDetail parameter_id={query.parameter_id} />}
         {query.type === StatsDetailType.BALLPARK && <StadiumStatsDetail parameter_id={query.parameter_id} />}

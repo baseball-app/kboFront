@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: size(24),
     paddingTop: size(16),
+    flex: 1,
   },
   contents: {
     paddingTop: size(28),
