@@ -32,7 +32,7 @@ function SeasonStatsBoxWidget({year}: {year: number}) {
 
   return (
     <LinearBorderBox
-      borderWidth={1}
+      borderWidth={size(1)}
       borderRadius={size(10)}
       backgroundColor={color_token.white}
       colors={
