@@ -7,6 +7,7 @@ import {useQuery} from '@tanstack/react-query';
 import ApiClient from '@/api';
 import * as schema from '@/entities/ticket/types';
 import {useHomeAwayWinPercentByYear, useSelectedStatsFilter} from '@/entities/stat';
+import {size} from '@/shared';
 
 function AwayStatsDetail({is_homeballpark}: {is_homeballpark: boolean}) {
   const {selectedStatsFilter} = useSelectedStatsFilter();
@@ -47,15 +48,16 @@ function AwayStatsDetail({is_homeballpark}: {is_homeballpark: boolean}) {
 export {AwayStatsDetail};
 
 const styles = StyleSheet.create({
-  title: {paddingBottom: 24},
+  title: {paddingBottom: size(24)},
   container: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
+    paddingHorizontal: size(24),
+    paddingTop: size(16),
+    flex: 1,
   },
   contents: {
-    paddingTop: 28,
+    paddingTop: size(28),
   },
   contentsTitle: {
-    paddingBottom: 20,
+    paddingBottom: size(20),
   },
 });

@@ -3,7 +3,7 @@ import {View, StyleSheet, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Ionicons} from '@expo/vector-icons';
 import useUserJoin from '@/hooks/auth/useUserJoin';
-import {color_token, font} from '@/constants/theme';
+import {color_token} from '@/constants/theme';
 import Header from '@/components/common/Header';
 import {BackButton, BottomFloatSection, Button, Pressable, Txt} from '@/shared/ui';
 import {size} from '@/shared';
