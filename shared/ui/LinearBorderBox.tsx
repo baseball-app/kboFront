@@ -37,7 +37,7 @@ export const LinearBorderBox = ({
   colors = ['#EF4B87', '#EF4B87', '#1E5EF4', '#1E5EF4'],
   locations = [0, 0.35, 0.65, 1],
   animated = true,
-  duration = 3000,
+  duration = 6000,
   borderWidth = 2,
   borderRadius = 12,
   backgroundColor = 'transparent',
@@ -106,7 +106,7 @@ export const LinearBorderBox = ({
   const innerBorderRadius = borderRadius - borderWidth;
 
   return (
-    <View style={[styles.container, {borderRadius, padding: borderWidth}, style]} onLayout={handleLayout}>
+    <View style={[styles.container, {borderRadius, padding: 1}, style]} onLayout={handleLayout}>
       <Animated.View style={rotatingStyle}>
         <Animated.View style={gradientStyle}>
           <LinearGradient
