@@ -55,7 +55,7 @@ function TeamStatsDetail({parameter_id}: Props) {
           </Txt>
         </View>
         <View style={styles.powerBox}>
-          <Txt size={16}>직관승률</Txt>
+          <Txt size={16}>집관승률</Txt>
           <Txt size={24} weight="bold">
             {notDirectMatchPercent}%
           </Txt>

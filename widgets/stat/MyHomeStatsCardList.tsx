@@ -7,7 +7,7 @@ import {useNavigateToStatsDetail} from '@/features/stats';
 
 const MyHomeStatsCardList = () => {
   const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter();
-  const year = selectedStatsFilter?.year ?? 2025;
+  const year = selectedStatsFilter?.year ?? 2026;
   const {data, isLoading, isError} = useNotBallparkWinPercentByYear({year});
 
   const {navigateToMyHomeStatsDetail} = useNavigateToStatsDetail();
