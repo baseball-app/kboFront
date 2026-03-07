@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 10,
-    // backgroundColor: '#fff',
-    borderTopLeftRadius: size(16),
-    borderTopRightRadius: size(16),
+    backgroundColor: '#fff',
+    borderTopLeftRadius: size(20),
+    borderTopRightRadius: size(20),
   },
 });
