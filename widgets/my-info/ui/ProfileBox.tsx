@@ -2,7 +2,7 @@ import {ProfileImage} from '@/entities/user';
 import {ROUTES, size, useAppRouter} from '@/shared';
 import useProfile from '@/hooks/my/useProfile';
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {Pressable, Txt} from '@/shared/ui';
 import {color_token} from '@/constants/theme';
 

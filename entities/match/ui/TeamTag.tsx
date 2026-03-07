@@ -1,8 +1,9 @@
+import {EventTracker} from '@/analytics/EventTracker';
 import {color_token} from '@/constants/theme';
 import {Pressable, size} from '@/shared';
 import {Txt} from '@/shared/ui';
 import React, {memo} from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 type Props = {
   name: string;
@@ -12,15 +13,17 @@ type Props = {
 
 function TeamTag({name, isActive, onClick}: Props) {
   return (
-    <Pressable onPress={onClick} style={[styles.tag, isActive && styles.tagActive]}>
-      <Txt
-        size={16}
-        weight="semibold"
-        color={color_token.gray900}
-        style={[isActive && styles.textActive, {lineHeight: 24}]}>
-        {name}
-      </Txt>
-    </Pressable>
+    <EventTracker eventName="경기 구단별 선택" params={{team_name: name}}>
+      <Pressable onPress={onClick} style={[styles.tag, isActive && styles.tagActive]}>
+        <Txt
+          size={16}
+          weight="semibold"
+          color={color_token.gray900}
+          style={[isActive && styles.textActive, {lineHeight: 24}]}>
+          {name}
+        </Txt>
+      </Pressable>
+    </EventTracker>
   );
 }
 

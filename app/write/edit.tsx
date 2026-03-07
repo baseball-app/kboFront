@@ -27,6 +27,7 @@ import {CustKeyboardAvoidingView} from '@/shared/lib/useKeyboard';
 import {HOME_BALLPARK_LIST, PLACE_LIST} from '@/constants/ticket';
 import {TicketImageUploader} from '@/entities/ticket';
 import {color_token} from '@/constants/theme';
+import {EventTracker} from '@/analytics/EventTracker';
 
 interface ITicketEditData {
   homeTeam: {
@@ -595,18 +596,20 @@ const FooterButton = ({
 }) => {
   return (
     <View style={styles.footerButtonBox}>
-      <TouchableOpacity
-        style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
-        onPress={onSubmit}
-        disabled={!isEnabled}>
-        {isPending ? (
-          <LottieView source={require('@/assets/lottie/loading.json')} autoPlay loop style={styles.lottieView} />
-        ) : (
-          <Txt size={16} weight="bold" color={isEnabled ? color_token.white : color_token.gray600}>
-            티켓 정보 변경하기
-          </Txt>
-        )}
-      </TouchableOpacity>
+      <EventTracker eventName="티켓 정보 변경하기">
+        <TouchableOpacity
+          style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
+          onPress={onSubmit}
+          disabled={!isEnabled}>
+          {isPending ? (
+            <LottieView source={require('@/assets/lottie/loading.json')} autoPlay loop style={styles.lottieView} />
+          ) : (
+            <Txt size={16} weight="bold" color={isEnabled ? color_token.white : color_token.gray600}>
+              티켓 정보 변경하기
+            </Txt>
+          )}
+        </TouchableOpacity>
+      </EventTracker>
     </View>
   );
 };

@@ -6,6 +6,7 @@ import {useNavigateWriteTicket} from '@/features/match/navigate-write-ticket';
 import {useAnalyticsStore} from '@/analytics/event';
 import {Image, StyleSheet} from 'react-native';
 import {Pressable, size} from '@/shared';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const CreateTodayTicketButton = () => {
   const {matchingList: todayMatchingList} = useMatch({selectedDate: dayjs().toDate()});
@@ -26,18 +27,20 @@ const CreateTodayTicketButton = () => {
     });
   };
   return (
-    <Pressable //
-      style={styles.floatingButton}
-      onPress={onClickFloatingButton}>
-      <Image
-        source={require('@/assets/icons/write.png')}
-        resizeMode="contain"
-        style={{
-          width: size(24),
-          height: size(24),
-        }}
-      />
-    </Pressable>
+    <EventTracker eventName="플로팅 버튼">
+      <Pressable //
+        style={styles.floatingButton}
+        onPress={onClickFloatingButton}>
+        <Image
+          source={require('@/assets/icons/write.png')}
+          resizeMode="contain"
+          style={{
+            width: size(24),
+            height: size(24),
+          }}
+        />
+      </Pressable>
+    </EventTracker>
   );
 };
 

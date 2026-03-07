@@ -28,6 +28,7 @@ import {PLACE_LIST} from '@/constants/ticket';
 import {TicketFormDataMapper} from '@/features/ticket/create-ticket';
 import {TicketImageUploader} from '@/entities/ticket';
 import {color_token} from '@/constants/theme';
+import {EventTracker} from '@/analytics/EventTracker';
 interface IWriteDataInterface {
   todayImg: ImagePicker.ImagePickerAsset | undefined;
   matchTeam: Team | null;
@@ -311,12 +312,14 @@ const TicketPage = () => {
               {(() => {
                 if (isDirectWrite) {
                   return (
-                    <SelectBox
-                      label={'오늘의 상대구단'}
-                      placeholder={'상대구단을 선택해주세요'}
-                      value={writeData.matchTeam?.name}
-                      onPress={() => setTeamModalVisible(true)}
-                    />
+                    <EventTracker eventName="오늘의 상대구단">
+                      <SelectBox
+                        label={'오늘의 상대구단'}
+                        placeholder={'상대구단을 선택해주세요'}
+                        value={writeData.matchTeam?.name}
+                        onPress={() => setTeamModalVisible(true)}
+                      />
+                    </EventTracker>
                   );
                 }
 
@@ -359,12 +362,14 @@ const TicketPage = () => {
                       }}
                     />
                   ) : (
-                    <SelectBox
-                      label={'오늘의 경기구장'}
-                      placeholder={'경기구장을 선택해주세요'}
-                      value={writeData.matchPlace}
-                      onPress={() => setPlaceModalVisible(true)}
-                    />
+                    <EventTracker eventName="오늘의 경기구장">
+                      <SelectBox
+                        label={'오늘의 경기구장'}
+                        placeholder={'경기구장을 선택해주세요'}
+                        value={writeData.matchPlace}
+                        onPress={() => setPlaceModalVisible(true)}
+                      />
+                    </EventTracker>
                   )}
                 </>
               )}
@@ -518,18 +523,20 @@ const FooterButton = ({
 }) => {
   return (
     <View style={styles.footerButtonBox}>
-      <TouchableOpacity
-        style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
-        disabled={!isEnabled}
-        onPress={onSubmit}>
-        {isPending ? (
-          <LottieView source={require('@/assets/lottie/loading.json')} autoPlay loop style={styles.lottieView} />
-        ) : (
-          <Txt size={16} weight="bold" color={isEnabled ? color_token.white : color_token.gray600}>
-            오늘의 티켓 발급하기
-          </Txt>
-        )}
-      </TouchableOpacity>
+      <EventTracker eventName="티켓 발급하기">
+        <TouchableOpacity
+          style={[styles.footerButton, isEnabled ? styles.activeButton : styles.disabledButton]}
+          disabled={!isEnabled}
+          onPress={onSubmit}>
+          {isPending ? (
+            <LottieView source={require('@/assets/lottie/loading.json')} autoPlay loop style={styles.lottieView} />
+          ) : (
+            <Txt size={16} weight="bold" color={isEnabled ? color_token.white : color_token.gray600}>
+              오늘의 티켓 발급하기
+            </Txt>
+          )}
+        </TouchableOpacity>
+      </EventTracker>
     </View>
   );
 };

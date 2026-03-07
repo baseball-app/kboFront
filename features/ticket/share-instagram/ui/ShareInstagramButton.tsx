@@ -9,6 +9,7 @@ import {Svg} from 'react-native-svg';
 import {Line} from 'react-native-svg';
 import {BlurView} from 'expo-blur';
 import dayjs from 'dayjs';
+import {EventTracker} from '@/analytics/EventTracker';
 
 // 반응형 스케일링 유틸 함수
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
@@ -79,16 +80,18 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
 
   return (
     <>
-      <TouchableOpacity
-        onPress={() => {
-          setIsOpen(true);
-        }}>
-        <Image
-          resizeMode="contain"
-          style={styles.editIcon} //
-          source={require('@/assets/icons/share.png')}
-        />
-      </TouchableOpacity>
+      <EventTracker eventName="공유하기">
+        <TouchableOpacity
+          onPress={() => {
+            setIsOpen(true);
+          }}>
+          <Image
+            resizeMode="contain"
+            style={styles.editIcon} //
+            source={require('@/assets/icons/share.png')}
+          />
+        </TouchableOpacity>
+      </EventTracker>
       <Modal visible={isOpen} onRequestClose={() => setIsOpen(false)} animationType="fade" transparent={true}>
         <BlurView
           intensity={Platform.OS === 'ios' ? 30 : 20}
@@ -172,10 +175,16 @@ const ShareInstagramButton = ({ticketDetail}: {ticketDetail: TicketDetail | unde
               </View>
             </View>
           </ViewShot>
-          <Pressable style={styles.shareButton} onPress={onShareInstagramStories}>
-            <Image source={require('@/assets/icons/instagram.png')} resizeMode="contain" style={styles.instagramIcon} />
-            <Text style={styles.shareButtonText}>스토리 공유</Text>
-          </Pressable>
+          <EventTracker eventName="공유하기" params={{platform: 'instagram'}}>
+            <Pressable style={styles.shareButton} onPress={onShareInstagramStories}>
+              <Image
+                source={require('@/assets/icons/instagram.png')}
+                resizeMode="contain"
+                style={styles.instagramIcon}
+              />
+              <Text style={styles.shareButtonText}>스토리 공유</Text>
+            </Pressable>
+          </EventTracker>
         </View>
       </Modal>
     </>

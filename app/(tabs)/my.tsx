@@ -12,6 +12,7 @@ import {AddFriendInput} from '@/features/user/friend/follow';
 import {AlarmIcon} from '@/entities/alarm';
 import {color_token} from '@/constants/theme';
 import {Pressable, Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const ProfileScreen = () => {
   const {profile, onPasteInviteCode} = useMyInfo();
@@ -45,7 +46,9 @@ const ProfileScreen = () => {
                 alignItems: 'flex-end',
                 paddingTop: size(10),
               }}>
-              <AlarmIcon onPress={() => router.push(ROUTES.MY_ALARM)} />
+              <EventTracker eventName="알림">
+                <AlarmIcon onPress={() => router.push(ROUTES.MY_ALARM)} />
+              </EventTracker>
             </View>
             <View style={{height: size(10)}} />
             {/* 프로필 박스 */}
@@ -54,26 +57,32 @@ const ProfileScreen = () => {
             <TeamBox />
 
             <View style={styles.statsContainer}>
-              <PressableButton
-                onPress={() => router.push(ROUTES.MY_FOLLOWERS)}
-                label="팔로워"
-                value={`${profile?.followers}`}
-              />
-              <PressableButton
-                onPress={() => router.push(ROUTES.MY_FOLLOWINGS)}
-                label="팔로잉"
-                value={`${profile?.followings}`}
-              />
-              <PressableButton
-                onPress={onPasteInviteCode}
-                label="초대코드"
-                value={
-                  <Image //
-                    source={require('@/assets/icons/invitation.png')}
-                    style={styles.inviteCodeIcon}
-                  />
-                }
-              />
+              <EventTracker eventName="팔로워">
+                <PressableButton
+                  onPress={() => router.push(ROUTES.MY_FOLLOWERS)}
+                  label="팔로워"
+                  value={`${profile?.followers}`}
+                />
+              </EventTracker>
+              <EventTracker eventName="팔로잉">
+                <PressableButton
+                  onPress={() => router.push(ROUTES.MY_FOLLOWINGS)}
+                  label="팔로잉"
+                  value={`${profile?.followings}`}
+                />
+              </EventTracker>
+              <EventTracker eventName="초대코드 복사">
+                <PressableButton
+                  onPress={onPasteInviteCode}
+                  label="초대코드"
+                  value={
+                    <Image //
+                      source={require('@/assets/icons/invitation.png')}
+                      style={styles.inviteCodeIcon}
+                    />
+                  }
+                />
+              </EventTracker>
             </View>
             <AddFriendInput />
           </View>

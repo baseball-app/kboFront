@@ -43,7 +43,7 @@ const TodayMatch = () => {
         <EmptyMatch myTeamName={profile.my_team?.short_name || ''} />
       )}
 
-      <EventTracker eventName="경기일정 더보기 클릭">
+      <EventTracker eventName="경기일정 더보기">
         <Pressable style={styles.seeMoreButton} onPress={() => router.navigate(ROUTES.MATCH_TAB)}>
           <View style={styles.imgBox}>
             <Image

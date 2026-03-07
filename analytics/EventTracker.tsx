@@ -1,9 +1,6 @@
 import React from 'react';
-import {logEvent} from './func';
-import {useSegments} from 'expo-router';
 import {EVENT_TYPE} from './event';
-import dayjs from 'dayjs';
-import {useProfile} from '@/entities/user';
+import {useEventTracker} from './useEventTracker';
 
 type EventTrackerProps = {
   children: React.ReactElement;
@@ -27,16 +24,11 @@ type EventTrackerProps = {
 const EventTracker = ({children, eventName, params}: EventTrackerProps) => {
   // 자식이 하나인지 확인
   const child = React.Children.only(children) as React.ReactElement<{onPress?: () => void}>;
-  const segments = useSegments();
-  const {profile} = useProfile();
+  const {logEvent} = useEventTracker();
 
   return React.cloneElement(child, {
     onPress: (...args: any[]) => {
-      logEvent(EVENT_TYPE.CLICK_EVENT, {
-        event_name: eventName,
-        screen_name: segments.join('/'),
-        tracking_time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-        my_team: profile.my_team?.name,
+      logEvent(EVENT_TYPE.CLICK_EVENT, eventName, {
         ...params,
       });
       // 자식이 원래 가지고 있던 onPress 실행
