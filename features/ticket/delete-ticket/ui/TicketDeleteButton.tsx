@@ -1,14 +1,15 @@
-import { useCommonSlice, usePopup } from '@/slice/commonSlice';
+import {useCommonSlice, usePopup} from '@/slice/commonSlice';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { useDeleteTicket } from '../model';
-import { Txt } from '@/shared/ui';
-import { color_token } from '@/constants/theme';
+import {TouchableOpacity} from 'react-native';
+import {useDeleteTicket} from '../model';
+import {Txt} from '@/shared/ui';
+import {color_token} from '@/constants/theme';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
   const {modal} = useCommonSlice();
 
-  const {openConfirmPopup} = usePopup()
+  const {openConfirmPopup} = usePopup();
 
   const {deleteTicket} = useDeleteTicket();
 
@@ -35,17 +36,19 @@ const TicketDeleteButton = ({ticketId}: {ticketId: number}) => {
           color: color_token.gray900,
         },
       },
-    })
+    });
   };
 
   return (
-    <TouchableOpacity
-      onLayout={({nativeEvent}) => console.log(nativeEvent.layout.width)}
-      onPress={() => onDeleteTicket()}>
-      <Txt size={16} weight="semibold" color={color_token.primary}>
-        삭제
-      </Txt>
-    </TouchableOpacity>
+    <EventTracker eventName="티켓 삭제하기">
+      <TouchableOpacity
+        onLayout={({nativeEvent}) => console.log(nativeEvent.layout.width)}
+        onPress={() => onDeleteTicket()}>
+        <Txt size={16} weight="semibold" color={color_token.primary}>
+          삭제
+        </Txt>
+      </TouchableOpacity>
+    </EventTracker>
   );
 };
 

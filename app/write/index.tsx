@@ -10,6 +10,7 @@ import {ROUTES, size, useAppRouter} from '@/shared';
 import {Match, MatchCard, useMatch} from '@/entities/match';
 import {color_token} from '@/constants/theme';
 import {BackButton, Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 /** 경기 결과 목업데이터 */
 const matchResult = [
@@ -184,11 +185,13 @@ const DailyLogWriteScreen = () => {
                   />
                 ))}
                 <View style={styles.doubleHeaderBox}>
-                  <TouchableOpacity onPress={onClickDoubleHeaderMatch} style={styles.doubleHeaderButton}>
-                    <Txt size={16} weight="medium" color={color_token.white}>
-                      더블헤더 작성하기
-                    </Txt>
-                  </TouchableOpacity>
+                  <EventTracker eventName="더블헤더 작성하기">
+                    <TouchableOpacity onPress={onClickDoubleHeaderMatch} style={styles.doubleHeaderButton}>
+                      <Txt size={16} weight="medium" color={color_token.white}>
+                        더블헤더 작성하기
+                      </Txt>
+                    </TouchableOpacity>
+                  </EventTracker>
                 </View>
               </>
             ) : (
@@ -196,11 +199,13 @@ const DailyLogWriteScreen = () => {
                 <Txt size={16} color={color_token.black} style={styles.noMatchText}>
                   경기 일정이 없어요.
                 </Txt>
-                <TouchableOpacity onPress={nextButtonClick} style={styles.doubleHeaderButton}>
-                  <Txt size={16} weight="medium" color={color_token.white}>
-                    직접 추가하기
-                  </Txt>
-                </TouchableOpacity>
+                <EventTracker eventName="경기 일정 직접 추가하기">
+                  <TouchableOpacity onPress={nextButtonClick} style={styles.doubleHeaderButton}>
+                    <Txt size={16} weight="medium" color={color_token.white}>
+                      직접 추가하기
+                    </Txt>
+                  </TouchableOpacity>
+                </EventTracker>
               </View>
             )}
           </View>

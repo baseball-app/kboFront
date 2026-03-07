@@ -1,8 +1,6 @@
 import {Image, ScrollView, StyleSheet} from 'react-native';
 import {View} from 'react-native';
 import React, {useState} from 'react';
-import {logEvent} from '@/analytics/func';
-import {EVENTS} from '@/analytics/event';
 import {ROUTES, size, useAppRouter} from '@/shared';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Header from '@/components/common/Header';
@@ -16,6 +14,9 @@ import {
   HomeAwayStatsCardList,
   MyHomeStatsCardList,
 } from '@/widgets/stat';
+import {useEventTracker} from '@/analytics/useEventTracker';
+import {EventTracker} from '@/analytics/EventTracker';
+import {EVENT_TYPE} from '@/analytics/event';
 
 const MatchScreen = () => {
   const router = useAppRouter();
@@ -27,6 +28,7 @@ const MatchScreen = () => {
   } = useSelectedStatsFilter();
 
   const [open, setOpen] = useState(false);
+  const {logEvent} = useEventTracker();
 
   const selectedYear = selectedStatsFilter.year;
   const selectedType = selectedStatsFilter.type;
@@ -55,26 +57,34 @@ const MatchScreen = () => {
           />
           <View style={styles.contentGap}>
             <SeasonStatsBoxWidget year={selectedYear} />
-            <Button
-              onPress={() => {
-                logEvent(EVENTS.WIN_PREDICTION_CLICK, {screen_name: ROUTES.TICKET_MY_STAT});
-                router.push(ROUTES.TICKET_MY_STAT);
-              }}
-              type="secondary">
-              나의 승요력 보러가기
-            </Button>
+            <EventTracker eventName="나의 승요력 보러가기">
+              <Button
+                onPress={() => {
+                  router.push(ROUTES.TICKET_MY_STAT);
+                }}
+                type="secondary">
+                나의 승요력 보러가기
+              </Button>
+            </EventTracker>
             <View style={styles.filterContainer}>
               <SelectBox
                 list={STATS_TYPE_LIST}
                 value={selectedType}
-                onChange={value => onChangeType(value as SelectedStatsType)}
+                onChange={value => {
+                  onChangeType(value as SelectedStatsType);
+                  logEvent(EVENT_TYPE.CLICK_EVENT, '카테고리 변경', {
+                    category: value,
+                  });
+                }}
               />
-              <Pressable onPress={toggleSort} style={sortStyles.container}>
-                <Txt size={15} weight="medium" color={color_token.gray600}>
-                  {isSortedByHighWinRate ? '승률 높은순' : '승률 낮은순'}
-                </Txt>
-                <Image source={require('@/assets/icons/updown.png')} style={sortStyles.icon} />
-              </Pressable>
+              <EventTracker eventName="승률 정렬">
+                <Pressable onPress={toggleSort} style={sortStyles.container}>
+                  <Txt size={15} weight="medium" color={color_token.gray600}>
+                    {isSortedByHighWinRate ? '승률 높은순' : '승률 낮은순'}
+                  </Txt>
+                  <Image source={require('@/assets/icons/updown.png')} style={sortStyles.icon} />
+                </Pressable>
+              </EventTracker>
             </View>
             <View style={styles.cardList}>
               {selectedType === '상대구단별' && <TeamStatsCardList />}

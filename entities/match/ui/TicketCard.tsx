@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import {getTempBaseballMediumName, size} from '@/shared';
 import {color_token} from '@/constants/theme';
 import {Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 type TicketCardProps = {
   ticket: {
@@ -57,11 +58,13 @@ const TicketCard = ({ticket, homeTeam, awayTeam, opponentTeam, onClick}: TicketC
         <Txt size={13} weight="regular" color={color_token.gray500} style={styles.dateMargin}>
           {dayjs(ticket.date).format('YYYY.MM.DD')}
         </Txt>
-        <TouchableOpacity activeOpacity={0.8} onPress={onClick} style={styles.viewTicketButton}>
-          <Txt size={13} weight="medium" color={color_token.white}>
-            티켓보기
-          </Txt>
-        </TouchableOpacity>
+        <EventTracker eventName="티켓보기">
+          <TouchableOpacity activeOpacity={0.8} onPress={onClick} style={styles.viewTicketButton}>
+            <Txt size={13} weight="medium" color={color_token.white}>
+              티켓보기
+            </Txt>
+          </TouchableOpacity>
+        </EventTracker>
       </View>
     </View>
   );

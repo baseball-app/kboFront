@@ -1,12 +1,13 @@
 import {Match} from '@/entities/match';
 import React from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import Ellipse from '@/components/common/Ellipse';
 import {useTeam} from '../model';
 import dayjs from 'dayjs';
 import {size} from '@/shared';
 import {color_token} from '@/constants/theme';
 import {Pressable, Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 type Props = {
   match: Match;
@@ -23,43 +24,45 @@ const MatchCard = ({match, onClick, isSelected}: Props) => {
   const awayTeam = findTeamById(match.team_away_info.id);
 
   return (
-    <Pressable onPress={onClick}>
-      <View
-        style={[
-          styles.gameInfoBox, //
-          isSelected && styles.gameSelectedInfoBox,
-        ]}>
-        <View style={styles.matchDayBox}>
-          <Txt size={14} color={color_token.black}>
-            {time}
-          </Txt>
-          <Ellipse />
-          <Txt size={14} color={color_token.black} style={styles.ballparkText}>
-            {match.ballpark_info.name.slice(0, 2)}
-          </Txt>
-        </View>
-        <View style={styles.matchTeamBox}>
-          <View style={styles.teamRow}>
-            <View style={styles.teamContainer}>
-              <Image source={homeTeam?.logo} resizeMode="contain" style={styles.teamLogo} />
-              <Txt size={14} color={color_token.black}>
-                {homeTeam?.short_name}
-              </Txt>
-            </View>
-            <View style={styles.ellipseBox}>
-              <Ellipse size={size(5)} />
-              <Ellipse size={size(5)} />
-            </View>
-            <View style={styles.teamContainer}>
-              <Image source={awayTeam?.logo} resizeMode="contain" style={styles.teamLogo} />
-              <Txt size={14} color={color_token.black}>
-                {awayTeam?.short_name}
-              </Txt>
+    <EventTracker eventName="경기 일정 선택">
+      <Pressable onPress={onClick}>
+        <View
+          style={[
+            styles.gameInfoBox, //
+            isSelected && styles.gameSelectedInfoBox,
+          ]}>
+          <View style={styles.matchDayBox}>
+            <Txt size={14} color={color_token.black}>
+              {time}
+            </Txt>
+            <Ellipse />
+            <Txt size={14} color={color_token.black} style={styles.ballparkText}>
+              {match.ballpark_info.name.slice(0, 2)}
+            </Txt>
+          </View>
+          <View style={styles.matchTeamBox}>
+            <View style={styles.teamRow}>
+              <View style={styles.teamContainer}>
+                <Image source={homeTeam?.logo} resizeMode="contain" style={styles.teamLogo} />
+                <Txt size={14} color={color_token.black}>
+                  {homeTeam?.short_name}
+                </Txt>
+              </View>
+              <View style={styles.ellipseBox}>
+                <Ellipse size={size(5)} />
+                <Ellipse size={size(5)} />
+              </View>
+              <View style={styles.teamContainer}>
+                <Image source={awayTeam?.logo} resizeMode="contain" style={styles.teamLogo} />
+                <Txt size={14} color={color_token.black}>
+                  {awayTeam?.short_name}
+                </Txt>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </Pressable>
+      </Pressable>
+    </EventTracker>
   );
 };
 

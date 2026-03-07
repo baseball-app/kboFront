@@ -4,6 +4,7 @@ import {useFollowFriend} from '../model';
 import {color_token} from '@/constants/theme';
 import {size} from '@/shared';
 import {Pressable, Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const AddFriendInput = () => {
   const inputRef = useRef<TextInput>(null);
@@ -20,20 +21,22 @@ const AddFriendInput = () => {
         placeholderTextColor="#95938B"
         ref={inputRef}
       />
-      <Pressable
-        style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: color_token.gray350}]} //
-        disabled={!inviteCode}
-        onPress={() => {
-          inputRef.current?.blur();
-          inviteCode &&
-            follow(inviteCode).finally(() => {
-              setInviteCode(undefined);
-            });
-        }}>
-        <Txt size={14} weight="medium" color={!inviteCode ? color_token.gray600 : color_token.white}>
-          확인
-        </Txt>
-      </Pressable>
+      <EventTracker eventName="초대코드 입력">
+        <Pressable
+          style={[styles.inviteCodeInputButton, !inviteCode && {backgroundColor: color_token.gray350}]} //
+          disabled={!inviteCode}
+          onPress={() => {
+            inputRef.current?.blur();
+            inviteCode &&
+              follow(inviteCode).finally(() => {
+                setInviteCode(undefined);
+              });
+          }}>
+          <Txt size={14} weight="medium" color={!inviteCode ? color_token.gray600 : color_token.white}>
+            확인
+          </Txt>
+        </Pressable>
+      </EventTracker>
     </View>
   );
 };

@@ -1,6 +1,6 @@
 import {useLocalSearchParams, usePathname} from 'expo-router';
 import React from 'react';
-import {View, Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Image, StyleSheet, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import useProfile from '@/hooks/my/useProfile';
 import Header from '@/components/common/Header';
@@ -15,6 +15,7 @@ import {ShareInstagramButton} from '@/features/ticket/share-instagram';
 import Skeleton from '@/components/skeleton/Skeleton';
 import {color_token} from '@/constants/theme';
 import {BackButton, Button, Pressable, Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 export default function GameCard() {
   const router = useAppRouter();
@@ -120,18 +121,27 @@ export default function GameCard() {
         {isMyTicket && (
           <View style={styles.iconBox}>
             <ShareInstagramButton ticketDetail={ticketDetail} />
-            <Pressable onPress={onSaveTicketImage}>
-              <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
-            </Pressable>
-            <Pressable onPress={toggleFavorite}>
-              <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
-            </Pressable>
-            <Pressable
-              onPress={() => {
-                router.push(ROUTES.WRITE_EDIT, {id: ticketDetail?.id});
-              }}>
-              <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
-            </Pressable>
+
+            <EventTracker eventName="이미지 저장하기">
+              <Pressable onPress={onSaveTicketImage}>
+                <Image source={require('@/assets/icons/download.png')} resizeMode="contain" style={styles.editIcon} />
+              </Pressable>
+            </EventTracker>
+
+            <EventTracker eventName="최애경기" params={{is_favorite: ticketDetail?.favorite}}>
+              <Pressable onPress={toggleFavorite}>
+                <Image source={heartIcon} resizeMode="contain" style={styles.editIcon} />
+              </Pressable>
+            </EventTracker>
+
+            <EventTracker eventName="티켓 수정하러 가기">
+              <Pressable
+                onPress={() => {
+                  router.push(ROUTES.WRITE_EDIT, {id: ticketDetail?.id});
+                }}>
+                <Image source={require('@/assets/icons/edit.png')} resizeMode="contain" style={styles.editIcon} />
+              </Pressable>
+            </EventTracker>
           </View>
         )}
         {hasDoubleTicket ? (
@@ -162,30 +172,34 @@ export default function GameCard() {
         </ViewShot>
         <View style={styles.emojiBox}>
           {reactionList.map(reaction => (
-            <Pressable
-              key={reaction.key}
-              style={[styles.emojiButton, reaction.isPressed && styles.emojiButtonActive]}
-              onPress={() => toggleReaction(reaction.key)}>
-              <Txt size={14}>{reaction.title}</Txt>
-              <Txt size={14} weight="medium">
-                {reaction.count}
-              </Txt>
-            </Pressable>
+            <EventTracker eventName="티켓 리액션" params={{reaction: reaction.key}}>
+              <Pressable
+                key={reaction.key}
+                style={[styles.emojiButton, reaction.isPressed && styles.emojiButtonActive]}
+                onPress={() => toggleReaction(reaction.key)}>
+                <Txt size={14}>{reaction.title}</Txt>
+                <Txt size={14} weight="medium">
+                  {reaction.count}
+                </Txt>
+              </Pressable>
+            </EventTracker>
           ))}
         </View>
 
         {from_ticket_box ? null : (
           <>
             {!hasDoubleTicket && isMyTicket && (
-              <Button
-                onPress={() => {
-                  setScreenName(pathname);
-                  setDiaryCreate('메인 버튼');
-                  router.push(ROUTES.WRITE, {date: ticketDetail?.date});
-                }}
-                style={styles.doubleHeaderButton}>
-                더블헤더 티켓 추가하기
-              </Button>
+              <EventTracker eventName="더블헤더 작성하기">
+                <Button
+                  onPress={() => {
+                    setScreenName(pathname);
+                    setDiaryCreate('메인 버튼');
+                    router.push(ROUTES.WRITE, {date: ticketDetail?.date});
+                  }}
+                  style={styles.doubleHeaderButton}>
+                  더블헤더 티켓 추가하기
+                </Button>
+              </EventTracker>
             )}
           </>
         )}

@@ -3,6 +3,7 @@ import {useHomeAwayWinPercentByYear, useSelectedStatsFilter} from '@/entities/st
 import {HomeAwayStatsCard} from '@/entities/stat/ui';
 import {StatsList} from './StatsList';
 import {useNavigateToStatsDetail} from '@/features/stats';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const HomeAwayStatsCardList = () => {
   const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter();
@@ -17,17 +18,22 @@ const HomeAwayStatsCardList = () => {
   }, [data, selectedStatsFilter?.sort]);
 
   const renderItem = useCallback(({item}: {item: (typeof sortedData)[0]}) => {
+    const homeAway = item.home_away === 'home' ? '홈' : '원정';
     return (
-      <HomeAwayStatsCard
-        onPress={() => (item.home_away === 'home' ? navigateToHomeStatsDetail() : navigateToAwayStatsDetail())}
-        key={`${item.home_away}-${item.is_cheer}`}
-        title={item.home_away === 'home' ? '홈' : '원정'}
-        matchResult={{
-          win: item.wins,
-          draw: item.draws,
-          lose: item.losses,
-        }}
-      />
+      <EventTracker
+        eventName="홈/원정 경기별"
+        params={{home_away: homeAway, win: item.wins, draw: item.draws, lose: item.losses}}>
+        <HomeAwayStatsCard
+          onPress={() => (item.home_away === 'home' ? navigateToHomeStatsDetail() : navigateToAwayStatsDetail())}
+          key={`${item.home_away}-${item.is_cheer}`}
+          title={homeAway}
+          matchResult={{
+            win: item.wins,
+            draw: item.draws,
+            lose: item.losses,
+          }}
+        />
+      </EventTracker>
     );
   }, []);
 

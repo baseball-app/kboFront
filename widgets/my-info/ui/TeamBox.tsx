@@ -4,6 +4,7 @@ import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {color_token} from '@/constants/theme';
 import {Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const TeamBox = () => {
   const router = useAppRouter();
@@ -17,9 +18,11 @@ const TeamBox = () => {
         </Txt>
       </View>
 
-      <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push(ROUTES.MY_CHANGE_TEAM)}>
-        <Image source={require('@/assets/icons/gear.png')} style={styles.teamSettingsIcon} />
-      </TouchableOpacity>
+      <EventTracker eventName="팀 변경">
+        <TouchableOpacity style={styles.teamSettingsIconBox} onPress={() => router.push(ROUTES.MY_CHANGE_TEAM)}>
+          <Image source={require('@/assets/icons/gear.png')} style={styles.teamSettingsIcon} />
+        </TouchableOpacity>
+      </EventTracker>
     </View>
   );
 };

@@ -10,6 +10,7 @@ import {usePushMessage} from '@/shared';
 import {usePopup} from '@/slice/commonSlice';
 import {color_token} from '@/constants/theme';
 import {Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const AccountMenuWidget = () => {
   const router = useAppRouter();
@@ -37,12 +38,14 @@ const AccountMenuWidget = () => {
   return (
     <View style={styles.menuContainer}>
       {menuList.map(menu => (
-        <Pressable key={menu.title} style={styles.menuItem} onPress={menu.onClick}>
-          <Txt size={16} weight="medium" color={color_token.gray900}>
-            {menu.title}
-          </Txt>
-          <Ionicons name="chevron-forward" size={size(24)} color={color_token.gray400} />
-        </Pressable>
+        <EventTracker eventName={menu.title}>
+          <Pressable key={menu.title} style={styles.menuItem} onPress={menu.onClick}>
+            <Txt size={16} weight="medium" color={color_token.gray900}>
+              {menu.title}
+            </Txt>
+            <Ionicons name="chevron-forward" size={size(24)} color={color_token.gray400} />
+          </Pressable>
+        </EventTracker>
       ))}
     </View>
   );
