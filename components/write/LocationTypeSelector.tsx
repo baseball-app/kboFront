@@ -4,6 +4,7 @@ import {BottomSheet} from '@/shared/ui';
 import {size} from '@/shared';
 import {color_token} from '@/constants/theme';
 import {Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 type Props = {
   value: string;
@@ -34,15 +35,17 @@ const LocationTypeSelector = ({value, onChange}: Props) => {
   return (
     <>
       <View style={styles.selectBox}>
-        <TouchableOpacity
-          style={styles.selectModalButton}
-          activeOpacity={1}
-          onPress={() => setTabMenuModalVisible(true)}>
-          <Txt size={16} weight="bold" color={color_token.gray900}>
-            {value}
-          </Txt>
-          <Image source={require('@/assets/icons/bottomArrow.png')} resizeMode="contain" style={styles.dropDownImg} />
-        </TouchableOpacity>
+        <EventTracker eventName="직관/집관">
+          <TouchableOpacity
+            style={styles.selectModalButton}
+            activeOpacity={1}
+            onPress={() => setTabMenuModalVisible(true)}>
+            <Txt size={16} weight="bold" color={color_token.gray900}>
+              {value}
+            </Txt>
+            <Image source={require('@/assets/icons/bottomArrow.png')} resizeMode="contain" style={styles.dropDownImg} />
+          </TouchableOpacity>
+        </EventTracker>
       </View>
       <BottomSheet isOpen={tabMenuModalVisible} duration={250} height={285}>
         <View style={styles.writePlaceModalContent}>

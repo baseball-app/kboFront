@@ -1,4 +1,5 @@
 import {useAnalyticsStore} from '@/analytics/event';
+import {EventTracker} from '@/analytics/EventTracker';
 import {EmptyMatchView, LoadingMatchList, Match, MatchCard, MatchWeekCalendar, useMatch} from '@/entities/match';
 import {AddDoubleHeaderTicketButton, useNavigateWriteTicket} from '@/features/match';
 import dayjs from 'dayjs';
@@ -63,7 +64,9 @@ const MatchList = () => {
       renderItem={renderItem}
       ListFooterComponent={
         matchingList.length > 0 ? (
-          <AddDoubleHeaderTicketButton onPress={() => moveToDoubleHeaderWriteTicket(date)} /> //
+          <EventTracker eventName="더블헤더 작성하기">
+            <AddDoubleHeaderTicketButton onPress={() => moveToDoubleHeaderWriteTicket(date)} />
+          </EventTracker>
         ) : null
       }
       keyExtractor={keyExtractor}

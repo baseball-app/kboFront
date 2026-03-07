@@ -4,6 +4,7 @@ import {useNotBallparkWinPercentByYear, useSelectedStatsFilter} from '@/entities
 import {TeamStatsCard} from '@/entities/stat/ui';
 import {StatsList} from './StatsList';
 import {useNavigateToStatsDetail} from '@/features/stats';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const MyHomeStatsCardList = () => {
   const {selectedStatsFilter, sortDataByWinRate} = useSelectedStatsFilter();
@@ -19,16 +20,20 @@ const MyHomeStatsCardList = () => {
 
   const renderItem = useCallback(({item}: {item: (typeof sortedData)[0]}) => {
     return (
-      <TeamStatsCard
-        onPress={() => navigateToMyHomeStatsDetail(item.team_id)}
-        key={item.team_id}
-        teamName={item.team_nm}
-        matchResult={{
-          win: item.wins,
-          draw: item.draws,
-          lose: item.losses,
-        }}
-      />
+      <EventTracker
+        eventName="집관 경기별"
+        params={{team_name: item.team_nm, win: item.wins, draw: item.draws, lose: item.losses}}>
+        <TeamStatsCard
+          onPress={() => navigateToMyHomeStatsDetail(item.team_id)}
+          key={item.team_id}
+          teamName={item.team_nm}
+          matchResult={{
+            win: item.wins,
+            draw: item.draws,
+            lose: item.losses,
+          }}
+        />
+      </EventTracker>
     );
   }, []);
 

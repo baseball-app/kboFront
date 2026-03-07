@@ -1,11 +1,12 @@
 import React, {useMemo} from 'react';
-import {StyleSheet, View, TouchableOpacity, Image, Text} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import {findMatchResultImage} from '@/constants/match';
 import {useTeam} from '@/entities/match';
 import {TicketCalendarLog} from '@/entities/ticket/types';
 import {Pressable, size} from '@/shared';
 import {color_token} from '@/constants/theme';
 import {Txt} from '@/shared/ui';
+import {EventTracker} from '@/analytics/EventTracker';
 
 //TODO: 애니메이션 및 컴포넌트 리팩터링 필요함
 const MatchResultCell = ({
@@ -30,24 +31,26 @@ const MatchResultCell = ({
   }, [data, findTeamByName]);
 
   return (
-    <Pressable style={{alignItems: 'center'}} onPress={onPress}>
-      {matchResult ? (
-        <View style={{alignItems: 'center', justifyContent: 'flex-start'}}>
-          <Image source={findMatchResultImage(matchResult)} style={styles.moodContainer} />
-          <Txt size={10} weight="regular" color={color_token.gray900} style={styles.teamText}>
-            {myTeam?.short_name}:{opponent?.short_name}
-          </Txt>
-          {data.length > 1 && (
-            <View style={{flexDirection: 'row', gap: 3}}>
-              <View style={[styles.swiperDot]} />
-              <View style={[styles.swiperDot]} />
-            </View>
-          )}
-        </View>
-      ) : (
-        <View style={[styles.moodContainer]} />
-      )}
-    </Pressable>
+    <EventTracker eventName="캘린더">
+      <Pressable style={{alignItems: 'center'}} onPress={onPress}>
+        {matchResult ? (
+          <View style={{alignItems: 'center', justifyContent: 'flex-start'}}>
+            <Image source={findMatchResultImage(matchResult)} style={styles.moodContainer} />
+            <Txt size={10} weight="regular" color={color_token.gray900} style={styles.teamText}>
+              {myTeam?.short_name}:{opponent?.short_name}
+            </Txt>
+            {data.length > 1 && (
+              <View style={{flexDirection: 'row', gap: 3}}>
+                <View style={[styles.swiperDot]} />
+                <View style={[styles.swiperDot]} />
+              </View>
+            )}
+          </View>
+        ) : (
+          <View style={[styles.moodContainer]} />
+        )}
+      </Pressable>
+    </EventTracker>
   );
 };
 

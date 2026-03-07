@@ -9,7 +9,9 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(ls:*)",
-      "Bash(npx jest:*)"
+      "Bash(npx jest:*)",
+      "Bash(brew list:*)",
+      "Bash(gh pr:*)"
     ]
   }
 }

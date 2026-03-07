@@ -47,6 +47,7 @@ widgets/              # Page-level composite components
 shared/
   ui/                 # Reusable UI: Button, Txt, Pressable, BottomSheet, SelectBox...
   lib/                # Utilities: size(), useFunnel, useShare, useCaptureView...
+analytics/            # Event tracking (Firebase Analytics)
 components/           # Legacy common components
 slice/                # Zustand stores (commonSlice, sheetSlice, userJoinSlice, dailyWriteSlice)
 hooks/                # Custom hooks by domain
@@ -65,6 +66,7 @@ types/                # Global TypeScript types
 - **Queries**: `useQuery` for fetching, `useMutation` with `queryClient.invalidateQueries` for mutations.
 - **User popups**: `openCommonPopup` from `slice/commonSlice`.
 - **GitHub Templates**: PR/Issue 생성 시 `.github/` 폴더의 템플릿 형식을 따른다 (`PULL_REQUEST_TEMPLATE.md`, `ISSUE_TEMPLATE/`).
+- **Event tracking**: 선언적 — `<EventTracker>` 래핑, 프로그래밍 — `useEventTracker` 훅. 공통 데이터(screen, time, team) 자동 주입.
 
 ## Code Style (Prettier)
 

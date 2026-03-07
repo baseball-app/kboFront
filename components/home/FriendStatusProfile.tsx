@@ -1,3 +1,4 @@
+import {EventTracker} from '@/analytics/EventTracker';
 import {findProfileImageById} from '@/constants/join';
 import {color_token} from '@/constants/theme';
 import {FriendStatus} from '@/hooks/my/useFriends';
@@ -77,25 +78,27 @@ const FriendStatusProfile = ({friendStatus, isMyProfile, onClick, choice}: Props
   };
 
   return (
-    <Pressable onPress={onClick} style={styles.friendItem}>
-      <View
-        style={[
-          styles.profileImageBox, //
-          getStyle(),
-        ]}>
-        <Image
-          source={findProfileImageById(friendStatus.profile_type)}
-          style={styles.profileImage}
-          resizeMode="contain"
-        />
-        {isMyProfile && (
-          <Image source={require('@/assets/icons/myHome.png')} style={styles.myHomeImage} resizeMode="contain" />
-        )}
-      </View>
-      <Txt size={13} style={[getTextColor(), isMyProfile && {fontWeight: 500}]} numberOfLines={1}>
-        {friendStatus.nickname}
-      </Txt>
-    </Pressable>
+    <EventTracker eventName="친구 프로필">
+      <Pressable onPress={onClick} style={styles.friendItem}>
+        <View
+          style={[
+            styles.profileImageBox, //
+            getStyle(),
+          ]}>
+          <Image
+            source={findProfileImageById(friendStatus.profile_type)}
+            style={styles.profileImage}
+            resizeMode="contain"
+          />
+          {isMyProfile && (
+            <Image source={require('@/assets/icons/myHome.png')} style={styles.myHomeImage} resizeMode="contain" />
+          )}
+        </View>
+        <Txt size={13} style={[getTextColor(), isMyProfile && {fontWeight: 500}]} numberOfLines={1}>
+          {friendStatus.nickname}
+        </Txt>
+      </Pressable>
+    </EventTracker>
   );
 };
 
