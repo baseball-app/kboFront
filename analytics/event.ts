@@ -22,3 +22,8 @@ export const useAnalyticsStore = create<{
   setScreenName: (screenName: string) => set({screen_name: screenName}),
   setDiaryCreate: (diaryCreate: string) => set({diary_create: diaryCreate}),
 }));
+
+export const EVENT_TYPE = {
+  CLICK_EVENT: 'click_event',
+  SCREEN_VIEW: 'screen_view',
+} as const;

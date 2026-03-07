@@ -1,13 +1,14 @@
 import {DAYS_OF_WEEK} from '@/constants/day';
 import dayjs from 'dayjs';
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity, Image, Pressable} from 'react-native';
+import {StyleSheet, View, Image, Pressable} from 'react-native';
 import {ROUTES, size, useAppRouter} from '@/shared';
 import {TeamWithInfo, useMatch, useTeam} from '@/entities/match';
 import useProfile from '@/hooks/my/useProfile';
 import Ellipse from '@/components/common/Ellipse';
 import {color_token} from '@/constants/theme';
 import {Txt} from '@/shared/ui/Txt';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const TodayMatch = () => {
   const {matchingList} = useMatch({selectedDate: new Date()});
@@ -42,18 +43,20 @@ const TodayMatch = () => {
         <EmptyMatch myTeamName={profile.my_team?.short_name || ''} />
       )}
 
-      <Pressable style={styles.seeMoreButton} onPress={() => router.navigate(ROUTES.MATCH_TAB)}>
-        <View style={styles.imgBox}>
-          <Image
-            source={require('@/assets/icons/see-more-calendar.png')}
-            resizeMode="contain"
-            style={{width: size(24), height: size(24)}}
-          />
-        </View>
-        <Txt size={13} weight="medium" color={color_token.gray800}>
-          경기일정 더보기
-        </Txt>
-      </Pressable>
+      <EventTracker eventName="경기일정 더보기 클릭">
+        <Pressable style={styles.seeMoreButton} onPress={() => router.navigate(ROUTES.MATCH_TAB)}>
+          <View style={styles.imgBox}>
+            <Image
+              source={require('@/assets/icons/see-more-calendar.png')}
+              resizeMode="contain"
+              style={{width: size(24), height: size(24)}}
+            />
+          </View>
+          <Txt size={13} weight="medium" color={color_token.gray800}>
+            경기일정 더보기
+          </Txt>
+        </Pressable>
+      </EventTracker>
     </View>
   );
 };

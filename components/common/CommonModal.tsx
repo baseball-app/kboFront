@@ -1,10 +1,10 @@
-import { IModalConfig, useCommonSlice } from '@/slice/commonSlice';
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Modal } from '@/components/common/Modal';
-import { Pressable, Txt } from '@/shared/ui';
-import { color_token } from '@/constants/theme';
-import { size } from '@/shared';
+import {IModalConfig, useCommonSlice} from '@/slice/commonSlice';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet} from 'react-native';
+import {Modal} from '@/components/common/Modal';
+import {Pressable, Txt} from '@/shared/ui';
+import {color_token} from '@/constants/theme';
+import {size} from '@/shared';
 const CommonModal = () => {
   const {currentModal, modal} = useCommonSlice();
   const [modalState, setModalState] = useState<IModalConfig | null>(null);

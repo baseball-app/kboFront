@@ -5,6 +5,7 @@ import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 import {ROUTES, useAppRouter} from '@/shared';
 import {TeamWithInfo, useMatch, useTeam} from '@/entities/match';
 import useProfile from '@/hooks/my/useProfile';
+import {EventTracker} from '@/analytics/EventTracker';
 
 const TodayMyTeamMatch = () => {
   const {matchingList} = useMatch({selectedDate: new Date()});
@@ -39,16 +40,18 @@ const TodayMyTeamMatch = () => {
         <EmptyMatch myTeamName={profile.my_team?.name || ''} />
       )}
 
-      <TouchableOpacity style={styles.seeMoreButton} onPress={() => router.navigate(ROUTES.MATCH_TAB)}>
-        <View style={styles.imgBox}>
-          <Image
-            source={require('@/assets/icons/see-more-calendar.png')}
-            resizeMode="contain"
-            style={{width: 24, height: 24}}
-          />
-        </View>
-        <Text style={styles.buttonText}>경기일정 더보기</Text>
-      </TouchableOpacity>
+      <EventTracker eventName="경기일정 더보기 클릭">
+        <TouchableOpacity style={styles.seeMoreButton} onPress={() => router.navigate(ROUTES.MATCH_TAB)}>
+          <View style={styles.imgBox}>
+            <Image
+              source={require('@/assets/icons/see-more-calendar.png')}
+              resizeMode="contain"
+              style={{width: 24, height: 24}}
+            />
+          </View>
+          <Text style={styles.buttonText}>경기일정 더보기</Text>
+        </TouchableOpacity>
+      </EventTracker>
     </View>
   );
 };

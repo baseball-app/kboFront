@@ -1,6 +1,78 @@
 import * as ReactNative from 'react-native';
 import {jest} from '@jest/globals';
 
+// Mock react-native-reanimated
+jest.mock('react-native-reanimated', () => {
+  const React = require('react');
+  const {View} = require('react-native');
+
+  return {
+    __esModule: true,
+    default: {
+      View,
+      Text: View,
+      Image: View,
+      ScrollView: View,
+      FlatList: View,
+      createAnimatedComponent: (component: any) => component,
+      addWhitelistedNativeProps: jest.fn(),
+      addWhitelistedUIProps: jest.fn(),
+    },
+    useSharedValue: (init: any) => ({value: init}),
+    useAnimatedStyle: (fn: any) => fn(),
+    useDerivedValue: (fn: any) => ({value: fn()}),
+    useAnimatedScrollHandler: jest.fn(),
+    useAnimatedGestureHandler: jest.fn(),
+    useAnimatedRef: () => ({current: null}),
+    withTiming: (val: any) => val,
+    withSpring: (val: any) => val,
+    withDecay: (val: any) => val,
+    withDelay: (_: any, val: any) => val,
+    withSequence: (...vals: any[]) => vals[vals.length - 1],
+    withRepeat: (val: any) => val,
+    cancelAnimation: jest.fn(),
+    Easing: {
+      linear: jest.fn(),
+      ease: jest.fn(),
+      quad: jest.fn(),
+      cubic: jest.fn(),
+      poly: jest.fn(),
+      sin: jest.fn(),
+      circle: jest.fn(),
+      exp: jest.fn(),
+      elastic: jest.fn(),
+      back: jest.fn(),
+      bounce: jest.fn(),
+      bezier: () => jest.fn(),
+      in: jest.fn(),
+      out: jest.fn(),
+      inOut: jest.fn(),
+    },
+    FadeIn: {duration: () => ({})},
+    FadeOut: {duration: () => ({})},
+    SlideInDown: {duration: () => ({})},
+    SlideOutDown: {duration: () => ({})},
+    Layout: {},
+    runOnJS: (fn: any) => fn,
+    runOnUI: (fn: any) => fn,
+    interpolate: jest.fn(),
+    Extrapolation: {CLAMP: 'clamp', EXTEND: 'extend', IDENTITY: 'identity'},
+    createAnimatedComponent: (component: any) => component,
+  };
+});
+
+// Mock react-native-worklets
+jest.mock('react-native-worklets', () => ({
+  scheduleOnRN: jest.fn(),
+}));
+
+// Mock react-native-safe-area-context
+jest.mock('react-native-safe-area-context', () => ({
+  useSafeAreaInsets: () => ({top: 0, bottom: 0, left: 0, right: 0}),
+  SafeAreaProvider: ({children}: any) => children,
+  SafeAreaView: ({children}: any) => children,
+}));
+
 // Mock global NativeUnimoduleProxy
 (global as any).NativeUnimoduleProxy = {
   modulesConstants: {},
@@ -137,26 +209,37 @@ jest.mock('react-native-config', () => ({
 }));
 
 // Mock @react-native-firebase/messaging
+const mockMessagingInstance = {
+  getToken: jest.fn(() => Promise.resolve('mock-token')),
+  requestPermission: jest.fn(() => Promise.resolve(true)),
+  hasPermission: jest.fn(() => Promise.resolve(true)),
+  onMessage: jest.fn(),
+  onNotificationOpenedApp: jest.fn(),
+  getInitialNotification: jest.fn(() => Promise.resolve(null)),
+  setBackgroundMessageHandler: jest.fn(),
+  onTokenRefresh: jest.fn(),
+  deleteToken: jest.fn(() => Promise.resolve()),
+  isDeviceRegisteredForRemoteMessages: jest.fn(() => Promise.resolve(true)),
+  registerDeviceForRemoteMessages: jest.fn(() => Promise.resolve()),
+  unregisterDeviceForRemoteMessages: jest.fn(() => Promise.resolve()),
+  getAPNSToken: jest.fn(() => Promise.resolve('mock-apns-token')),
+  setAPNSToken: jest.fn(() => Promise.resolve()),
+  isAutoInitEnabled: jest.fn(() => true),
+  setAutoInitEnabled: jest.fn(() => Promise.resolve()),
+};
 jest.mock('@react-native-firebase/messaging', () => ({
   __esModule: true,
-  default: () => ({
-    getToken: jest.fn(() => Promise.resolve('mock-token')),
-    requestPermission: jest.fn(() => Promise.resolve(true)),
-    hasPermission: jest.fn(() => Promise.resolve(true)),
-    onMessage: jest.fn(),
-    onNotificationOpenedApp: jest.fn(),
-    getInitialNotification: jest.fn(() => Promise.resolve(null)),
-    setBackgroundMessageHandler: jest.fn(),
-    onTokenRefresh: jest.fn(),
-    deleteToken: jest.fn(() => Promise.resolve()),
-    isDeviceRegisteredForRemoteMessages: jest.fn(() => Promise.resolve(true)),
-    registerDeviceForRemoteMessages: jest.fn(() => Promise.resolve()),
-    unregisterDeviceForRemoteMessages: jest.fn(() => Promise.resolve()),
-    getAPNSToken: jest.fn(() => Promise.resolve('mock-apns-token')),
-    setAPNSToken: jest.fn(() => Promise.resolve()),
-    isAutoInitEnabled: jest.fn(() => true),
-    setAutoInitEnabled: jest.fn(() => Promise.resolve()),
-  }),
+  default: () => mockMessagingInstance,
+  getMessaging: jest.fn(() => mockMessagingInstance),
+  getToken: jest.fn(() => Promise.resolve('mock-token')),
+  requestPermission: jest.fn(() => Promise.resolve(true)),
+  onMessage: jest.fn(),
+  AuthorizationStatus: {
+    NOT_DETERMINED: -1,
+    DENIED: 0,
+    AUTHORIZED: 1,
+    PROVISIONAL: 2,
+  },
   FirebaseMessagingTypes: {
     AuthorizationStatus: {
       NOT_DETERMINED: -1,
@@ -299,6 +382,16 @@ jest.doMock('react-native', () => {
 // jest.mock('@react-native-firebase/messaging', () => ({
 //   getMessaging: () => {},
 // }))
+
+// Mock expo-linking
+jest.mock('expo-linking', () => ({
+  createURL: jest.fn((path: string) => `exp://localhost/${path}`),
+  parse: jest.fn((url: string) => ({path: url, queryParams: {}})),
+  openURL: jest.fn(),
+  canOpenURL: jest.fn(() => Promise.resolve(true)),
+  addEventListener: jest.fn(),
+  getInitialURL: jest.fn(() => Promise.resolve(null)),
+}));
 
 // Mock expo-image-picker
 jest.mock('expo-image-picker', () => ({
