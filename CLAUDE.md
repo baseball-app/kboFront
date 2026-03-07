@@ -64,6 +64,7 @@ types/                # Global TypeScript types
 - **API layer**: `entities/*/api/` uses `ApiClient` from `@/api`. Type responses with schemas from `entities/*/types/`.
 - **Queries**: `useQuery` for fetching, `useMutation` with `queryClient.invalidateQueries` for mutations.
 - **User popups**: `openCommonPopup` from `slice/commonSlice`.
+- **GitHub Templates**: PR/Issue 생성 시 `.github/` 폴더의 템플릿 형식을 따른다 (`PULL_REQUEST_TEMPLATE.md`, `ISSUE_TEMPLATE/`).
 
 ## Code Style (Prettier)
 
