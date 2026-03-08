@@ -86,9 +86,8 @@ fastlane/test_output
 fastlane/README.md
 fastlane/.env.staging
 fastlane/.env.production
+fastlane/.env.default
 *.ipa
 *.dSYM.zip
 google-play-key.json
 vendor/bundle
-
-fastlane
