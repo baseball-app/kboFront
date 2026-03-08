@@ -246,13 +246,36 @@ GOOGLE_PLAY_JSON_KEY_PATH=/path/to/google-play-key.json
 
 ## 9. 사용법
 
-### 기본 명령어
+### yarn 단축 명령어 (권장)
+
+```bash
+# ---- iOS ----
+yarn deploy:ios:beta                    # Production → TestFlight
+yarn deploy:ios:beta:staging            # Staging → TestFlight
+yarn deploy:ios:release                 # App Store 업로드
+
+# ---- Android ----
+yarn deploy:android:beta                # Production → Play Store Internal
+yarn deploy:android:beta:staging        # Staging → Play Store Internal
+yarn deploy:android:release             # Play Store Production 배포
+
+# ---- 버전 관리 ----
+yarn bump:version -- type:patch         # 1.5.5 → 1.5.6
+yarn bump:version -- type:minor         # 1.5.5 → 1.6.0
+yarn bump:version -- type:major         # 1.5.5 → 2.0.0
+yarn bump:build                         # 89 → 90
+
+# ---- 전체 릴리스 ----
+yarn deploy:all -- type:minor           # iOS + Android + Git tag
+```
+
+### bundle exec 직접 실행
 
 ```bash
 # ---- iOS ----
 bundle exec fastlane ios beta --env production           # Production → TestFlight
 bundle exec fastlane ios beta_staging --env staging       # Staging → TestFlight
-bundle exec fastlane ios release --env production         # App Store 제출
+bundle exec fastlane ios release --env production         # App Store 업로드
 
 # ---- Android ----
 bundle exec fastlane android beta --env production        # Production → Internal

@@ -34,6 +34,20 @@ yarn build:android:dev        # Android dev release bundle
 yarn build:android:production # Android production release bundle
 ```
 
+### Deploy (Fastlane)
+
+```bash
+yarn deploy:ios:beta              # Production → TestFlight
+yarn deploy:ios:beta:staging      # Staging → TestFlight
+yarn deploy:ios:release           # App Store 업로드
+yarn deploy:android:beta          # Production → Play Store Internal
+yarn deploy:android:beta:staging  # Staging → Play Store Internal
+yarn deploy:android:release       # Play Store Production 배포
+yarn deploy:all                   # iOS + Android 동시 릴리스
+yarn bump:version -- type:patch   # 버전 업 (patch/minor/major)
+yarn bump:build                   # 빌드넘버 +1
+```
+
 ## Architecture: Feature-Sliced Design (FSD)
 
 ```
