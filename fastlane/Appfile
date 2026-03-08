@@ -1,0 +1,7 @@
+app_identifier ENV["APP_IDENTIFIER"]
+apple_id ENV["APPLE_ID"]
+itc_team_id ENV["ITC_TEAM_ID"]
+team_id "3377LPQ56P"
+
+# Android
+json_key_file ENV["GOOGLE_PLAY_JSON_KEY_PATH"]

@@ -12,6 +12,7 @@ KBO (Korean Baseball Organization) 야구 앱 프론트엔드. React Native 0.81
 - **State**: Zustand 5 (client), TanStack Query 5 (server), MMKV (persistent storage)
 - **Validation**: Zod 4
 - **HTTP**: Axios via `ApiClient` (`@/api`) — auto-attaches `X-KBOAPP-TOKEN` header
+- **Ruby**: 3.3.8 (`.ruby-version`) — Fastlane 배포 자동화용
 
 ## Commands
 
@@ -32,6 +33,21 @@ npx jest path/to/file.test.ts # Run single test file
 ```bash
 yarn build:android:dev        # Android dev release bundle
 yarn build:android:production # Android production release bundle
+```
+
+### Deploy (Fastlane)
+
+```bash
+yarn deploy:ios:beta              # Production → TestFlight
+yarn deploy:ios:beta:staging      # Staging → TestFlight
+yarn deploy:ios:release           # App Store 업로드
+yarn deploy:android:beta          # Production → Play Store Internal
+yarn deploy:android:beta:staging  # Staging → Play Store Internal
+yarn deploy:android:release       # Play Store Production 배포
+yarn deploy:all                   # iOS + Android 동시 릴리스
+yarn deploy:all:staging           # iOS + Android Staging 동시 배포
+yarn bump:version -- type:patch   # 버전 업 (patch/minor/major)
+yarn bump:build                   # 빌드넘버 +1
 ```
 
 ## Architecture: Feature-Sliced Design (FSD)

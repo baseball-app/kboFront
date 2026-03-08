@@ -104,8 +104,8 @@ android {
         applicationId 'xyz.kboapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 88
-        versionName "1.5.4"
+        versionCode 97
+        versionName "1.5.5"
         manifestPlaceholders = [applicationLabel: "@string/app_name"]
         resValue "string", "build_config_package", "xyz.kboapp"
     }

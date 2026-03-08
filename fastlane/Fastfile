@@ -1,0 +1,286 @@
+default_platform(:ios)
+
+before_all do
+  ensure_git_status_clean unless is_ci
+
+  # App Store Connect API Key 설정
+  if ENV["ASC_KEY_FILEPATH"]
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: ENV["ASC_KEY_FILEPATH"]
+    )
+  end
+end
+
+# ============================================================
+# 공통 헬퍼
+# ============================================================
+
+desc "iOS + Android 버전 동시 업데이트"
+lane :bump_version do |options|
+  version_type = options[:type] || "patch"
+
+  if options[:version]
+    new_version = options[:version]
+  else
+    current = get_info_plist_value(
+      path: "ios/kboFront/Info.plist",
+      key: "CFBundleShortVersionString"
+    )
+    parts = current.split(".").map(&:to_i)
+    case version_type
+    when "major" then parts[0] += 1; parts[1] = 0; parts[2] = 0
+    when "minor" then parts[1] += 1; parts[2] = 0
+    when "patch" then parts[2] += 1
+    end
+    new_version = parts.join(".")
+  end
+
+  UI.message("Version -> #{new_version}")
+
+  # iOS
+  set_info_plist_value(
+    path: "ios/kboFront/Info.plist",
+    key: "CFBundleShortVersionString",
+    value: new_version
+  )
+
+  # Android
+  sh("sed -i '' 's/versionName \".*\"/versionName \"#{new_version}\"/' ../android/app/build.gradle")
+
+  new_version
+end
+
+desc "iOS + Android 빌드넘버 동시 업데이트"
+lane :bump_build do |options|
+  if options[:build_number]
+    new_build = options[:build_number].to_i
+  else
+    current = get_info_plist_value(
+      path: "ios/kboFront/Info.plist",
+      key: "CFBundleVersion"
+    ).to_i
+    new_build = current + 1
+  end
+
+  UI.message("Build number -> #{new_build}")
+
+  # iOS
+  set_info_plist_value(
+    path: "ios/kboFront/Info.plist",
+    key: "CFBundleVersion",
+    value: new_build.to_s
+  )
+
+  # Android
+  sh("sed -i '' 's/versionCode [0-9]*/versionCode #{new_build}/' ../android/app/build.gradle")
+
+  new_build
+end
+
+# ============================================================
+# iOS
+# ============================================================
+
+platform :ios do
+
+  desc "CocoaPods 설치"
+  lane :install_pods do
+    cocoapods(podfile: "ios/Podfile", clean_install: true)
+  end
+
+  private_lane :build_ios do |options|
+    install_pods
+
+    ENV["ENVFILE"] = ENV["ENVFILE"] || ".env.production"
+
+    build_app(
+      workspace: ENV["IOS_WORKSPACE"],
+      scheme: ENV["IOS_SCHEME"],
+      export_method: options[:export_method] || "app-store",
+      output_directory: "build/ios",
+      output_name: "kboFront.ipa",
+      clean: true,
+      include_bitcode: false
+    )
+  end
+
+  # ---- TestFlight ----
+
+  desc "Production -> TestFlight"
+  lane :beta do
+    bump_build
+    build_ios(export_method: "app-store")
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      distribute_external: false
+    )
+  end
+
+  desc "Staging -> TestFlight"
+  lane :beta_staging do
+    bump_build
+    build_ios(export_method: "app-store")
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      distribute_external: false
+    )
+  end
+
+  # ---- App Store ----
+
+  desc "App Store 제출"
+  lane :release do
+    bump_build
+    bump_version(type: "patch")
+    build_ios(export_method: "app-store")
+    upload_to_app_store(
+      skip_screenshots: true,
+      skip_metadata: false,
+      submit_for_review: false,
+      automatic_release: false,
+      force: true,
+      precheck_include_in_app_purchases: false
+    )
+  end
+end
+
+# ============================================================
+# Android
+# ============================================================
+
+platform :android do
+
+  private_lane :build_android do
+    flavor = ENV["ANDROID_FLAVOR"] || "production"
+    task = "bundle#{flavor.capitalize}Release"
+
+    ENV["ENVFILE"] = ENV["ENVFILE"] || ".env.production"
+
+    gradle(
+      project_dir: "android",
+      task: task,
+      properties: { "ENVFILE" => ENV["ENVFILE"] }
+    )
+  end
+
+  desc "Production -> Play Store Internal"
+  lane :beta do
+    bump_build
+    build_android
+    upload_to_play_store(
+      track: "internal",
+      package_name: "xyz.kboapp",
+      aab: "android/app/build/outputs/bundle/productionRelease/app-production-release.aab",
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Staging -> Play Store Internal (내부테스트 제출)"
+  lane :beta_staging do
+    bump_build
+    build_android
+    upload_to_play_store(
+      track: "internal",
+      release_status: "draft",
+      package_name: "xyz.kboapp.staging",
+      aab: "android/app/build/outputs/bundle/devRelease/app-dev-release.aab",
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Play Store Production 배포"
+  lane :release do
+    bump_build
+    bump_version(type: "patch")
+    build_android
+    upload_to_play_store(
+      track: "production",
+      package_name: "xyz.kboapp",
+      aab: "android/app/build/outputs/bundle/productionRelease/app-production-release.aab",
+      skip_upload_apk: true,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      rollout: "1.0"
+    )
+  end
+end
+
+# ============================================================
+# 크로스 플랫폼
+# ============================================================
+
+desc "iOS + Android Staging -> TestFlight + Play Store Internal (빌드넘버 1회만 증가)"
+lane :beta_staging_all do
+  bump_build
+
+  # iOS: build & upload to TestFlight
+  cocoapods(podfile: "ios/Podfile", clean_install: true)
+
+  ENV["ENVFILE"] = ".env.staging"
+
+  build_app(
+    workspace: ENV["IOS_WORKSPACE"],
+    scheme: ENV["IOS_SCHEME"],
+    export_method: "app-store",
+    output_directory: "build/ios",
+    output_name: "kboFront.ipa",
+    clean: true,
+    include_bitcode: false
+  )
+
+  upload_to_testflight(
+    skip_waiting_for_build_processing: true,
+    distribute_external: false
+  )
+
+  # Android: build & upload to Play Store Internal
+  flavor = ENV["ANDROID_FLAVOR"] || "production"
+  task = "bundle#{flavor.capitalize}Release"
+
+  gradle(
+    project_dir: "android",
+    task: task,
+    properties: { "ENVFILE" => ENV["ENVFILE"] }
+  )
+
+  upload_to_play_store(
+    track: "internal",
+    release_status: "draft",
+    package_name: "xyz.kboapp.staging",
+    aab: "android/app/build/outputs/bundle/devRelease/app-dev-release.aab",
+    skip_upload_apk: true,
+    skip_upload_metadata: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true
+  )
+end
+
+desc "iOS + Android 동시 릴리스"
+lane :release_all do |options|
+  bump_version(type: options[:type] || "patch")
+  bump_build
+
+  ios release
+  android release
+
+  # Git 커밋 & 태그
+  version = get_info_plist_value(
+    path: "ios/kboFront/Info.plist",
+    key: "CFBundleShortVersionString"
+  )
+  git_commit(
+    path: ["ios/kboFront/Info.plist", "android/app/build.gradle"],
+    message: "chore: release v#{version}"
+  )
+  add_git_tag(tag: "v#{version}")
+  push_to_git_remote
+end

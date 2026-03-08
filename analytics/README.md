@@ -4,12 +4,12 @@
 
 ## 구조
 
-| 파일                 | 역할                                                    |
-| -------------------- | ------------------------------------------------------- |
+| 파일                 | 역할                                                     |
+| -------------------- | -------------------------------------------------------- |
 | `event.ts`           | 이벤트 타입 상수 (`EVENT_TYPE`, `EVENTS`), Zustand store |
-| `func.ts`            | Firebase `logEvent` 래퍼 (mode 자동 주입)               |
-| `EventTracker.tsx`   | 선언적 클릭 이벤트 래핑 컴포넌트                        |
-| `useEventTracker.ts` | 프로그래밍 방식 이벤트 훅 (공통 데이터 자동 주입)       |
+| `func.ts`            | Firebase `logEvent` 래퍼 (mode 자동 주입)                |
+| `EventTracker.tsx`   | 선언적 클릭 이벤트 래핑 컴포넌트                         |
+| `useEventTracker.ts` | 프로그래밍 방식 이벤트 훅 (공통 데이터 자동 주입)        |
 
 ## 자동 주입되는 공통 데이터
 
@@ -18,6 +18,7 @@
 - `event_name` — 이벤트 이름
 - `screen_name` — 현재 화면 경로 (expo-router segments)
 - `tracking_time` — 이벤트 발생 시각 (`YYYY-MM-DD HH:mm:ss`)
+- `카테고리` - 직관일기 작성 프로세스
 - `my_team` — 유저의 응원팀 이름
 - `mode` — 앱 환경 (func.ts에서 자동 주입)
 

@@ -15,7 +15,17 @@
     "build:android:dev": "cd android && ENVFILE=.env.dev ./gradlew bundleDevRelease",
     "build:android:production": "cd android && ENVFILE=.env.production ./gradlew bundleProductionRelease",
     "android": "expo run:android",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "deploy:ios:beta": "bundle exec fastlane ios beta --env production",
+    "deploy:ios:beta:staging": "bundle exec fastlane ios beta_staging --env staging",
+    "deploy:ios:release": "bundle exec fastlane ios release --env production",
+    "deploy:android:beta": "bundle exec fastlane android beta --env production",
+    "deploy:android:beta:staging": "bundle exec fastlane android beta_staging --env staging",
+    "deploy:android:release": "bundle exec fastlane android release --env production",
+    "deploy:all:staging": "bundle exec fastlane beta_staging_all --env staging",
+    "deploy:all": "bundle exec fastlane release_all",
+    "bump:version": "bundle exec fastlane bump_version",
+    "bump:build": "bundle exec fastlane bump_build"
   },
   "jest": {
     "preset": "jest-expo",
