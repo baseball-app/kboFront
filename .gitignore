@@ -77,3 +77,18 @@ expo-env.d.ts
 **/GoogleService-Info*.plist
 
 my-release-key.keystore
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/README.md
+fastlane/.env.staging
+fastlane/.env.production
+*.ipa
+*.dSYM.zip
+google-play-key.json
+vendor/bundle
+
+fastlane

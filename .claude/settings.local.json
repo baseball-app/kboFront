@@ -11,7 +11,13 @@
       "Bash(ls:*)",
       "Bash(npx jest:*)",
       "Bash(brew list:*)",
-      "Bash(gh pr:*)"
+      "Bash(gh pr:*)",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs",
+      "Bash(cat:*)",
+      "Bash(gem install:*)",
+      "Bash(rbenv version:*)",
+      "Bash(rbenv install:*)"
     ]
   }
 }
